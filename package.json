@@ -1,26 +1,30 @@
 {
-  "name": "ace-candidate-management",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "candidate",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "basic-auth": "^2.0.1",
-    "bcrypt": "^5.1.1",
-    "bcryptjs": "^3.0.2",
-    "dotenv": "^16.5.0",
-    "express": "^5.1.0",
-    "express-validator": "^7.2.1",
-    "jsonwebtoken": "^9.0.2",
-    "mysql2": "^3.14.1",
-    "nodemon": "^3.1.10",
-    "sequelize": "^6.37.7",
-    "swagger-ui-express": "^5.0.1",
-    "winston": "^3.17.0"
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@hookform/resolvers": "^5.1.1",
+    "@mui/material": "^7.1.1",
+    "lucide-react": "^0.517.0",
+    "next": "15.3.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-hook-form": "^7.58.1",
+    "yup": "^1.6.1"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
+    "eslint": "^9",
+    "eslint-config-next": "15.3.3",
+    "tailwindcss": "^4"
   }
 }
