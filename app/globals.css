@@ -28,7 +28,13 @@ body {
   padding: 7rem 2rem;
 }
 .acewebx-logo img {
-  height: 170px;
-  object-fit: cover;
+  height: 172px;
+  object-fit: contain;
   padding: 0px;
+  width: 260px;
+}
+.walking{
+  font-weight: 800;
+  font-size: 25px;
+  color: #000;
 }

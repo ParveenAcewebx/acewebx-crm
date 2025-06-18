@@ -46,7 +46,10 @@ function SubmitForm() {
         className="absolute right-0 bottom-0 h-full w-auto z-0"
       />
       {/* Logo */}
-      <div className=" text-center z-10">
+      <div
+        className=" text-center z-10 w-2xs acewebx-logo
+"
+      >
         <img
           src="./acewebxlogo.png"
           alt="Acewebx Logo"
@@ -57,7 +60,7 @@ function SubmitForm() {
 
       {/* Form Container */}
       <div className="bg-gradient-to-br from-red-100 via-white to-red-100 p-10 rounded-xl shadow-md w-full max-w-3xl z-10 border border-red-100">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-6">
+        <h2 className="text-2xl font-semibold text-gray-800 mb-6 walking">
           Walk-in Form
         </h2>
 
@@ -99,7 +102,7 @@ function SubmitForm() {
             <Button
               type="submit"
               variant="outlined"
-              className="!text-red-500 !border-red-500 hover:!bg-red-100 transition"
+              className="!text-red-700 !border-red-700 hover:!bg-red-100 transition"
             >
               SUBMIT
             </Button>

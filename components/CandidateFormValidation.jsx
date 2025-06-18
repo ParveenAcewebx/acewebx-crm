@@ -5,7 +5,7 @@ export const CandidateFormValidation = Yup.object().shape({
     .required("Full Name is required")
     .min(3, "Minimum 5 characters are required")
     .max(25, "Maximum 25 characters are required"),
-
+   
   lastname: Yup.string()
     .required("Last Name is required")
     .min(2, "Minimum 2 characters are required")
