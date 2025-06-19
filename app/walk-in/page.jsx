@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { CandidateFormValidation } from "@/components/CandidateFormValidation";
 import { useRouter } from "next/navigation";
+import { errorMsg, successMsg } from "@/components/toaster/Toaster";
 
 function SubmitForm() {
   const {
@@ -14,6 +15,9 @@ function SubmitForm() {
     formState: { errors },
     reset,
   } = useForm({
+    defaultValues: {
+      firstname: "",
+    },
     resolver: yupResolver(CandidateFormValidation),
   });
 
@@ -22,13 +26,16 @@ function SubmitForm() {
   const onSubmit = (data) => {
     console.log("Data --->", data);
     if (data) {
+      successMsg("Candidate form Submit Successfully!");
       router.push("/thankyou");
+    } else {
+      errorMsg("Something Went Wrong!");
     }
     reset();
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-start bg-white relative w-full">
+    <div className="min-h-screen flex flex-col items-center justify-start bg-white relative w-full mobile-view">
       {/* Background honeycomb pattern - optional: use background image or SVG */}
 
       <div className="absolute inset-0 bg-[url('/background-honeycomb.png')] opacity-10" />
@@ -68,41 +75,49 @@ function SubmitForm() {
           onSubmit={handleSubmit(onSubmit)}
           className="grid grid-cols-1 md:grid-cols-2 gap-6"
         >
+        <FormInput
+  className="bg-white text-[#333333] border border-gray-300 hover:border-[#333333] focus:border-[#333333] focus:text-[#333333] focus:outline-none"
+  inputType="text"
+  name="firstname"
+  control={control}
+  label="First Name"
+  errors={errors}
+/>
+
           <FormInput
-            inputType="text"
-            name="firstname"
-            control={control}
-            label="First Name"
-            errors={errors}
-          />
-          <FormInput
+            className="bg-white"
             inputType="text"
             name="lastname"
             control={control}
             label="Last Name"
             errors={errors}
+            color=""
           />
           <FormInput
+            className="bg-white"
             inputType="email"
             name="email"
             control={control}
             label="Email"
             errors={errors}
+            color=""
           />
           <FormInput
+            className="bg-white"
             inputType="number"
             name="phone"
             control={control}
             label="Phone"
             errors={errors}
+            color=""
           />
 
           {/* Submit Button */}
           <div className="md:col-span-2 flex justify-end">
             <Button
               type="submit"
-              variant="outlined"
-              className="!text-red-700 !border-red-700 hover:!bg-red-100 transition"
+              variant="contained"
+              className="!text-[#B82025] hover:!text-white   !border-red-700  hover:!bg-[#B82025] bg-transparent primary-btn"
             >
               SUBMIT
             </Button>
@@ -112,5 +127,6 @@ function SubmitForm() {
     </div>
   );
 }
+
 
 export default SubmitForm;

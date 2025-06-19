@@ -1,5 +1,4 @@
-import Image from "next/image";
-import SubmitForm from "./submitform/page";
+import SubmitForm from "./walk-in/page";
 
 export default function Home() {
   return (

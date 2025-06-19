@@ -5,7 +5,7 @@ import { CheckCircle } from "lucide-react";
 
 const ThankYouPage = () => {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-start bg-white relative">
+    <div className="min-h-screen flex flex-col items-center justify-start bg-white relative ace-wrp">
     {/* Honeycomb Background Pattern */}
     <div className="absolute inset-0 bg-[url('/background-honeycomb.png')] opacity-10 bg-repeat" />
   
@@ -35,9 +35,9 @@ const ThankYouPage = () => {
       <img
         src="/Vector.svg" // replace with your green check icon
         alt="Success"
-        className="h-16 w-16 mb-6"
+        className="h-16 w-16 mb-6 even-arrow"
       />
-      <p className="text-lg text-gray-800 font-medium">
+      <p className=" text-black font-normal  text-xl content-wrp">
         Your message has been sent successfully. We’ll get back<br />
         to you as soon as possible.
       </p>
