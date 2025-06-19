@@ -12,6 +12,7 @@ export default function FormInput({
   className,
   defaultValue,
   value,
+  color
 }) {
   return (
     <div>
@@ -24,20 +25,47 @@ export default function FormInput({
           defaultValue={defaultValue ? defaultValue : ""}
           render={({ field }) => (
             <TextField
-              InputLabelProps={{ shrink: true }}
               {...field}
-              className={className}
               fullWidth
-              InputProps={{ inputProps: { min: 0 } }}
+              InputProps={{
+                inputProps: { min: 0 },
+              }}
               label={label}
-              type={inputType}
               error={!!errors?.[name]}
               helperText={errors?.[name]?.message}
               variant="outlined"
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  color: '#333333',
+                  '& fieldset': {
+                    borderColor: '#333333',
+                    borderWidth: '1px',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: '#333333',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: '#333333',
+                    borderWidth: '1px',
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: '#666666',
+                  '&.Mui-focused': {
+                    color: '#333333',
+                  },
+                },
+              }}
             />
           )}
         />
       </FormControl>
     </div>
   );
+  
 }
+
+
+
+
+
