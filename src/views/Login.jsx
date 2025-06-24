@@ -28,6 +28,7 @@ import themeConfig from '@configs/themeConfig'
 
 // Hook Imports
 import { useImageVariant } from '@core/hooks/useImageVariant'
+import { signIn } from 'next-auth/react'
 
 const Login = ({ mode }) => {
   // States
@@ -41,10 +42,39 @@ const Login = ({ mode }) => {
   const router = useRouter()
   const authBackground = useImageVariant(mode, lightImg, darkImg)
   const handleClickShowPassword = () => setIsPasswordShown(show => !show)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
-  const handleSubmit = e => {
+  // const handleSubmit = e => {
+  //   e.preventDefault()
+  //   router.push('/')
+  // }
+
+  async function handleSubmit(e) {
     e.preventDefault()
-    router.push('/')
+    // setIsSigningIn(true)
+    try {
+      const signInResponse = await signIn('credentials', { email, password, redirect: false })
+      console.log('signInResponse', signInResponse)
+      if (signInResponse?.status === 401) {
+        // errorMessage({ description: 'Invalid email or password' })
+        return
+      }
+
+      if (!signInResponse?.ok) {
+        // errorMessage({
+        //   description: signInResponse?.error || 'An error occurred'
+        // })
+        return
+      }
+
+      form.reset()
+      // router.replace('/dashboard')
+    } catch (error) {
+      // errorMessage({ description: error?.response?.data?.message })
+    } finally {
+      // setIsSigningIn(false)
+    }
   }
 
   return (
@@ -55,17 +85,23 @@ const Login = ({ mode }) => {
             <Logo />
           </Link>
           <div className='flex flex-col gap-5'>
-            <div>
-              <Typography variant='h4'>{`Welcome to ${themeConfig.templateName}!👋🏻`}</Typography>
-              <Typography className='mbs-1'>Please sign-in to your account and start the adventure</Typography>
-            </div>
             <form noValidate autoComplete='off' onSubmit={handleSubmit} className='flex flex-col gap-5'>
-              <TextField autoFocus fullWidth label='Email' />
+              <TextField
+                autoFocus
+                fullWidth
+                label='Email'
+                name='email'
+                onChange={e => setEmail(e.target.value)}
+                value={email}
+              />
               <TextField
                 fullWidth
                 label='Password'
                 id='outlined-adornment-password'
                 type={isPasswordShown ? 'text' : 'password'}
+                name='password'
+                onChange={e => setPassword(e.target.value)}
+                value={password}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position='end'>
@@ -90,27 +126,6 @@ const Login = ({ mode }) => {
               <Button fullWidth variant='contained' type='submit'>
                 Log In
               </Button>
-              <div className='flex justify-center items-center flex-wrap gap-2'>
-                <Typography>New on our platform?</Typography>
-                <Typography component={Link} href='/register' color='primary'>
-                  Create an account
-                </Typography>
-              </div>
-              <Divider className='gap-3'>or</Divider>
-              <div className='flex justify-center items-center gap-2'>
-                <IconButton size='small' className='text-facebook'>
-                  <i className='ri-facebook-fill' />
-                </IconButton>
-                <IconButton size='small' className='text-twitter'>
-                  <i className='ri-twitter-fill' />
-                </IconButton>
-                <IconButton size='small' className='text-github'>
-                  <i className='ri-github-fill' />
-                </IconButton>
-                <IconButton size='small' className='text-googlePlus'>
-                  <i className='ri-google-fill' />
-                </IconButton>
-              </div>
             </form>
           </div>
         </CardContent>

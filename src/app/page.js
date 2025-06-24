@@ -1,14 +1,12 @@
-"use client"
-import { useRouter } from 'next/navigation'
+'use client'
 import React from 'react'
+import WalkInForm from './walk-in/page'
 
 function Home() {
-
-    const router = useRouter()
-    // useDocumentTitle('Home')
-    router.replace('/walk-in')
   return (
-    <div>Home</div>
+    <div>
+      <WalkInForm />
+    </div>
   )
 }
 
