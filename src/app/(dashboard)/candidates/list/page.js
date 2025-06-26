@@ -2,8 +2,12 @@
 import * as React from 'react'
 import { DataGrid } from '@mui/x-data-grid'
 import Paper from '@mui/material/Paper'
-import { columns } from './CandidateColumns'
 import Candidate from '@/components/services/CandidateApi'
+import { columns } from './CandidateColumns'
+import { useRouter } from 'next/navigation'
+import FormInput from '@/components/FormInput'
+import { useForm } from 'react-hook-form'
+import { Button } from '@mui/material'
 
 const rows = [
   { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
@@ -21,11 +25,14 @@ const paginationModel = { page: 0, pageSize: 5 }
 
 export default function DataTable() {
   const [candidateData, setCandiDateData] = React.useState([])
+  const router = useRouter()
+
+  const form = useForm()
   const fetchCandidateList = async () => {
     try {
       const apiData = await Candidate.candidateList()
       console.log('apiData', apiData?.data)
-      setCandiDateData(apiData?.data)
+      setCandiDateData(apiData?.data?.candidates)
     } catch (error) {
       console.log('error', error)
     }
@@ -39,14 +46,34 @@ export default function DataTable() {
     fetchData()
   }, [])
 
+  const handleView = row => {
+    router.push(`/candidates/view/${row?.id}`)
+  }
+
+  const handleEdit = () => {
+    alert('kkkkkkkk')
+
+    console.log('Testing:------Edit')
+  }
+
+  const handleRemove = () => {
+    alert('kkkkkkkk')
+    console.log('Testing:------Delete')
+  }
+  const searchByNameValue = form.watch('searchByName')
+  console.log('searchByNameValue', searchByNameValue)
   return (
     <Paper sx={{ height: '100%', width: '100%' }}>
+      {/* <div className='mb-8'>
+        <FormInput inputType='text' label='Search by Name' name='searchByName' control={form.control} />
+        <Button>Search</Button>
+      </div> */}
       <DataGrid
         rows={candidateData}
-        columns={columns}
+        columns={columns(handleView, handleEdit, handleRemove)}
         initialState={{ pagination: { paginationModel } }}
         pageSizeOptions={[5, 10]}
-        checkboxSelection
+        // checkboxSelection
         sx={{ border: 0 }}
       />
     </Paper>

@@ -74,6 +74,9 @@ importers:
       react-dom:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
+      react-dropzone:
+        specifier: ^14.3.8
+        version: 14.3.8(react@18.3.1)
       react-hook-form:
         specifier: ^7.58.1
         version: 7.58.1(react@18.3.1)
@@ -1015,6 +1018,10 @@ packages:
   asynckit@0.4.0:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
 
+  attr-accept@2.2.5:
+    resolution: {integrity: sha512-0bDNnY/u6pPwHDMoF0FieU354oBi0a8rD9FcsLwzcGWbc8KS8KPIi7y+s13OlVY+gMWc/9xEMUgNE6Qm8ZllYQ==}
+    engines: {node: '>=4'}
+
   autoprefixer@10.4.19:
     resolution: {integrity: sha512-BaENR2+zBZ8xXhM4pUaKUxlVdxZ0EZhjvbopwnXmxRUfqDmwSpC2lAi/QXvx7NRdPCo1WKEcEF6mV64si1z4Ew==}
     engines: {node: ^10 || ^12 || >=14}
@@ -1546,6 +1553,10 @@ packages:
   file-entry-cache@9.0.0:
     resolution: {integrity: sha512-6MgEugi8p2tiUhqO7GnPsmbCCzj0YRCwwaTbpGRyKZesjRSzkqkAE9fPp7V2yMs5hwfgbQLgdvSSkGNg1s5Uvw==}
     engines: {node: '>=18'}
+
+  file-selector@2.1.2:
+    resolution: {integrity: sha512-QgXo+mXTe8ljeqUFaX3QVHc5osSItJ/Km+xpocx0aSqWGMSCf6qYs/VnzZgS864Pjn5iceMRFigeAV7AfTlaig==}
+    engines: {node: '>= 12'}
 
   fill-range@7.1.1:
     resolution: {integrity: sha512-YsGpe3WHLK8ZYi4tWDg2Jy3ebRz2rXowDxnld4bkQB00cc/1Zw9AWnC0i9ztDJitivtQvaI9KaLyKrc+hBW0yg==}
@@ -2433,6 +2444,12 @@ packages:
     peerDependencies:
       react: ^18.3.1
 
+  react-dropzone@14.3.8:
+    resolution: {integrity: sha512-sBgODnq+lcA4P296DY4wacOZz3JFpD99fp+hb//iBO2HHnyeZU3FwWyXJ6salNpqQdsZrgMrotuko/BdJMV8Ug==}
+    engines: {node: '>= 10.13'}
+    peerDependencies:
+      react: '>= 16.8 || 18.0.0'
+
   react-hook-form@7.58.1:
     resolution: {integrity: sha512-Lml/KZYEEFfPhUVgE0RdCVpnC4yhW+PndRhbiTtdvSlQTL8IfVR+iQkBjLIvmmc6+GGoVeM11z37ktKFPAb0FA==}
     engines: {node: '>=18.0.0'}
@@ -2850,6 +2867,9 @@ packages:
 
   tslib@2.6.3:
     resolution: {integrity: sha512-xNvxJEOUiWPGhUuUdQgAJPKOOJfGnIyKySOc09XkKsgdUV/3E2zvwZYdejjmRgPCgcym1juLH3226yA7sEFJKQ==}
+
+  tslib@2.8.1:
+    resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
 
   tsx@4.15.6:
     resolution: {integrity: sha512-is0VQQlfNZRHEuSSTKA6m4xw74IU4AizmuB6lAYLRt9XtuyeQnyJYexhNZOPCB59SqC4JzmSzPnHGBXxf3k0hA==}
@@ -3859,6 +3879,8 @@ snapshots:
 
   asynckit@0.4.0: {}
 
+  attr-accept@2.2.5: {}
+
   autoprefixer@10.4.19(postcss@8.4.38):
     dependencies:
       browserslist: 4.23.1
@@ -4362,7 +4384,7 @@ snapshots:
       debug: 4.3.5
       enhanced-resolve: 5.17.0
       eslint: 8.57.0
-      eslint-module-utils: 2.8.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1)(eslint@8.57.0)
+      eslint-module-utils: 2.8.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1(eslint@8.57.0))(eslint@8.57.0))(eslint@8.57.0)
       eslint-plugin-import: 2.29.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-typescript@3.6.1)(eslint@8.57.0)
       fast-glob: 3.3.2
       get-tsconfig: 4.7.5
@@ -4374,7 +4396,7 @@ snapshots:
       - eslint-import-resolver-webpack
       - supports-color
 
-  eslint-module-utils@2.8.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1)(eslint@8.57.0):
+  eslint-module-utils@2.8.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1(eslint@8.57.0))(eslint@8.57.0))(eslint@8.57.0):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
@@ -4395,7 +4417,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 8.57.0
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.8.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1)(eslint@8.57.0)
+      eslint-module-utils: 2.8.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1(eslint@8.57.0))(eslint@8.57.0))(eslint@8.57.0)
       hasown: 2.0.2
       is-core-module: 2.13.1
       is-glob: 4.0.3
@@ -4585,6 +4607,10 @@ snapshots:
   file-entry-cache@9.0.0:
     dependencies:
       flat-cache: 5.0.0
+
+  file-selector@2.1.2:
+    dependencies:
+      tslib: 2.8.1
 
   fill-range@7.1.1:
     dependencies:
@@ -5419,6 +5445,13 @@ snapshots:
       react: 18.3.1
       scheduler: 0.23.2
 
+  react-dropzone@14.3.8(react@18.3.1):
+    dependencies:
+      attr-accept: 2.2.5
+      file-selector: 2.1.2
+      prop-types: 15.8.1
+      react: 18.3.1
+
   react-hook-form@7.58.1(react@18.3.1):
     dependencies:
       react: 18.3.1
@@ -5947,6 +5980,8 @@ snapshots:
       strip-bom: 3.0.0
 
   tslib@2.6.3: {}
+
+  tslib@2.8.1: {}
 
   tsx@4.15.6:
     dependencies:

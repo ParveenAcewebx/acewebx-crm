@@ -11,6 +11,9 @@ const Candidate = {
   },
   romoveCandidate: id => {
     return ApiClient.delete(`candidate/save`)
+  },
+  viewCandidate: (id)=> {
+    return ApiClient.get(`candidate/getCandidateById/${id}`)
   }
 }
 

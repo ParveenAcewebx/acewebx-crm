@@ -1,21 +1,47 @@
-export const columns = [
-  { field: 'id', headerName: 'ID', width: 100 },
-  { field: 'name', headerName: 'First name', width: 180 },
+import { Button } from '@mui/material'
+import React from 'react'
+import VisibilityIcon from '@mui/icons-material/Visibility'
 
-  {
-    field: 'dob',
-    headerName: 'D.O.B',
-    description: 'This column has a value getter and is not sortable.',
-    sortable: false,
-    width: 160
-    // valueGetter: (value, row) => `${row.firstName || ''} ${row.lastName || ''}`
-  },
-  { field: 'email', headerName: 'Email', width: 260 },
-  {
-    field: 'phone',
-    headerName: 'Phone',
-    type: 'number',
-    width: 260
-  },
-  { field: null, headerName: 'Action', width: 160, sortable: false }
-]
+export const columns = (handleView, handleEdit, handleRemove) => {
+  return [
+    { field: 'id', headerName: 'ID', width: 50 },
+    { field: 'name', headerName: 'Name', width: 110 },
+    {
+      field: '_designationApplyingFor',
+      headerName: 'Skill',
+      description: 'This column is not sortable.',
+      sortable: false,
+      width: 130,
+      renderCell: (params) => params?.row?.meta?._designationApplyingFor || '-'
+    },
+    { field: 'email', headerName: 'Email', width: 200 },
+    {
+      field: 'phone',
+      headerName: 'Phone',
+      width: 150
+    },
+    {
+      field: '_currentLocation',
+      headerName: 'Current Location',
+      width: 150,
+      renderCell: (params) => params?.row?.meta?._currentLocation || '-'
+    },
+    {
+      field: '_gender',
+      headerName: 'Gender',
+      width: 150,
+      renderCell: (params) => params?.row?.meta?._gender || '-'
+    },
+    {
+      field: 'action',
+      headerName: 'Action',
+      width: 160,
+      sortable: false,
+      renderCell: (params) => (
+        <Button onClick={() => handleView(params.row)}>
+          <VisibilityIcon />
+        </Button>
+      )
+    }
+  ]
+}

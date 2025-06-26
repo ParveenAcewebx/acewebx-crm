@@ -2,13 +2,15 @@ import TextField from '@mui/material/TextField'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import React, { useState } from 'react'
 import { Controller } from 'react-hook-form'
-import DateRangeIcon from '@mui/icons-material/DateRange'
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { FormControl, InputAdornment } from '@mui/material'
-import dayjs from 'dayjs'
+import { FormControl } from '@mui/material'
 const FormMobileDatePicker = ({ name, control, label, inputFormat, defaultValue, errors, value, className }) => {
+  console.log('errorserrors', errors?.dob) // Comming
   const [isDatePickerOpen, setDatePickerOpen] = useState(false)
+  {
+    console.log('vvvvvvvvv', errors?.[name])
+  } // Work
   return (
     <>
       <div>
@@ -32,31 +34,15 @@ const FormMobileDatePicker = ({ name, control, label, inputFormat, defaultValue,
                     setDatePickerOpen(false)
                   }}
                   renderInput={params => (
-                    <TextField
-                      {...params}
-                      onClick={() => setDatePickerOpen(true)} // <== Add this to allow input click to open picker
-                      error={!!errors?.[name]}
-                      helperText={errors?.[name]?.message}
-                      className={className}
-                      fullWidth
-                      InputProps={{
-                        ...params.InputProps,
-                        endAdornment: (
-                          <InputAdornment position='end'>
-                            <DateRangeIcon
-                              className='cursor-pointer'
-                              onClick={e => {
-                                e.stopPropagation() // Prevent bubbling to input
-                                setDatePickerOpen(true)
-                              }}
-                            />
-                          </InputAdornment>
-                        )
-                      }}
-                      InputLabelProps={{
-                        shrink: true
-                      }}
-                    />
+                    <>
+                      <TextField
+                        {...params}
+                        error={!!errors?.[name]}
+                        helperText={errors?.[name]?.message}
+                        className={className}
+                        fullWidth
+                      />
+                    </>
                   )}
                 />
               </LocalizationProvider>

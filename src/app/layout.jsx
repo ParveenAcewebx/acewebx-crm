@@ -26,6 +26,7 @@ const RootLayout = async ({ children }) => {
   return (
     <html id='__next' dir={direction}>
       <body className={`${poppins.className} flex is-full min-bs-full flex-auto flex-col`}>
+        
           <ToastContainer />
           {children}
       </body>

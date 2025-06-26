@@ -7,9 +7,6 @@ export const CandidateFormValidation = Yup.object().shape({
     .max(50, 'Maximum 50 characters allowed'),
 
   email: Yup.string().email('Please enter a valid email').required('Email is required'),
-
-  dob: Yup.date().required('Date of Birth is required').max(new Date(), 'Date of Birth cannot be in the future'),
-
   gender: Yup.string().required('Gender is required'),
 
   phone: Yup.string()
@@ -20,11 +17,7 @@ export const CandidateFormValidation = Yup.object().shape({
 
   designationApplyingFor: Yup.string().required('Designation is required'),
 
-  totalExperience: Yup.number()
-    .typeError('Total Experience must be a number')
-    .required('Total Experience is required')
-    .min(0, 'Experience must be at least 0 years')
-    .max(50, 'Experience must be realistic'),
+  totalExperience: Yup.string().required('Total Experience is required'),
 
   currentSalary: Yup.number().typeError('Current Salary must be a number').required('Current Salary is required'),
 
@@ -50,10 +43,7 @@ export const CandidateFormValidation = Yup.object().shape({
 
   reference1Designation: Yup.string().required('Reference 1 Designation is required'),
 
-  reference1Experience: Yup.number()
-    .typeError('Reference 1 Experience must be a number')
-    .required('Reference 1 Experience is required')
-    .min(0, 'Experience must be at least 0'),
+  reference1Experience: Yup.string().required('Reference 1 Experience is required'),
   reference2Name: Yup.string().required('Reference 2 Name is required'),
 
   reference2ContactNumber: Yup.string()
@@ -62,8 +52,5 @@ export const CandidateFormValidation = Yup.object().shape({
 
   reference2Designation: Yup.string().required('Reference 2 Designation is required'),
 
-  reference2Experience: Yup.number()
-    .typeError('Reference 2 Experience must be a number')
-    .required('Reference 2 Experience is required')
-    .min(0, 'Experience must be at least 0')
+  reference2Experience: Yup.string().required('Reference 2 Experience is required')
 })

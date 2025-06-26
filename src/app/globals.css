@@ -112,23 +112,22 @@ code {
   border: 0;
 }
 
-
 /* walk-in css */
 
 .logo-ace-defferent {
-  padding:  7rem 2rem !important;
+  padding: 7rem 2rem !important;
   margin-top: 30px !important;
 }
 .acewebx-logo img {
   height: 172px;
   object-fit: contain;
-  padding: 0px; 
+  padding: 0px;
   width: 212px;
 }
-.walking{
+.walking {
   font-weight: 800;
   font-size: 25px;
-  color: #333;  
+  color: #333;
 }
 .acewebx-logo {
   padding-top: 30px;
@@ -138,35 +137,222 @@ code {
   height: 100px;
 }
 
-.primary-btn{
+.primary-btn {
   background: transparent !important;
-  border: 1px solid #B82025 !important;
+  border: 1px solid #b82025 !important;
   font-weight: 700 !important;
 }
-
 
 @media only screen and (max-width: 1100px) {
   .ace-wrp {
     padding: 0px 30px;
-}
+  }
 }
 @media only screen and (max-width: 850px) {
   .mobile-view {
     padding: 0px 30px;
-}
+  }
 }
 @media only screen and (max-width: 580px) {
   .walking {
     text-align: center;
-}
+  }
 }
 @media only screen and (max-width: 480px) {
-  .logo-ace-defferent{
+  .logo-ace-defferent {
     padding: 4rem 2rem;
-}
-.content-wrp br {
-  display: none;
+  }
+  .content-wrp br {
+    display: none;
+  }
 }
 
+/* dahsboard main section css start  */
 
+p {
+  font-size: 15px !important;
+  color: #333 !important;
+  line-height: 21px !important;
+  font-weight: 400 !important;
+  margin-top: 5px !important;
 }
+
+h4 {
+  font-size: 17px !important;
+  color: #333 !important;
+  line-height: 26px !important;
+  font-weight: 500 !important;
+  margin-top: 5px !important;
+}
+
+section.first-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.user-name h1 {
+  color: #8c57ff;
+  font-size: 24px;
+  line-height: 36px;
+  font-weight: 700;
+  margin: 0;
+  text-transform: capitalize;
+}
+
+.resume {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #8c57ff;
+  padding: 10px;
+  border-radius: 4px;
+}
+.resume h2 {
+  color: #fff;
+  font-weight: 400;
+  font-size: 15px;
+  margin: 0;
+  width: 220px;
+}
+
+section.user-profile {
+  display: flex;
+  justify-content: space-between;
+}
+
+.left-iteam {
+  width: 50%;
+}
+
+.first-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.first-section .box {
+  width: 30%;
+}
+
+.left-iteam .salery-box {
+  width: 90%;
+  text-align: center;
+  max-height: 382px !important;
+}
+.salery-section {
+  margin-top: 30px;
+  display: flex;
+  gap: 20px;
+}
+.slaery-right-boxes .box {
+  margin-bottom: 12px !important;
+  margin-right: 30px;
+}
+.salery-content {
+  border: 1px solid #dfdfdf;
+  padding: 7px;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.salery-outer {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.Reference {
+  width: 96%;
+  margin-top: 20px;
+}
+
+.Reference h4 {
+  flex-direction: column;
+  display: flex;
+}
+
+.refrence-inner {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  margin-top: 7px;
+}
+.reffrence-outer {
+  margin-top: 25px;
+}
+
+.right-iteam {
+  width: 50%;
+}
+.right-iteam .box {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.right-iteam .shift {
+  border: 1px solid #dfdfdf;
+  height: 75px;
+  padding: 7px 0px 0px 20px;
+  width: 48%;
+}
+
+.right-iteam .Reason {
+  border: 1px solid #dfdfdf;
+  height: 105px;
+  padding: 10px 0 0 20px;
+}
+
+.message-box {
+  height: 720px;
+  margin-top: 30px;
+  position: relative;
+}
+
+.mesaage-content {
+  background-color: #f5f0ff;
+  padding: 18px;
+  float: right;
+  border-right: 3px solid #8c57ff;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  margin-left: 10rem;
+}
+
+.chat-input {
+  display: flex;
+  align-items: center;
+  background-color: #f5f5f5;
+  padding: 10px;
+  border-radius: 6px;
+  width: 100%;
+  max-width: 600px;
+  position: absolute;
+  bottom: 25px;
+}
+
+.chat-input input {
+  border: none;
+  outline: none;
+  flex-grow: 1;
+  background-color: transparent;
+  font-size: 14px;
+  color: #333;
+}
+
+.send-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding-left: 10px;
+}
+
+.send-button svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* dahsboard main section css End  */
