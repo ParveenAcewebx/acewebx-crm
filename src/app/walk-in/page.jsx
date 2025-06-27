@@ -17,63 +17,108 @@ import { errorMsg, successMsg } from '@/components/toaster/Toaster'
 import {
   designationOptions,
   experienceOptions,
+  GenderData,
   preferredShiftOptions,
   sourceOption,
   totalExperienceOptions,
   walkInFormDefaultValues
 } from '@/components/constants/StaticData'
 import { CandidateFormValidation } from '@/components/CandidateFormValidation'
+import ReCAPTCHA from 'react-google-recaptcha'
 
 function WalkInForm() {
   const [step, setStep] = useState(0)
   const router = useRouter()
-
+  console.log('stepstep', step)
   const {
     control,
     handleSubmit,
     formState: { errors },
     reset,
-    watch
+    watch,
+    trigger // <-- add this
   } = useForm({
-    defaultValues: walkInFormDefaultValues
-    // resolver: yupResolver(CandidateFormValidation)
+    mode: 'onTouched', // or 'onChange' or 'all'
+    defaultValues: walkInFormDefaultValues,
+    resolver: yupResolver(CandidateFormValidation)
   })
+  const [recaptcha, setRecaptcha] = useState([])
+  console.log('recaptcha', recaptcha)
 
-  const onSubmit = async (data) => {
+  // const Sitekey="6LfSqW8rAAAAABmLFmZcFxFQZgfcUusAJNdVXdXn"
+
+  function onReCAPTCHAChange(value) {
+    setRecaptcha(value)
+  }
+  const stepFields = [
+    ['name', 'email', 'dob', 'gender', 'phone', 'currentLocation'], // Step 0
+    [
+      'designationApplyingFor',
+      'totalExperience',
+      'currentSalary',
+      'expectedSalary',
+      'currentCompanyName',
+      'noticePeriod',
+      'preferredShift',
+      'source'
+    ], // Step 1
+    [
+      'reference1Name',
+      'reference1ContactNumber',
+      'reference1Designation',
+      'reference1Experience',
+      'reference2Name',
+      'reference2ContactNumber',
+      'reference2Designation',
+      'reference2Experience'
+    ], // Step 2
+    ['reasonForChange', 'resume'] // Step 3
+  ]
+
+  console.log('errors0000', errors)
+  const onSubmit = async data => {
+    console.log('datadata', data)
     try {
-      const formData = new FormData();
-  
+      const formData = new FormData()
+
+      formData.append('g-recaptcha-response', recaptcha)
       // Append all non-file fields
       Object.entries(data).forEach(([key, value]) => {
         // Special handling for 'resume' field
+
         if (key === 'resume') {
           if (value && value.length > 0) {
-            formData.append('resume', value[0]); // value[0] is the File
+            formData.append('resume', value[0]) // value[0] is the File
           }
         } else {
-          formData.append(key, value);
+          formData.append(key, value)
         }
-      });
-  
+      })
+
       // Submit via API
-      const response = await Candidate.addCandidate(formData);
-  
+      const response = await Candidate.addCandidate(formData)
+      console.log('response0001111111', response)
       if (response?.status) {
-        successMsg('Candidate form submitted successfully!');
-        reset();
-        router.push('/thankyou');
+        successMsg('Candidate form submitted successfully!')
+        reset()
+        router.push('/thankyou')
       }
     } catch (error) {
-      console.error('Submission Error:', error);
-      errorMsg(error?.message || 'Something went wrong while submitting the form.');
+      console.error('Submission Error:', error)
+      errorMsg(error?.message || 'Something went wrong while submitting the form.')
     }
-  };
-  
+  }
 
-  const nextStep = () => setStep(prev => Math.min(prev + 1, 3))
+  const nextStep = async () => {
+    const valid = await trigger(stepFields[step])
+    if (valid) {
+      setStep(prev => Math.min(prev + 1, 3))
+    }
+  }
+
   const prevStep = () => setStep(prev => Math.max(prev - 1, 0))
 
-  console.log("resuem", watch("resume"))
+  console.log('resuem', watch('resume'))
   return (
     <div className='min-h-screen flex flex-col items-center justify-start bg-white relative w-full mobile-view'>
       <div className="absolute inset-0 bg-[url('/background-honeycomb.png')] opacity-10" />
@@ -101,12 +146,20 @@ function WalkInForm() {
                   name='dob'
                   label='Date of Birth'
                   control={control}
-                  defaultValue={dayjs(new Date())}
                   inputFormat='YYYY-MM-DD'
                   errors={errors}
                 />
-                <FormInput name='gender' label='Gender' control={control} errors={errors} inputType='text' />
-                <FormInput name='phone' label='Contact Number' control={control} errors={errors} inputType='number' />
+
+                <FormInputSelect
+                  name='gender'
+                  label='Gender'
+                  control={control}
+                  errors={errors}
+                  inputType='text'
+                  options={GenderData}
+                />
+                {/* <FormInput name='gender' label='Gender' control={control} errors={errors} inputType='text' /> */}
+                <FormInput name='phone' label='Contact Number' control={control} errors={errors} inputType='tel' />
                 <FormInput
                   name='currentLocation'
                   label='Current Location'
@@ -253,7 +306,15 @@ function WalkInForm() {
                   errors={errors}
                   multiline
                   className='border  border-gray-600 !h-[160px]'
-                  style={{ width: '100%', resize: 'none', marginTop: '25px', overflow: 'auto' }}
+                  style={{
+                    width: '100%',
+                    resize: 'none',
+                    marginTop: '25px',
+                    overflow: 'auto',
+                    padding: '15px',
+                    borderColor: '#ccc',
+                    borderRadius: '4px'
+                  }}
                 />
                 <FormInputFileUploaderSingle
                   name='resume'
@@ -262,17 +323,23 @@ function WalkInForm() {
                   errors={errors}
                   className='flex mt-4 items-center flex-col border border-dashed border-gray-600 rounded-lg p-4 w-full cursor-pointer'
                 />
+                <ReCAPTCHA sitekey='6LfSqW8rAAAAABmLFmZcFxFQZgfcUusAJNdVXdXn' onChange={onReCAPTCHAChange} />
               </>
             )}
           </div>
 
           {/* Navigation Buttons */}
-          <div className='flex justify-between mt-10'>
+          <div className={`flex mt-10 ${step === 0 ? 'justify-end' : 'justify-between'}`}>
             {step > 0 && (
-              <Button variant='outlined' onClick={prevStep} className='!text-[#B82025] border border-red-500'>
+              <Button
+                variant='outlined'
+                onClick={prevStep}
+                className='border border-red-500 text-[#B82025] hover:bg-white hover:text-[#B82025]'
+              >
                 Back
               </Button>
             )}
+
             {step < 3 ? (
               <Button variant='contained' onClick={nextStep} className='!text-white bg-[#B82025]'>
                 Next

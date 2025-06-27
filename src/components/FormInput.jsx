@@ -1,4 +1,4 @@
-import { FormControl } from "@mui/material";
+import { FormControl, FormHelperText } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { Controller } from "react-hook-form";
 
@@ -14,58 +14,53 @@ export default function FormInput({
   value,
   color
 }) {
+  const hasError = !!errors?.[name];
+
   return (
-    <div>
-      <FormControl fullWidth>
-        <Controller
-          name={name}
-          control={control}
-          value={value}
-          min={min}
-          defaultValue={defaultValue ? defaultValue : ""}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              fullWidth
-              InputProps={{
-                inputProps: { min: 0 },
-              }}
-              label={label}
-              error={!!errors?.[name]}
-              helperText={errors?.[name]?.message}
-              variant="outlined"
-              sx={{
-                '& .MuiOutlinedInput-root': {
-                  color: '#333333',
-                  '& fieldset': {
-                    borderColor: '#333333',
-                    borderWidth: '1px',
-                  },
-                  '&:hover fieldset': {
-                    borderColor: '#333333',
-                  },
-                  '&.Mui-focused fieldset': {
-                    borderColor: '#333333',
-                    borderWidth: '1px',
-                  },
+    <FormControl fullWidth className={className} error={hasError}>
+      <Controller
+        name={name}
+        control={control}
+        defaultValue={defaultValue || ""}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            fullWidth
+            type={inputType || "text"}
+            label={label}
+            error={hasError}
+            InputProps={{
+              inputProps: { min: min || 0 },
+            }}
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                color: '#333333',
+                '& fieldset': {
+                  borderColor: hasError ? '#f44336' : '#333333',
+                  borderWidth: '1px',
                 },
-                '& .MuiInputLabel-root': {
-                  color: '#666666',
-                  '&.Mui-focused': {
-                    color: '#333333',
-                  },
+                '&:hover fieldset': {
+                  borderColor: hasError ? '#f44336' : '#333333',
                 },
-              }}
-            />
-          )}
-        />
-      </FormControl>
-    </div>
+                '&.Mui-focused fieldset': {
+                  borderColor: hasError ? '#f44336' : '#333333',
+                },
+              },
+              '& .MuiInputLabel-root': {
+                color: hasError ? '#f44336' : '#666666',
+                '&.Mui-focused': {
+                  color: hasError ? '#f44336' : '#333333',
+                },
+              },
+            }}
+          />
+        )}
+      />
+      {hasError && (
+        <FormHelperText sx={{ color: '#f44336', fontSize: '0.8rem' }}>
+          {errors[name]?.message}
+        </FormHelperText>
+      )}
+    </FormControl>
   );
-  
 }
-
-
-
-
-

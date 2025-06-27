@@ -355,4 +355,9 @@ section.user-profile {
   height: 20px;
 }
 
+.MuiFormHelperText-root.Mui-error {
+  color: red !important;
+  font-size: 0.8rem;
+}
+
 /* dahsboard main section css End  */

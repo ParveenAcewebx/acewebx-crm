@@ -1,48 +1,64 @@
-import React from "react";
-import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
-import { Controller } from "react-hook-form";
+import React from 'react'
+import { FormControl, InputLabel, Select, MenuItem, FormHelperText } from '@mui/material'
+import { Controller } from 'react-hook-form'
 
-const FormInputSelect = ({
-  name,
-  control,
-  label,
-  options,
-  errors,
-  defaultValue,
-}) => {
+const FormInputSelect = ({ name, control, label, options, errors, defaultValue }) => {
+  const hasError = !!errors?.[name]
+
   return (
-    <FormControl fullWidth>
-      <InputLabel>{label}</InputLabel>
+    <FormControl fullWidth error={hasError}>
+      <InputLabel
+        id={`${name}-label`}
+        sx={{
+          color: 'black',
+          '&.Mui-focused': {
+            color: 'black'
+          }
+        }}
+      >
+        {label}
+      </InputLabel>
+
       <Controller
+        defaultValue={defaultValue} // 👈 Add this line
         name={name}
         control={control}
-        defaultValue={defaultValue || ""} // Updated defaultValue handling
         render={({ field }) => (
           <Select
-            label={label}
+            labelId={`${name}-label`}
             id={name}
+            label={label}
+            value={field.value || ''}
             {...field}
-            error={!!errors?.[name]}
-            className="shadow-lg"
+            className='shadow-lg'
+            sx={{
+              // Black border
+              '& .MuiOutlinedInput-notchedOutline': {
+                borderColor: 'black'
+              },
+              '&:hover .MuiOutlinedInput-notchedOutline': {
+                borderColor: 'black'
+              },
+              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                borderColor: 'black'
+              },
+              // Black floating label
+              '&.Mui-focused ~ label, & ~ label': {
+                color: 'black'
+              }
+            }}
           >
-            {options?.map((option) => (
-              <MenuItem
-                className="capitalize"
-                key={option.value}
-                value={option.value}
-              >
+            {options?.map(option => (
+              <MenuItem key={option.value} value={option.value} className='capitalize'>
                 {option.label}
               </MenuItem>
             ))}
           </Select>
         )}
       />
-
-      {errors?.[name] && (
-        <p className="text-red-600 text-xs">{errors[name]?.message}</p>
-      )}
+      {hasError && <FormHelperText>{errors[name]?.message}</FormHelperText>}
     </FormControl>
-  );
-};
+  )
+}
 
-export default FormInputSelect;
+export default FormInputSelect

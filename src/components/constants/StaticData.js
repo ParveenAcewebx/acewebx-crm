@@ -1,7 +1,7 @@
 export const walkInFormDefaultValues = {
   name: '',
   email: '',
-  dob: null,
+  dob: '',
   gender: '',
   phone: '',
   currentLocation: '',
@@ -42,7 +42,15 @@ export const experienceOptions = [
   
 ]
 
+
+export const GenderData = [
+  { label: 'Male', value: 'male' },
+  { label: 'Female', value: 'female' },
+  { label: 'Others', value: 'others' }
+
+]
 export const totalExperienceOptions = [
+  { label: 'Fresher', value: 'fresher' },
   { label: '6 Months', value: '6 months' },
   { label: '1+ Years', value: '1 plus years' },
   { label: '2+ Years', value: '2 plus years' },
@@ -57,6 +65,7 @@ export const totalExperienceOptions = [
 ]
 
 export const designationOptions = [
+  { label: 'Software Developer', value: 'software developer' },
   { label: 'Software Developer', value: 'software developer' },
   { label: 'Frontend Developer', value: 'frontend developer' },
   { label: 'Backend Developer', value: 'backend developer' },
