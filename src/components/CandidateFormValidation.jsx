@@ -5,25 +5,23 @@ export const CandidateFormValidation = Yup.object().shape({
     .required('Full Name is required')
     .min(3, 'Minimum 3 characters are required')
     .max(50, 'Maximum 50 characters allowed'),
-    // dob: Yup.date()
-    // .nullable()
-    // .typeError('Date of Birth is required')
-    // .required('Date of Birth is required'),
+  // dob: Yup.date()
+  // .nullable()
+  // .typeError('Date of Birth is required')
+  // .required('Date of Birth is required'),
 
   email: Yup.string().email('Please enter a valid email').required('Email is required'),
   gender: Yup.string().required('Gender is required'),
 
   phone: Yup.string()
-  .transform(value => value.replace(/\D/g, '')) // remove all non-digits
-  .required('Phone number is required')
-  .matches(/^[0-9]{6,15}$/, 'Phone number must be between 6 and 15 digits'),
+    .transform(value => value.replace(/\D/g, '')) // remove all non-digits
+    .required('Phone number is required')
+    .matches(/^[0-9]{6,15}$/, 'Phone number must be between 6 and 15 digits'),
 
   currentLocation: Yup.string().required('Current Location is required'),
 
-    designationApplyingFor: Yup.string()
-      .required('Please select a designation'),
+  designationApplyingFor: Yup.string().required('Please select a designation'),
 
-  
   totalExperience: Yup.string().required('Total Experience is required'),
 
   currentSalary: Yup.number().typeError('Current Salary must be a number').required('Current Salary is required'),
@@ -32,15 +30,19 @@ export const CandidateFormValidation = Yup.object().shape({
 
   currentCompanyName: Yup.string().required('Company name is required'),
 
-  noticePeriod: Yup.string().required('Notice Period is required'),
+  noticePeriod: Yup.number().required('Notice Period is required'),
 
   reasonForChange: Yup.string().required('Reason for Change is required'),
 
   preferredShift: Yup.string().required('Preferred Shift is required'),
 
   source: Yup.string().required('Source is required'),
-
-  resume: Yup.string().required('Resume is required'),
+  resume: Yup.mixed()
+    .required('Resume is required')
+    .test('fileExists', 'Resume is required', value => {
+      return value instanceof File || (value && value.length > 0)
+    }),
+  recaptcha: Yup.string().required('Captcha is required')
 
   // reference1Name: Yup.string().required('Reference 1 Name is required'),
 

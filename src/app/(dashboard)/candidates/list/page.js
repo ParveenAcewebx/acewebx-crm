@@ -8,31 +8,27 @@ import { useRouter } from 'next/navigation'
 import FormInput from '@/components/FormInput'
 import { useForm } from 'react-hook-form'
 import { Button } from '@mui/material'
+import { useSession } from 'next-auth/react'
 
-const rows = [
-  { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-  { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-  { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-  { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-  { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-  { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-  { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-  { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-  { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 }
-]
 
-const paginationModel = { page: 0, pageSize: 5 }
+
 
 export default function DataTable() {
   const [candidateData, setCandiDateData] = React.useState([])
+  const [pagination,setPagination]= React.useState({})
   const router = useRouter()
+
+
 
   const form = useForm()
   const fetchCandidateList = async () => {
     try {
       const apiData = await Candidate.candidateList()
-      console.log('apiData', apiData?.data)
-      setCandiDateData(apiData?.data?.candidates)
+      console.log('apiData', apiData?.data?.data)
+      setCandiDateData(apiData?.data?.data?.candidates)
+      const data=  apiData?.data?.data?.pagination
+      const paginationModel = { page: data?.totalPages, pageSize:data?.limit }
+      setPagination(paginationModel)
     } catch (error) {
       console.log('error', error)
     }
@@ -49,7 +45,8 @@ export default function DataTable() {
   const handleView = row => {
     router.push(`/candidates/view/${row?.id}`)
   }
-
+  const session = useSession()
+  console.log('session', session)
   const handleEdit = () => {
     alert('kkkkkkkk')
 
@@ -71,7 +68,7 @@ export default function DataTable() {
       <DataGrid
         rows={candidateData}
         columns={columns(handleView, handleEdit, handleRemove)}
-        initialState={{ pagination: { paginationModel } }}
+        initialState={{ pagination: { pagination } }}
         pageSizeOptions={[5, 10]}
         // checkboxSelection
         sx={{ border: 0 }}

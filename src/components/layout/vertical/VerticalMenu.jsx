@@ -48,13 +48,13 @@ const VerticalMenu = ({ scrollMenu }) => {
       >
         {' '}
         <MenuSection label='Working Routes'>
-          <SubMenu label='Users' icon={<i className='ri-user-line' />}>
+          {/* <SubMenu label='Users' icon={<i className='ri-user-line' />}>
             <MenuItem href='/'>Add</MenuItem>
             <MenuItem href='/'>User List</MenuItem>
-          </SubMenu>
+          </SubMenu> */}
           <SubMenu label='Candidates' icon={<i className='ri-home-smile-line' />}>
             <MenuItem href='/candidates/list'>list</MenuItem>
-            <MenuItem href='/'>Analytics</MenuItem>
+            {/* <MenuItem href='/'>Analytics</MenuItem> */}
           </SubMenu>
         </MenuSection>
         <MenuSection label='Demo-Routes'>

@@ -7,8 +7,16 @@ import Providers from '@components/Providers'
 import Navigation from '@components/layout/vertical/Navigation'
 import Navbar from '@components/layout/vertical/Navbar'
 import VerticalFooter from '@components/layout/vertical/Footer'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
 
 const Layout = async ({ children }) => {
+  const session = await getServerSession(authOptions)
+  console.log("sessionsessionsession",session)
+  if (!session?.user) {
+    // redirect('/login')
+  }
+
   // Vars
   const direction = 'ltr'
 

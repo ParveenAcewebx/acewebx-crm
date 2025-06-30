@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useRouter } from 'next/navigation'
 import dayjs from 'dayjs'
-import { Button } from '@mui/material'
+import { Button, FormHelperText } from '@mui/material'
 
 import FormInput from '@/components/FormInput'
 import FormMobileDatePicker from '@/components/forminputs/FormMobileDatePicker'
@@ -25,6 +25,7 @@ import {
 } from '@/components/constants/StaticData'
 import { CandidateFormValidation } from '@/components/CandidateFormValidation'
 import ReCAPTCHA from 'react-google-recaptcha'
+import { Key } from 'lucide-react'
 
 function WalkInForm() {
   const [step, setStep] = useState(0)
@@ -36,12 +37,14 @@ function WalkInForm() {
     formState: { errors },
     reset,
     watch,
+    setValue,
     trigger // <-- add this
   } = useForm({
     mode: 'onTouched', // or 'onChange' or 'all'
     defaultValues: walkInFormDefaultValues,
     resolver: yupResolver(CandidateFormValidation)
   })
+  console.log('errorserrorserrorserrors', errors?.recaptcha?.message)
   const [recaptcha, setRecaptcha] = useState([])
   console.log('recaptcha', recaptcha)
 
@@ -49,6 +52,7 @@ function WalkInForm() {
 
   function onReCAPTCHAChange(value) {
     setRecaptcha(value)
+    setValue('recaptcha', value)
   }
   const stepFields = [
     ['name', 'email', 'dob', 'gender', 'phone', 'currentLocation'], // Step 0
@@ -77,22 +81,19 @@ function WalkInForm() {
 
   console.log('errors0000', errors)
   const onSubmit = async data => {
-    console.log('datadata', data)
     try {
       const formData = new FormData()
 
       formData.append('g-recaptcha-response', recaptcha)
+      const file = data.resume?.[0] // Assuming data.logo is a FileList or array
+      if (file) {
+        formData.append('resume', file)
+      }
       // Append all non-file fields
       Object.entries(data).forEach(([key, value]) => {
         // Special handling for 'resume' field
 
-        if (key === 'resume') {
-          if (value && value.length > 0) {
-            formData.append('resume', value[0]) // value[0] is the File
-          }
-        } else {
-          formData.append(key, value)
-        }
+        formData.append(key, value)
       })
 
       // Submit via API
@@ -213,7 +214,7 @@ function WalkInForm() {
                   label='Notice Period'
                   control={control}
                   errors={errors}
-                  inputType='text'
+                  inputType='number'
                 />
                 <FormInputSelect
                   name='preferredShift'
@@ -324,6 +325,7 @@ function WalkInForm() {
                   className='flex mt-4 items-center flex-col border border-dashed border-gray-600 rounded-lg p-4 w-full cursor-pointer'
                 />
                 <ReCAPTCHA sitekey='6LfSqW8rAAAAABmLFmZcFxFQZgfcUusAJNdVXdXn' onChange={onReCAPTCHAChange} />
+                <FormHelperText className='text-red-600'>{errors?.recaptcha?.message}</FormHelperText>
               </>
             )}
           </div>

@@ -12,8 +12,10 @@ import DepositWithdraw from '@views/dashboard/DepositWithdraw'
 import SalesByCountries from '@views/dashboard/SalesByCountries'
 import CardStatVertical from '@components/card-statistics/Vertical'
 import Table from '@views/dashboard/Table'
+import { useSession } from 'next-auth/react'
 
 const DashboardAnalytics = () => {
+  const {data:session}= useSession()
   return (
     <Grid container spacing={6}>
       <Grid item xs={12} md={4}>

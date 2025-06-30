@@ -28,12 +28,19 @@ import themeConfig from '@configs/themeConfig'
 
 // Hook Imports
 import { useImageVariant } from '@core/hooks/useImageVariant'
+import { useForm } from 'react-hook-form'
+import FormInput from '@/components/FormInput'
 import { signIn } from 'next-auth/react'
+import { successMsg } from '@/components/toaster/Toaster'
 
 const Login = ({ mode }) => {
   // States
   const [isPasswordShown, setIsPasswordShown] = useState(false)
-
+  const {
+    control,
+    handleSubmit,
+    formState: { errors }
+  } = useForm()
   // Vars
   const darkImg = '/images/pages/auth-v1-mask-dark.png'
   const lightImg = '/images/pages/auth-v1-mask-light.png'
@@ -44,18 +51,21 @@ const Login = ({ mode }) => {
   const handleClickShowPassword = () => setIsPasswordShown(show => !show)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const onSubmitCredentials = async data => {
+    console.log('datadatadata', data)
+    const { email, password } = data
 
-  // const handleSubmit = e => {
-  //   e.preventDefault()
-  //   router.push('/')
-  // }
-
-  async function handleSubmit(e) {
-    e.preventDefault()
-    // setIsSigningIn(true)
     try {
-      const signInResponse = await signIn('credentials', { email, password, redirect: false })
-      console.log('signInResponse', signInResponse)
+      const signInResponse = await signIn('credentials', {
+        email,
+        password,
+        redirect: false
+      })
+
+      console.log('signInResponsesignInResponsesignInResponse', signInResponse)
+      if (signInResponse?.status === 200) {
+        router.push('/candidates/list')
+      }
       if (signInResponse?.status === 401) {
         // errorMessage({ description: 'Invalid email or password' })
         return
@@ -71,67 +81,78 @@ const Login = ({ mode }) => {
       form.reset()
       // router.replace('/dashboard')
     } catch (error) {
+      console.log('errorerrorerror', error)
       // errorMessage({ description: error?.response?.data?.message })
-    } finally {
-      // setIsSigningIn(false)
     }
   }
 
   return (
-    <div className='flex flex-col justify-center items-center min-bs-[100dvh] relative p-6'>
-      <Card className='flex flex-col sm:is-[450px]'>
-        <CardContent className='p-6 sm:!p-12'>
-          <Link href='/' className='flex justify-center items-center mbe-6'>
-            <Logo />
-          </Link>
-          <div className='flex flex-col gap-5'>
-            <form noValidate autoComplete='off' onSubmit={handleSubmit} className='flex flex-col gap-5'>
-              <TextField
-                autoFocus
-                fullWidth
-                label='Email'
-                name='email'
-                onChange={e => setEmail(e.target.value)}
-                value={email}
-              />
-              <TextField
-                fullWidth
-                label='Password'
-                id='outlined-adornment-password'
-                type={isPasswordShown ? 'text' : 'password'}
-                name='password'
-                onChange={e => setPassword(e.target.value)}
-                value={password}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position='end'>
-                      <IconButton
-                        size='small'
-                        edge='end'
-                        onClick={handleClickShowPassword}
-                        onMouseDown={e => e.preventDefault()}
-                      >
-                        <i className={isPasswordShown ? 'ri-eye-off-line' : 'ri-eye-line'} />
-                      </IconButton>
-                    </InputAdornment>
-                  )
-                }}
-              />
-              <div className='flex justify-between items-center gap-x-3 gap-y-1 flex-wrap'>
-                <FormControlLabel control={<Checkbox />} label='Remember me' />
-                <Typography className='text-end' color='primary' component={Link} href='/forgot-password'>
-                  Forgot password?
-                </Typography>
-              </div>
-              <Button fullWidth variant='contained' type='submit'>
-                Log In
-              </Button>
-            </form>
-          </div>
-        </CardContent>
-      </Card>
-      <Illustrations maskImg={{ src: authBackground }} />
-    </div>
+    <>
+      <div className='flex flex-col justify-center items-center min-bs-[100dvh] relative p-6'>
+        <Card className='flex flex-col sm:is-[450px]'>
+          <CardContent className='p-6 sm:!p-12'>
+            <Link href='/' className='flex justify-center items-center mbe-6'>
+              <Logo />
+            </Link>
+            <div className='flex flex-col gap-5'>
+              <form
+                noValidate
+                autoComplete='off'
+                onSubmit={handleSubmit(onSubmitCredentials)}
+                className='flex flex-col gap-5'
+              >
+                <FormInput
+                  name='email'
+                  label='Email'
+                  control={control}
+                  errors={errors}
+                  inputType='email'
+                  autoFocus
+                  fullWidth
+                  // onChange={e => setEmail(e.target.value)}
+                  // value={email}
+                />
+                <FormInput
+                  fullWidth
+                  label='Password'
+                  id='outlined-adornment-password'
+                  inputType='password'
+                  control={control}
+                  type={isPasswordShown ? 'text' : 'password'}
+                  name='password'
+                  // onChange={e => setPassword(e.target.value)}
+                  // value={password}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position='end'>
+                        <IconButton
+                          size='small'
+                          edge='end'
+                          onClick={handleClickShowPassword}
+                          onMouseDown={e => e.preventDefault()}
+                        >
+                          <i className={isPasswordShown ? 'ri-eye-off-line' : 'ri-eye-line'} />
+                        </IconButton>
+                      </InputAdornment>
+                    )
+                  }}
+                />
+                <div className='flex justify-between items-center gap-x-3 gap-y-1 flex-wrap'>
+                  <FormControlLabel control={<Checkbox />} label='Remember me' />
+                  <Typography className='text-end' color='primary' component={Link} href='/forgot-password'>
+                    Forgot password?
+                  </Typography>
+                </div>
+                <Button fullWidth variant='contained' type='submit'>
+                  Log In
+                </Button>
+              </form>
+            </div>
+          </CardContent>
+        </Card>
+        <Illustrations maskImg={{ src: authBackground }} />
+      </div>
+    </>
   )
 }
 

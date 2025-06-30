@@ -1,27 +1,52 @@
+import axios from 'axios'
+import { getSession, signOut } from 'next-auth/react'
 
-import axios from "axios";
+export const baseURL = process.env.NEXT_PUBLIC_BASE_URL
 
+const ApiClient = axios.create({ baseURL })
 
-const ApiClient = () => {
-  const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
-  const instance = axios.create({
-    baseURL,
-  });
+// By using Context
 
-  instance.interceptors.response.use(
-    (response) => {
-      if (response.data.errorCode == 601) {
-        signOut();
-        return Promise.reject(response.data);
+ApiClient.interceptors.request.use(
+  async config => {
+    try {
+      // loaderProxy.startLoading()
+      const session = await getSession()
+      console.log('sessionsessionsessionsessionsessionsession', session?.token)
+      if (session?.token) {
+        config.headers['x-access-token'] = session?.token
       }
-      return response.data;
-    },
-    (error) => {
-      return Promise.reject(error?.response?.data);
+
+      return config
+    } catch (error) {
+      // loaderProxy.stopLoading()
+      console.error('Error fetching session:', error)
+      return Promise.reject(error)
     }
-  );
+  },
+  error => {
+    // loaderProxy.stopLoading()
 
-  return instance;
-};
+    console.error('Request interceptor error:', error)
+    return Promise.reject(error)
+  }
+)
 
-export default ApiClient();
+ApiClient.interceptors.response.use(
+  response => {
+    // loaderProxy.stopLoading()
+
+    if (response.data.errorCode === 601) {
+      signOut()
+    }
+
+    return response
+  },
+  error => {
+    // loaderProxy.stopLoading()
+
+    return Promise.reject(error)
+  }
+)
+
+export default ApiClient
