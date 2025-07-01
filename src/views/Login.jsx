@@ -132,10 +132,10 @@ const Login = ({ mode }) => {
                   }}
                 />
                 <div className='flex justify-between items-center gap-x-3 gap-y-1 flex-wrap'>
-                  <FormControlLabel control={<Checkbox />} label='Remember me' />
-                  <Typography className='text-end' color='primary' component={Link} href='/forgot-password'>
+                  {/* <FormControlLabel control={<Checkbox />} label='Remember me' /> */}
+                  {/* <Typography className='text-end' color='primary' component={Link} href='/forgot-password'>
                     Forgot password?
-                  </Typography>
+                  </Typography> */}
                 </div>
                 <Button fullWidth variant='contained' type='submit'>
                   Log In

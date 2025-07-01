@@ -29,7 +29,7 @@ function Page() {
       {/* <h2>PDF Document Preview</h2> */}
       {candidateData?.meta?._resume ? (
         <iframe
-          src={decodeURIComponent(`http://localhost:8080${candidateData?.meta?._resume}`)}
+          src={decodeURIComponent(`${process.env.NEXT_PUBLIC_API_BASE_URL}${candidateData?.meta?._resume}`)}
           width='100%'
           height='600px'
           title='PDF Preview'

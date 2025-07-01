@@ -70,7 +70,7 @@ export default function DataTable() {
       <div>
         <form encType='multipart/form-data' onSubmit={form.handleSubmit(onSubmit)}>
           <div className='grid grid-cols-4 md:grid-cols-4 gap-6 mb-8'>
-            <FormInput name='name' label='Full Name' control={form.control} errors={form.errors} inputType='text' />
+            <FormInput name='name' label='Name' control={form.control} errors={form.errors} inputType='text' />
             {/* <FormInputSelect
               name='designationApplyingFor'
               label='Skill'

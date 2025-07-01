@@ -1,9 +1,11 @@
 import axios from 'axios'
 import { getSession, signOut } from 'next-auth/react'
 
-export const baseURL = process.env.NEXT_PUBLIC_BASE_URL
+export const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL
 
-const ApiClient = axios.create({ baseURL })
+const ApiClient = axios.create({
+  baseURL: `${baseURL}/api/v1`
+})
 
 // By using Context
 
