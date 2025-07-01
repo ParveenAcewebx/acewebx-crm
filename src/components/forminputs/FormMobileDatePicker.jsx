@@ -6,11 +6,8 @@ import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { FormControl } from '@mui/material'
 const FormMobileDatePicker = ({ name, control, label, inputFormat, defaultValue, errors, value, className }) => {
-  console.log('errorserrors', errors?.dob) // Comming
   const [isDatePickerOpen, setDatePickerOpen] = useState(false)
-  {
-    console.log('vvvvvvvvv', errors?.[name])
-  } // Work
+  
   return (
     <>
       <div>

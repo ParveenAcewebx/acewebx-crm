@@ -1,8 +1,8 @@
 // Component Imports
-import AuthProvider from '@/@core/SessionProvider'
 import Providers from '@components/Providers'
 import BlankLayout from '@layouts/BlankLayout'
 import { getSession } from 'next-auth/react'
+import { ToastContainer } from 'react-toastify'
 
 const Layout = async ({ children }) => {
   const session = await getSession()
@@ -12,9 +12,10 @@ const Layout = async ({ children }) => {
 
   return (
     <Providers direction={direction}>
-      {/* <AuthProvider session={session}> */}
-        <BlankLayout>{children}</BlankLayout>
-      {/* </AuthProvider> */}
+      <BlankLayout>
+        <ToastContainer />
+        {children}
+      </BlankLayout>
     </Providers>
   )
 }

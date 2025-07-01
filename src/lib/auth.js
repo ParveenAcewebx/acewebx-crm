@@ -2,9 +2,13 @@ import ApiClient from '@/components/services/apiBase'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
 export const authOptions = {
+  secret: process.env.NEXTAUTH_SECRET, // ✅ Important for JWT decryption
+
   session: {
-    strategy: 'jwt'
+    strategy: 'jwt',
+    maxAge: 30 * 24 * 60 * 60 // Optional: 30 days
   },
+
   providers: [
     CredentialsProvider.default({
       type: 'credentials',
@@ -14,20 +18,19 @@ export const authOptions = {
       },
       async authorize(credentials) {
         try {
-          let data = {
+          const data = {
             email: credentials?.email,
             password: credentials?.password
           }
 
           const aptData = await ApiClient.post('/auth/login', data)
           if (aptData.status !== 200 || !aptData.data) {
-            console.error('Login failed:w', aptData.message)
+            console.error('Login failed:', aptData.message)
             return null
           }
 
           return {
-            user: aptData.data.data,
-            accessToken: aptData.data.data.accessToken
+            ...aptData.data.data // Return flat user object
           }
         } catch (error) {
           console.error('Login error:', error.response?.data || error.message)
@@ -36,25 +39,23 @@ export const authOptions = {
       }
     })
   ],
+
   pages: {
     signIn: '/login'
   },
+
   callbacks: {
-    async jwt({ token, user, session, trigger }) {
+    async jwt({ token, user }) {
       if (user) {
-        token.user = user.user
+        token.user = user
         token.accessToken = user.accessToken
       }
-
-      if (trigger === 'update' && session?.user) {
-        token.user = session.user
-      }
-
       return token
     },
+
     async session({ session, token }) {
       session.user = token.user
-      session.token = token.accessToken
+      session.accessToken = token.accessToken
       return session
     }
   }

@@ -13,7 +13,6 @@ import AuthProvider from '@/@core/SessionProvider'
 
 const Layout = async ({ children }) => {
   const session = await getServerSession(authOptions)
-  console.log('sessionsessionsession', session)
   if (!session?.user) {
     // redirect('/login')
   }

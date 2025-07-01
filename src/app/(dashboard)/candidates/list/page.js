@@ -59,8 +59,6 @@ export default function DataTable() {
 
       setCandiDateData(candidates)
       setRowCount(paginationInfo?.total || 0)
-
-      form.reset()
     } catch (error) {
       console.error('Fetch error:', error)
     }

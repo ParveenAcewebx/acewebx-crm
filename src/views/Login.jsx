@@ -31,7 +31,9 @@ import { useImageVariant } from '@core/hooks/useImageVariant'
 import { useForm } from 'react-hook-form'
 import FormInput from '@/components/FormInput'
 import { signIn } from 'next-auth/react'
-import { successMsg } from '@/components/toaster/Toaster'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { CandidateLoginFormValidation } from '@/components/validations/LoginFormValidation'
+import { errorMsg, successMsg } from '@/components/toaster/Toaster'
 
 const Login = ({ mode }) => {
   // States
@@ -40,7 +42,9 @@ const Login = ({ mode }) => {
     control,
     handleSubmit,
     formState: { errors }
-  } = useForm()
+  } = useForm({
+    resolver: yupResolver(CandidateLoginFormValidation)
+  })
   // Vars
   const darkImg = '/images/pages/auth-v1-mask-dark.png'
   const lightImg = '/images/pages/auth-v1-mask-light.png'
@@ -49,40 +53,30 @@ const Login = ({ mode }) => {
   const router = useRouter()
   const authBackground = useImageVariant(mode, lightImg, darkImg)
   const handleClickShowPassword = () => setIsPasswordShown(show => !show)
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
   const onSubmitCredentials = async data => {
-    console.log('datadatadata', data)
     const { email, password } = data
 
-    try {
-      const signInResponse = await signIn('credentials', {
-        email,
-        password,
-        redirect: false
-      })
+    const signInResponse = await signIn('credentials', {
+      email,
+      password,
+      redirect: false
+    })
 
-      if (signInResponse?.status === 200) {
-        router.push('/candidates/list')
-      }
-      if (signInResponse?.status === 401) {
-        // errorMessage({ description: 'Invalid email or password' })
-        return
-      }
-
-      if (!signInResponse?.ok) {
-        // errorMessage({
-        //   description: signInResponse?.error || 'An error occurred'
-        // })
-        return
-      }
-
-      form.reset()
-      // router.replace('/dashboard')
-    } catch (error) {
-      console.log('errorerrorerror', error)
-      // errorMessage({ description: error?.response?.data?.message })
+    if (signInResponse?.status === 200) {
+      successMsg('Login sucussfuly')
+      router.push('/candidates/list')
     }
+    if (signInResponse?.status === 401) {
+      errorMsg('Invalid email or password')
+      return
+    }
+
+    if (!signInResponse?.ok) {
+      errorMsg('An error occurred')
+      return
+    }
+
+    // form.reset()
   }
 
   return (
@@ -113,6 +107,7 @@ const Login = ({ mode }) => {
                 />
                 <FormInput
                   fullWidth
+                  errors={errors}
                   label='Password'
                   id='outlined-adornment-password'
                   inputType='password'

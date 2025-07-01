@@ -18,7 +18,6 @@ function Page() {
   const handleGetApi = async () => {
     try {
       const apiData = await Candidate.viewCandidate(editId)
-      console.log('apiData', apiData?.data?.data)
       setCandidateData(apiData?.data?.data)
     } catch (error) {
       console.error('API error', error)
@@ -29,7 +28,6 @@ function Page() {
   useEffect(() => {
     if (id) {
       handleGetApi()
-      console.log("GGGGGG")
     }
   }, [id,router])
 

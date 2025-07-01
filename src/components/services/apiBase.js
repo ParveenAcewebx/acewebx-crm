@@ -12,9 +12,8 @@ ApiClient.interceptors.request.use(
     try {
       // loaderProxy.startLoading()
       const session = await getSession()
-      console.log("sessionsession",session)
-      if (session?.token) {
-        config.headers['x-access-token'] = session?.token
+      if (session?.accessToken) {
+        config.headers['x-access-token'] = session?.accessToken
       }
 
       return config

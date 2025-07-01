@@ -46,10 +46,11 @@ const UserDropdown = () => {
   }
 
   const handleDropdownClose = (event, url) => {
-    if (url) {
-      signOut()
-      // router.push('/login')
-    }
+    signOut({
+      redirect: false
+    }).then(() => {
+      router.push('/login')
+    })
 
     setOpen(false)
   }

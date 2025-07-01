@@ -30,7 +30,6 @@ import { Key } from 'lucide-react'
 function WalkInForm() {
   const [step, setStep] = useState(0)
   const router = useRouter()
-  console.log('stepstep', step)
   const {
     control,
     handleSubmit,
@@ -44,9 +43,7 @@ function WalkInForm() {
     defaultValues: walkInFormDefaultValues,
     resolver: yupResolver(CandidateFormValidation)
   })
-  console.log('errorserrorserrorserrors', errors?.recaptcha?.message)
   const [recaptcha, setRecaptcha] = useState([])
-  console.log('recaptcha', recaptcha)
 
   // const Sitekey="6LfSqW8rAAAAABmLFmZcFxFQZgfcUusAJNdVXdXn"
 
@@ -79,7 +76,6 @@ function WalkInForm() {
     ['reasonForChange', 'resume'] // Step 3
   ]
 
-  console.log('errors0000', errors)
   const onSubmit = async data => {
     try {
       const formData = new FormData()
@@ -98,7 +94,6 @@ function WalkInForm() {
 
       // Submit via API
       const response = await Candidate.addCandidate(formData)
-      console.log('response0001111111', response)
       if (response?.status) {
         successMsg('Candidate form submitted successfully!')
         reset()
@@ -119,7 +114,6 @@ function WalkInForm() {
 
   const prevStep = () => setStep(prev => Math.max(prev - 1, 0))
 
-  console.log('resuem', watch('resume'))
   return (
     <div className='min-h-screen flex flex-col items-center justify-start bg-white relative w-full mobile-view'>
       <div className="absolute inset-0 bg-[url('/background-honeycomb.png')] opacity-10" />
