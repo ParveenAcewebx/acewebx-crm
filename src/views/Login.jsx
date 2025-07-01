@@ -62,7 +62,6 @@ const Login = ({ mode }) => {
         redirect: false
       })
 
-      console.log('signInResponsesignInResponsesignInResponse', signInResponse)
       if (signInResponse?.status === 200) {
         router.push('/candidates/list')
       }

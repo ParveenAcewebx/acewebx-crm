@@ -6,10 +6,13 @@ import LayoutContent from './components/vertical/LayoutContent'
 
 // Util Imports
 import { verticalLayoutClasses } from './utils/layoutClasses'
+import AuthProvider from '@/@core/SessionProvider'
+import { getServerSession } from 'next-auth'
 
-const VerticalLayout = props => {
+const VerticalLayout = async props => {
   // Props
   const { navbar, footer, navigation, children } = props
+  const session = await getServerSession()
 
   return (
     <div className={classnames(verticalLayoutClasses.root, 'flex flex-auto')}>
@@ -18,8 +21,9 @@ const VerticalLayout = props => {
         {navbar || null}
         {/* Content */}
         <LayoutContent>
-          {children}
-
+          {/* <AuthProvider session={session}> */}
+            {children}
+            {/* </AuthProvider> */}
         </LayoutContent>
         {footer || null}
       </div>

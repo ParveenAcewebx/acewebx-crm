@@ -20,7 +20,6 @@ export const authOptions = {
           }
 
           const aptData = await ApiClient.post('/auth/login', data)
-          console.log('aptData', aptData)
           if (aptData.status !== 200 || !aptData.data) {
             console.error('Login failed:w', aptData.message)
             return null

@@ -9,70 +9,103 @@ import FormInput from '@/components/FormInput'
 import { useForm } from 'react-hook-form'
 import { Button } from '@mui/material'
 import { useSession } from 'next-auth/react'
-
-
-
+import { designationOptions } from '@/components/constants/StaticData'
+import FormInputSelect from '@/components/forminputs/FormInputSelect'
 
 export default function DataTable() {
   const [candidateData, setCandiDateData] = React.useState([])
-  const [pagination,setPagination]= React.useState({})
+  const [rowCount, setRowCount] = React.useState(0)
+
+  const [paginationModel, setPaginationModel] = React.useState({
+    page: 0,
+    pageSize: 10
+  })
+
   const router = useRouter()
-
-
-
   const form = useForm()
-  const fetchCandidateList = async () => {
+  const session = useSession()
+
+  const fetchCandidateList = async (page = 0, pageSize = 10) => {
     try {
-      const apiData = await Candidate.candidateList()
-      console.log('apiData', apiData?.data?.data)
-      setCandiDateData(apiData?.data?.data?.candidates)
-      const data=  apiData?.data?.data?.pagination
-      const paginationModel = { page: data?.totalPages, pageSize:data?.limit }
-      setPagination(paginationModel)
+      const apiData = await Candidate.candidateList({ page: page + 1, limit: pageSize })
+      const candidates = apiData?.data?.data?.candidates || []
+      const paginationInfo = apiData?.data?.data?.pagination
+
+      setCandiDateData(candidates)
+      setRowCount(paginationInfo?.total || 0)
     } catch (error) {
-      console.log('error', error)
+      console.error('Fetch error:', error)
     }
   }
 
   React.useEffect(() => {
-    const fetchData = async () => {
-      await fetchCandidateList()
+    fetchCandidateList(paginationModel.page, paginationModel.pageSize)
+  }, [paginationModel.page, paginationModel.pageSize])
+
+  const handleView = row => router.push(`/candidates/view/${row?.id}`)
+
+  const handleEdit = () => alert('Edit clicked')
+  const handleRemove = () => alert('Delete clicked')
+
+  const onSubmit = async data => {
+    try {
+      const apiData = await Candidate.candidateListFilters({
+        ...data,
+        page: paginationModel?.page + 1,
+        limit: paginationModel?.pageSize
+      })
+      const candidates = apiData?.data?.data?.candidates || []
+      const paginationInfo = apiData?.data?.data?.pagination
+
+      setCandiDateData(candidates)
+      setRowCount(paginationInfo?.total || 0)
+
+      form.reset()
+    } catch (error) {
+      console.error('Fetch error:', error)
     }
-
-    fetchData()
-  }, [])
-
-  const handleView = row => {
-    router.push(`/candidates/view/${row?.id}`)
-  }
-  const session = useSession()
-  console.log('session', session)
-  const handleEdit = () => {
-    alert('kkkkkkkk')
-
-    console.log('Testing:------Edit')
   }
 
-  const handleRemove = () => {
-    alert('kkkkkkkk')
-    console.log('Testing:------Delete')
-  }
-  const searchByNameValue = form.watch('searchByName')
-  console.log('searchByNameValue', searchByNameValue)
   return (
-    <Paper sx={{ height: '100%', width: '100%' }}>
-      {/* <div className='mb-8'>
-        <FormInput inputType='text' label='Search by Name' name='searchByName' control={form.control} />
-        <Button>Search</Button>
-      </div> */}
-      <DataGrid
-        rows={candidateData}
-        columns={columns(handleView, handleEdit, handleRemove)}
-        initialState={{ pagination: { pagination } }}
-        pageSizeOptions={[5, 10]}
-        // checkboxSelection
-        sx={{ border: 0 }}
-      />
-    </Paper>
+    <>
+      {' '}
+      <div>
+        <form encType='multipart/form-data' onSubmit={form.handleSubmit(onSubmit)}>
+          <div className='grid grid-cols-4 md:grid-cols-4 gap-6 mb-8'>
+            <FormInput name='name' label='Full Name' control={form.control} errors={form.errors} inputType='text' />
+            {/* <FormInputSelect
+              name='designationApplyingFor'
+              label='Skill'
+              control={form.control}
+              errors={form.errors}
+              options={designationOptions}
+            /> */}
+            <FormInput
+              name='currentSalary'
+              label='Current Salary'
+              control={form.control}
+              errors={form.errors}
+              inputType='text'
+            />
+            <FormInput name='email' label='Email' control={form.control} errors={form.errors} inputType='email' />
+            <Button type='submit' variant='contained' className='!text-white bg-[#8C57FF]'>
+              Submit
+            </Button>
+          </div>
+        </form>
+      </div>
+      <Paper sx={{ height: '100%', width: '100%' }}>
+        <DataGrid
+          rows={candidateData}
+          columns={columns(handleView, handleEdit, handleRemove)}
+          rowCount={rowCount}
+          paginationModel={paginationModel}
+          onPaginationModelChange={setPaginationModel}
+          pageSizeOptions={[5, 10, 20]}
+          paginationMode='server'
+          sx={{ border: 0 }}
+        />
+      </Paper>
+    </>
   )
 }

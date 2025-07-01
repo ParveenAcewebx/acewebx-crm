@@ -12,7 +12,7 @@ ApiClient.interceptors.request.use(
     try {
       // loaderProxy.startLoading()
       const session = await getSession()
-      console.log('sessionsessionsessionsessionsessionsession', session?.token)
+      console.log("sessionsession",session)
       if (session?.token) {
         config.headers['x-access-token'] = session?.token
       }
@@ -34,8 +34,6 @@ ApiClient.interceptors.request.use(
 
 ApiClient.interceptors.response.use(
   response => {
-    // loaderProxy.stopLoading()
-
     if (response.data.errorCode === 601) {
       signOut()
     }

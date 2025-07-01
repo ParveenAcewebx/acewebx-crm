@@ -1,50 +1,55 @@
 'use client'
-// MUI Imports
+
+import React, { useEffect, useState } from 'react'
+import { useParams, useRouter } from 'next/navigation'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import Candidate from '@/components/services/CandidateApi'
-import { useParams, useSearchParams } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
-import CadidateChart from '@/components/CadidateChart'
 import CandidateChart from '@/components/CadidateChart'
 
-function page() {
+function Page() {
+  const router = useRouter()
   const { id } = useParams()
-console.log("ididididid",id)
-  // const searchParams = useSearchParams()
   const editId = id
-  const [candidateData, setCandidateData] = useState([])
+  const [candidateData, setCandidateData] = useState({})
+
   const handleGetApi = async () => {
     try {
       const apiData = await Candidate.viewCandidate(editId)
-      console.log('apiData', apiData?.data)
-      setCandidateData(apiData?.data)
+      console.log('apiData', apiData?.data?.data)
+      setCandidateData(apiData?.data?.data)
     } catch (error) {
-      console.log('error', error)
+      console.error('API error', error)
     }
   }
 
+
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (id) {
       handleGetApi()
+      console.log("GGGGGG")
     }
-  }, [editId])
+  }, [id,router])
+
+  const handleDocument = () => {
+    router.push(`/candidates/list/preview/${id}`)
+  }
 
   return (
-   
     <div>
-      <section class='first-row'>
-        <div class='user-name'>
+      <section className='first-row'>
+        <div className='user-name'>
           <Typography variant='h1'>{candidateData?.name}</Typography>
         </div>
-        <div class='resume'>
-          <div class='resmume-text'>
-            <Typography variant='h2'>View Resume </Typography>
+        <div className='resume'>
+          <div className='resmume-text'>
+            <Typography variant='h2' onClick={() => handleDocument()}>
+              View Resume
+            </Typography>
           </div>
-
-          <img src='/images/pages/eye.png' alt='trophy image' height={11} className='' />
+          <img src='/images/pages/eye.png' alt='trophy image' height={11} />
         </div>
       </section>
 
@@ -250,4 +255,4 @@ console.log("ididididid",id)
   )
 }
 
-export default page
+export default Page

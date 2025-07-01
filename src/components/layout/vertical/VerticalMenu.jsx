@@ -57,7 +57,7 @@ const VerticalMenu = ({ scrollMenu }) => {
             {/* <MenuItem href='/'>Analytics</MenuItem> */}
           </SubMenu>
         </MenuSection>
-        <MenuSection label='Demo-Routes'>
+        {/* <MenuSection label='Demo-Routes'>
           <MenuItem href='/account-settings' icon={<i className='ri-user-settings-line' />}>
             Account Settings
           </MenuItem>
@@ -102,7 +102,7 @@ const VerticalMenu = ({ scrollMenu }) => {
           target='_blank'
         >
           MUI Tables
-        </MenuItem>
+        </MenuItem> */}
       </Menu>
     </ScrollWrapper>
   )

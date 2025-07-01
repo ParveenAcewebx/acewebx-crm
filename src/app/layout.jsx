@@ -24,6 +24,8 @@ export const metadata = {
 const RootLayout = async ({ children }) => {
   const direction = 'ltr'
   const session = await getServerSession(authOptions)
+
+ 
   return (
     <html id='__next' dir={direction}>
       <body className={`${poppins.className} flex is-full min-bs-full flex-auto flex-col`}>

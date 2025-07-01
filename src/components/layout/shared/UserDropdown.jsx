@@ -19,6 +19,7 @@ import Typography from '@mui/material/Typography'
 import Divider from '@mui/material/Divider'
 import MenuItem from '@mui/material/MenuItem'
 import Button from '@mui/material/Button'
+import { signOut } from 'next-auth/react'
 
 // Styled component for badge content
 const BadgeContentSpan = styled('span')({
@@ -46,11 +47,8 @@ const UserDropdown = () => {
 
   const handleDropdownClose = (event, url) => {
     if (url) {
-      router.push(url)
-    }
-
-    if (anchorRef.current && anchorRef.current.contains(event?.target)) {
-      return
+      signOut()
+      // router.push('/login')
     }
 
     setOpen(false)
