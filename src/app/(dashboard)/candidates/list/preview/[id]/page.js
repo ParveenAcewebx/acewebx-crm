@@ -23,7 +23,6 @@ function Page() {
       handleGetApi()
     }
   }, [id])
-
   return (
     <div>
       {/* <h2>PDF Document Preview</h2> */}

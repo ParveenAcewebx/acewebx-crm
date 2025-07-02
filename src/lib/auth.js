@@ -2,12 +2,7 @@ import ApiClient from '@/components/services/apiBase'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
 export const authOptions = {
-  secret: process.env.NEXTAUTH_SECRET, // ✅ Important for JWT decryption
-
-  session: {
-    strategy: 'jwt',
-    maxAge: 30 * 24 * 60 * 60 // Optional: 30 days
-  },
+ 
 
   providers: [
     CredentialsProvider.default({
@@ -24,6 +19,7 @@ export const authOptions = {
           }
 
           const aptData = await ApiClient.post('/auth/login', data)
+          console.log("aptDataaptData",aptData)
           if (aptData.status !== 200 || !aptData.data) {
             console.error('Login failed:', aptData.message)
             return null

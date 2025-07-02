@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 // Third-party Imports
 import 'react-perfect-scrollbar/dist/css/styles.css'
 
