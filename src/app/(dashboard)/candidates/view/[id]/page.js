@@ -8,13 +8,15 @@ import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import Candidate from '@/components/services/CandidateApi'
 import CandidateChart from '@/components/CadidateChart'
+import DocumentVeiw from '@/components/DocumentVeiw'
 
 function Page() {
   const router = useRouter()
   const { id } = useParams()
   const editId = id
   const [candidateData, setCandidateData] = useState({})
-
+  const [candidateUrl, setCandidateUrl] = React.useState('')
+  const [open, setOpen] = React.useState(false)
   const handleGetApi = async () => {
     try {
       const apiData = await Candidate.viewCandidate(editId)
@@ -24,26 +26,35 @@ function Page() {
     }
   }
 
-
   useEffect(() => {
     if (id) {
       handleGetApi()
     }
-  }, [id,router])
+  }, [id, router])
 
-  const handleDocument = () => {
-    router.push(`/candidates/list/preview/${id}`)
+  // document popup:-
+  const handleClickOpen = async () => {
+    try {
+      const apiData = await Candidate.viewCandidate(id)
+      setCandidateUrl(apiData?.data?.data?.meta?._resume)
+    } catch (error) {
+      console.error('API error', error)
+    }
+    setOpen(true)
   }
 
+  const handleClose = () => {
+    setOpen(false)
+  }
   return (
     <div>
       <section className='first-row'>
         <div className='user-name'>
           <Typography variant='h1'>{candidateData?.name}</Typography>
         </div>
-        <div className='resume'>
+        <div className='resume' onClick={handleClickOpen}>
           <div className='resmume-text'>
-            <Typography variant='h2' onClick={() => handleDocument()}>
+            <Typography variant='h2' >
               View Resume
             </Typography>
           </div>
@@ -249,6 +260,13 @@ function Page() {
           </Card>
         </div>
       </section>
+
+      <DocumentVeiw
+        candidateUrl={candidateUrl}
+        handleClickOpen={handleClickOpen}
+        handleClose={handleClose}
+        open={open}
+      />
     </div>
   )
 }

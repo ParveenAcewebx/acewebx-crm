@@ -7,8 +7,6 @@ import DialogContentText from '@mui/material/DialogContentText'
 import FormInputSelect from '../forminputs/FormInputSelect'
 import { designationOptions, preferredShiftOptions } from '../constants/StaticData'
 import FormInput from '../forminputs/FormInput'
-import { useForm } from 'react-hook-form'
-import Candidate from '../services/CandidateApi'
 import FormMobileDatePicker from '../forminputs/FormMobileDatePicker'
 
 export default function AddvanceCandiateFilter({ handleClickOpen, handleClose, open,onSubmit,form }) {
@@ -53,13 +51,7 @@ export default function AddvanceCandiateFilter({ handleClickOpen, handleClose, o
                 errors={form.errors}
                 inputType='text'
               />
-              <FormInputSelect
-                name='preferredShift'
-                label='Preferred Shift'
-                control={form.control}
-                errors={form.errors}
-                options={preferredShiftOptions}
-              />
+             
               <FormMobileDatePicker
                 name='startDate'
                 label='Start Date'
@@ -80,6 +72,13 @@ export default function AddvanceCandiateFilter({ handleClickOpen, handleClose, o
                 control={form.control}
                 errors={form.errors}
                 options={designationOptions}
+              />
+               <FormInputSelect
+                name='preferredShift'
+                label='Preferred Shift'
+                control={form.control}
+                errors={form.errors}
+                options={preferredShiftOptions}
               />
             </div>
 

@@ -9,14 +9,12 @@ import FormInput from '@/components/FormInput'
 import { useForm } from 'react-hook-form'
 import { Button } from '@mui/material'
 import { useSession } from 'next-auth/react'
-import DocumentVeiw from '@/components/DocumentVeiw'
 import AddvanceCandiateFilter from '@/components/filters/AddvanceCandiateFilter'
 
 export default function DataTable() {
   const [candidateData, setCandiDateData] = React.useState([])
   const [rowCount, setRowCount] = React.useState(0)
-  const [candidateUrl, setCandidateUrl] = React.useState('')
-  const [open, setOpen] = React.useState(false)
+ 
   const [openFilter, setOpenFilter] = React.useState(false)
 
   const [paginationModel, setPaginationModel] = React.useState({
@@ -67,20 +65,7 @@ export default function DataTable() {
     }
   }
 
-  // document popup:-
-  const handleClickOpen = async url => {
-    try {
-      const apiData = await Candidate.viewCandidate(url.id)
-      setCandidateUrl(apiData?.data?.data?.meta?._resume)
-    } catch (error) {
-      console.error('API error', error)
-    }
-    setOpen(true)
-  }
-
-  const handleClose = () => {
-    setOpen(false)
-  }
+ 
 
   const formm = useForm({
     defaultValues: {
@@ -157,7 +142,7 @@ export default function DataTable() {
       <Paper sx={{ height: '100%', width: '100%' }}>
         <DataGrid
           rows={candidateData}
-          columns={columns(handleView, handleEdit, handleRemove, handleClickOpen)}
+          columns={columns(handleView, handleEdit, handleRemove)}
           rowCount={rowCount}
           paginationModel={paginationModel}
           onPaginationModelChange={setPaginationModel}
@@ -166,12 +151,7 @@ export default function DataTable() {
           sx={{ border: 0 }}
         />
       </Paper>
-      <DocumentVeiw
-        candidateUrl={candidateUrl}
-        handleClickOpen={handleClickOpen}
-        handleClose={handleClose}
-        open={open}
-      />
+   
       <AddvanceCandiateFilter
         onSubmit={handleFilters}
         handleClickOpen={handleClickFilteOpen}

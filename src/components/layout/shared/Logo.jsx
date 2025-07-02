@@ -22,8 +22,9 @@ const LogoText = styled.span`
 const Logo = ({ color }) => {
   return (
     <div className='flex items-center min-bs-[24px]'>
-      {/* <MaterioLogo className='text-[22px] text-primary' /> */}
-      <LogoText color={color}>AceWebX</LogoText>
+    <div className=' text-center z-10 acewebx-logo'>
+        <img src='/images/pages/acewebx.png' alt='Acewebx Logo' className='h-14 w-auto mx-6 ' />
+      </div>
     </div>
   )
 }

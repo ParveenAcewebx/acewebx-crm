@@ -1,8 +1,7 @@
 import { Button } from '@mui/material'
 import React from 'react'
 import VisibilityIcon from '@mui/icons-material/Visibility'
-
-export const columns = (handleView, handleEdit, handleRemove, handleClickOpen) => {
+export const columns = (handleView, handleEdit, handleRemove) => {
   return [
     { field: 'id', headerName: 'ID', width: 50 },
     { field: 'name', headerName: 'Name', width: 110 },
@@ -38,10 +37,11 @@ export const columns = (handleView, handleEdit, handleRemove, handleClickOpen) =
       width: 160,
       sortable: false,
       renderCell: params => (
-        // <Button onClick={() => handleView(params.row)}>
-        <Button onClick={() => handleClickOpen(params?.row)}>
-          <VisibilityIcon />
-        </Button>
+        <>
+          <Button onClick={() => handleView(params.row)}>
+            <VisibilityIcon />
+          </Button>
+        </>
       )
     }
   ]
