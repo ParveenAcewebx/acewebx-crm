@@ -25,6 +25,11 @@ const Candidate = {
     return ApiClient.get(
       `candidate/getAllCandidate?page=${page}&limit=${limit}&name=${name}&email=${email}&currentSalary=${currentSalary}`
     )
+  },
+  candidateListAddvanceFilters: data => {
+    return ApiClient.get(
+      `candidate/getAllCandidate?page=${data?.page}&limit=${data?.limit}&skill=${data?.Skill}&preferredShift=${data?.preferredShift}&minSalary=${data?.minSalary}&maxSalary=${data?.maxSalary}&startDate=${data?.startDate}&endDate=${data?.endDate}`
+    )
   }
 }
 

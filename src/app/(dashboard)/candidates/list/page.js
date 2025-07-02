@@ -9,12 +9,15 @@ import FormInput from '@/components/FormInput'
 import { useForm } from 'react-hook-form'
 import { Button } from '@mui/material'
 import { useSession } from 'next-auth/react'
-import { designationOptions } from '@/components/constants/StaticData'
-import FormInputSelect from '@/components/forminputs/FormInputSelect'
+import DocumentVeiw from '@/components/DocumentVeiw'
+import AddvanceCandiateFilter from '@/components/filters/AddvanceCandiateFilter'
 
 export default function DataTable() {
   const [candidateData, setCandiDateData] = React.useState([])
   const [rowCount, setRowCount] = React.useState(0)
+  const [candidateUrl, setCandidateUrl] = React.useState('')
+  const [open, setOpen] = React.useState(false)
+  const [openFilter, setOpenFilter] = React.useState(false)
 
   const [paginationModel, setPaginationModel] = React.useState({
     page: 0,
@@ -64,9 +67,68 @@ export default function DataTable() {
     }
   }
 
+  // document popup:-
+  const handleClickOpen = async url => {
+    try {
+      const apiData = await Candidate.viewCandidate(url.id)
+      setCandidateUrl(apiData?.data?.data?.meta?._resume)
+    } catch (error) {
+      console.error('API error', error)
+    }
+    setOpen(true)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
+  }
+
+  const formm = useForm({
+    defaultValues: {
+      minSalary: '',
+      maxSalary: '',
+      preferredShift: '',
+      startDate: '',
+      endDate: '',
+      Skill: ''
+    }
+  })
+
+  //advance filter:-
+
+  const handleClickFilteOpen = () => {
+    setOpenFilter(true)
+  }
+
+  const handleFilteClose = () => {
+    setOpenFilter(false)
+  }
+
+  // addvance filter search handler:)
+  const handleFilters = async data => {
+    try {
+      const apiData = await Candidate.candidateListAddvanceFilters({
+        ...data,
+        page: paginationModel?.page + 1,
+        limit: paginationModel?.pageSize
+      })
+
+      const candidates = apiData?.data?.data?.candidates || []
+      const paginationInfo = apiData?.data?.data?.pagination
+
+      setCandiDateData(candidates)
+      setRowCount(paginationInfo?.total || 0)
+      formm.reset()
+      setOpenFilter(false)
+    } catch (error) {
+      console.error('Fetch error:', error)
+    }
+  }
   return (
     <>
       {' '}
+      <div>
+        <Button onClick={handleClickFilteOpen}>Addvance Search</Button>
+      </div>
       <div>
         <form encType='multipart/form-data' onSubmit={form.handleSubmit(onSubmit)}>
           <div className='grid grid-cols-4 md:grid-cols-4 gap-6 mb-8'>
@@ -95,7 +157,7 @@ export default function DataTable() {
       <Paper sx={{ height: '100%', width: '100%' }}>
         <DataGrid
           rows={candidateData}
-          columns={columns(handleView, handleEdit, handleRemove)}
+          columns={columns(handleView, handleEdit, handleRemove, handleClickOpen)}
           rowCount={rowCount}
           paginationModel={paginationModel}
           onPaginationModelChange={setPaginationModel}
@@ -104,6 +166,19 @@ export default function DataTable() {
           sx={{ border: 0 }}
         />
       </Paper>
+      <DocumentVeiw
+        candidateUrl={candidateUrl}
+        handleClickOpen={handleClickOpen}
+        handleClose={handleClose}
+        open={open}
+      />
+      <AddvanceCandiateFilter
+        onSubmit={handleFilters}
+        handleClickOpen={handleClickFilteOpen}
+        handleClose={handleFilteClose}
+        form={formm}
+        open={openFilter}
+      />
     </>
   )
 }
