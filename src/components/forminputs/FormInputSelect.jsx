@@ -30,7 +30,7 @@ const FormInputSelect = ({ name, control, label, options, errors, defaultValue }
             label={label}
             value={field.value || ''}
             {...field}
-            className='shadow-lg'
+            className=''
             sx={{
               // Black border
               '& .MuiOutlinedInput-notchedOutline': {

@@ -5,14 +5,15 @@ import { useParams, useRouter } from 'next/navigation'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
-import Button from '@mui/material/Button'
 import Candidate from '@/components/services/CandidateApi'
 import CandidateChart from '@/components/CadidateChart'
 import DocumentVeiw from '@/components/DocumentVeiw'
+import ChatCompo from '@/components/ChatCompo'
 
 function Page() {
   const router = useRouter()
   const { id } = useParams()
+
   const editId = id
   const [candidateData, setCandidateData] = useState({})
   const [candidateUrl, setCandidateUrl] = React.useState('')
@@ -46,6 +47,7 @@ function Page() {
   const handleClose = () => {
     setOpen(false)
   }
+
   return (
     <div>
       <section className='first-row'>
@@ -54,9 +56,7 @@ function Page() {
         </div>
         <div className='resume' onClick={handleClickOpen}>
           <div className='resmume-text'>
-            <Typography variant='h2' >
-              View Resume
-            </Typography>
+            <Typography variant='h2'>View Resume</Typography>
           </div>
           <img src='/images/pages/eye.png' alt='trophy image' height={11} />
         </div>
@@ -129,6 +129,7 @@ function Page() {
           <div className='salery-section'>
             <Card className='salery-box'>
               <CardContent>
+                {/* chart */}
                 <CandidateChart current={candidateData?.currentSalary} expect={candidateData?.expectedSalary} />
 
                 <div className='salery-outer'>
@@ -221,43 +222,8 @@ function Page() {
               </div>
             </CardContent>
           </Card>
-
-          <Card className='message-box'>
-            <CardContent>
-              <div className='mesaage-content'>
-                <Typography>
-                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-                  industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
-                  scrambled it to make a type specimen book.  
-                </Typography>
-              </div>
-
-              <div className='mesaage-content'>
-                <Typography>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </Typography>
-              </div>
-
-              <div className='mesaage-content'>
-                <Typography>Lorem Ipsum is simply dummy text. </Typography>
-              </div>
-
-              <div class='chat-input'>
-                <input type='text' placeholder='Type your Message Here...' />
-                <button class='send-button'>
-                  <svg
-                    viewBox='0 0 24 24'
-                    fill='none'
-                    stroke='#8C57FF'
-                    stroke-width='2'
-                    stroke-linecap='round'
-                    stroke-linejoin='round'
-                  >
-                    <path d='M22 2L11 13' />
-                    <path d='M22 2L15 22L11 13L2 9L22 2Z' />
-                  </svg>
-                </button>
-              </div>
-            </CardContent>
-          </Card>
+          {/* chat  */}
+          <ChatCompo />
         </div>
       </section>
 

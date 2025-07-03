@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import * as Yup from 'yup'
 
 export const CandidateFormValidation = Yup.object().shape({
@@ -5,18 +6,19 @@ export const CandidateFormValidation = Yup.object().shape({
     .required('Full Name is required')
     .min(3, 'Minimum 3 characters are required')
     .max(50, 'Maximum 50 characters allowed'),
-  // dob: Yup.date()
-  // .nullable()
-  // .typeError('Date of Birth is required')
-  // .required('Date of Birth is required'),
+
+  dob: Yup.date()
+    .nullable()
+    .transform((value, originalValue) => (originalValue === '' ? null : value))
+    .required('Date of Birth is required')
+    .max(dayjs().subtract(15, 'year').toDate(), 'You must be at least 15 years old'),
 
   email: Yup.string().email('Please enter a valid email').required('Email is required'),
   gender: Yup.string().required('Gender is required'),
 
   phone: Yup.string()
-    .transform(value => value.replace(/\D/g, '')) // remove all non-digits
-    .required('Phone number is required')
-    .matches(/^[0-9]{6,15}$/, 'Phone number must be between 6 and 15 digits'),
+    .required('Contact number is required')
+    .matches(/^[6-7-9][0-9]{9}$/, 'Enter a valid 10-digit mobile number starting with 6-7–9'),
 
   currentLocation: Yup.string().required('Current Location is required'),
 

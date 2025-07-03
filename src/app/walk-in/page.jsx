@@ -3,15 +3,12 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useRouter } from 'next/navigation'
-import dayjs from 'dayjs'
 import { Button, FormHelperText } from '@mui/material'
-
 import FormInput from '@/components/FormInput'
 import FormMobileDatePicker from '@/components/forminputs/FormMobileDatePicker'
 import FormInputSelect from '@/components/forminputs/FormInputSelect'
 import FormInputFileUploaderSingle from '@/components/forminputs/FormInputFileUploaderSingle'
 import FormTextarea from '@/components/forminputs/FormTextarea'
-
 import Candidate from '@/components/services/CandidateApi'
 import { errorMsg, successMsg } from '@/components/toaster/Toaster'
 import {
@@ -25,10 +22,12 @@ import {
 } from '@/components/constants/StaticData'
 import { CandidateFormValidation } from '@/components/CandidateFormValidation'
 import ReCAPTCHA from 'react-google-recaptcha'
-import { Key } from 'lucide-react'
+import Loader from '@/components/Loader'
 
 function WalkInForm() {
   const [step, setStep] = useState(0)
+  const [loader, setLoader] = useState(false)
+
   const router = useRouter()
   const {
     control,
@@ -39,14 +38,13 @@ function WalkInForm() {
     setValue,
     trigger // <-- add this
   } = useForm({
-    mode: 'onTouched', // or 'onChange' or 'all'
+    mode: 'onChange', // or 'onChange' or 'all'
     defaultValues: walkInFormDefaultValues,
     resolver: yupResolver(CandidateFormValidation)
   })
   const [recaptcha, setRecaptcha] = useState([])
 
   // const Sitekey="6LfSqW8rAAAAABmLFmZcFxFQZgfcUusAJNdVXdXn"
-
   function onReCAPTCHAChange(value) {
     setRecaptcha(value)
     setValue('recaptcha', value)
@@ -77,6 +75,8 @@ function WalkInForm() {
   ]
 
   const onSubmit = async data => {
+    console.log('datadata', data)
+    setLoader(true)
     try {
       const formData = new FormData()
 
@@ -97,10 +97,13 @@ function WalkInForm() {
       if (response?.status) {
         successMsg('Candidate form submitted successfully!')
         reset()
+        setLoader(false)
+
         router.push('/thankyou')
       }
     } catch (error) {
       console.error('Submission Error:', error)
+      setLoader(false)
       errorMsg(error?.message || 'Something went wrong while submitting the form.')
     }
   }
@@ -342,7 +345,7 @@ function WalkInForm() {
               </Button>
             ) : (
               <Button type='submit' variant='contained' className='!text-white bg-[#B82025]'>
-                Submit
+                {loader ? <Loader /> : 'Submit'}
               </Button>
             )}
           </div>

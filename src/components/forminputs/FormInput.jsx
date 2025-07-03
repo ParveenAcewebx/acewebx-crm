@@ -14,6 +14,7 @@ export default function FormInput({
   value,
   rows,
   multiline,
+  sx=""
 }) {
   return (
     <FormControl fullWidth>
@@ -36,6 +37,7 @@ export default function FormInput({
               helperText={errors?.[name]?.message}
               multiline={multiline}
               rows={rows}
+              sx={sx}
               variant="outlined"
             />
           );

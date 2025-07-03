@@ -305,8 +305,20 @@ section.user-profile {
   height: 105px;
   padding: 10px 0 0 20px;
 }
+.message-content {
+  position: relative;
+  padding-bottom: 20px; /* space for timestamp */
+}
 
-.message-box {
+.timestamp {
+  position: absolute;
+  bottom: 4px;
+  right: 8px;
+  font-size: 0.75rem;
+  color: gray;
+}
+
+/* .message-box {
   height: 720px;
   margin-top: 30px;
   position: relative;
@@ -353,7 +365,94 @@ section.user-profile {
 .send-button svg {
   width: 20px;
   height: 20px;
+} */
+
+.message-box {
+  height: 720px;
+  margin-top: 30px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 16px;
+  box-sizing: border-box;
 }
+
+.chat-messages {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding-right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.message-content {
+  align-self: flex-end;
+  background-color: #f5f0ff;
+  padding: 12px 16px;
+  max-width: 60%;
+  border-right: 3px solid #8c57ff;
+  border-radius: 6px;
+  word-wrap: break-word;
+  font-size: 14px;
+}
+
+.chat-input {
+  display: flex;
+  align-items: center;
+  background-color: #f5f5f5;
+  padding: 10px 12px;
+  border-radius: 6px;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.chat-input input {
+  border: none;
+  outline: none;
+  flex-grow: 1;
+  background-color: transparent;
+  font-size: 14px;
+  color: #333;
+}
+
+.send-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding-left: 10px;
+}
+
+.send-button svg {
+  width: 20px;
+  height: 20px;
+}
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.username {
+  font-weight: 600;
+  color: #5a4e8c;
+}
+
+.timestamp {
+  font-size: 12px;
+  color: #888;
+}
+
+.message-text {
+  font-size: 14px;
+  color: #333;
+}
+
+
+
+
 
 .MuiFormHelperText-root.Mui-error {
   color: red !important;

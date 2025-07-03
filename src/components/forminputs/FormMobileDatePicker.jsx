@@ -1,53 +1,44 @@
-import TextField from '@mui/material/TextField'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import React, { useState } from 'react'
+import React from 'react'
 import { Controller } from 'react-hook-form'
-import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { FormControl } from '@mui/material'
-const FormMobileDatePicker = ({ name, control, label, inputFormat, defaultValue, errors, value, className }) => {
-  const [isDatePickerOpen, setDatePickerOpen] = useState(false)
-  
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+
+const FormDatePicker = ({
+  name,
+  control,
+  label,
+  defaultValue,
+  className,
+}) => {
   return (
-    <>
-      <div>
-        <FormControl fullWidth>
-          <Controller
-            name={name}
-            control={control}
-            value={value}
-            defaultValue={defaultValue}
-            render={({ field: { onChange, value } }) => (
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <MobileDatePicker
-                  inputFormat={inputFormat}
-                  label={label}
-                  open={isDatePickerOpen}
-                  onOpen={() => setDatePickerOpen(true)} // <== Add this
-                  onClose={() => setDatePickerOpen(false)}
-                  value={value ? value : null}
-                  onChange={newValue => {
-                    onChange(newValue || value)
-                    setDatePickerOpen(false)
-                  }}
-                  renderInput={params => (
-                    <>
-                      <TextField
-                        {...params}
-                        error={!!errors?.[name]}
-                        helperText={errors?.[name]?.message}
-                        className={className}
-                        fullWidth
-                      />
-                    </>
-                  )}
-                />
-              </LocalizationProvider>
-            )}
-          />
-        </FormControl>
-      </div>
-    </>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <FormControl fullWidth>
+        <Controller
+          name={name}
+          control={control}
+          defaultValue={defaultValue || null}
+          render={({ field: { onChange, value, ref }, fieldState: { error } }) => (
+            <DatePicker
+              label={label}
+              value={value || null}
+              onChange={onChange}
+              slotProps={{
+                textField: {
+                  inputRef: ref,
+                  fullWidth: true,
+                  error: !!error,
+                  helperText: error?.message,
+                  className: className,
+                },
+              }}
+            />
+          )}
+        />
+      </FormControl>
+    </LocalizationProvider>
   )
 }
-export default FormMobileDatePicker
+
+export default FormDatePicker

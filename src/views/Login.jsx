@@ -34,10 +34,12 @@ import { signIn } from 'next-auth/react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { CandidateLoginFormValidation } from '@/components/validations/LoginFormValidation'
 import { errorMsg, successMsg } from '@/components/toaster/Toaster'
+import Loader from '@/components/Loader'
 
 const Login = ({ mode }) => {
   // States
   const [isPasswordShown, setIsPasswordShown] = useState(false)
+  const [loader, setLoader] = useState(false)
   const {
     control,
     handleSubmit,
@@ -55,7 +57,7 @@ const Login = ({ mode }) => {
   const handleClickShowPassword = () => setIsPasswordShown(show => !show)
   const onSubmitCredentials = async data => {
     const { email, password } = data
-
+    setLoader(true)
     const signInResponse = await signIn('credentials', {
       email,
       password,
@@ -64,18 +66,21 @@ const Login = ({ mode }) => {
 
     if (signInResponse?.status === 200) {
       successMsg('Login sucussfuly')
+      // setLoader(false)
       router.push('/candidates/list')
     }
     if (signInResponse?.status === 401) {
       errorMsg('Invalid email or password')
+      setLoader(false)
       return
     }
 
     if (!signInResponse?.ok) {
       errorMsg('An error occurred')
+      setLoader(false)
       return
     }
-
+    setLoader(false)
     // form.reset()
   }
 
@@ -138,7 +143,7 @@ const Login = ({ mode }) => {
                   </Typography> */}
                 </div>
                 <Button fullWidth variant='contained' type='submit'>
-                  Log In
+                {loader ? <Loader/> :  "Log In" }
                 </Button>
               </form>
             </div>
