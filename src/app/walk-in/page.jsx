@@ -23,6 +23,7 @@ import {
 import { CandidateFormValidation } from '@/components/CandidateFormValidation'
 import ReCAPTCHA from 'react-google-recaptcha'
 import Loader from '@/components/Loader'
+import dayjs from 'dayjs'
 
 function WalkInForm() {
   const [step, setStep] = useState(0)
@@ -75,7 +76,6 @@ function WalkInForm() {
   ]
 
   const onSubmit = async data => {
-    console.log('datadata', data)
     setLoader(true)
     try {
       const formData = new FormData()
@@ -116,7 +116,7 @@ function WalkInForm() {
   }
 
   const prevStep = () => setStep(prev => Math.max(prev - 1, 0))
-
+  const reValue = watch('recaptcha')
   return (
     <div className='min-h-screen flex flex-col items-center justify-start bg-white relative w-full mobile-view'>
       <div className="absolute inset-0 bg-[url('/background-honeycomb.png')] opacity-10" />
@@ -138,14 +138,30 @@ function WalkInForm() {
             {/* STEP 1: Personal Information */}
             {step === 0 && (
               <>
-                <FormInput name='name' label='Full Name' control={control} errors={errors} inputType='text' />
-                <FormInput name='email' label='Email' control={control} errors={errors} inputType='email' />
+                <FormInput
+                  name='name'
+                  className='colum-box-bg-change'
+                  label='Full Name'
+                  control={control}
+                  errors={errors}
+                  inputType='text'
+                />
+                <FormInput
+                  name='email'
+                  className='colum-box-bg-change'
+                  label='Email'
+                  control={control}
+                  errors={errors}
+                  inputType='email'
+                />
                 <FormMobileDatePicker
                   name='dob'
                   label='Date of Birth'
                   control={control}
                   inputFormat='YYYY-MM-DD'
                   errors={errors}
+                  className='colum-box-bg-change'
+                  maxDate={dayjs('2005-12-31')}
                 />
 
                 <FormInputSelect
@@ -155,10 +171,18 @@ function WalkInForm() {
                   errors={errors}
                   inputType='text'
                   options={GenderData}
+                  className='colum-box-bg-change'
                 />
-                {/* <FormInput name='gender' label='Gender' control={control} errors={errors} inputType='text' /> */}
-                <FormInput name='phone' label='Contact Number' control={control} errors={errors} inputType='tel' />
                 <FormInput
+                  name='phone'
+                  className='colum-box-bg-change'
+                  label='Contact Number'
+                  control={control}
+                  errors={errors}
+                  inputType='tel'
+                />
+                <FormInput
+                  className='colum-box-bg-change'
                   name='currentLocation'
                   label='Current Location'
                   control={control}
@@ -172,6 +196,7 @@ function WalkInForm() {
             {step === 1 && (
               <>
                 <FormInputSelect
+                  className='colum-box-bg-change'
                   name='designationApplyingFor'
                   label='Designation Applying For'
                   control={control}
@@ -179,6 +204,7 @@ function WalkInForm() {
                   options={designationOptions}
                 />
                 <FormInputSelect
+                  className='colum-box-bg-change'
                   name='totalExperience'
                   label='Total Experience'
                   control={control}
@@ -186,6 +212,7 @@ function WalkInForm() {
                   options={totalExperienceOptions}
                 />
                 <FormInput
+                  className='colum-box-bg-change'
                   name='currentSalary'
                   label='Current Salary'
                   control={control}
@@ -193,6 +220,7 @@ function WalkInForm() {
                   inputType='number'
                 />
                 <FormInput
+                  className='colum-box-bg-change'
                   name='expectedSalary'
                   label='Expected Salary'
                   control={control}
@@ -200,6 +228,7 @@ function WalkInForm() {
                   inputType='number'
                 />
                 <FormInput
+                  className='colum-box-bg-change'
                   name='currentCompanyName'
                   label='Current Company'
                   control={control}
@@ -207,6 +236,7 @@ function WalkInForm() {
                   inputType='text'
                 />
                 <FormInput
+                  className='colum-box-bg-change'
                   name='noticePeriod'
                   label='Notice Period'
                   control={control}
@@ -214,6 +244,7 @@ function WalkInForm() {
                   inputType='number'
                 />
                 <FormInputSelect
+                  className='colum-box-bg-change'
                   name='preferredShift'
                   label='Preferred Shift'
                   control={control}
@@ -221,6 +252,7 @@ function WalkInForm() {
                   options={preferredShiftOptions}
                 />
                 <FormInputSelect
+                  className='colum-box-bg-change'
                   name='source'
                   label='How did you hear about this vacancy?'
                   control={control}
@@ -235,6 +267,7 @@ function WalkInForm() {
               <>
                 {/* Reference 1 */}
                 <FormInput
+                  className='colum-box-bg-change'
                   name='reference1Name'
                   label='Reference 1 Name'
                   control={control}
@@ -242,6 +275,7 @@ function WalkInForm() {
                   inputType='text'
                 />
                 <FormInput
+                  className='colum-box-bg-change'
                   name='reference1ContactNumber'
                   label='Reference 1 Contact Number'
                   control={control}
@@ -249,6 +283,7 @@ function WalkInForm() {
                   inputType='text'
                 />
                 <FormInput
+                  className='colum-box-bg-change'
                   name='reference1Designation'
                   label='Reference 1 Designation'
                   control={control}
@@ -256,6 +291,7 @@ function WalkInForm() {
                   inputType='text'
                 />
                 <FormInputSelect
+                  className='colum-box-bg-change'
                   name='reference1Experience'
                   label='Reference 1 Experience'
                   control={control}
@@ -264,6 +300,7 @@ function WalkInForm() {
                 />
                 {/* Reference 2 */}
                 <FormInput
+                  className='colum-box-bg-change'
                   name='reference2Name'
                   label='Reference 2 Name'
                   control={control}
@@ -271,6 +308,7 @@ function WalkInForm() {
                   inputType='text'
                 />
                 <FormInput
+                  className='colum-box-bg-change'
                   name='reference2ContactNumber'
                   label='Reference 2 Contact Number'
                   control={control}
@@ -278,6 +316,7 @@ function WalkInForm() {
                   inputType='text'
                 />
                 <FormInput
+                  className='colum-box-bg-change'
                   name='reference2Designation'
                   label='Reference 2 Designation'
                   control={control}
@@ -285,6 +324,7 @@ function WalkInForm() {
                   inputType='text'
                 />
                 <FormInputSelect
+                  className='colum-box-bg-change'
                   name='reference2Experience'
                   label='Reference 2 Experience'
                   control={control}
@@ -303,7 +343,7 @@ function WalkInForm() {
                   control={control}
                   errors={errors}
                   multiline
-                  className='border  border-gray-600 !h-[160px]'
+                  className='border  border-gray-600  !h-[160px]'
                   style={{
                     width: '100%',
                     resize: 'none',
@@ -319,10 +359,10 @@ function WalkInForm() {
                   control={control}
                   label='Drop Resume here or click to upload.'
                   errors={errors}
-                  className='flex mt-4 items-center flex-col border border-dashed border-gray-600 rounded-lg p-4 w-full cursor-pointer'
+                  className='flex mt-4 items-center flex-col border border-dashed !bg-white border-gray-600 rounded-lg p-4 w-full cursor-pointer'
                 />
                 <ReCAPTCHA sitekey='6LfSqW8rAAAAABmLFmZcFxFQZgfcUusAJNdVXdXn' onChange={onReCAPTCHAChange} />
-                <FormHelperText className='text-red-600'>{errors?.recaptcha?.message}</FormHelperText>
+                {reValue == undefined && <span className='text-red-600'>{errors?.recaptcha?.message}</span>}
               </>
             )}
           </div>

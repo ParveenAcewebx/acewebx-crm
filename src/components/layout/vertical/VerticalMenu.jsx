@@ -54,7 +54,11 @@ const VerticalMenu = ({ scrollMenu }) => {
           </SubMenu> */}
           <SubMenu label='Candidates' icon={<i className='ri-home-smile-line' />}>
             <MenuItem href='/candidates/list'>list</MenuItem>
-            {/* <MenuItem href='/'>Analytics</MenuItem> */}
+          </SubMenu>
+          <SubMenu label='User' icon={<i className='ri-home-smile-line' />}>
+            <MenuItem href='/users/add'>Add User</MenuItem>
+            <MenuItem href='/users/list'>List</MenuItem>
+
           </SubMenu>
         </MenuSection>
         {/* <MenuSection label='Demo-Routes'>

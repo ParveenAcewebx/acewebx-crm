@@ -89,7 +89,7 @@ const FormInputFileUploaderSingle = ({ name, control, label, errors, className }
               </Typography>
               <Typography color='text.secondary'>Allowed: PDF, DOC, DOCX, JPG, PNG (max 2 MB)</Typography>
               {errors?.[name] && (
-                <Typography color='error' sx={{ mt: 1 }}>
+                <Typography className='!text-red-600' color='error' sx={{ mt: 1 }}>
                   {errors[name].message}
                 </Typography>
               )}

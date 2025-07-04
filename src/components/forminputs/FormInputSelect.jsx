@@ -2,7 +2,7 @@ import React from 'react'
 import { FormControl, InputLabel, Select, MenuItem, FormHelperText } from '@mui/material'
 import { Controller } from 'react-hook-form'
 
-const FormInputSelect = ({ name, control, label, options, errors, defaultValue }) => {
+const FormInputSelect = ({ name, control, label, options, errors, defaultValue,className }) => {
   const hasError = !!errors?.[name]
 
   return (
@@ -30,7 +30,7 @@ const FormInputSelect = ({ name, control, label, options, errors, defaultValue }
             label={label}
             value={field.value || ''}
             {...field}
-            className=''
+            className={className}
             sx={{
               // Black border
               '& .MuiOutlinedInput-notchedOutline': {

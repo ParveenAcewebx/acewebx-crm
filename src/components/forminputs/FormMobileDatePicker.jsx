@@ -4,14 +4,9 @@ import { FormControl } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import dayjs from 'dayjs'
 
-const FormDatePicker = ({
-  name,
-  control,
-  label,
-  defaultValue,
-  className,
-}) => {
+const FormDatePicker = ({ name, control, label, defaultValue, className, maxDate = '' }) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <FormControl fullWidth>
@@ -22,16 +17,19 @@ const FormDatePicker = ({
           render={({ field: { onChange, value, ref }, fieldState: { error } }) => (
             <DatePicker
               label={label}
-              value={value || null}
-              onChange={onChange}
+              value={value ? dayjs(value) : null}
+              onChange={date => {
+                onChange(date ? date.toISOString() : null)
+              }}
+              maxDate={maxDate ? dayjs(maxDate) : undefined}
               slotProps={{
                 textField: {
                   inputRef: ref,
                   fullWidth: true,
                   error: !!error,
                   helperText: error?.message,
-                  className: className,
-                },
+                  className: className
+                }
               }}
             />
           )}

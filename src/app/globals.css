@@ -130,7 +130,7 @@ code {
   color: #333;
 }
 .acewebx-logo {
-  padding-top: 30px;
+  padding-top: 10px;
 }
 .logo-ace-defferent img {
   width: 100%;
@@ -318,54 +318,26 @@ section.user-profile {
   color: gray;
 }
 
-/* .message-box {
-  height: 720px;
-  margin-top: 30px;
-  position: relative;
-}
-
-.mesaage-content {
-  background-color: #f5f0ff;
-  padding: 18px;
-  float: right;
-  border-right: 3px solid #8c57ff;
-  border-radius: 4px;
-  margin-bottom: 20px;
-  margin-left: 10rem;
-}
-
-.chat-input {
-  display: flex;
-  align-items: center;
-  background-color: #f5f5f5;
-  padding: 10px;
-  border-radius: 6px;
-  width: 100%;
-  max-width: 600px;
+.timestampedited {
   position: absolute;
-  bottom: 25px;
+  bottom: 4px;
+  left: 8px;
+  font-size: 0.75rem;
+  color: gray;
 }
-
-.chat-input input {
-  border: none;
-  outline: none;
-  flex-grow: 1;
-  background-color: transparent;
-  font-size: 14px;
-  color: #333;
-}
-
-.send-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding-left: 10px;
-}
-
-.send-button svg {
+.dont-edit {
+  border-radius: 50% !important;
+  position: absolute;
+  bottom: 87px;
+  left: 29px;
+  background-color: #dddddd !important;
+  color: #000 !important;
   width: 20px;
   height: 20px;
-} */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 .message-box {
   height: 720px;
@@ -450,13 +422,18 @@ section.user-profile {
   color: #333;
 }
 
-
-
-
-
 .MuiFormHelperText-root.Mui-error {
   color: red !important;
   font-size: 0.8rem;
 }
 
+/* Walk -in form css */
+.date-of-birth {
+  border: 0.2px solid #000;
+  border-radius: 4px;
+}
+
+.colum-box-bg-change {
+  background-color: #fff !important;
+}
 /* dahsboard main section css End  */

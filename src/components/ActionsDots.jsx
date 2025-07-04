@@ -2,24 +2,33 @@ import React from 'react'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import { Button, Menu, MenuItem } from '@mui/material'
 
-function ActionsDots() {
+function ActionsDots({ id, getByIdMsgHandler, deleteMsgHandler }) {
   const [anchorEl, setAnchorEl] = React.useState(null)
 
-  function handleClick(event) {
+  const handleClick = event => {
     setAnchorEl(event.currentTarget)
   }
 
-  function handleClose() {
+  const handleClose = () => {
     setAnchorEl(null)
   }
 
+  const handleEdit = () => {
+    getByIdMsgHandler(id)
+    handleClose()
+  }
+
+  const handleDelete = () => {
+    deleteMsgHandler(id)
+    handleClose()
+  }
+
   return (
-    <div>
+    <>
       <Button
-        aria-owns={anchorEl ? 'simple-menu' : undefined}
+        aria-controls={anchorEl ? 'simple-menu' : undefined}
         aria-haspopup='true'
         onClick={handleClick}
-        // onMouseEnter={handleClick}
       >
         <MoreVertIcon />
       </Button>
@@ -28,17 +37,15 @@ function ActionsDots() {
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
         onClose={handleClose}
-        // onMouseLeave={handleClose}
       >
-        <MenuItem onClick={handleClose}>
-          <Button style={{ color: 'green' }}> Edit</Button>
+        <MenuItem onClick={handleEdit}>
+          <span style={{ color: 'green' }}>Edit</span>
         </MenuItem>
-        <MenuItem onClick={handleClose}>
-          {' '}
-          <Button style={{ color: 'red' }}> Delete</Button>
+        <MenuItem onClick={handleDelete}>
+          <span style={{ color: 'red' }}>Delete</span>
         </MenuItem>
       </Menu>
-    </div>
+    </>
   )
 }
 
