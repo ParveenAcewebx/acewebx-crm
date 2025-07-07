@@ -9,6 +9,7 @@ import Candidate from '@/components/services/CandidateApi'
 import CandidateChart from '@/components/CadidateChart'
 import DocumentVeiw from '@/components/DocumentVeiw'
 import ChatCompo from '@/components/ChatCompo'
+import TitleForPage from '@/components/TitleForPage'
 
 function Page() {
   const router = useRouter()
@@ -50,6 +51,8 @@ function Page() {
 
   return (
     <div>
+      <TitleForPage title='Candidate Details' />
+
       <section className='first-row'>
         <div className='user-name'>
           <Typography variant='h1'>{candidateData?.name}</Typography>

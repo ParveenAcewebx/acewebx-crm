@@ -1,19 +1,18 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useRouter } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { Button } from '@mui/material'
 import FormInput from '@/components/FormInput'
-import FormInputSelect from '@/components/forminputs/FormInputSelect'
 import { errorMsg, successMsg } from '@/components/toaster/Toaster'
-import { designationOptions } from '@/components/constants/StaticData'
 import Loader from '@/components/Loader'
 import UsersApi from '@/components/services/UsersApi'
 import TitleForPage from '@/components/TitleForPage'
-import { UsersFormValidation } from '@/components/validations/UsersFormValidation'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { UsersFormValidation } from '@/components/validations/UsersFormValidation'
 
-function AddUser() {
+function EditUser() {
+  const { id } = useParams()
   const [loader, setLoader] = useState(false)
 
   const router = useRouter()
@@ -28,17 +27,17 @@ function AddUser() {
       name: '',
       email: '',
       phone: '',
-      password: '',
-      // role: '',
+      password: ''
+     
     },
     resolver: yupResolver(UsersFormValidation)
   })
 
-  const onSubmit = async data => {
+  const onSubmitUpdate = async data => {
     setLoader(true)
     try {
       // Submit via API
-      const response = await UsersApi.addUser(data)
+      const response = await UsersApi.editUser(id, data)
       if (response?.status) {
         successMsg('Candidate form submitted successfully!')
         reset()
@@ -48,19 +47,36 @@ function AddUser() {
       }
     } catch (error) {
       console.error('Submission Error:', error)
-      errorMsg(error?.message || 'Something went wrong while submitting the form.')
       setLoader(false)
+      errorMsg(error?.message || 'Something went wrong while submitting the form.')
     }
   }
 
+  const getUserDataById = async () => {
+    try {
+      // Submit via API
+      const response = await UsersApi.getByIdUser(id)
+      if (response?.status) {
+        reset(response?.data?.data)
+        setLoader(false)
+      }
+    } catch (error) {
+      console.error(' Error:', error)
+      setLoader(false)
+      errorMsg(error?.message || 'Something went wrong!')
+    }
+  }
+
+  useEffect(() => {
+    getUserDataById()
+  }, [id])
+
   return (
     <>
-      {/* <h2 className='text-2xl font-semibold text-gray-800 mb-6 walking items-right'></h2> */}
-      <TitleForPage title='Add User' />
-
-      <div className='min-h-screen flex flex-col items-right justify-start relative w-full '>
+      <TitleForPage title='Edit User' />
+      <div className='min-h-screen flex flex-col items-right justify-start relative w-full mobile-view'>
         <div className='bg-gradient-to-br from-[#8C57FF]-100 via-white to-[#8C57FF]-100 p-10 rounded-xl  w-full max-w-3xl z-10 border border-greed-100'>
-          <form encType='multipart/form-data' onSubmit={handleSubmit(onSubmit)}>
+          <form encType='multipart/form-data' onSubmit={handleSubmit(onSubmitUpdate)}>
             <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
               <FormInput
                 name='name'
@@ -96,16 +112,7 @@ function AddUser() {
                 inputType='tel'
               />
             </div>
-            {/* <div className='mt-6'>
-              <FormInput
-                className='colum-box-bg-change'
-                name='role'
-                label='Role'
-                control={control}
-                errors={errors}
-                inputType='number'
-              />
-            </div> */}
+
             {/* Navigation Buttons */}
             <div className={`flex mt-10 justify-end`}>
               <Button type='submit' variant='contained' className='!text-white bg-[#8C57FF]'>
@@ -114,9 +121,9 @@ function AddUser() {
             </div>
           </form>
         </div>
-      </div>
+      </div>{' '}
     </>
   )
 }
 
-export default AddUser
+export default EditUser

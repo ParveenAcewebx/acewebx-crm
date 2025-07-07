@@ -47,7 +47,7 @@ const VerticalMenu = ({ scrollMenu }) => {
         menuSectionStyles={menuSectionStyles(theme)}
       >
         {' '}
-        <MenuSection label='Working Routes'>
+        <MenuSection label=''>
           {/* <SubMenu label='Users' icon={<i className='ri-user-line' />}>
             <MenuItem href='/'>Add</MenuItem>
             <MenuItem href='/'>User List</MenuItem>
@@ -58,7 +58,6 @@ const VerticalMenu = ({ scrollMenu }) => {
           <SubMenu label='User' icon={<i className='ri-home-smile-line' />}>
             <MenuItem href='/users/add'>Add User</MenuItem>
             <MenuItem href='/users/list'>List</MenuItem>
-
           </SubMenu>
         </MenuSection>
         {/* <MenuSection label='Demo-Routes'>

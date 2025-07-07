@@ -12,8 +12,13 @@ const UsersApi = {
   getAllUsers: () => {
     return ApiClient.get(`auth/getAllUser`)
   },
-  deleteUser: (id, data) => {
+  deleteUser: id => {
     return ApiClient.delete(`auth/deleteUser/${id}`)
+  },
+  getUsersByFilter: data => {
+    return ApiClient.get(
+      `auth/getAllUser?page=${data?.page}&limit=${data?.limit}&name=${data?.name}&email=${data?.email}&currentSalary=${data?.currentSalary}`
+    )
   }
 }
 

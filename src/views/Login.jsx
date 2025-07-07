@@ -1,7 +1,7 @@
 'use client'
 
 // React Imports
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 // Next Imports
 import Link from 'next/link'
@@ -30,7 +30,7 @@ import themeConfig from '@configs/themeConfig'
 import { useImageVariant } from '@core/hooks/useImageVariant'
 import { useForm } from 'react-hook-form'
 import FormInput from '@/components/FormInput'
-import { signIn } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { CandidateLoginFormValidation } from '@/components/validations/LoginFormValidation'
 import { errorMsg, successMsg } from '@/components/toaster/Toaster'
@@ -40,6 +40,7 @@ const Login = ({ mode }) => {
   // States
   const [isPasswordShown, setIsPasswordShown] = useState(false)
   const [loader, setLoader] = useState(false)
+  const { data: session } = useSession()
   const {
     control,
     handleSubmit,
@@ -84,6 +85,11 @@ const Login = ({ mode }) => {
     // form.reset()
   }
 
+  useEffect(() => {
+    if (session?.user) {
+      router.push('/candidates/list')
+    }
+  }, [session])
   return (
     <>
       <div className='flex flex-col justify-center items-center min-bs-[100dvh] relative p-6'>
@@ -143,7 +149,7 @@ const Login = ({ mode }) => {
                   </Typography> */}
                 </div>
                 <Button fullWidth variant='contained' type='submit'>
-                {loader ? <Loader/> :  "Log In" }
+                  {loader ? <Loader /> : 'Log In'}
                 </Button>
               </form>
             </div>

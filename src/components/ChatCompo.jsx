@@ -82,9 +82,9 @@ function ChatCompo() {
     getAllChats()
   }, [])
 
-  useEffect(() => {
-    scrollToBottom()
-  }, [allChat])
+  // useEffect(() => {
+  //   scrollToBottom()
+  // }, [allChat])
 
   return (
     <Card className='message-box'>

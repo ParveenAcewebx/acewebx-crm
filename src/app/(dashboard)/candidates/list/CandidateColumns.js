@@ -3,8 +3,13 @@ import React from 'react'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 export const columns = (handleView, handleEdit, handleRemove) => {
   return [
-    { field: 'id', headerName: 'ID', width: 50 },
-    { field: 'name', headerName: 'Name', width: 110 },
+    {
+      field: 'id',
+      headerName: '#ID',
+      width: 70,
+      renderCell: (params) => `#${params.value}`,
+    },
+        { field: 'name', headerName: 'Name', width: 110 },
     {
       field: '_designationApplyingFor',
       headerName: 'Skill',
