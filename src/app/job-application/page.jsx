@@ -88,7 +88,8 @@ function WalkInForm() {
       })
 
       const response = await Candidate.addCandidate(formData)
-      if (response?.status) {
+
+      if (response?.status == true) {
         successMsg('Candidate form submitted successfully!')
         reset()
         setLoader(false)
