@@ -10,7 +10,7 @@ export const walkInFormDefaultValues = {
   currentSalary: '',
   expectedSalary: '',
   currentCompanyName: '',
-  noticePeriod: null,
+  noticePeriod: 0,
   reasonForChange: '',
   preferredShift: '',
   resume: ''
