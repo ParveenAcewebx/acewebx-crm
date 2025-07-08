@@ -6,7 +6,6 @@ import { ToastContainer } from 'react-toastify'
 
 const Layout = async ({ children }) => {
   const session = await getSession()
-
   // Vars
   const direction = 'ltr'
 

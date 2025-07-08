@@ -17,6 +17,7 @@ const FormDatePicker = ({ name, control, label, defaultValue, className, maxDate
           render={({ field: { onChange, value, ref }, fieldState: { error } }) => (
             <DatePicker
               label={label}
+              className={className}
               value={value ? dayjs(value) : null}
               onChange={date => {
                 onChange(date ? date.toISOString() : null)
@@ -27,8 +28,7 @@ const FormDatePicker = ({ name, control, label, defaultValue, className, maxDate
                   inputRef: ref,
                   fullWidth: true,
                   error: !!error,
-                  helperText: error?.message,
-                  className: className
+                  helperText: error?.message
                 }
               }}
             />

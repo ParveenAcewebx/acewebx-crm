@@ -10,7 +10,6 @@ import { useSession } from 'next-auth/react'
 
 const BlankLayout = ({ children }) => {
   const session = useSession()
-  console.log("session",session)
   return (
     <div className={classnames(blankLayoutClasses.root, 'is-full bs-full')}>
       <AuthProvider session={session}>

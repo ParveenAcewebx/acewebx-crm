@@ -1,6 +1,6 @@
 
 import React from 'react'
-import WalkInForm from './walk-in/page'
+import WalkInForm from './job-application/page'
 
 function Home() {
   return (

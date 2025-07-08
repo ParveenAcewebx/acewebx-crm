@@ -4,13 +4,23 @@ import React from 'react'
 
 const ThankYouPage = () => {
   return (
-    <div className='min-h-screen flex flex-col items-center justify-start bg-white relative ace-wrp'>
+    <div
+      className='min-h-screen flex flex-col items-center justify-start bg-white relative ace-wrp'
+      role='img'
+      aria-label='Left Background'
+      style={{
+        backgroundImage: "url('/images/backgroud-ace.png')",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        margin: 0
+      }}
+    >
       {/* Honeycomb Background Pattern */}
       <div className="absolute inset-0 bg-[url('/background-honeycomb.png')] opacity-10 bg-repeat" />
 
       {/* Left & Right Background Images */}
-      <img src='/backgroud-ace.png' alt='Left Background' className='absolute left-0 bottom-0 h-full  z-0 bg-cover
-bg-no-repeat w-full' />
+      {/* <img src='/backgroud-ace.png' alt='Left Background' className='absolute left-0 bottom-0 h-full  z-0 bg-cover
+bg-no-repeat w-full' /> */}
 
       {/* Logo */}
       <div className=' text-center z-10 acewebx-logo'>

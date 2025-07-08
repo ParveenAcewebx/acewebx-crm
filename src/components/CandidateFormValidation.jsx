@@ -43,25 +43,14 @@ export const CandidateFormValidation = Yup.object().shape({
     .required('Resume is required')
     .test('fileExists', 'Resume is required', value => {
       return value instanceof File || (value && value.length > 0)
+    })
+    .test('fileSize', 'File size must be less than or equal to 15 MB', value => {
+      if (!value) return true // already handled by required
+      const file = value instanceof File ? value : value[0]
+      return file?.size <= 15 * 1024 * 1024 // 15 MB in bytes
     }),
+
   recaptcha: Yup.string().required('Captcha is required')
 
-  // reference1Name: Yup.string().required('Reference 1 Name is required'),
-
-  // reference1ContactNumber: Yup.string()
-  //   .required('Reference 1 Contact Number is required')
-  //   .matches(/^[0-9]{6,15}$/, 'Contact number must be between 6 and 15 digits'),
-
-  // reference1Designation: Yup.string().required('Reference 1 Designation is required'),
-
-  // reference1Experience: Yup.string().required('Reference 1 Experience is required'),
-  // reference2Name: Yup.string().required('Reference 2 Name is required'),
-
-  // reference2ContactNumber: Yup.string()
-  //   .required('Reference 2 Contact Number is required')
-  //   .matches(/^[0-9]{6,15}$/, 'Contact number must be between 6 and 15 digits'),
-
-  // reference2Designation: Yup.string().required('Reference 2 Designation is required'),
-
-  // reference2Experience: Yup.string().required('Reference 2 Experience is required')
+  
 })

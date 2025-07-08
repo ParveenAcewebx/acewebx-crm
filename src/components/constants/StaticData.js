@@ -10,44 +10,31 @@ export const walkInFormDefaultValues = {
   currentSalary: '',
   expectedSalary: '',
   currentCompanyName: '',
-  noticePeriod: '',
+  noticePeriod: null,
   reasonForChange: '',
   preferredShift: '',
-  source: '',
-  resume: '',
-  reference1Name: '',
-  reference1ContactNumber: '',
-  reference1Designation: '',
-  reference1Experience: '',
-  reference2Name: '',
-  reference2ContactNumber: '',
-  reference2Designation: '',
-  reference2Experience: ''
+  resume: ''
 }
 
 export const experienceOptions = [
-  
-    { label: 'Fresher', value: 'fresher' },
-    { label: '6 Months', value: '6 months' },
-    { label: '1+ Years', value: '1 plus years' },
-    { label: '2+ Years', value: '2 plus years' },
-    { label: '3+ Years', value: '3 plus years' },
-    { label: '4+ Years', value: '4 plus years' },
-    { label: '5+ Years', value: '5 plus years' },
-    { label: '6+ Years', value: '6 plus years' },
-    { label: '7+ Years', value: '7 plus years' },
-    { label: '8+ Years', value: '8 plus years' },
-    { label: '9+ Years', value: '9 plus years' },
-    { label: '10+ Years', value: '10 plus years' }
-  
+  { label: 'Fresher', value: 'fresher' },
+  { label: '6 Months', value: '6 months' },
+  { label: '1+ Years', value: '1 plus years' },
+  { label: '2+ Years', value: '2 plus years' },
+  { label: '3+ Years', value: '3 plus years' },
+  { label: '4+ Years', value: '4 plus years' },
+  { label: '5+ Years', value: '5 plus years' },
+  { label: '6+ Years', value: '6 plus years' },
+  { label: '7+ Years', value: '7 plus years' },
+  { label: '8+ Years', value: '8 plus years' },
+  { label: '9+ Years', value: '9 plus years' },
+  { label: '10+ Years', value: '10 plus years' }
 ]
-
 
 export const GenderData = [
   { label: 'Male', value: 'male' },
   { label: 'Female', value: 'female' },
   { label: 'Others', value: 'others' }
-
 ]
 export const totalExperienceOptions = [
   { label: 'Fresher', value: 'fresher' },

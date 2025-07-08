@@ -50,7 +50,7 @@ export default function DataTable() {
     fetchCandidateList(paginationModel.page, paginationModel.pageSize)
   }, [paginationModel.page, paginationModel.pageSize])
 
-  const handleView = row => router.push(`/candidates/view/${row?.id}`)
+  const handleView = row => router.push(`/admin/candidates/view/${row?.id}`)
 
   const handleEdit = () => alert('Edit clicked')
   const handleRemove = () => alert('Delete clicked')

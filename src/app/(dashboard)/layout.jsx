@@ -9,17 +9,16 @@ import Navbar from '@components/layout/vertical/Navbar'
 import VerticalFooter from '@components/layout/vertical/Footer'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import AuthProvider from '@/@core/SessionProvider'
+import { redirect } from 'next/navigation'
 
 const Layout = async ({ children }) => {
   const session = await getServerSession(authOptions)
   if (!session?.user) {
-    // redirect('/login')
+    redirect('/login')
   }
 
   // Vars
   const direction = 'ltr'
-
   return (
     <Providers direction={direction}>
       <LayoutWrapper

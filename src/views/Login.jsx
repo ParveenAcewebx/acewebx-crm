@@ -68,7 +68,7 @@ const Login = ({ mode }) => {
     if (signInResponse?.status === 200) {
       successMsg('Login sucussfuly')
       // setLoader(false)
-      router.push('/candidates/list')
+      router.push('/admin/candidates/list')
     }
     if (signInResponse?.status === 401) {
       errorMsg('Invalid email or password')
@@ -87,9 +87,10 @@ const Login = ({ mode }) => {
 
   useEffect(() => {
     if (session?.user) {
-      router.push('/candidates/list')
+      router.push('/admin/candidates/list')
     }
   }, [session])
+
   return (
     <>
       <div className='flex flex-col justify-center items-center min-bs-[100dvh] relative p-6'>

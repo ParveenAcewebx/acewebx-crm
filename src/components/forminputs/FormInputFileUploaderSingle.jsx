@@ -32,7 +32,7 @@ const FormInputFileUploaderSingle = ({ name, control, label, errors, className }
 
       const { getRootProps, getInputProps } = useDropzone({
         multiple: false,
-        maxSize: 2 * 1024 * 1024, // 2MB
+        maxSize: 15 * 1024 * 1024, // 15 MB
         accept: {
           'image/*': ['.png', '.jpg', '.jpeg', '.gif'],
           'application/pdf': ['.pdf'],
@@ -40,7 +40,7 @@ const FormInputFileUploaderSingle = ({ name, control, label, errors, className }
         },
         onDrop,
         onDropRejected: () => {
-          toast.error('Only 1 file allowed. Max size 2 MB.', {
+          toast.error('Only 1 file allowed. Max size 15 MB.', {
             autoClose: 3000
           })
         }

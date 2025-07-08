@@ -17,17 +17,18 @@ export default function FormInput({
   const hasError = !!errors?.[name];
 
   return (
-    <FormControl fullWidth className={className} error={hasError}>
+    <FormControl fullWidth  error={hasError}>
       <Controller
         name={name}
         control={control}
-        defaultValue={defaultValue || ""}
+        defaultValue={defaultValue || null}
         render={({ field }) => (
           <TextField
             {...field}
             fullWidth
             type={inputType || "text"}
             label={label}
+            className={className}
             error={hasError}
             InputProps={{
               inputProps: { min: min || 0 },
@@ -57,7 +58,7 @@ export default function FormInput({
         )}
       />
       {hasError && (
-        <FormHelperText sx={{ color: '#f44336', fontSize: '0.8rem' }}>
+        <FormHelperText sx={{ color: '#d32f2f', fontSize: '0.8rem' }}>
           {errors[name]?.message}
         </FormHelperText>
       )}

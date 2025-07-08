@@ -16,7 +16,7 @@ export default function PhoneMaskInput({
   const isPhone = inputType === 'tel' || inputType === 'telephone';
 
   return (
-    <FormControl fullWidth className={className} error={hasError}>
+    <FormControl fullWidth  error={hasError}>
       <Controller
         name={name}
         control={control}
@@ -25,26 +25,43 @@ export default function PhoneMaskInput({
           isPhone ? (
             <InputMask
               {...field}
+              className={className}
               mask="+91 99999 99999"
               maskChar=""
               value={field.value || '+91 '}
               onChange={(e) => {
-                // Prevent user from deleting "+91"
                 if (!e.target.value.startsWith('+91')) return;
                 field.onChange(e);
               }}
               onKeyDown={(e) => {
                 const input = e.target;
                 const caretPos = input.selectionStart;
+                const selectionLength = input.selectionEnd - input.selectionStart;
 
-                // Prevent backspace in the "+91 " area (first 4 chars)
-                if (
-                  e.key === 'Backspace' &&
-                  caretPos !== null &&
-                  caretPos <= 4
-                ) {
+                // ❌ Prevent backspace in +91 area
+                if (e.key === 'Backspace' && caretPos <= 4 && selectionLength === 0) {
                   e.preventDefault();
                 }
+
+                // ❌ Prevent delete over +91
+                if (e.key === 'Delete' && caretPos < 4) {
+                  e.preventDefault();
+                }
+              }}
+              onMouseUp={(e) => {
+                const input = e.target;
+                // ❌ Don't allow selecting into +91
+                if (input.selectionStart < 4) {
+                  input.setSelectionRange(4, 4);
+                }
+              }}
+              onFocus={(e) => {
+                // 🧠 Auto-place cursor after +91
+                setTimeout(() => {
+                  if (e.target.selectionStart < 4) {
+                    e.target.setSelectionRange(4, 4);
+                  }
+                }, 0);
               }}
             >
               {(inputProps) => (
