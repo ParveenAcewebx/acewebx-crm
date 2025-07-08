@@ -21,9 +21,9 @@ const VerticalLayout = async props => {
         {navbar || null}
         {/* Content */}
         <LayoutContent>
-          {/* <AuthProvider session={session}> */}
+          <AuthProvider session={session}>
             {children}
-            {/* </AuthProvider> */}
+            </AuthProvider>
         </LayoutContent>
         {footer || null}
       </div>

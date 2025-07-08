@@ -15,7 +15,6 @@ const RootLayout = ({ children }) => {
   const direction = 'ltr'
 
   return (
-    
     <html lang='en' id='__next' dir={direction}>
       {' '}
       <head>
@@ -25,7 +24,12 @@ const RootLayout = ({ children }) => {
           content='Develop next-level web apps with Materio Dashboard Free - NextJS. Now, updated with lightning-fast routing powered by MUI and App router.'
         />
       </head>
-      <body className={`${poppins.className} flex is-full min-bs-full flex-auto flex-col`}>{children}</body>
+      <body
+        className={`${poppins.className} flex flex-col flex-auto min-h-screen w-full`}
+       
+      >
+        {children}
+      </body>
     </html>
   )
 }

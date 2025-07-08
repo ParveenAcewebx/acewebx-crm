@@ -15,8 +15,11 @@ import UserDropdown from '@components/layout/shared/UserDropdown'
 
 // Util Imports
 import { verticalLayoutClasses } from '@layouts/utils/layoutClasses'
+import AuthProvider from '@/@core/SessionProvider'
+import { getSession } from 'next-auth/react'
 
-const NavbarContent = () => {
+const NavbarContent = async() => {
+  const session = await getSession()
   return (
     <div className={classnames(verticalLayoutClasses.navbarContent, 'flex items-center justify-between gap-4 is-full')}>
       <div className='flex items-center gap-2 sm:gap-4'>
@@ -25,7 +28,9 @@ const NavbarContent = () => {
       </div>
       <div className='flex items-center'>
         <ModeDropdown />
-        <UserDropdown />
+        <AuthProvider session={session}>
+          <UserDropdown />
+        </AuthProvider>
       </div>
     </div>
   )

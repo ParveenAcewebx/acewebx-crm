@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation'
 import FormInput from '@/components/FormInput'
 import { useForm } from 'react-hook-form'
 import { Button } from '@mui/material'
-import { useSession } from 'next-auth/react'
+// import { useSession } from 'next-auth/react'
 import AddvanceCandiateFilter from '@/components/filters/AddvanceCandiateFilter'
 import { SearchIcon } from 'lucide-react'
 import Loader from '@/components/Loader'
@@ -28,7 +28,7 @@ export default function DataTable() {
 
   const router = useRouter()
   const form = useForm()
-  const session = useSession()
+  // const session = useSession()
 
   const fetchCandidateList = async (page = 0, pageSize = 10) => {
     setLoader(true)
@@ -125,7 +125,7 @@ export default function DataTable() {
     <>
       {/* Header Section */}
       <div className='flex justify-between items-center bg-white px-6 py-4 rounded-t-xl shadow-sm mb-4'>
-        <h2 className='text-2xl font-semibold text-gray-800'>Candidate List</h2>
+        <h2 className='text-2xl font-semibold text-[#8c57ff]'>Candidate List</h2>
 
         <Button
           variant='contained'
@@ -138,7 +138,7 @@ export default function DataTable() {
       </div>
 
       {/* Filter Form Section */}
-      <div className='bg-white  py-5 '>
+      <div className='bg-white  py-5 px-5 '>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className='grid grid-cols-1 md:grid-cols-4 gap-4'>
             <FormInput name='name' label='Name' control={form.control} errors={form.errors} inputType='text' />
@@ -163,7 +163,7 @@ export default function DataTable() {
 
       {/* Data Grid */}
 
-      <Paper sx={{ height: '100%', width: '100%', borderRadius: '12px', overflow: 'hidden' }}>
+      <Paper sx={{ height: '75%', width: '100%', borderRadius: '12px', overflow: 'hidden' }}>
         {loader ? (
           <div className='mt-36 px-96'>
             <Loader />

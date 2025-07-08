@@ -28,7 +28,6 @@ function EditUser() {
       email: '',
       phone: '',
       password: ''
-     
     },
     resolver: yupResolver(UsersFormValidation)
   })

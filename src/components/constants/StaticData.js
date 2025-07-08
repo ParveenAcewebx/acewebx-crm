@@ -66,7 +66,6 @@ export const totalExperienceOptions = [
 
 export const designationOptions = [
   { label: 'Software Developer', value: 'software developer' },
-  { label: 'Software Developer', value: 'software developer' },
   { label: 'Frontend Developer', value: 'frontend developer' },
   { label: 'Backend Developer', value: 'backend developer' },
   { label: 'Full Stack Developer', value: 'full stack developer' },

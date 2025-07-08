@@ -28,7 +28,7 @@ function AddUser() {
       name: '',
       email: '',
       phone: '',
-      password: '',
+      password: ''
       // role: '',
     },
     resolver: yupResolver(UsersFormValidation)
@@ -59,7 +59,7 @@ function AddUser() {
       <TitleForPage title='Add User' />
 
       <div className='min-h-screen flex flex-col items-right justify-start relative w-full '>
-        <div className='bg-gradient-to-br from-[#8C57FF]-100 via-white to-[#8C57FF]-100 p-10 rounded-xl  w-full max-w-3xl z-10 border border-greed-100'>
+        <div className='bg-white p-10 rounded-xl  w-full max-w-8xl z-10 border border-greed-100'>
           <form encType='multipart/form-data' onSubmit={handleSubmit(onSubmit)}>
             <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
               <FormInput

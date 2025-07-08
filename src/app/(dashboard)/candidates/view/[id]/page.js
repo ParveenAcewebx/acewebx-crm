@@ -155,51 +155,24 @@ function Page() {
                 </div>
               </CardContent>
             </Card>
-
-            <div className='slaery-right-boxes'>
-              <Card className='box'>
-                <CardContent>
-                  <img src='/images/pages/company.png' alt='trophy image' height={60} className='' />
-                  <div>
-                    <Typography>Last/Current Company Name</Typography>
-                    <Typography variant='h4'>{candidateData?.meta?._currentCompanyName}</Typography>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className='box'>
-                <CardContent>
-                  <img src='/images/pages/vacancy.png' alt='trophy image' height={60} className='' />
-                  <div>
-                    <Typography>How did you hear about this vacancy?</Typography>
-                    <Typography variant='h4'>{candidateData?.meta?._source}</Typography>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
           </div>
-
-          <div className='Reference'>
-            <Card>
+          <div className='slaery-right-boxes'>
+            <Card className='box'>
               <CardContent>
+                <img src='/images/pages/company.png' alt='trophy image' height={60} className='' />
                 <div>
-                  <Typography>Reference 1 </Typography>
-                  <div className='refrence-inner'>
-                    <Typography variant='h4'>{candidateData?.meta?._referenceName}</Typography>
-                    <Typography variant='h4'>{candidateData?.meta?._referenceContactNumber}</Typography>
-                    <Typography variant='h4'>{candidateData?.meta?._referenceDesignation}</Typography>
-                    <Typography variant='h4'>{candidateData?.meta?._referenceExperience}</Typography>
-                  </div>
+                  <Typography>Last/Current Company Name</Typography>
+                  <Typography variant='h4'>{candidateData?.meta?._currentCompanyName}</Typography>
                 </div>
+              </CardContent>
+            </Card>
 
-                <div className='reffrence-outer'>
-                  <Typography>Reference 2 </Typography>
-                  <div className='refrence-inner'>
-                    <Typography variant='h4'>{candidateData?.meta?._referenceName}</Typography>
-                    <Typography variant='h4'>{candidateData?.meta?._referenceContactNumber}</Typography>
-                    <Typography variant='h4'>{candidateData?.meta?._referenceDesignation}</Typography>
-                    <Typography variant='h4'>{candidateData?.meta?._referenceExperience}</Typography>
-                  </div>
+            <Card className='box'>
+              <CardContent>
+                <img src='/images/pages/vacancy.png' alt='trophy image' height={60} className='' />
+                <div>
+                  <Typography>How did you hear about this vacancy?</Typography>
+                  <Typography variant='h4'>{candidateData?.meta?._source}</Typography>
                 </div>
               </CardContent>
             </Card>
@@ -229,6 +202,32 @@ function Page() {
           <ChatCompo />
         </div>
       </section>
+
+      <div className='Reference'>
+        <Card>
+          <CardContent>
+            <div>
+              <Typography>Reference 1 </Typography>
+              <div className='refrence-inner'>
+                <Typography variant='h4'>{candidateData?.meta?._referenceName}</Typography>
+                <Typography variant='h4'>{candidateData?.meta?._referenceContactNumber}</Typography>
+                <Typography variant='h4'>{candidateData?.meta?._referenceDesignation}</Typography>
+                <Typography variant='h4'>{candidateData?.meta?._referenceExperience}</Typography>
+              </div>
+            </div>
+
+            <div className='reffrence-outer'>
+              <Typography>Reference 2 </Typography>
+              <div className='refrence-inner'>
+                <Typography variant='h4'>{candidateData?.meta?._referenceName}</Typography>
+                <Typography variant='h4'>{candidateData?.meta?._referenceContactNumber}</Typography>
+                <Typography variant='h4'>{candidateData?.meta?._referenceDesignation}</Typography>
+                <Typography variant='h4'>{candidateData?.meta?._referenceExperience}</Typography>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
 
       <DocumentVeiw
         candidateUrl={candidateUrl}

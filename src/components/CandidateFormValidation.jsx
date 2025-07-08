@@ -17,8 +17,11 @@ export const CandidateFormValidation = Yup.object().shape({
   gender: Yup.string().required('Gender is required'),
 
   phone: Yup.string()
+    .transform(
+      value => value?.replace(/\+91\s?|\s+/g, '') // remove +91 and all spaces
+    )
     .required('Contact number is required')
-    .matches(/^[6-7-9][0-9]{9}$/, 'Enter a valid 10-digit mobile number starting with 6-7–9'),
+    .matches(/^[6-9]\d{9}$/, 'Enter a valid 10-digit mobile number starting with 6-9'),
 
   currentLocation: Yup.string().required('Current Location is required'),
 
@@ -32,13 +35,10 @@ export const CandidateFormValidation = Yup.object().shape({
 
   currentCompanyName: Yup.string().required('Company name is required'),
 
-  noticePeriod: Yup.number().required('Notice Period is required'),
-
   reasonForChange: Yup.string().required('Reason for Change is required'),
 
   preferredShift: Yup.string().required('Preferred Shift is required'),
 
-  source: Yup.string().required('Source is required'),
   resume: Yup.mixed()
     .required('Resume is required')
     .test('fileExists', 'Resume is required', value => {

@@ -193,7 +193,7 @@ section.first-row {
 }
 
 .user-name h1 {
-  color: #8c57ff;
+  color: #333;
   font-size: 24px;
   line-height: 36px;
   font-weight: 700;
@@ -237,7 +237,7 @@ section.user-profile {
 }
 
 .left-iteam .salery-box {
-  width: 90%;
+  width: 97%;
   text-align: center;
   max-height: 382px !important;
 }
@@ -245,10 +245,16 @@ section.user-profile {
   margin-top: 30px;
   display: flex;
   gap: 20px;
+  width: 100%;
+  margin-bottom: 30px;
+}
+.slaery-right-boxes {
+  width: 97%;
+  display: flex;
+  gap: 20px;
 }
 .slaery-right-boxes .box {
   margin-bottom: 12px !important;
-  margin-right: 30px;
 }
 .salery-content {
   border: 1px solid #dfdfdf;
@@ -257,15 +263,16 @@ section.user-profile {
   display: flex;
   align-items: center;
   gap: 10px;
+  width: 50%;
 }
 .salery-outer {
   display: flex;
   gap: 10px;
   margin-top: 20px;
 }
-
+/* Reference css start */
 .Reference {
-  width: 96%;
+  width: 100%;
   margin-top: 20px;
 }
 
@@ -283,6 +290,7 @@ section.user-profile {
 .reffrence-outer {
   margin-top: 25px;
 }
+/* right-bar css satrt */
 
 .right-iteam {
   width: 50%;
@@ -304,6 +312,7 @@ section.user-profile {
   border: 1px solid #dfdfdf;
   height: 105px;
   padding: 10px 0 0 20px;
+  width: 99%;
 }
 .message-content {
   position: relative;
@@ -340,7 +349,7 @@ section.user-profile {
 }
 
 .message-box {
-  height: 720px;
+  height: 727px;
   margin-top: 30px;
   position: relative;
   display: flex;
@@ -436,4 +445,20 @@ section.user-profile {
 .colum-box-bg-change {
   background-color: #fff !important;
 }
+
+.tittle-bg {
+  background-color: #fff;
+  border: 1px solid rgb(219 203 255);
+  padding: 10px;
+  padding-left: 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+.tittle-bg h2 {
+  color: #8c57ff;
+}
+.main-bg {
+  background-color: #eee7ff;
+}
+
 /* dahsboard main section css End  */

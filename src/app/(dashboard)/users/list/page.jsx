@@ -112,7 +112,7 @@ export default function DataTable() {
 
       {/* Data Grid */}
 
-      <Paper sx={{ height: '100%', width: '100%', borderRadius: '12px', overflow: 'hidden' }}>
+      <Paper sx={{ height: '75%', width: '100%', borderRadius: '12px', overflow: 'hidden' }}>
         {loader ? (
           <div className='mt-36 px-96'>
             <Loader />
