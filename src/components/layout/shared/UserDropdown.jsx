@@ -47,15 +47,16 @@ const UserDropdown = () => {
   }
 
   const handleDropdownClose = (event, url) => {
+    setOpen(false)
+  }
+
+  const handleLogOut = () => {
     signOut({
       redirect: false
     }).then(() => {
       router.push('/login')
     })
-
-    setOpen(false)
   }
-
   return (
     <>
       <AuthProvider session={session}>
@@ -110,7 +111,7 @@ const UserDropdown = () => {
                         color='error'
                         size='small'
                         endIcon={<i className='ri-logout-box-r-line' />}
-                        onClick={e => handleDropdownClose(e, '/login')}
+                        onClick={handleLogOut}
                         sx={{ '& .MuiButton-endIcon': { marginInlineStart: 1.5 } }}
                       >
                         Logout

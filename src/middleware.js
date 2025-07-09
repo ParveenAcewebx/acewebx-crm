@@ -5,7 +5,6 @@ const PUBLIC_ROUTES = ['/login', '/register', '/about', '/', '/thankyou']
 export function middleware(request) {
   const { pathname } = request.nextUrl
   const token = request.cookies.get('next-auth.session-token')?.value
-  console.log('token:----', token)
 
   // Redirect authenticated users away from login/register
   if (token && (pathname === '/login' || pathname === '/register')) {
