@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import * as Yup from 'yup'
 
-export const CandidateFormValidation = Yup.object().shape({
+export const  CandidateFormValidation = Yup.object().shape({
   name: Yup.string()
     .required('Full Name is required')
     .min(3, 'Minimum 3 characters are required')

@@ -34,9 +34,7 @@ const FormInputFileUploaderSingle = ({ name, control, label, errors, className }
         multiple: false,
         maxSize: 15 * 1024 * 1024, // 15 MB
         accept: {
-          'image/*': ['.png', '.jpg', '.jpeg', '.gif'],
           'application/pdf': ['.pdf'],
-          'application/msword': ['.doc', '.docx']
         },
         onDrop,
         onDropRejected: () => {
@@ -87,7 +85,7 @@ const FormInputFileUploaderSingle = ({ name, control, label, errors, className }
               <Typography variant='h6' className='mbe-2.5'>
                 {label || 'Drop a file here or click to upload.'}
               </Typography>
-              <Typography color='text.secondary'>Allowed: PDF, DOC, DOCX, JPG, PNG (max 2 MB)</Typography>
+              <Typography color='text.secondary'>Allowed: PDF (max 15 MB)</Typography>
               {errors?.[name] && (
                 <Typography className='!text-red-600' color='error' sx={{ mt: 1 }}>
                   {errors[name].message}

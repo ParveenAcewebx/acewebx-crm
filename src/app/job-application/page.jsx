@@ -28,7 +28,7 @@ function WalkInForm() {
   const [step, setStep] = useState(0)
   const [loader, setLoader] = useState(false)
   const [recaptcha, setRecaptcha] = useState([])
-
+  const [submitAddValidation, setSubmitAddValidation] = useState(false)
   const router = useRouter()
   const {
     control,
@@ -37,11 +37,12 @@ function WalkInForm() {
     reset,
     watch,
     setValue,
-    trigger
+    trigger,
+    unregister
   } = useForm({
     mode: 'onChange',
     defaultValues: walkInFormDefaultValues,
-    resolver: yupResolver(CandidateFormValidation)
+    resolver: step === 1 && !submitAddValidation ? undefined : yupResolver(CandidateFormValidation)
   })
 
   const stepFields = [
@@ -63,16 +64,26 @@ function WalkInForm() {
   }
 
   const nextStep = async () => {
-    const valid = await trigger(stepFields[step])
-    if (valid) {
-      setStep(prev => Math.min(prev + 1, 2))
+    const isStepValid = await trigger(stepFields[step])
+    if (isStepValid) {
+      setStep(prev => prev + 1)
+      setLoader(false)
     }
   }
 
-  const prevStep = () => setStep(prev => Math.max(prev - 1, 0))
+  const prevStep = () => {
+    setStep(prev => Math.max(prev - 1, 0))
+    setSubmitAddValidation(false)
+    setLoader(false)
+    unregister('recaptcha', { keepError: false })
+  }
   const reValue = watch('recaptcha')
 
   const onSubmit = async data => {
+    setSubmitAddValidation(true)
+    if (data?.currentSalary == '') {
+      return
+    }
     setLoader(true)
     try {
       const formData = new FormData()
@@ -88,7 +99,6 @@ function WalkInForm() {
       })
 
       const response = await Candidate.addCandidate(formData)
-      console.log('response', response)
       if (response?.data?.status == true) {
         successMsg('Candidate form submitted successfully!')
         reset()
@@ -101,7 +111,6 @@ function WalkInForm() {
       errorMsg(error?.message || 'Something went wrong while submitting the form.')
     }
   }
-
   return (
     <div
       className='min-h-screen flex flex-col items-center justify-start bg-white relative w-full mobile-view'
@@ -121,7 +130,7 @@ function WalkInForm() {
         <p className='text-sm text-gray-500 mb-4'>Step {step + 1} of 2</p>
 
         <form encType='multipart/form-data' onSubmit={handleSubmit(onSubmit)}>
-          {/* Step 1: Personal Info */}
+          {/* Step 0: Personal Info */}
           {step === 0 && (
             <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
               <FormInput
@@ -192,7 +201,7 @@ function WalkInForm() {
             </div>
           )}
 
-          {/* Step 2: Job Details */}
+          {/* Step 1: Job Details */}
           {step === 1 && (
             <>
               <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mb-4'>
