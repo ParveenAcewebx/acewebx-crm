@@ -46,17 +46,16 @@ const Illustrations = props => {
         ) : (
           image1
         )}
-        {typeof maskImg === 'undefined' || isImageObj(maskImg) ? (
-          <MaskImg
-            alt={maskImg?.alt || 'mask'}
-            src={maskImg?.src || maskBackground}
-            className={maskImg?.className}
-            width={maskImg?.width}
-            height={maskImg?.height}
-          />
-        ) : (
-          maskImg
-        )}
+        {typeof maskImg === 'undefined' || isImageObj(maskImg)
+          ? ''
+          : // <MaskImg
+            //   alt={maskImg?.alt || 'mask'}
+            //   src={maskImg?.src || maskBackground}
+            //   className={maskImg?.className}
+            //   width={maskImg?.width}
+            //   height={maskImg?.height}
+            // />
+            maskImg}
         {typeof image2 === 'undefined' || isImageObj(image2) ? (
           <img
             alt={image2?.alt || 'tree-2'}
