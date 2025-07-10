@@ -155,7 +155,7 @@ function WalkInForm() {
                 control={control}
                 inputFormat='YYYY-MM-DD'
                 errors={errors}
-                className='colum-box-bg-change'
+                className='datepickerouter'
                 maxDate={dayjs('2005-12-31')}
               />
               <FormInputSelect
