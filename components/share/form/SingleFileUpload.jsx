@@ -1,0 +1,104 @@
+
+'use client'
+
+import { X } from 'lucide-react'
+import { useCallback } from 'react'
+import { useDropzone } from 'react-dropzone'
+import { Controller } from 'react-hook-form'
+
+const FormInputFileUploaderSingle = ({
+  name,
+  control,
+  label,
+  errors,
+  className = ''
+}) => {
+  const renderDropzone = useCallback(
+    field => {
+      const { onChange, value } = field
+
+      const onDrop = acceptedFiles => {
+        const file = acceptedFiles[0]
+        if (file) {
+          onChange(file)
+        }
+      }
+
+      const handleRemove = () => {
+        onChange(null)
+      }
+
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const { getRootProps, getInputProps } = useDropzone({
+        multiple: false,
+        maxSize: 15 * 1024 * 1024, // 15 MB
+        accept: {
+          'application/pdf': ['.pdf']
+        },
+        onDrop,
+        onDropRejected: () => {
+          console.error('Only PDF file allowed. Max size 15 MB.')
+        }
+      })
+
+      const renderPreview = file => {
+        if (!file) return null
+
+        return (
+          <div className='mt-4 flex items-center justify-between rounded-md border bg-gray-50 p-3'>
+            <div className='flex items-center gap-3'>
+              <i className='ri-file-text-line text-2xl text-gray-700' />
+              <div>
+                <p className='text-sm font-medium'>{file.name}</p>
+                <p className='text-xs text-gray-500'>
+                  {(file.size / 1024).toFixed(1)} KB
+                </p>
+              </div>
+            </div>
+            <button
+              type='button'
+              onClick={handleRemove}
+              className='text-red-600 hover:text-red-800'
+            >
+              <X className='h-4 w-4' />
+            </button>
+          </div>
+        )
+      }
+
+      return (
+        <div>
+          <div
+            {...getRootProps()}
+            className={`mt-6 flex cursor-pointer flex-col items-center justify-center space-y-3 rounded-md border-2 border-dashed border-gray-300 p-6 text-center transition hover:bg-gray-50 ${className}`}
+          >
+            <input {...getInputProps()} />
+            <div className='flex h-12 w-12 items-center justify-center rounded-md bg-gray-300'>
+              <i class='ri-arrow-up-long-line'></i>{' '}
+            </div>{' '}
+            <p className='text-base font-medium text-gray-800'>
+              {label || 'Drop Resume here or click to upload.'}
+            </p>
+            <p className='text-sm text-gray-500'>Allowed: PDF (max 15 MB)</p>
+            {errors?.[name] && (
+              <p className='text-sm text-red-600'>{errors[name]?.message}</p>
+            )}
+          </div>
+          {value && renderPreview(value)}
+        </div>
+      )
+    },
+    [errors, label, name]
+  )
+
+  return (
+    <Controller
+      name={name}
+      control={control}
+      defaultValue={null}
+      render={({ field }) => renderDropzone(field)}
+    />
+  )
+}
+
+export default FormInputFileUploaderSingle
