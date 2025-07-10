@@ -30,7 +30,7 @@ import themeConfig from '@configs/themeConfig'
 import { useImageVariant } from '@core/hooks/useImageVariant'
 import { useForm } from 'react-hook-form'
 import FormInput from '@/components/FormInput'
-import { signIn, useSession } from 'next-auth/react'
+import { signIn } from 'next-auth/react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { CandidateLoginFormValidation } from '@/components/validations/LoginFormValidation'
 import { errorMsg, successMsg } from '@/components/toaster/Toaster'
@@ -40,7 +40,6 @@ const Login = ({ mode }) => {
   // States
   const [isPasswordShown, setIsPasswordShown] = useState(false)
   const [loader, setLoader] = useState(false)
-  const { data: session } = useSession()
   const {
     control,
     handleSubmit,
@@ -85,11 +84,7 @@ const Login = ({ mode }) => {
     // form.reset()
   }
 
-  useEffect(() => {
-    if (session?.user) {
-      router.push('/admin/candidates/list')
-    }
-  }, [session])
+
 
   return (
     <>
