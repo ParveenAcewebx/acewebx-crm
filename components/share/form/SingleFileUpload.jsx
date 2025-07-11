@@ -1,7 +1,6 @@
-
 'use client'
 
-import { X } from 'lucide-react'
+import { Upload, X } from 'lucide-react'
 import { useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { Controller } from 'react-hook-form'
@@ -11,7 +10,8 @@ const FormInputFileUploaderSingle = ({
   control,
   label,
   errors,
-  className = ''
+  className = '',
+  form
 }) => {
   const renderDropzone = useCallback(
     field => {
@@ -33,11 +33,12 @@ const FormInputFileUploaderSingle = ({
         multiple: false,
         maxSize: 15 * 1024 * 1024, // 15 MB
         accept: {
-          'application/pdf': ['.pdf']
+          'application/pdf': ['.pdf'],
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
         },
         onDrop,
         onDropRejected: () => {
-          console.error('Only PDF file allowed. Max size 15 MB.')
+          console.error('Only PDF/Docx file allowed. Max size 15 MB.')
         }
       })
 
@@ -73,17 +74,19 @@ const FormInputFileUploaderSingle = ({
             className={`mt-6 flex cursor-pointer flex-col items-center justify-center space-y-3 rounded-md border-2 border-dashed border-gray-300 p-6 text-center transition hover:bg-gray-50 ${className}`}
           >
             <input {...getInputProps()} />
-            <div className='flex h-12 w-12 items-center justify-center rounded-md bg-gray-300'>
-              <i class='ri-arrow-up-long-line'></i>{' '}
-            </div>{' '}
+            <p className='rounded-6 bg-white p-4 text-sm font-medium'>
+              <Upload className='m-auto' /> Upload
+            </p>
             <p className='text-base font-medium text-gray-800'>
               {label || 'Drop Resume here or click to upload.'}
             </p>
-            <p className='text-sm text-gray-500'>Allowed: PDF (max 15 MB)</p>
-            {errors?.[name] && (
-              <p className='text-sm text-red-600'>{errors[name]?.message}</p>
-            )}
+            <p className='text-sm text-gray-500'>Allowed: PDF/Docx (max 15 MB)</p>
           </div>
+          {form?.formState.errors?.[name] && (
+            <p className='text-sm text-red-600'>
+              {form?.formState?.errors[name]?.message}
+            </p>
+          )}
           {value && renderPreview(value)}
         </div>
       )

@@ -16,6 +16,36 @@ export const walkInFormDefaultValues = {
   resume: ''
 }
 
+export const editWalkInForm = {
+  name: '',
+  email: '',
+  dob: '',
+  gender: '',
+  phone: '',
+  currentLocation: '',
+  designationApplyingFor: '',
+  totalExperience: '',
+  currentSalary: '',
+  expectedSalary: '',
+  currentCompanyName: '',
+  noticePeriod: 0,
+  reasonForChange: '',
+  preferredShift: '',
+  resume: '',
+  reference1Name: '',
+  reference1ContactNumber: '',
+  reference1Designation: '',
+  reference1Experience: '',
+  reference2Name: '',
+  reference2ContactNumber: '',
+  reference2Designation: '',
+  reference2Experience: '',
+  source: '',
+  currentAddress: '',
+  permanentAddress: '',
+  lastIncrementDate: '',
+  lastIncrementAmount: ''
+}
 export const experienceOptions = [
   { label: 'Fresher', value: 'fresher' },
   { label: '6 Months', value: '6 months' },
@@ -65,7 +95,10 @@ export const designationOptions = [
   { label: 'Pre-Sales Consultant', value: 'pre sales consultant' },
   { label: 'Project Manager', value: 'project manager' },
   { label: 'Product Manager', value: 'product manager' },
-  { label: 'Digital Marketing Executive', value: 'digital marketing executive' },
+  {
+    label: 'Digital Marketing Executive',
+    value: 'digital marketing executive'
+  },
   { label: 'SEO Specialist', value: 'seo specialist' },
   { label: 'Content Writer', value: 'content writer' }
 ]

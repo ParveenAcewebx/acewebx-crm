@@ -13,6 +13,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 
 // import Loader from '@/components/Loader'
 import { errorMessage, successMessage } from '@/components/ToasterMessage'
+import { CandidateFormValidation } from '@/components/form-validations/CandidateFormValidation'
 import FormInputField from '@/components/share/form/FormInputField'
 import FormSelectField from '@/components/share/form/FormSelect'
 import FormInputFileUploaderSingle from '@/components/share/form/SingleFileUpload'
@@ -20,10 +21,9 @@ import FormTextArea from '@/components/share/form/TextArea'
 import FormDatePicker from '@/components/share/form/datePicker'
 import { Button } from '@/components/ui/button'
 import Candidate from '@/services/cadidateApis/CandidateApi'
-import dayjs from 'dayjs'
-import { Loader } from 'lucide-react'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { CandidateFormValidation } from '@/components/form-validations/CandidateFormValidation'
+import { Loader } from 'lucide-react'
+import PhoneMaskInput from '@/components/share/form/PhoneMaskInput'
 
 function JobApplicationForm() {
   const [step, setStep] = useState(0)
@@ -68,10 +68,10 @@ function JobApplicationForm() {
   }
 
   const nextStep = async () => {
+    setLoader(false)
     const isStepValid = await form.trigger(stepFields[step])
     if (isStepValid) {
       setStep(prev => prev + 1)
-      setLoader(false)
       form.unregister('recaptcha', { keepError: false })
     }
   }
@@ -120,7 +120,7 @@ function JobApplicationForm() {
   }
   return (
     <div
-      className=' mobile-view relative flex min-h-screen w-full flex-col items-center justify-start bg-white'
+      className='mobile-view relative flex min-h-screen w-full flex-col items-center justify-start bg-white'
       style={{
         backgroundImage: "url('/images/backgroud-ace.png')",
         backgroundSize: 'cover',
@@ -165,7 +165,8 @@ function JobApplicationForm() {
                   form={form}
                   inputFormat='YYYY-MM-DD'
                   className='datepickerouter'
-                  maxDate={dayjs('2005-12-31')}
+                  disabled={{ after: new Date('2005-12-31') }}
+                  defaultMonth={new Date('2005-12-31')}
                 />
                 <FormSelectField
                   name='gender'
@@ -211,14 +212,14 @@ function JobApplicationForm() {
                 <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-2'>
                   <FormInputField
                     name='currentSalary'
-                    label='Current Salary'
+                    label='Current Salary (Monthly)'
                     form={form}
                     inputType='number'
                     className='colum-box-bg-change'
                   />
                   <FormInputField
                     name='expectedSalary'
-                    label='Expected Salary'
+                    label='Expected Salary (Monthly)'
                     form={form}
                     inputType='number'
                     className='colum-box-bg-change'
@@ -262,15 +263,10 @@ function JobApplicationForm() {
                   }}
                 />
 
-                {/* <FormInputFileUploaderSingle
-                  name='resume'
-                  form={form}
-                  label='Drop Resume here or click to upload.'
-                  className='col-span-2 mt-4 flex w-full cursor-pointer flex-col items-center rounded-lg border border-dashed border-gray-600 !bg-white p-4'
-                /> */}
                 <FormInputFileUploaderSingle
                   name='resume'
                   control={form.control}
+                  form={form}
                   label='Drop Resume here or click to upload'
                 />
 
@@ -280,10 +276,10 @@ function JobApplicationForm() {
                     onChange={onReCAPTCHAChange}
                   />
                   {reValue === undefined && (
-                  <span className='text-sm text-red-600'>
-                    {form?.formState?.errors?.recaptcha?.message}
-                  </span>
-                )}
+                    <span className='text-sm text-red-600'>
+                      {form?.formState?.errors?.recaptcha?.message}
+                    </span>
+                  )}
                 </div>
               </>
             )}

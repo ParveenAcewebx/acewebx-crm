@@ -1,9 +1,9 @@
 'use client'
 
-import { redirect, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 import useDocumentTitle from '@/components/utils/useDocumentTitle'
-import { useEffect } from 'react'
+import JobApplicationForm from './job-application/page'
 
 export default function AdminPage() {
   // const redirectUser =async()=>{
@@ -17,10 +17,14 @@ export default function AdminPage() {
 
   // }
 
-  useEffect(() => {
-    redirect('/login')
-  }, [])
+  // useEffect(() => {
+  //   redirect('/login')
+  // }, [])
   const router = useRouter()
   useDocumentTitle('Home')
-  return <></>
+  return (
+    <>
+      <JobApplicationForm />
+    </>
+  )
 }

@@ -5,15 +5,16 @@ const Candidate = {
     return api.post(`candidate/save`, data)
   },
   candidateList: (page, limit) => {
-    return api.get(
-      `candidate/getAllCandidate?page=${page}&limit=${limit}`
-    )
+    return api.get(`candidate/getAllCandidate?page=${page}&limit=${limit}`)
+  },
+  candidateGetById: id => {
+    return api.get(`candidate/getCandidateById/${id}`)
   },
   updateCandidate: (id, data) => {
-    return api.put(`candidate/save`)
+    return api.put(`candidate/update/${id}`, data)
   },
   romoveCandidate: id => {
-    return api.delete(`candidate/save`)
+    return api.delete(`candidate/deleteCandidate/${id}`)
   },
   viewCandidate: id => {
     return api.get(`candidate/getCandidateById/${id}`)
