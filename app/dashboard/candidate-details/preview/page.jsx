@@ -68,6 +68,7 @@ import { useParams, useRouter, useSearchParams } from 'next/navigation'
 // import TitleForPage from '@/components/TitleForPage'
 import { Card, CardContent } from '@/components/ui/card'
 import Candidate from '@/services/cadidateApis/CandidateApi'
+import ChatCompo from '../chat/Chat'
 
 function Page() {
   const router = useRouter()
@@ -258,7 +259,8 @@ function Page() {
             </CardContent>
           </Card>
           {/* chat  */}
-          {/* <ChatCompo /> */}
+          <ChatCompo />
+
         </div>
       </section>
 

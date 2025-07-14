@@ -7,7 +7,6 @@ import {
 } from '@/components/ui/dialog'
 import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import LeadsServices from '../../services/Leads/lead'
 import FormSelectField from '../share/form/FormSelect'
 import { DealConfidenceScore } from '../static-Values'
 import { errorMessage, successMessage } from '../ToasterMessage'
@@ -18,24 +17,24 @@ const DcsModal = ({ isOpen, onClose, dcsValue, getListLeads }) => {
   const form = useForm()
 
   // Fetch the lead by Id To update the Id
-  const fetchLeadsById = async () => {
-    try {
-      const response = await LeadsServices.getleadById(editId)
-      if (response?.status === 200) {
-        const leadData = response.data.data
-        form.reset(leadData)
-      }
-    } catch (error) {
-      console.log('error', error)
-      errorMessage({
-        description: error?.response?.data?.message
-      })
-    }
-  }
+  // const fetchLeadsById = async () => {
+  //   try {
+  //     const response = await LeadsServices.getleadById(editId)
+  //     if (response?.status === 200) {
+  //       const leadData = response.data.data
+  //       form.reset(leadData)
+  //     }
+  //   } catch (error) {
+  //     console.log('error', error)
+  //     errorMessage({
+  //       description: error?.response?.data?.message
+  //     })
+  //   }
+  // }
 
   useEffect(() => {
     if (editId) {
-      fetchLeadsById()
+      // fetchLeadsById()
     }
   }, [editId])
 

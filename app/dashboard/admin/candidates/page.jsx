@@ -14,10 +14,8 @@ import {
   AccordionTrigger
 } from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
-import { formatDate } from '@/components/utils/dateFormat'
 import useDocumentTitle from '@/components/utils/useDocumentTitle'
 import Candidate from '@/services/cadidateApis/CandidateApi'
-import { GetFilterData } from '@/services/Leads/lead'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -64,39 +62,11 @@ const AllCandidates = () => {
     }
   }
 
-  const handleSearchWithFormData = async () => {
-    const params = {
-      page,
-      length,
-      contact_id: Number(searchFormData.contact_id) || '',
-      company_id: Number(searchFormData.company_id) || '',
-      engineer_id: Number(searchFormData.engineer_id) || '',
-      lead_status_id: Number(searchFormData.lead_status_id) || '',
-      project_id: Number(searchFormData.project_id) || '',
-      sale_person_id: Number(searchFormData.sale_person_id) || '',
-      dcs: searchFormData.dcs || '',
-      tags: searchFormData.tags || '',
-      from_date_record: formatDate(searchFormData.from_date_record || '') || '',
-      to_date_record: formatDate(searchFormData.to_date_record || '') || '',
-      from_due_date: formatDate(searchFormData.from_due_date || '') || '',
-      to_due_date: formatDate(searchFormData.to_due_date || '') || ''
-    }
-    try {
-      const res = await GetFilterData.getleads(params)
-      if (res?.status === 200) {
-        setSearchFilter(res?.data?.data)
-        setTotalRecord(res?.data?.meta?.total)
-      }
-    } catch (error) {
-      errorMessage({
-        description: error?.response?.data?.message
-      })
-    }
-  }
+ 
 
   useEffect(() => {
     if (searchFormData) {
-      handleSearchWithFormData()
+      handleClearSearch()
     } else {
       getListLeads()
     }
@@ -159,9 +129,7 @@ const AllCandidates = () => {
     methods.setValue('name', '')
     methods.setValue('email', '')
     methods.setValue('currentSalary', '')
-    // if (pipelineStatus) {
-    //   handlePipelineStatus(pipelineStatus)
-    // }
+ 
   }
 
   const handlePipeLineFilter = async data => {

@@ -27,7 +27,7 @@ const Candidate = {
     const currentSalary = data?.currentSalary ?? ''
 
     return api.get(
-      `candidate/getAllCandidate?page=${page}&limit=${limit}&name=${name}&email=${email}&currentSalary=${currentSalary}`
+      `candidate/getAllCandidate?name=${name}&email=${email}&currentSalary=${currentSalary}`
     )
   },
   candidateListAddvanceFilters: data => {

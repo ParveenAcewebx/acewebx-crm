@@ -23,7 +23,6 @@ import { Button } from '@/components/ui/button'
 import Candidate from '@/services/cadidateApis/CandidateApi'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Loader } from 'lucide-react'
-import PhoneMaskInput from '@/components/share/form/PhoneMaskInput'
 
 function JobApplicationForm() {
   const [step, setStep] = useState(0)
@@ -73,6 +72,7 @@ function JobApplicationForm() {
     if (isStepValid) {
       setStep(prev => prev + 1)
       form.unregister('recaptcha', { keepError: false })
+      setLoader(false)
     }
   }
 
@@ -89,7 +89,7 @@ function JobApplicationForm() {
     if (data?.currentSalary == '') {
       return
     }
-    setLoader(true)
+
     try {
       const formData = new FormData()
 
@@ -111,11 +111,10 @@ function JobApplicationForm() {
         router.push('/thankyou')
       }
     } catch (error) {
-      console.error('Submission Error:', error)
       setLoader(false)
-      errorMessage(
-        error?.message || 'Something went wrong while submitting the form.'
-      )
+
+      console.error('Submission Error:', error?.message)
+      errorMessage({ description: error?.message })
     }
   }
   return (
@@ -179,7 +178,7 @@ function JobApplicationForm() {
                   name='phone'
                   label='Contact Number'
                   form={form}
-                  inputType='tel'
+                  inputType='number'
                   className='colum-box-bg-change'
                 />
                 <FormInputField
@@ -239,47 +238,53 @@ function JobApplicationForm() {
                     className='colum-box-bg-change'
                   />
                 </div>
-                <FormSelectField
-                  name='preferredShift'
-                  label='Preferred Shift'
-                  form={form}
-                  options={preferredShiftOptions}
-                  className='colum-box-bg-change !w-[100%]'
-                />
-                <FormTextArea
-                  name='reasonForChange'
-                  label='Reason for Change'
-                  form={form}
-                  multiline
-                  className='col-span-2 !h-[160px] border border-gray-600'
-                  style={{
-                    width: '100%',
-                    resize: 'none',
-                    marginTop: '25px',
-                    overflow: 'auto',
-                    padding: '15px',
-                    borderColor: '#ccc',
-                    borderRadius: '4px'
-                  }}
-                />
-
-                <FormInputFileUploaderSingle
-                  name='resume'
-                  control={form.control}
-                  form={form}
-                  label='Drop Resume here or click to upload'
-                />
-
-                <div className='col-span-2 mt-4'>
-                  <ReCAPTCHA
-                    sitekey='6LfSqW8rAAAAABmLFmZcFxFQZgfcUusAJNdVXdXn'
-                    onChange={onReCAPTCHAChange}
+                <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
+                  <FormSelectField
+                    name='preferredShift'
+                    label='Preferred Shift'
+                    form={form}
+                    options={preferredShiftOptions}
+                    className='colum-box-bg-change !w-[100%]'
                   />
-                  {reValue === undefined && (
-                    <span className='text-sm text-red-600'>
-                      {form?.formState?.errors?.recaptcha?.message}
-                    </span>
-                  )}
+                </div>
+                <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
+                  <FormTextArea
+                    name='reasonForChange'
+                    label='Reason for Change'
+                    form={form}
+                    multiline
+                    className='col-span-2 !h-[160px] border border-gray-600'
+                    style={{
+                      width: '100%',
+                      resize: 'none',
+                      marginTop: '25px',
+                      overflow: 'auto',
+                      padding: '15px',
+                      borderColor: '#ccc',
+                      borderRadius: '4px'
+                    }}
+                  />
+                </div>
+                <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
+                  <FormInputFileUploaderSingle
+                    name='resume'
+                    control={form.control}
+                    form={form}
+                    label='Drop Resume here or click to upload'
+                  />
+                </div>
+                <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
+                  <div className='col-span-2 mt-4'>
+                    <ReCAPTCHA
+                      sitekey='6LfSqW8rAAAAABmLFmZcFxFQZgfcUusAJNdVXdXn'
+                      onChange={onReCAPTCHAChange}
+                    />
+                    {reValue === undefined && (
+                      <span className='text-sm text-red-600'>
+                        {form?.formState?.errors?.recaptcha?.message}
+                      </span>
+                    )}
+                  </div>
                 </div>
               </>
             )}

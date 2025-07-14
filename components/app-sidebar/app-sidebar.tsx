@@ -26,7 +26,11 @@ const data = {
       url: '/dashboard/',
       icon: DocumentTextIcon,
       isActive: true,
-     
+      items: [
+        {
+          title: 'List',
+          url: '/dashboard/admin/candidates'
+        },]
     },
   
   ]
