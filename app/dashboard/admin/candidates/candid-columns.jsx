@@ -16,6 +16,46 @@ export const CandidColumns = (
   DCSOpenModal
 ) => [
   {
+    accessorKey: 'action',
+    header: 'Actions',
+    cell: ({ row }) => {
+      return (
+        <div className='grid grid-cols-3'>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant='ghost' className='h-8 w-8 p-0'>
+                <EllipsisVertical className='h-5 w-5' />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align='end'>
+              <DropdownMenuItem
+                onClick={() => handlePreviewCand(row)}
+                className='cursor-pointer text-blue-400'
+              >
+                <Eye className='mr-2 h-4 w-4' />
+                View
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => handleEditCand(row)}
+                className='cursor-pointer text-green-600'
+              >
+                <Edit className='mr-2 h-4 w-4' />
+                Edit
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => handleDeleteCand(row)}
+                className='cursor-pointer text-red-600'
+              >
+                <Trash2 className='mr-2 h-4 w-4' />
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      )
+    }
+  },
+  {
     accessorKey: 'id',
     header: '#ID',
     cell: ({ row }) => row.original?.id
@@ -82,46 +122,5 @@ export const CandidColumns = (
     accessorKey: '_preferredShift',
     header: 'Preferred Shift',
     cell: ({ row }) => row.original?.meta?._preferredShift
-  },
-
-  {
-    accessorKey: 'action',
-    header: 'Actions',
-    cell: ({ row }) => {
-      return (
-        <div className='grid grid-cols-3'>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant='ghost' className='h-8 w-8 p-0'>
-                <EllipsisVertical className='h-5 w-5' />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align='end'>
-              <DropdownMenuItem
-                onClick={() => handlePreviewCand(row)}
-                className='cursor-pointer text-blue-400'
-              >
-                <Eye className='mr-2 h-4 w-4' />
-                View
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => handleEditCand(row)}
-                className='cursor-pointer text-green-600'
-              >
-                <Edit className='mr-2 h-4 w-4' />
-                Edit
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => handleDeleteCand(row)}
-                className='cursor-pointer text-red-600'
-              >
-                <Trash2 className='mr-2 h-4 w-4' />
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      )
-    }
   }
 ]

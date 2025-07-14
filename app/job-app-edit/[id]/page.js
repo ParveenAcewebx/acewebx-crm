@@ -8,16 +8,15 @@ import {
   totalExperienceOptions
 } from '@/components/constants/StaticData'
 import { useParams, useRouter } from 'next/navigation'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { FormProvider, useForm } from 'react-hook-form'
 
 // import Loader from '@/components/Loader'
 import { errorMessage, successMessage } from '@/components/ToasterMessage'
-import { CandidateFormValidation } from '@/components/form-validations/CandidateFormValidation'
+import { CandidateFormValidationEdit } from '@/components/form-validations/CandidateFormValidationEdit'
 import FormInputField from '@/components/share/form/FormInputField'
 import FormSelectField from '@/components/share/form/FormSelect'
-import PhoneMaskInput from '@/components/share/form/PhoneMaskInput'
 import FormInputFileUploaderSingle from '@/components/share/form/SingleFileUpload'
 import FormTextArea from '@/components/share/form/TextArea'
 import FormDatePicker from '@/components/share/form/datePicker'
@@ -25,7 +24,6 @@ import { Button } from '@/components/ui/button'
 import Candidate from '@/services/cadidateApis/CandidateApi'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Loader } from 'lucide-react'
-import { CandidateFormValidationEdit } from '@/components/form-validations/CandidateFormValidationEdit'
 
 function EditJobApplicationForm() {
   const { id } = useParams()
@@ -102,18 +100,12 @@ function EditJobApplicationForm() {
   }
   const reValue = form.watch('recaptcha')
 
-  // const hasClickedOnce = useRef(false)
-  // const clickCount = useRef(0)
-
   const onSubmit = async data => {
-    // clickCount.current += 1
-
     setSubmitAddValidation(true)
 
     if (reValue == undefined) {
       return
     }
-    console.log('TTTTTTTTTTTTTTTTTTT')
     setLoader(true)
     try {
       const formData = new FormData()
@@ -136,53 +128,80 @@ function EditJobApplicationForm() {
         router.push('/thankyou')
       }
     } catch (error) {
-      console.error('Submission Error:', error)
+      setLoader(false)
+
+      console.error('Submission Error:', error?.message)
       setLoader(false)
       errorMessage(
-        error?.message || 'Something went wrong while submitting the form.'
+        error?.message  ||
+          'Something went wrong while submitting the form.'
       )
     }
   }
+  const urlToFile = async (url, fileName) => {
+    const response = await fetch(url)
+    const blob = await response.blob()
+    const contentType = blob.type || 'application/octet-stream'
 
-  const candidateDataGetById = async () => {
+    return new File([blob], fileName, { type: contentType })
+  }
+
+  const candidateDataGetById = async (id, form) => {
     try {
       const response = await Candidate.candidateGetById(id)
 
-      if (response?.data?.status == true) {
-        const mataData = response?.data?.data?.meta
-        const resumeUrl = `${process.env.NEXT_PUBLIC_API_URL}${mataData?._resume}`
-        console.log('resumeUrl', resumeUrl)
+      if (response?.data?.status === true) {
+        const data = response?.data?.data
+        const meta = data?.meta
+
         const dataForSet = {
-          name: response?.data?.data?.name,
-          email: response?.data?.data?.email,
-          dob: response?.data?.data?.dob,
-          gender: mataData._gender,
-          phone: response?.data?.data?.phone,
-          currentLocation: mataData?._currentLocation,
-          designationApplyingFor: mataData?._designationApplyingFor,
-          totalExperience: response?.data?.data?.totalExperience,
-          currentSalary: response?.data?.data?.currentSalary,
-          expectedSalary: response?.data?.data?.expectedSalary,
-          currentCompanyName: mataData?._currentCompanyName,
-          noticePeriod: response?.data?.data?.noticePeriod,
-          reasonForChange: mataData?._reasonForChange,
-          preferredShift: mataData?._preferredShift,
-          // resume: resumeUrl,
-          reference1Name: mataData?._reference1Name,
-          reference1ContactNumber: mataData?._reference1ContactNumber,
-          reference1Designation: mataData?._reference1Designation,
-          reference1Experience: mataData?._reference1Experience,
-          reference2Name: mataData?._reference2Name,
-          reference2ContactNumber: mataData?._reference2ContactNumber,
-          reference2Designation: mataData?._reference2Designation,
-          reference2Experience: mataData?._reference2Experience,
-          source: mataData?._source,
-          currentAddress: mataData?._currentAddress,
-          permanentAddress: mataData?._permanentAddress,
-          lastIncrementDate: mataData?._lastIncrementDate,
-          lastIncrementAmount: mataData?._lastIncrementAmount
+          name: data?.name,
+          email: data?.email,
+          dob: data?.dob,
+          gender: meta?._gender,
+          phone: data?.phone,
+          currentLocation: meta?._currentLocation,
+          designationApplyingFor: meta?._designationApplyingFor,
+          totalExperience: data?.totalExperience,
+          currentSalary: data?.currentSalary,
+          expectedSalary: data?.expectedSalary,
+          currentCompanyName: meta?._currentCompanyName,
+          noticePeriod: data?.noticePeriod,
+          reasonForChange: meta?._reasonForChange,
+          preferredShift: meta?._preferredShift,
+          reference1Name: meta?._reference1Name,
+          reference1ContactNumber: meta?._reference1ContactNumber,
+          reference1Designation: meta?._reference1Designation,
+          reference1Experience: meta?._reference1Experience,
+          reference2Name: meta?._reference2Name,
+          reference2ContactNumber: meta?._reference2ContactNumber,
+          reference2Designation: meta?._reference2Designation,
+          reference2Experience: meta?._reference2Experience,
+          source: meta?._source,
+          currentAddress: meta?._currentAddress,
+          permanentAddress: meta?._permanentAddress,
+          lastIncrementDate: meta?._lastIncrementDate,
+          lastIncrementAmount: meta?._lastIncrementAmount,
+          resume: null // temporarily null until file is loaded
         }
+
+        // Set form fields first
         form.reset(dataForSet)
+
+        // Then load and set the resume file if available
+        const resumePath = meta?._resume
+        if (resumePath) {
+          const fileUrl = `${process.env.NEXT_PUBLIC_RESUME_VIEW}${resumePath}`
+          console.log('fileUrlfileUrl', fileUrl)
+          const fileName = resumePath.split('/').pop() || 'resume.pdf'
+
+          try {
+            const fileObj = await urlToFile(fileUrl, fileName)
+            form.setValue('resume', fileObj)
+          } catch (err) {
+            console.error('Failed to convert resume URL to File:', err)
+          }
+        }
       }
     } catch (error) {
       console.error('Submission Error:', error)
@@ -193,7 +212,8 @@ function EditJobApplicationForm() {
   }
 
   useEffect(() => {
-    candidateDataGetById()
+    if (!id) return
+    candidateDataGetById(id, form)
   }, [id])
   return (
     <div
@@ -215,7 +235,7 @@ function EditJobApplicationForm() {
 
       <div className='z-10 w-full max-w-3xl rounded-xl border border-red-100 bg-gradient-to-br from-red-100 via-white to-red-100 p-10 shadow-md'>
         <h2 className='walking mb-6 text-2xl font-semibold text-gray-800'>
-          Job Application
+          Update Job Application
         </h2>
         <p className='mb-4 text-sm text-gray-500'>Step {step + 1} of 3</p>
         <FormProvider {...form}>
@@ -228,6 +248,7 @@ function EditJobApplicationForm() {
               <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
                 <FormInputField
                   name='name'
+                  disable={true}
                   label='Full Name'
                   form={form}
                   inputType='text'
@@ -236,6 +257,7 @@ function EditJobApplicationForm() {
                 <FormInputField
                   name='email'
                   label='Email'
+                  disable={true}
                   form={form}
                   inputType='email'
                   className='colum-box-bg-change'
@@ -260,7 +282,7 @@ function EditJobApplicationForm() {
                   name='phone'
                   label='Contact Number'
                   form={form}
-                  inputType='tel'
+                  inputType='number'
                   className='colum-box-bg-change'
                 />
                 <FormInputField
@@ -320,36 +342,41 @@ function EditJobApplicationForm() {
                     className='colum-box-bg-change'
                   />
                 </div>
-                <FormSelectField
-                  name='preferredShift'
-                  label='Preferred Shift'
-                  form={form}
-                  options={preferredShiftOptions}
-                  className='colum-box-bg-change !w-[100%]'
-                />
-                <FormTextArea
-                  name='reasonForChange'
-                  label='Reason for Change'
-                  form={form}
-                  multiline
-                  className='col-span-2 !h-[160px] border border-gray-600'
-                  style={{
-                    width: '100%',
-                    resize: 'none',
-                    marginTop: '25px',
-                    overflow: 'auto',
-                    padding: '15px',
-                    borderColor: '#ccc',
-                    borderRadius: '4px'
-                  }}
-                />
-
-                <FormInputFileUploaderSingle
-                  name='resume'
-                  control={form.control}
-                  form={form}
-                  label='Drop Resume here or click to upload'
-                />
+                <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
+                  <FormSelectField
+                    name='preferredShift'
+                    label='Preferred Shift'
+                    form={form}
+                    options={preferredShiftOptions}
+                    className='colum-box-bg-change !w-[100%]'
+                  />
+                </div>
+                <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
+                  <FormTextArea
+                    name='reasonForChange'
+                    label='Reason for Change'
+                    form={form}
+                    multiline
+                    className='col-span-2 !h-[160px] border border-gray-600'
+                    style={{
+                      width: '100%',
+                      resize: 'none',
+                      marginTop: '25px',
+                      overflow: 'auto',
+                      padding: '15px',
+                      borderColor: '#ccc',
+                      borderRadius: '4px'
+                    }}
+                  />
+                </div>
+                <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
+                  <FormInputFileUploaderSingle
+                    name='resume'
+                    control={form.control}
+                    form={form}
+                    label='Drop Resume here or click to upload'
+                  />
+                </div>
               </>
             )}
             {/* Step 2: only edit time Details */}
@@ -408,16 +435,16 @@ function EditJobApplicationForm() {
                   />
                   {/* select */}
                   <FormSelectField
-                    name='reference2Designation'
-                    label='Reference2 Designation'
+                    name='reference1Designation'
+                    label='Reference1 Designation'
                     form={form}
                     options={designationOptions}
                     className='colum-box-bg-change'
                   />
                   {/* select */}
                   <FormSelectField
-                    name='reference2Experience'
-                    label='Reference2 Experience'
+                    name='reference1Experience'
+                    label='Reference1 Experience'
                     form={form}
                     options={totalExperienceOptions}
                     className='colum-box-bg-change'
@@ -454,23 +481,27 @@ function EditJobApplicationForm() {
                     className='colum-box-bg-change'
                   />
                 </div>
-                <FormSelectField
-                  name='source'
-                  label='How did you hear about us'
-                  form={form}
-                  options={sourceOption}
-                  className='colum-box-bg-change !w-[100%]'
-                />
-                <div className='col-span-2 mt-4'>
-                  <ReCAPTCHA
-                    sitekey='6LfSqW8rAAAAABmLFmZcFxFQZgfcUusAJNdVXdXn'
-                    onChange={onReCAPTCHAChange}
+                <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
+                  <FormSelectField
+                    name='source'
+                    label='How did you hear about us'
+                    form={form}
+                    options={sourceOption}
+                    className='colum-box-bg-change !w-[100%]'
                   />
-                  {reValue === undefined && (
-                    <span className='text-sm text-red-600'>
-                      {form?.formState?.errors?.recaptcha?.message}
-                    </span>
-                  )}
+                </div>
+                <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
+                  <div className='col-span-2 mt-4'>
+                    <ReCAPTCHA
+                      sitekey='6LfSqW8rAAAAABmLFmZcFxFQZgfcUusAJNdVXdXn'
+                      onChange={onReCAPTCHAChange}
+                    />
+                    {reValue === undefined && (
+                      <span className='text-sm text-red-600'>
+                        {form?.formState?.errors?.recaptcha?.message}
+                      </span>
+                    )}
+                  </div>
                 </div>
                 {/* ---------------- */}
               </>

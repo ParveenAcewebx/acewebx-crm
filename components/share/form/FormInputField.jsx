@@ -19,7 +19,8 @@ const FormInputField = ({
   value,
   defaultValue,
   max,
-  readOnly
+  readOnly,
+  inputType
 }) => {
   // console.log('value', value)
   return (
@@ -41,7 +42,7 @@ const FormInputField = ({
                 fieldState.error ? 'border-red-500' : ''
               } ${className}`}
               placeholder={placeholder}
-              type={type}
+              type={inputType}
               min={0}
               max={max && max}
               step='any'
