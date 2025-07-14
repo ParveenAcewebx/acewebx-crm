@@ -62,8 +62,6 @@ const AllCandidates = () => {
     }
   }
 
- 
-
   useEffect(() => {
     if (searchFormData) {
       handleClearSearch()
@@ -95,7 +93,7 @@ const AllCandidates = () => {
   }
   // edit table row
   const handleEditCand = row => {
-    router.push(`/job-app-edit/${row.original.id}`)
+    router.push(`/walking/${row.original.id}`)
   }
   const deleteHandleModalClose = () => {
     setDeleteOpenModal(false)
@@ -121,26 +119,24 @@ const AllCandidates = () => {
 
   // filter :--
 
-  const name = methods.watch('name')
-  const email = methods.watch('email')
-  const currentSalary = methods.watch('currentSalary')
+  const search = methods.watch('search')
+  const maxSalary = methods.watch('maxSalary')
+  const minSalary = methods.watch('minSalary')
 
   const handleClearSearch = () => {
-    methods.setValue('name', '')
-    methods.setValue('email', '')
-    methods.setValue('currentSalary', '')
- 
+    methods.setValue('search', '')
+    methods.setValue('maxSalary', '')
+    methods.setValue('minSalary', '')
+    getListLeads()
   }
 
   const handlePipeLineFilter = async data => {
     try {
       const apiData = await Candidate.candidateListFilters({
         ...data,
-        page,
-        length,
-        name,
-        email,
-        currentSalary
+        search,
+        maxSalary,
+        minSalary
       })
 
       const candidates = apiData?.data?.data || []
@@ -148,7 +144,7 @@ const AllCandidates = () => {
 
       setList(candidates)
       setTotalRecord(paginationInfo?.total || 0)
-      handleClearSearch()
+      // handleClearSearch()
     } catch (error) {
       console.error('Fetch error:', error)
     }
@@ -173,22 +169,22 @@ const AllCandidates = () => {
             <div className='flex grid grid-cols-4 gap-4'>
               <FormProvider {...methods}>
                 <FormInputField
-                  name='name'
-                  label='Full Name'
+                  name='search'
+                  label='Email/Name/Phone'
                   form={methods}
                   inputType='text'
                   className='colum-box-bg-change'
                 />
                 <FormInputField
-                  name='email'
-                  label='Email'
+                  name='minSalary'
+                  label='Min Salary'
                   form={methods}
-                  inputType='email'
+                  inputType='number'
                   className='colum-box-bg-change'
                 />
                 <FormInputField
-                  name='currentSalary'
-                  label='Current Salary (Monthly)'
+                  name='maxSalary'
+                  label='Max Salary'
                   form={methods}
                   inputType='number'
                   className='colum-box-bg-change'

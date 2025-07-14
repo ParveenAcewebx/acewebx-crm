@@ -20,14 +20,13 @@ const Candidate = {
     return api.get(`candidate/getCandidateById/${id}`)
   },
   candidateListFilters: data => {
-    const page = data?.page ?? ''
-    const limit = data?.limit ?? ''
-    const name = data?.name ?? ''
-    const email = data?.email ?? ''
-    const currentSalary = data?.currentSalary ?? ''
+    console.log("datadata",data)
+    const search = data?.search ?? ''
+    const maxSalary = data?.maxSalary ?? ''
+    const minSalary = data?.minSalary ?? ''
 
     return api.get(
-      `candidate/getAllCandidate?name=${name}&email=${email}&currentSalary=${currentSalary}`
+      `candidate/getAllCandidate?search=${search}&maxSalary=${maxSalary}&minSalary=${minSalary}`
     )
   },
   candidateListAddvanceFilters: data => {
