@@ -20,7 +20,9 @@ export const CandidateFormValidationEdit = Yup.object().shape({
       return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)
     }),
   gender: Yup.string().required('Gender is required'),
-
+  noticePeriod: Yup.number()
+  .min(0, 'Minimum 0 day allowed')
+  .max(90, 'Maximum 90 day allowed'),
   phone: Yup.string()
     .transform(
       value => value?.replace(/\+91\s?|\s+/g, '') // remove +91 and all spaces
