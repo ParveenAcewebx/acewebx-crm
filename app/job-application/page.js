@@ -86,7 +86,7 @@ function JobApplicationForm() {
 
   const onSubmit = async data => {
     setSubmitAddValidation(true)
-    if (data?.currentSalary == '') {
+    if (data?.currentSalary == '' || reValue == undefined ) {
       return
     }
 
@@ -105,7 +105,7 @@ function JobApplicationForm() {
 
       const response = await Candidate.addCandidate(formData)
       if (response?.data?.status == true) {
-        successMessage('Candidate form submitted successfully!')
+        // successMessage('Candidate form submitted successfully!')
         form.reset()
         setLoader(false)
         router.push('/thankyou')
@@ -115,6 +115,10 @@ function JobApplicationForm() {
 
       console.error('Submission Error:', error?.message)
       errorMessage({ description: error?.message })
+      if(error?.message == "reCaptcha verification failed."){
+        form.unregister('recaptcha', { keepError: false })
+
+      }
     }
   }
   return (

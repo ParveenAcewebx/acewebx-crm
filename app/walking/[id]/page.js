@@ -13,7 +13,7 @@ import ReCAPTCHA from 'react-google-recaptcha'
 import { FormProvider, useForm } from 'react-hook-form'
 
 // import Loader from '@/components/Loader'
-import { errorMessage, successMessage } from '@/components/ToasterMessage'
+import { errorMessage } from '@/components/ToasterMessage'
 import { CandidateFormValidationEdit } from '@/components/form-validations/CandidateFormValidationEdit'
 import FormInputField from '@/components/share/form/FormInputField'
 import FormSelectField from '@/components/share/form/FormSelect'
@@ -122,7 +122,7 @@ function EditJobApplicationForm() {
 
       const response = await Candidate.updateCandidate(id, formData)
       if (response?.data?.status == true) {
-        successMessage('Candidate form submitted successfully!')
+        // successMessage('Candidate form submitted successfully!')
         form.reset()
         setLoader(false)
         router.push('/thankyou')
@@ -130,12 +130,13 @@ function EditJobApplicationForm() {
     } catch (error) {
       setLoader(false)
 
-      console.error('Submission Error:', error?.message)
       setLoader(false)
       errorMessage(
-        error?.message  ||
-          'Something went wrong while submitting the form.'
+        error?.message || 'Something went wrong while submitting the form.'
       )
+      if (error?.message == 'reCaptcha verification failed.') {
+        form.unregister('recaptcha', { keepError: false })
+      }
     }
   }
   const urlToFile = async (url, fileName) => {
@@ -190,7 +191,7 @@ function EditJobApplicationForm() {
 
         // Then load and set the resume file if available
         const resumePath = response?.data?.data?.resume?.filePath
-        console.log("resumePath",resumePath)
+        console.log('resumePath', resumePath)
         if (resumePath) {
           const fileUrl = `${process.env.NEXT_PUBLIC_RESUME_VIEW}${resumePath}`
           console.log('fileUrlfileUrl', fileUrl)
@@ -198,7 +199,7 @@ function EditJobApplicationForm() {
 
           try {
             const fileObj = await urlToFile(fileUrl, fileName)
-            console.log("fileObjfileObj",fileObj)
+            console.log('fileObjfileObj', fileObj)
             form.setValue('resume', fileObj)
           } catch (err) {
             console.error('Failed to convert resume URL to File:', err)
@@ -218,7 +219,7 @@ function EditJobApplicationForm() {
     candidateDataGetById(id, form)
   }, [id])
 
-  console.log("formpppp", form.watch("resume"))
+  console.log('formpppp', form.watch('resume'))
   return (
     <div
       className='mobile-view relative flex min-h-screen w-full flex-col items-center justify-start bg-white'
