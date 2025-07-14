@@ -13,9 +13,15 @@ export const CandidateFormValidation = Yup.object().shape({
   // .max(dayjs().subtract(15, 'year').toDate(), 'You must be at least 15 years old'),
 
   email: Yup.string()
-    .required('Email is required')
-    .email('Invalid email format')
-    .matches(/@.*\./, 'Email must contain @ and .'),
+  .required('Email is required')
+  .test(
+    'is-valid-email',
+    'Invalid email format',
+    function (value) {
+      if (!value) return true; // Skip format check if empty (required will handle it)
+      return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value);
+    }
+  ),
   gender: Yup.string().required('Gender is required'),
 
   phone: Yup.string()
