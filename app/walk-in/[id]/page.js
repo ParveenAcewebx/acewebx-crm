@@ -213,8 +213,6 @@ function EditJobApplicationForm() {
     candidateDataGetById(id, form)
   }, [id])
 
- 
-
   return (
     <div
       className='mobile-view relative flex min-h-screen w-full flex-col items-center justify-start bg-white'
@@ -233,12 +231,16 @@ function EditJobApplicationForm() {
         />
       </div>
       {isVerify == false ? (
-        <span className='text-2xl' >This URL has been expired!</span>
+        <span className='text-2xl'>This URL has been expired!</span>
       ) : (
         <div className='z-10 w-full max-w-3xl rounded-xl border border-red-100 bg-gradient-to-br from-red-100 via-white to-red-100 p-10 shadow-md'>
           <h2 className='walking mb-6 text-2xl font-semibold text-gray-800'>
             Job Application(Edit){' '}
           </h2>
+          <h4 className='mb-8'>
+            Please fill out this form with accurate details. The information
+            will be used for the interview process.
+          </h4>
           <p className='mb-4 text-sm text-gray-500'>Step {step + 1} of 3</p>
           <FormProvider {...form}>
             <form

@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
 import useDocumentTitle from '@/components/utils/useDocumentTitle'
-import Candidate from '@/services/cadidateApis/CandidateApi'
+import SalesCandidate from '@/services/cadidateApis/SalesCandidateApi'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -48,7 +48,8 @@ const AllSalesCandidates = () => {
   const getListLeads = async () => {
     try {
       setLoading(true)
-      const res = await Candidate.candidateList(page, length)
+      const res = await SalesCandidate.salesCandidateList(page, length)
+      console.log('res', res)
       if (res.data?.status == true) {
         setList(res?.data?.data)
         setTotalRecord(res?.data?.data?.pagination?.total)
@@ -74,7 +75,7 @@ const AllSalesCandidates = () => {
   const onDelete = async () => {
     if (deleteIndex !== null) {
       try {
-        const res = await Candidate.romoveCandidate(deleteIndex)
+        const res = await SalesCandidate.romoveSalesCandidate(deleteIndex)
         setDeleteOpenModal(false)
         if (res?.status === 200) {
           getListLeads()
@@ -93,13 +94,13 @@ const AllSalesCandidates = () => {
   }
   // edit table row
   const handleEditCand = row => {
-    router.push(`/dashboard/admin/walking/${row.original.id}`)
+    router.push(`/dashboard/admin/sales-walk-in/${row.original.id}`)
   }
   const deleteHandleModalClose = () => {
     setDeleteOpenModal(false)
   }
   const handlePreviewCand = row => {
-    router.push(`/dashboard/candidate-details/preview?id=${row?.original?.id}`)
+    // router.push(`/dashboard/candidate-details/preview?id=${row?.original?.id}`)
   }
   const DCSOpenModal = row => {
     setSelectedDcsValue(row)
@@ -131,21 +132,38 @@ const AllSalesCandidates = () => {
   }
 
   const handlePipeLineFilter = async data => {
+    // try {
+    //   const apiData = await SalesCandidate.candidateListFilters({
+    //     ...data,
+    //     search,
+    //     maxSalary,
+    //     minSalary
+    //   })
+    //   const candidates = apiData?.data?.data || []
+    //   const paginationInfo = apiData?.data?.data?.pagination
+    //   setList(candidates)
+    //   setTotalRecord(paginationInfo?.total || 0)
+    // } catch (error) {
+    //   console.error('Fetch error:', error)
+    // }
+  }
+
+  const handleSendWalkInForm = async row => {
     try {
-      const apiData = await Candidate.candidateListFilters({
-        ...data,
-        search,
-        maxSalary,
-        minSalary
-      })
+      const sendEmailLin = await SalesCandidate.sendSalesWalkInLink(
+        row.original.id
+      )
 
-      const candidates = apiData?.data?.data || []
-      const paginationInfo = apiData?.data?.data?.pagination
-
-      setList(candidates)
-      setTotalRecord(paginationInfo?.total || 0)
+      if (sendEmailLin?.data?.status == true) {
+        successMessage({
+          description: 'Link sent successfully to the mail.'
+        })
+      }
     } catch (error) {
-      console.error('Fetch error:', error)
+      console.log('error', error)
+      errorMessage({
+        description: 'Something Went Wrong!'
+      })
     }
   }
   console.log('getList', getList)
@@ -224,7 +242,7 @@ const AllSalesCandidates = () => {
           handleDeleteCand,
           handleEditCand,
           handlePreviewCand,
-          DCSOpenModal
+          handleSendWalkInForm
         )}
         totalRecord={totalRecord}
         page={page}
@@ -238,12 +256,12 @@ const AllSalesCandidates = () => {
         deleteOpenModal={deleteOpenModal}
         deleteHandleModalClose={deleteHandleModalClose}
       />
-      <DcsModal
+      {/* <DcsModal
         getListLeads={getListLeads}
         isOpen={dcsModalOpen}
         onClose={() => setDcsModalOpen(false)}
         dcsValue={selectedDcsValue}
-      />
+      /> */}
     </>
   )
 }

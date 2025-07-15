@@ -12,7 +12,7 @@ import ReCAPTCHA from 'react-google-recaptcha'
 import { FormProvider, useForm } from 'react-hook-form'
 
 // import Loader from '@/components/Loader'
-import { errorMessage, successMessage } from '@/components/ToasterMessage'
+import { errorMessage } from '@/components/ToasterMessage'
 import { CandidateFormValidation } from '@/components/form-validations/CandidateFormValidation'
 import FormInputField from '@/components/share/form/FormInputField'
 import FormSelectField from '@/components/share/form/FormSelect'
@@ -86,7 +86,7 @@ function JobApplicationForm() {
 
   const onSubmit = async data => {
     setSubmitAddValidation(true)
-    if (data?.currentSalary == '' || reValue == undefined ) {
+    if (data?.currentSalary == '' || reValue == undefined) {
       return
     }
 
@@ -115,9 +115,8 @@ function JobApplicationForm() {
 
       console.error('Submission Error:', error?.message)
       errorMessage({ description: error?.message })
-      if(error?.message == "reCaptcha verification failed."){
+      if (error?.message == 'reCaptcha verification failed.') {
         form.unregister('recaptcha', { keepError: false })
-
       }
     }
   }
@@ -139,6 +138,10 @@ function JobApplicationForm() {
         <h2 className='walking mb-6 text-2xl font-semibold text-gray-800'>
           Job Application
         </h2>
+        <h4 className='mb-8'>
+          Please fill out this form with accurate details. The information will
+          be used for the interview process.
+        </h4>
         <p className='mb-4 text-sm text-gray-500'>Step {step + 1} of 2</p>
         <FormProvider {...form}>
           <form
