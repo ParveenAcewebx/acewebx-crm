@@ -10,7 +10,8 @@ const Candidate = {
   candidateGetById: id => {
     return api.get(`candidate/getCandidateById/${id}`)
   },
-  updateCandidate: (id, data) => {
+  updateCandidate: (candiId, data) => {
+    let id = candiId
     return api.put(`candidate/update/${id}`, data)
   },
   romoveCandidate: id => {
@@ -20,7 +21,7 @@ const Candidate = {
     return api.get(`candidate/getCandidateById/${id}`)
   },
   candidateListFilters: data => {
-    console.log("datadata",data)
+    console.log('datadata', data)
     const search = data?.search ?? ''
     const maxSalary = data?.maxSalary ?? ''
     const minSalary = data?.minSalary ?? ''
@@ -33,6 +34,14 @@ const Candidate = {
     return api.get(
       `candidate/getAllCandidate?page=${data?.page}&limit=${data?.limit}&skill=${data?.Skill}&preferredShift=${data?.preferredShift}&minSalary=${data?.minSalary}&maxSalary=${data?.maxSalary}&startDate=${data?.startDate}&endDate=${data?.endDate}`
     )
+  },
+
+  sendWalkInLink: id => {
+    return api.post(`send-walk-in-application/${id}`)
+  },
+
+  candidateGetByUUID: id => {
+    return api.post(`confirm-candidate-token/${id}`)
   }
 }
 

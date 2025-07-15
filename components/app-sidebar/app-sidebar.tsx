@@ -8,7 +8,7 @@ import {
   useSidebar
 } from '@/components/ui/sidebar'
 import { DocumentTextIcon } from '@heroicons/react/24/outline'
-import { HomeIcon, User } from 'lucide-react'
+import { HomeIcon } from 'lucide-react'
 import Link from 'next/link'
 import NavMain from './nav-main'
 import { NavUser } from './nav-user'
@@ -22,17 +22,21 @@ const data = {
   },
   navMain: [
     {
-      title: 'Candidate',
+      title: 'Candidates',
       url: '/dashboard/',
       icon: DocumentTextIcon,
       isActive: true,
       items: [
         {
-          title: 'List',
+          title: 'Developers',
           url: '/dashboard/admin/candidates'
-        },]
-    },
-  
+        },
+        {
+          title: 'Sales',
+          url: '/dashboard/admin/candidate-sales'
+        }
+      ]
+    }
   ]
 }
 
