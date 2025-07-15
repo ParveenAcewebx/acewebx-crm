@@ -24,8 +24,23 @@ export const SalesCandidateValidation = Yup.object().shape({
       if (!value) return true // Skip format check if empty (required will handle it)
       return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)
     }),
-    joiningDate: Yup.date()
+  joiningDate: Yup.date()
     .nullable()
     .transform((value, originalValue) => (originalValue === '' ? null : value))
     .required('Date of Birth is required'),
+  recaptcha: Yup.string().required('Captcha is required'),
+  resume: Yup.mixed()
+    .required('Resume is required')
+    .test('fileExists', 'Resume is required', value => {
+      return value instanceof File || (value && value.length > 0)
+    })
+    .test(
+      'fileSize',
+      'File size must be less than or equal to 15 MB',
+      value => {
+        if (!value) return true // already handled by required
+        const file = value instanceof File ? value : value[0]
+        return file?.size <= 15 * 1024 * 1024 // 15 MB in bytes
+      }
+    ),
 })

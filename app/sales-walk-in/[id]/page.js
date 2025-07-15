@@ -13,6 +13,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 
 // import Loader from '@/components/Loader'
 import { errorMessage } from '@/components/ToasterMessage'
+import { SalesCandidateValidation } from '@/components/form-validations/SalesCandidateValidation'
 import FormInputField from '@/components/share/form/FormInputField'
 import FormSelectField from '@/components/share/form/FormSelect'
 import FormInputFileUploaderSingle from '@/components/share/form/SingleFileUpload'
@@ -20,9 +21,8 @@ import FormTextArea from '@/components/share/form/TextArea'
 import FormDatePicker from '@/components/share/form/datePicker'
 import { Button } from '@/components/ui/button'
 import SalesCandidate from '@/services/cadidateApis/SalesCandidateApi'
-import { Loader } from 'lucide-react'
-import { SalesCandidateValidation } from '@/components/form-validations/SalesCandidateValidation'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { Loader } from 'lucide-react'
 
 function EditSalesJobApplicationForm() {
   const { id } = useParams()
@@ -165,12 +165,14 @@ function EditSalesJobApplicationForm() {
                 <FormInputField
                   name='name'
                   label='Full Name'
+                  disable={true}
                   form={form}
                   inputType='text'
                   className='colum-box-bg-change'
                 />
                 <FormInputField
                   name='email'
+                  disable={true}
                   label='Email'
                   form={form}
                   inputType='email'
@@ -213,13 +215,6 @@ function EditSalesJobApplicationForm() {
                   inputType='number'
                   className='colum-box-bg-change'
                 />{' '}
-                <FormSelectField
-                  name='totalExperience'
-                  label='How many years of experience do you have in sales? '
-                  form={form}
-                  options={totalExperienceOptions}
-                  className='colum-box-bg-change'
-                />
                 <FormInputField
                   name='monthlySalesTarget'
                   label='Current Monthly Sales Target ($)'
@@ -247,6 +242,16 @@ function EditSalesJobApplicationForm() {
                   form={form}
                   className='colum-box-bg-change'
                 />
+              </div>
+
+              <div className='mb-4 mt-6 grid grid-cols-1 gap-6 md:grid-cols-1'>
+                <FormSelectField
+                  name='totalExperience'
+                  label='How many years of experience do you have in sales? '
+                  form={form}
+                  options={totalExperienceOptions}
+                  className='colum-box-bg-change'
+                />
                 <FormInputField
                   name='achievedTarget'
                   label='Targets Achieved from Assigned Monthly Targets ($)'
@@ -254,17 +259,6 @@ function EditSalesJobApplicationForm() {
                   inputType='text'
                   className='colum-box-bg-change'
                 />
-              </div>
-
-              <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-2'>
-                <FormSelectField
-                  name='businessMethods'
-                  label='How do you generate business?'
-                  form={form}
-                  options={businessGenerate}
-                  className='colum-box-bg-change'
-                />
-
                 <FormSelectField
                   name='leadPlatforms'
                   label='Which online platforms do you use for lead generation? '
@@ -272,7 +266,15 @@ function EditSalesJobApplicationForm() {
                   options={onlinePlatforms}
                   className='colum-box-bg-change'
                 />
+                <FormSelectField
+                  name='businessMethods'
+                  label='How do you generate business?'
+                  form={form}
+                  options={businessGenerate}
+                  className='colum-box-bg-change'
+                />
               </div>
+
               <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'></div>
               <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
                 <FormTextArea
@@ -342,7 +344,7 @@ function EditSalesJobApplicationForm() {
                   variant='contained'
                   className='bg-[#B82025] !text-white'
                 >
-                  {loader ? <Loader /> : 'Update'}
+                  {loader ? <Loader /> : 'Submit'}
                 </Button>
               </div>
             </form>

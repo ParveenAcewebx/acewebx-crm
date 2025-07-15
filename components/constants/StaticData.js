@@ -35,7 +35,7 @@ export const salesCandidateDefaultValue ={
     reasonForLeaving: '',
     topSalesAchievement: '',
     resume: null, // File input should be null initially
-    // recaptcha: undefined, // This is for validation of ReCAPTCHA
+    recaptcha: undefined, // This is for validation of ReCAPTCHA
   }
   
 
