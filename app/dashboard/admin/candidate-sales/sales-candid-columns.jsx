@@ -7,13 +7,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import { Edit, EllipsisVertical, Eye, Send, Trash2 } from 'lucide-react'
+import { Edit, EllipsisVertical, Eye, Trash2 } from 'lucide-react'
 
-export const CandidColumns = (
+export const SalesCandidColumns = (
   handleDeleteCand,
   handleEditCand,
   handlePreviewCand,
-  handleSendWalkInForm
+  DCSOpenModal
 ) => [
   {
     accessorKey: 'action',
@@ -48,13 +48,6 @@ export const CandidColumns = (
               >
                 <Trash2 className='mr-2 h-4 w-4' />
                 Delete
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => handleSendWalkInForm(row)}
-                className='cursor-pointer text-yellow-600'
-              >
-                <Send className='mr-2 h-4 w-4' />
-                Send Walk In Form
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

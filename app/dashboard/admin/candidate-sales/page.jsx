@@ -1,6 +1,7 @@
 'use client'
 import LayoutHeader from '@/components/layoutHeader'
 import DialogBox from '@/components/modal/DialogBox'
+import DcsModal from '@/components/modal/dscForm'
 import FormInputField from '@/components/share/form/FormInputField'
 import FormSelectField from '@/components/share/form/FormSelect'
 import { LengthData } from '@/components/static-Values'
@@ -18,9 +19,9 @@ import Candidate from '@/services/cadidateApis/CandidateApi'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { CandidColumns } from './candid-columns'
+import { SalesCandidColumns } from './sales-candid-columns'
 
-const AllCandidates = () => {
+const AllSalesCandidates = () => {
   useDocumentTitle('Leads')
   const [dcsModalOpen, setDcsModalOpen] = useState(false) // State for DCS modal
   const [selectedDcsValue, setSelectedDcsValue] = useState(null) // Store DCS value for modal
@@ -92,7 +93,7 @@ const AllCandidates = () => {
   }
   // edit table row
   const handleEditCand = row => {
-    router.push(`/dashboard/admin/walk-in/${row.original.id}`)
+    router.push(`/dashboard/admin/walking/${row.original.id}`)
   }
   const deleteHandleModalClose = () => {
     setDeleteOpenModal(false)
@@ -100,10 +101,10 @@ const AllCandidates = () => {
   const handlePreviewCand = row => {
     router.push(`/dashboard/candidate-details/preview?id=${row?.original?.id}`)
   }
-  // const DCSOpenModal = row => {
-  //   setSelectedDcsValue(row)
-  //   setDcsModalOpen(true)
-  // }
+  const DCSOpenModal = row => {
+    setSelectedDcsValue(row)
+    setDcsModalOpen(true)
+  }
 
   useEffect(() => {
     const subscription = methods.watch((value, { name }) => {
@@ -147,28 +148,11 @@ const AllCandidates = () => {
       console.error('Fetch error:', error)
     }
   }
-
-  const handleSendWalkInForm = async row => {
-    try {
-      const sendEmailLin = await Candidate.sendWalkInLink(row.original.id)
-
-      if (sendEmailLin?.data?.status == true) {
-        successMessage({
-          description: 'Link sent successfully to the mail.'
-        })
-      }
-    } catch (error) {
-      console.log('error', error)
-      errorMessage({
-        description: 'Something Went Wrong!'
-      })
-    }
-  }
   console.log('getList', getList)
   return (
     <>
       <div className='mb-3 flex items-center justify-between'>
-        <LayoutHeader pageTitle='Developers List' />
+        <LayoutHeader pageTitle='Sales Candidate List' />
       </div>
       {/* Filters */}
       <Accordion
@@ -236,11 +220,11 @@ const AllCandidates = () => {
       <DataTable
         data={getList?.candidates}
         loading={loading}
-        columns={CandidColumns(
+        columns={SalesCandidColumns(
           handleDeleteCand,
           handleEditCand,
           handlePreviewCand,
-          handleSendWalkInForm
+          DCSOpenModal
         )}
         totalRecord={totalRecord}
         page={page}
@@ -254,14 +238,14 @@ const AllCandidates = () => {
         deleteOpenModal={deleteOpenModal}
         deleteHandleModalClose={deleteHandleModalClose}
       />
-      {/* <DcsModal
+      <DcsModal
         getListLeads={getListLeads}
         isOpen={dcsModalOpen}
         onClose={() => setDcsModalOpen(false)}
         dcsValue={selectedDcsValue}
-      /> */}
+      />
     </>
   )
 }
 
-export default AllCandidates
+export default AllSalesCandidates

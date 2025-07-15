@@ -117,3 +117,23 @@ export const preferredShiftOptions = [
   { value: 'staggered', label: 'Staggered Shift' },
   { value: 'any', label: 'Any Shift' }
 ]
+
+export const onlinePlatforms = [
+  { label: 'LinkedIn', value: 'linkedin' },
+  { label: 'Upwork', value: 'upwork' },
+  { label: 'Freelancer', value: 'freelancer' },
+  { label: 'PPH', value: 'pph' },
+  { label: 'Other', value: 'other' },
+  { label: 'Fiverr', value: 'fiverr' }
+]
+
+export const businessGenerate = [
+  { label: 'Cold Calling', value: 'cold calling' },
+  { label: 'Email Marketing', value: 'email marketing' },
+  { label: 'LinkedIn Sales Navigator', value: 'linkedIn sales navigator' },
+  {
+    label: 'Online Platforms (Upwork, Freelancer, etc.)',
+    value: 'online platforms'
+  },
+  { label: 'Other', value: 'other' }
+]
