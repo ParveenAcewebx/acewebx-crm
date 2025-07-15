@@ -132,7 +132,7 @@ function EditCandidateDetails() {
 
         // Then load and set the resume file if available
         // const resumePath = response?.data?.data?.resume?.filePath
-        const resumePath = meta?.resume
+        const resumePath = meta?._resume
 
         console.log('resumePath', resumePath)
         if (resumePath) {
@@ -195,7 +195,6 @@ function EditCandidateDetails() {
             <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
               <FormInputField
                 name='name'
-                disable={true}
                 label='Full Name'
                 form={form}
                 inputType='text'
@@ -204,7 +203,6 @@ function EditCandidateDetails() {
               <FormInputField
                 name='email'
                 label='Email'
-                disable={true}
                 form={form}
                 inputType='email'
                 className='colum-box-bg-change'

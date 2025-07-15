@@ -7,13 +7,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import { Edit, EllipsisVertical, Eye, Trash2 } from 'lucide-react'
+import { Edit, EllipsisVertical, Eye, Send, Trash2 } from 'lucide-react'
 
 export const SalesCandidColumns = (
   handleDeleteCand,
   handleEditCand,
   handlePreviewCand,
-  DCSOpenModal
+  handleSendWalkInForm
 ) => [
   {
     accessorKey: 'action',
@@ -49,6 +49,13 @@ export const SalesCandidColumns = (
                 <Trash2 className='mr-2 h-4 w-4' />
                 Delete
               </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => handleSendWalkInForm(row)}
+                className='cursor-pointer text-yellow-600'
+              >
+                <Send className='mr-2 h-4 w-4' />
+                Send Walk In Form
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -83,44 +90,40 @@ export const SalesCandidColumns = (
     )
   },
 
-  {
-    accessorKey: 'noticePeriod',
-    header: 'Notice Period',
-    cell: ({ row }) => row.original?.noticePeriod
-  },
+  
   {
     accessorKey: 'totalExperience',
     header: 'Experience',
     cell: ({ row }) => row.original?.totalExperience
   },
   {
-    accessorKey: 'dob',
-    header: 'DOB',
-    cell: ({ row }) => row.original?.dob
+    accessorKey: 'joiningDate',
+    header: 'Joining Date',
+    cell: ({ row }) => row.original?.joiningDate
   },
   {
-    accessorKey: '_currentCompanyName',
-    header: 'C. C. Name',
-    cell: ({ row }) => row.original?.meta?._currentCompanyName
+    accessorKey: 'monthlySalesTarget',
+    header: 'Monthly Sales Target',
+    cell: ({ row }) => row.original?.monthlySalesTarget
   },
   {
-    accessorKey: '_currentLocation',
-    header: 'Current Location',
-    cell: ({ row }) => row.original?.meta?._currentLocation
+    accessorKey: 'freshBusinessTarget',
+    header: 'Fresh Business Target',
+    cell: ({ row }) => row.original?.freshBusinessTarget
   },
   {
-    accessorKey: '_designationApplyingFor',
-    header: 'Skill',
-    cell: ({ row }) => row.original?.meta?._designationApplyingFor
+    accessorKey: 'businessMethods',
+    header: 'Business Methods',
+    cell: ({ row }) => row.original?.businessMethods
   },
   {
-    accessorKey: '_gender',
-    header: 'Gender',
-    cell: ({ row }) => row.original?.meta?._gender
+    accessorKey: 'leadPlatforms',
+    header: 'Lead Platforms',
+    cell: ({ row }) => row.original?.leadPlatforms
   },
   {
-    accessorKey: '_preferredShift',
+    accessorKey: 'preferredShift',
     header: 'Preferred Shift',
-    cell: ({ row }) => row.original?.meta?._preferredShift
+    cell: ({ row }) => row.original?.preferredShift
   }
 ]

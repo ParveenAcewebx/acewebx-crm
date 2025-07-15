@@ -5,8 +5,8 @@ import {
   preferredShiftOptions,
   totalExperienceOptions
 } from '@/components/constants/StaticData'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useParams, useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { FormProvider, useForm } from 'react-hook-form'
 
@@ -21,7 +21,9 @@ import { Button } from '@/components/ui/button'
 import SalesCandidate from '@/services/cadidateApis/SalesCandidateApi'
 import { Loader } from 'lucide-react'
 
-function SalesJobApplicationForm() {
+function EditSalesJobApplicationForm() {
+  const { id } = useParams()
+
   const [loader, setLoader] = useState(false)
   const [recaptcha, setRecaptcha] = useState([])
   const router = useRouter()
@@ -38,6 +40,44 @@ function SalesJobApplicationForm() {
 
   const reValue = form.watch('recaptcha')
 
+  const urlToFile = async (url, fileName) => {
+    const response = await fetch(url)
+    const blob = await response.blob()
+    const contentType = blob.type || 'application/octet-stream'
+
+    return new File([blob], fileName, { type: contentType })
+  }
+
+  const candidateDataGetById = async () => {
+    try {
+      const response = await SalesCandidate.salesCandidateGetById(id)
+      if (response?.data?.status === true) {
+        const data = response?.data?.data
+
+        // Set form fields first
+        form.reset(data)
+
+        // Then load and set the resume file if available
+        const resumePath = data?.resume
+        if (resumePath) {
+          const fileUrl = `${process.env.NEXT_PUBLIC_API_URL}${resumePath}`
+          const fileName = resumePath.split('/').pop() || 'resume.pdf'
+
+          try {
+            const fileObj = await urlToFile(fileUrl, fileName)
+            console.log('fileObjfileObj', fileObj)
+
+            form.setValue('resume', fileObj)
+          } catch (err) {
+            console.error('Failed to convert resume URL to File:', err)
+          }
+        }
+      }
+    } catch (error) {
+      errorMessage({ description: error?.message })
+    }
+  }
+
   const onSubmit = async data => {
     try {
       const formData = new FormData()
@@ -52,7 +92,7 @@ function SalesJobApplicationForm() {
         formData.append(key, value)
       })
 
-      const response = await SalesCandidate.addSalesCandidate(formData)
+      const response = await SalesCandidate.updateSalesCandidate(id, formData)
       if (response?.data?.status == true) {
         form.reset()
         setLoader(false)
@@ -68,6 +108,12 @@ function SalesJobApplicationForm() {
       }
     }
   }
+
+  useEffect(() => {
+    if (!id) return
+
+    candidateDataGetById()
+  }, [id])
   return (
     <div
       className='mobile-view relative flex min-h-screen w-full flex-col items-center justify-start bg-white'
@@ -78,23 +124,15 @@ function SalesJobApplicationForm() {
         margin: 0
       }}
     >
-      <div className='w-2xs acewebx-logo z-10 text-center'>
+      {/* <div className='w-2xs acewebx-logo z-10 text-center'>
         <img src='./acewebxlogo.png' alt='Acewebx Logo' className='h-25 w-40' />
-      </div>
-
+      </div> */}
+      {}
       <div className='z-10 w-full max-w-3xl rounded-xl border border-red-100 bg-gradient-to-br from-red-100 via-white to-red-100 p-10 shadow-md'>
         <h2 className='walking mb-6 text-2xl font-semibold text-gray-800'>
           Sales Candidate Job Application
         </h2>
 
-        <h4 className='mb-8'>
-          Thank you for your interest in joining AceWebX. Please fill out the
-          following form with accurate information. This will help us evaluate
-          your application before proceeding with the interview process. We look
-          forward to learning more about your experience and how you can
-          contribute to our team. If selected, our HR team will contact you for
-          the next steps.
-        </h4>
         <FormProvider {...form}>
           <form
             encType='multipart/form-data'
@@ -281,7 +319,7 @@ function SalesJobApplicationForm() {
                 variant='contained'
                 className='bg-[#B82025] !text-white'
               >
-                {loader ? <Loader /> : 'Submit'}
+                {loader ? <Loader /> : 'Update'}
               </Button>
             </div>
           </form>
@@ -291,4 +329,4 @@ function SalesJobApplicationForm() {
   )
 }
 
-export default SalesJobApplicationForm
+export default EditSalesJobApplicationForm
