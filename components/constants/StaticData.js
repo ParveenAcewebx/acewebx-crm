@@ -16,6 +16,31 @@ export const walkInFormDefaultValues = {
   resume: ''
 }
 
+export const salesCandidateDefaultValue ={
+
+    name: '',
+    email: '',
+    phone: '',
+    joiningDate: null, // use `null` for DatePicker
+    currentSalary: '',
+    expectedSalary: '',
+    totalExperience: '',
+    monthlySalesTarget: '',
+    preferredShift: '',
+    preferredRegions: '',
+    freshBusinessTarget: '',
+    achievedTarget: '',
+    businessMethods: '',
+    leadPlatforms: '',
+    reasonForLeaving: '',
+    topSalesAchievement: '',
+    resume: null, // File input should be null initially
+    // recaptcha: undefined, // This is for validation of ReCAPTCHA
+  }
+  
+
+
+
 export const editWalkInForm = {
   name: '',
   email: '',

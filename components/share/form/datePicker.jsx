@@ -28,7 +28,7 @@ const FormDatePicker = ({
   placeholder,
   className,
   disabled,
-  defaultMonth
+  defaultMonth,
 }) => {
   const [open, setOpen] = useState(false)
 

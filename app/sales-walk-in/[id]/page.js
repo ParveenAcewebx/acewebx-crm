@@ -3,6 +3,7 @@ import {
   businessGenerate,
   onlinePlatforms,
   preferredShiftOptions,
+  salesCandidateDefaultValue,
   totalExperienceOptions
 } from '@/components/constants/StaticData'
 import { useParams, useRouter } from 'next/navigation'
@@ -20,6 +21,8 @@ import FormDatePicker from '@/components/share/form/datePicker'
 import { Button } from '@/components/ui/button'
 import SalesCandidate from '@/services/cadidateApis/SalesCandidateApi'
 import { Loader } from 'lucide-react'
+import { SalesCandidateValidation } from '@/components/form-validations/SalesCandidateValidation'
+import { yupResolver } from '@hookform/resolvers/yup'
 
 function EditSalesJobApplicationForm() {
   const { id } = useParams()
@@ -30,9 +33,9 @@ function EditSalesJobApplicationForm() {
 
   const router = useRouter()
   const form = useForm({
-    mode: 'onChange'
-    // defaultValues: walkInFormDefaultValues,
-    // resolver: yupResolver(CandidateFormValidation)
+    mode: 'onChange',
+    defaultValues: salesCandidateDefaultValue,
+    resolver: yupResolver(SalesCandidateValidation)
   })
 
   function onReCAPTCHAChange(value) {
