@@ -190,15 +190,12 @@ function EditJobApplicationForm() {
 
         // Then load and set the resume file if available
         const resumePath = meta?._resume
-        console.log('resumePath', resumePath)
         if (resumePath) {
           const fileUrl = `${process.env.NEXT_PUBLIC_API_URL}${resumePath}`
-          console.log('fileUrlfileUrl', fileUrl)
           const fileName = resumePath.split('/').pop() || 'resume.pdf'
 
           try {
             const fileObj = await urlToFile(fileUrl, fileName)
-            console.log('fileObjfileObj', fileObj)
             form.setValue('resume', fileObj)
           } catch (err) {
             console.error('Failed to convert resume URL to File:', err)
