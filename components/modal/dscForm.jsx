@@ -8,9 +8,9 @@ import {
 import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import FormSelectField from '../share/form/FormSelect'
-import { DealConfidenceScore } from '../static-Values'
 import { errorMessage, successMessage } from '../ToasterMessage'
 import { Button } from '../ui/button'
+import { DealConfidenceScore } from '../constants/StaticData'
 
 const DcsModal = ({ isOpen, onClose, dcsValue, getListLeads }) => {
   const editId = dcsValue?.original?.id || dcsValue?.id

@@ -30,6 +30,8 @@ function EditSalesJobApplicationForm() {
 
   const [loader, setLoader] = useState(false)
   const [recaptcha, setRecaptcha] = useState([])
+  const [candEmail , setCandEmail] = useState("")
+
   const router = useRouter()
   const form = useForm({
     mode: 'onChange',
@@ -57,7 +59,7 @@ function EditSalesJobApplicationForm() {
       const response = await SalesCandidate.salesCandidateGetById(id)
       if (response?.data?.status === true) {
         const data = response?.data?.data
-
+        setCandEmail(data?.email)
         // Set form fields first
         form.reset(data)
 
@@ -127,7 +129,7 @@ function EditSalesJobApplicationForm() {
       {}
       <div className=''>
         <div className='flex justify-between'>
-          <LayoutHeader pageTitle={'Sales Candidate Job Application(Edit)'} />
+          <LayoutHeader pageTitle={`Sales Candidate Details (${candEmail})`} />
         </div>
         <div className=''>
           <FormProvider {...form}>
@@ -213,7 +215,7 @@ function EditSalesJobApplicationForm() {
               <div className='mb-4 mt-6 grid grid-cols-1 gap-6 md:grid-cols-2'>
                 <FormInputField
                   name='freshBusinessTarget'
-                  label='New Business Monthly Target'
+                  label='New Business Monthly Target ($)'
                   form={form}
                   className='colum-box-bg-change'
                 />

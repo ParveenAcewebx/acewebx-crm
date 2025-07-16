@@ -3,7 +3,6 @@ import LayoutHeader from '@/components/layoutHeader'
 import DialogBox from '@/components/modal/DialogBox'
 import FormInputField from '@/components/share/form/FormInputField'
 import FormSelectField from '@/components/share/form/FormSelect'
-import { LengthData } from '@/components/static-Values'
 import { DataTable } from '@/components/Table'
 import { errorMessage, successMessage } from '@/components/ToasterMessage'
 import {
@@ -19,6 +18,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { CandidColumns } from './candid-columns'
+import { LengthData } from '@/components/constants/StaticData'
 
 const AllCandidates = () => {
   useDocumentTitle('Leads')

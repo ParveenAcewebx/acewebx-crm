@@ -12,6 +12,7 @@ import ReCAPTCHA from 'react-google-recaptcha'
 import { FormProvider, useForm } from 'react-hook-form'
 
 // import Loader from '@/components/Loader'
+import PageExpired from '@/app/url-expired/page'
 import { errorMessage } from '@/components/ToasterMessage'
 import { SalesCandidateValidation } from '@/components/form-validations/SalesCandidateValidation'
 import FormInputField from '@/components/share/form/FormInputField'
@@ -80,7 +81,7 @@ function EditSalesJobApplicationForm() {
         }
       }
     } catch (error) {
-      errorMessage({ description: error?.message })
+      // errorMessage({ description: error?.message })
       setIsVerify(error?.status)
     }
   }
@@ -98,7 +99,7 @@ function EditSalesJobApplicationForm() {
         formData.append(key, value)
       })
 
-      const response = await SalesCandidate.updateSalesCandidate(
+      const response = await SalesCandidate.updateSalesWalkInCandidate(
         candiId,
         formData
       )
@@ -141,7 +142,10 @@ function EditSalesJobApplicationForm() {
         />
       </div>
       {isVerify == false ? (
-        <span className='text-2xl'>This URL has been expired!</span>
+        <>
+          {/* <span className='text-2xl'></span> */}
+          <PageExpired />
+        </>
       ) : (
         <div className='z-10 w-full max-w-3xl rounded-xl border border-red-100 bg-gradient-to-br from-red-100 via-white to-red-100 p-10 shadow-md'>
           <h2 className='walking mb-6 text-2xl font-semibold text-gray-800'>
@@ -238,7 +242,7 @@ function EditSalesJobApplicationForm() {
                 />
                 <FormInputField
                   name='freshBusinessTarget'
-                  label='New Business Monthly Target'
+                  label='New Business Monthly Target ($)'
                   form={form}
                   className='colum-box-bg-change'
                 />

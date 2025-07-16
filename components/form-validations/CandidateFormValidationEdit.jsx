@@ -14,15 +14,15 @@ export const CandidateFormValidationEdit = Yup.object().shape({
 
   // email: Yup.string().email('Please enter a valid email').required('Email is required'),
   email: Yup.string()
-    .required('Email is required')
-    .test('is-valid-email', 'Invalid email format', function (value) {
-      if (!value) return true // Skip format check if empty (required will handle it)
-      return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)
-    }),
+  .required('Email is required')
+  .test('is-valid-email', 'Invalid email format', function (value) {
+    if (!value) return true; // Let 'required' handle empty case
+    return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/.test(value);
+  }),
   gender: Yup.string().required('Gender is required'),
   noticePeriod: Yup.number()
-  .min(0, 'Minimum 0 day allowed')
-  .max(90, 'Maximum 90 day allowed'),
+    .min(0, 'Minimum 0 day allowed')
+    .max(90, 'Maximum 90 day allowed'),
   phone: Yup.string()
     .transform(
       value => value?.replace(/\+91\s?|\s+/g, '') // remove +91 and all spaces
@@ -32,7 +32,20 @@ export const CandidateFormValidationEdit = Yup.object().shape({
       /^[6-9]\d{9}$/,
       'Enter a valid 10-digit mobile number starting with 6-9'
     ),
-
+  // reference1ContactNumber: Yup.string()
+  //   .transform(
+  //     value => value?.replace(/\+91\s?|\s+/g, '') // remove +91 and all spaces
+  //   ).matches(
+  //     /^[6-9]\d{9}$/,
+  //     'Enter a valid 10-digit mobile number starting with 6-9'
+  //   ),
+  // reference2ContactNumber: Yup.string()
+  //   .transform(
+  //     value => value?.replace(/\+91\s?|\s+/g, '') // remove +91 and all spaces
+  //   ).matches(
+  //     /^[6-9]\d{9}$/,
+  //     'Enter a valid 10-digit mobile number starting with 6-9'
+  //   ),
   // reference1ContactNumber: Yup.string()
   //   .transform(value => (value ? value.replace(/\+91\s?|\s+/g, '') : value)).notRequired() // Safely handle undefined/null
   //   .matches(
@@ -65,8 +78,11 @@ export const CandidateFormValidationEdit = Yup.object().shape({
 
   currentCompanyName: Yup.string().required('Company name is required'),
 
-  reasonForChange: Yup.string().required('Reason for Change is required'),
-
+  reasonForChange: Yup.string()
+    .required('Reason for Change is required')
+    .max(500),
+  currentAddress: Yup.string().max(500),
+  permanentAddress: Yup.string().max(500),
   preferredShift: Yup.string().required('Preferred Shift is required'),
 
   resume: Yup.mixed()

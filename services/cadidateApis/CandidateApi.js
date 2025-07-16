@@ -14,6 +14,10 @@ const Candidate = {
     let id = candiId
     return api.put(`candidate/update/${id}`, data)
   },
+  updateWalkinCandidate: (candiId, data) => {
+    let id = candiId
+    return api.put(`candidate/walkIn/update/${id}`, data)
+  },
   romoveCandidate: id => {
     return api.delete(`candidate/deleteCandidate/${id}`)
   },

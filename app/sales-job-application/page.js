@@ -178,7 +178,7 @@ function SalesJobApplicationForm() {
               />
               <FormInputField
                 name='freshBusinessTarget'
-                label='New Business Monthly Target'
+                label='New Business Monthly Target ($)'
                 form={form}
                 className='colum-box-bg-change'
               />
