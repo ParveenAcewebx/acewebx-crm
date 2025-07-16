@@ -223,7 +223,8 @@ function EditJobApplicationForm() {
         backgroundImage: "url('/images/backgroud-ace.png')",
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        margin: 0
+        margin: 0,
+        backgroundAttachment: "fixed"
       }}
     >
       <div className='w-2xs acewebx-logo z-10 text-center'>

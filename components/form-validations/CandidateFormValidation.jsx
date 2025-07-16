@@ -1,7 +1,7 @@
 import * as Yup from 'yup'
 
 export const CandidateFormValidation = Yup.object().shape({
-  name: Yup.string()
+  name: Yup.string().trim()
     .required('Full Name is required')
     .min(3, 'Minimum 3 characters are required')
     .max(50, 'Maximum 50 characters allowed'),
@@ -13,11 +13,11 @@ export const CandidateFormValidation = Yup.object().shape({
   // .max(dayjs().subtract(15, 'year').toDate(), 'You must be at least 15 years old'),
 
   email: Yup.string()
-  .required('Email is required')
-  .test('is-valid-email', 'Invalid email format', function (value) {
-    if (!value) return true; // Let 'required' handle empty case
-    return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/.test(value);
-  }),
+    .required('Email is required')
+    .test('is-valid-email', 'Invalid email format', function (value) {
+      if (!value) return true // Let 'required' handle empty case
+      return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/.test(value)
+    }),
   noticePeriod: Yup.number()
     .min(0, 'Minimum 0 day allowed')
     .max(90, 'Maximum 90 day allowed'),
@@ -49,7 +49,9 @@ export const CandidateFormValidation = Yup.object().shape({
 
   currentCompanyName: Yup.string().required('Company name is required'),
 
-  reasonForChange: Yup.string().required('Reason for Change is required').max(500),
+  reasonForChange: Yup.string()
+    .required('Reason for Change is required')
+    .max(500),
   currentAddress: Yup.string().max(500),
   permanentAddress: Yup.string().max(500),
   preferredShift: Yup.string().required('Preferred Shift is required'),

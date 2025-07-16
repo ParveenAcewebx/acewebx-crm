@@ -1,7 +1,7 @@
 import * as Yup from 'yup'
 
 export const CandidateFormValidationEdit = Yup.object().shape({
-  name: Yup.string()
+  name: Yup.string().trim()
     .required('Full Name is required')
     .min(3, 'Minimum 3 characters are required')
     .max(50, 'Maximum 50 characters allowed'),

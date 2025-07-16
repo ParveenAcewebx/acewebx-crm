@@ -14,12 +14,7 @@ import NavMain from './nav-main'
 import { NavUser } from './nav-user'
 
 const data = {
-  home: {
-    title: 'Admin',
-    url: '/dashboard',
-    icon: HomeIcon,
-    isActive: true
-  },
+
   navMain: [
     {
       title: 'Candidates',
@@ -58,7 +53,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           >
           </p> */}
         </div>
-        <NavMain homeItem={data?.home} items={data.navMain} />
+        <NavMain  items={data.navMain} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser />

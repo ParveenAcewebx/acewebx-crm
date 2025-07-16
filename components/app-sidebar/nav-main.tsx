@@ -21,11 +21,7 @@ import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 interface NavMainProps {
-  homeItem: {
-    title: string
-    url: string
-    icon: LucideIcon
-  }
+  
   items: {
     title: string
     url: string
@@ -41,7 +37,7 @@ interface NavMainProps {
   }[]
 }
 
-export default function NavMain({ homeItem, items }: NavMainProps) {
+export default function NavMain({  items }: NavMainProps) {
   const pathname = usePathname()
   const [openSection, setOpenSection] = useState<string | null>(null)
 
@@ -70,7 +66,7 @@ export default function NavMain({ homeItem, items }: NavMainProps) {
     <SidebarGroup>
       <SidebarMenu>
         {/* Home Link */}
-        <SidebarMenuItem className='m-1 rounded'>
+        {/* <SidebarMenuItem className='m-1 rounded'>
           <SidebarMenuButton
             asChild
             tooltip={homeItem.title}
@@ -91,7 +87,7 @@ export default function NavMain({ homeItem, items }: NavMainProps) {
               <span>{homeItem.title}</span>
             </Link>
           </SidebarMenuButton>
-        </SidebarMenuItem>
+        </SidebarMenuItem> */}
 
         {/* Sidebar Sections */}
         {items.map(item => {
