@@ -1,3 +1,4 @@
+
 'use client'
 
 import { Upload, X } from 'lucide-react'
@@ -34,7 +35,8 @@ const FormInputFileUploaderSingle = ({
         maxSize: 15 * 1024 * 1024, // 15 MB
         accept: {
           'application/pdf': ['.pdf'],
-          'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+            ['.docx']
         },
         onDrop,
         onDropRejected: () => {
@@ -45,23 +47,38 @@ const FormInputFileUploaderSingle = ({
       const renderPreview = file => {
         if (!file) return null
 
+        const isBlob = file instanceof File
+        const url = isBlob ? URL.createObjectURL(file) : file
+
         return (
-          <div className='mt-4 flex items-center justify-between rounded-md border bg-gray-50 p-3'>
-            <div className='flex items-center gap-3'>
-              <i className='ri-file-text-line text-2xl text-gray-700' />
-              <div>
-                <p className='text-sm font-medium'>{file.name}</p>
-                <p className='text-xs text-gray-500'>
-                  {(file.size / 1024).toFixed(1)} KB
-                </p>
+          <div className='mt-4 space-y-2'>
+            <div className='flex items-center justify-between rounded-md border bg-gray-50 p-3'>
+              <div className='flex items-center gap-3'>
+                <i className='ri-file-text-line text-2xl text-gray-700' />
+                <div>
+                  <p className='text-sm font-medium'>
+                    {isBlob ? file.name : 'Resume'}
+                  </p>
+                  <p className='text-xs text-gray-500'>
+                    {isBlob && `${(file.size / 1024).toFixed(1)} KB`}
+                  </p>
+                </div>
               </div>
+              <button
+                type='button'
+                onClick={handleRemove}
+                className='text-red-600 hover:text-red-800'
+              >
+                <X className='h-4 w-4' />
+              </button>
             </div>
-            <button
-              type='button'
-              onClick={handleRemove}
-              className='text-red-600 hover:text-red-800'
-            >
-              <X className='h-4 w-4' />
+
+            {/* View Resume link */}
+            <button className='text-sm text-blue-600 underline'>
+              {' '}
+              <a href={url} target='_blank' rel='noopener noreferrer'>
+                View Resume
+              </a>
             </button>
           </div>
         )
@@ -80,13 +97,17 @@ const FormInputFileUploaderSingle = ({
             <p className='text-base font-medium text-gray-800'>
               {label || 'Drop Resume here or click to upload.'}
             </p>
-            <p className='text-sm text-gray-500'>Allowed: PDF/Docx (max 15 MB)</p>
+            <p className='text-sm text-gray-500'>
+              Allowed: PDF/Docx (max 15 MB)
+            </p>
           </div>
+
           {form?.formState.errors?.[name] && (
-            <p className='text-sm text-red-600'>
+            <p className='mt-2 text-sm text-red-600'>
               {form?.formState?.errors[name]?.message}
             </p>
           )}
+
           {value && renderPreview(value)}
         </div>
       )

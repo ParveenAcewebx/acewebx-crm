@@ -13,7 +13,7 @@ import ReCAPTCHA from 'react-google-recaptcha'
 import { FormProvider, useForm } from 'react-hook-form'
 
 // import Loader from '@/components/Loader'
-import { errorMessage } from '@/components/ToasterMessage'
+import { errorMessage, successMessage } from '@/components/ToasterMessage'
 import { CandidateFormValidationEdit } from '@/components/form-validations/CandidateFormValidationEdit'
 import LayoutHeader from '@/components/layoutHeader'
 import FormInputField from '@/components/share/form/FormInputField'
@@ -66,7 +66,9 @@ function EditCandidateDetails() {
       if (response?.data?.status == true) {
         form.reset()
         setLoader(false)
-        router.push('/dashboard')
+        successMessage({ description: 'Updated SuccessFully!' })
+
+        router.push('/dashboard/admin/candidates')
       }
     } catch (error) {
       setLoader(false)
@@ -131,8 +133,8 @@ function EditCandidateDetails() {
         form.reset(dataForSet)
 
         // Then load and set the resume file if available
-        // const resumePath = response?.data?.data?.resume?.filePath
-        const resumePath = meta?._resume
+        const resumePath = response?.data?.data?.resume?.filePath
+        // const resumePath = meta?._resume
 
         console.log('resumePath', resumePath)
         if (resumePath) {
@@ -164,15 +166,7 @@ function EditCandidateDetails() {
 
   console.log('formpppp', form.watch('resume'))
   return (
-    <div
-      className='mobile-view items-right relative flex min-h-screen w-full flex-col justify-start bg-white'
-      style={{
-        backgroundImage: "url('/images/backgroud-ace.png')",
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        margin: 0
-      }}
-    >
+    <div className='mobile-view items-right relative flex min-h-screen w-full flex-col justify-start bg-white'>
       {/* <div className='w-2xs acewebx-logo z-10 text-center'>
         <img
           src='/../acewebxlogo.png'
@@ -192,7 +186,7 @@ function EditCandidateDetails() {
             encType='multipart/form-data'
             onSubmit={form.handleSubmit(onSubmit)}
           >
-            <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
+            <div className='grid grid-cols-1 gap-6 md:grid-cols-3'>
               <FormInputField
                 name='name'
                 label='Full Name'
@@ -251,9 +245,7 @@ function EditCandidateDetails() {
                 options={totalExperienceOptions}
                 className='colum-box-bg-change'
               />
-            </div>
 
-            <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-2'>
               <FormInputField
                 name='currentSalary'
                 label='Current Salary (Monthly)'
@@ -283,19 +275,12 @@ function EditCandidateDetails() {
                 className='colum-box-bg-change'
               />
             </div>
-            <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
-              <FormSelectField
-                name='preferredShift'
-                label='Preferred Shift'
-                form={form}
-                options={preferredShiftOptions}
-                className='colum-box-bg-change !w-[100%]'
-              />
-            </div>
+
+            <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-3'></div>
 
             {/* Step 2: only edit time Details */}
 
-            <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-2'>
+            <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-3'>
               <FormInputField
                 name='currentAddress'
                 label='Current Address'
@@ -393,12 +378,19 @@ function EditCandidateDetails() {
                 className='colum-box-bg-change'
               />
             </div>
-            <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
+            <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-2'>
               <FormSelectField
                 name='source'
                 label='How did you hear about us'
                 form={form}
                 options={sourceOption}
+                className='colum-box-bg-change !w-[100%]'
+              />
+              <FormSelectField
+                name='preferredShift'
+                label='Preferred Shift'
+                form={form}
+                options={preferredShiftOptions}
                 className='colum-box-bg-change !w-[100%]'
               />
             </div>
@@ -452,7 +444,7 @@ function EditCandidateDetails() {
                 variant='contained'
                 className='bg-[#B82025] !text-white'
               >
-                {loader ? <Loader /> : 'Update'}
+                {loader ? <Loader /> : 'Submit'}
               </Button>
             </div>
           </form>
