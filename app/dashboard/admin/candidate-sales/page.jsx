@@ -4,7 +4,6 @@ import DialogBox from '@/components/modal/DialogBox'
 import DcsModal from '@/components/modal/dscForm'
 import FormInputField from '@/components/share/form/FormInputField'
 import FormSelectField from '@/components/share/form/FormSelect'
-import { LengthData } from '@/components/static-Values'
 import { DataTable } from '@/components/Table'
 import { errorMessage, successMessage } from '@/components/ToasterMessage'
 import {
@@ -20,6 +19,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { SalesCandidColumns } from './sales-candid-columns'
+import { LengthData } from '@/components/constants/StaticData'
 
 const AllSalesCandidates = () => {
   useDocumentTitle('Leads')
@@ -132,20 +132,20 @@ const AllSalesCandidates = () => {
   }
 
   const handlePipeLineFilter = async data => {
-    // try {
-    //   const apiData = await SalesCandidate.candidateListFilters({
-    //     ...data,
-    //     search,
-    //     maxSalary,
-    //     minSalary
-    //   })
-    //   const candidates = apiData?.data?.data || []
-    //   const paginationInfo = apiData?.data?.data?.pagination
-    //   setList(candidates)
-    //   setTotalRecord(paginationInfo?.total || 0)
-    // } catch (error) {
-    //   console.error('Fetch error:', error)
-    // }
+    try {
+      const apiData = await SalesCandidate.candidateListFilters({
+        ...data,
+        search,
+        maxSalary,
+        minSalary
+      })
+      const candidates = apiData?.data?.data || []
+      const paginationInfo = apiData?.data?.data?.pagination
+      setList(candidates)
+      setTotalRecord(paginationInfo?.total || 0)
+    } catch (error) {
+      console.error('Fetch error:', error)
+    }
   }
 
   const handleSendWalkInForm = async row => {

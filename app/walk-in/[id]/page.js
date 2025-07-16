@@ -13,8 +13,10 @@ import ReCAPTCHA from 'react-google-recaptcha'
 import { FormProvider, useForm } from 'react-hook-form'
 
 // import Loader from '@/components/Loader'
+import ThankYouPage from '@/app/thankyou/page'
 import { errorMessage } from '@/components/ToasterMessage'
 import { CandidateFormValidationEdit } from '@/components/form-validations/CandidateFormValidationEdit'
+import LayoutHeader from '@/components/layoutHeader'
 import FormInputField from '@/components/share/form/FormInputField'
 import FormSelectField from '@/components/share/form/FormSelect'
 import FormInputFileUploaderSingle from '@/components/share/form/SingleFileUpload'
@@ -24,15 +26,16 @@ import { Button } from '@/components/ui/button'
 import Candidate from '@/services/cadidateApis/CandidateApi'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Loader } from 'lucide-react'
+import PageExpired from '@/app/url-expired/page'
 
 function EditJobApplicationForm() {
   const { id } = useParams()
-  const [step, setStep] = useState(0)
+  const [step, setStep] = useState(2)
   const [loader, setLoader] = useState(false)
   const [recaptcha, setRecaptcha] = useState([])
   const [submitAddValidation, setSubmitAddValidation] = useState(false)
   const [isVerify, setIsVerify] = useState(true)
-  const [candiId, setCandiId] = useState()
+  const [candiId, setCandiId] = useState('')
   const router = useRouter()
   const form = useForm({
     mode: 'onChange',
@@ -122,7 +125,7 @@ function EditJobApplicationForm() {
         formData.append(key, value)
       })
 
-      const response = await Candidate.updateCandidate(candiId, formData)
+      const response = await Candidate.updateWalkinCandidate(candiId, formData)
       if (response?.data?.status == true) {
         // successMessage('Candidate form submitted successfully!')
         form.reset()
@@ -203,7 +206,7 @@ function EditJobApplicationForm() {
         }
       }
     } catch (error) {
-      errorMessage({ description: error?.message })
+      // errorMessage({ description: error?.message })
       setIsVerify(error?.status)
     }
   }
@@ -231,12 +234,29 @@ function EditJobApplicationForm() {
         />
       </div>
       {isVerify == false ? (
-        <span className='text-2xl'>This URL has been expired!</span>
+        <>
+          {/* <span className='text-2xl'></span> */}
+          <PageExpired
+            />
+
+
+        </>
       ) : (
         <div className='z-10 w-full max-w-3xl rounded-xl border border-red-100 bg-gradient-to-br from-red-100 via-white to-red-100 p-10 shadow-md'>
-          <h2 className='walking mb-6 text-2xl font-semibold text-gray-800'>
-            Job Application(Edit){' '}
-          </h2>
+          <div className='flex justify-between'>
+            <LayoutHeader pageTitle={`Walk-In Form`} />
+            {step == 2 && (
+              <Button
+                onClick={() => setStep(0)}
+                style={{ fontWeight: '600' }}
+                type='button'
+                variant='contained'
+                className='bg-[#B82025] !text-white'
+              >
+                Review Form
+              </Button>
+            )}
+          </div>
           <h4 className='mb-8'>
             Please fill out this form with accurate details. The information
             will be used for the interview process.
@@ -388,21 +408,6 @@ function EditJobApplicationForm() {
               {step === 2 && (
                 <>
                   <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-2'>
-                    <FormInputField
-                      name='currentAddress'
-                      label='Current Address'
-                      form={form}
-                      inputType='text'
-                      className='colum-box-bg-change'
-                    />
-                    <FormInputField
-                      name='permanentAddress'
-                      label='Permanent Address (As Per Aadhaar)'
-                      form={form}
-                      inputType='text'
-                      className='colum-box-bg-change'
-                    />
-
                     <FormDatePicker
                       name='lastIncrementDate'
                       label='Last Increment Date'
@@ -492,6 +497,24 @@ function EditJobApplicationForm() {
                       form={form}
                       options={sourceOption}
                       className='colum-box-bg-change !w-[100%]'
+                    />
+                  </div>
+                  <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-2'>
+                    <FormTextArea
+                      name='currentAddress'
+                      label='Current Address'
+                      form={form}
+                      multiline
+                      inputType='text'
+                      className='col-span-2 !h-[160px] border border-gray-600'
+                    />
+                    <FormTextArea
+                      name='permanentAddress'
+                      label='Permanent Address (As Per Aadhaar)'
+                      form={form}
+                      multiline
+                      inputType='text'
+                      className='col-span-2 !h-[160px] border border-gray-600'
                     />
                   </div>
                   <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>

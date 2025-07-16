@@ -19,11 +19,11 @@ export const SalesCandidateValidation = Yup.object().shape({
 
   // email: Yup.string().email('Please enter a valid email').required('Email is required'),
   email: Yup.string()
-    .required('Email is required')
-    .test('is-valid-email', 'Invalid email format', function (value) {
-      if (!value) return true // Skip format check if empty (required will handle it)
-      return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)
-    }),
+  .required('Email is required')
+  .test('is-valid-email', 'Invalid email format', function (value) {
+    if (!value) return true; // Let 'required' handle empty case
+    return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/.test(value);
+  }),
   joiningDate: Yup.date()
     .nullable()
     .transform((value, originalValue) => (originalValue === '' ? null : value))
@@ -43,4 +43,6 @@ export const SalesCandidateValidation = Yup.object().shape({
         return file?.size <= 15 * 1024 * 1024 // 15 MB in bytes
       }
     ),
+    reasonForLeaving :Yup.string().max(500),
+    topSalesAchievement :Yup.string().max(500)
 })

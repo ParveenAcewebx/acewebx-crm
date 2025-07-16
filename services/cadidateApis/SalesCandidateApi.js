@@ -14,6 +14,10 @@ const SalesCandidate = {
     let id = candiId
     return api.put(`candidateSale/update/${id}`, data)
   },
+  updateSalesWalkInCandidate: (candiId, data) => {
+    let id = candiId
+    return api.put(`candidateSale/walkIn/update/${id}`, data)
+  },
   romoveSalesCandidate: id => {
     return api.delete(`candidateSale/deleteCandidateSale/${id}`)
   },
@@ -21,13 +25,12 @@ const SalesCandidate = {
     return api.get(`candidateSale/getCandidateById/${id}`)
   },
   candidateListFilters: data => {
-    console.log('datadata', data)
     const search = data?.search ?? ''
     const maxSalary = data?.maxSalary ?? ''
     const minSalary = data?.minSalary ?? ''
 
     return api.get(
-      `candidateSale/getAllCandidate?search=${search}&maxSalary=${maxSalary}&minSalary=${minSalary}`
+      `candidateSale/getAllCandidateSale?search=${search}&maxSalary=${maxSalary}&minSalary=${minSalary}`
     )
   },
   candidateListAddvanceFilters: data => {
@@ -42,7 +45,8 @@ const SalesCandidate = {
 
   SalesCandidateGetByUUID: id => {
     return api.post(`candidateSale/confirm-candidate-token/${id}`)
-  }
+  },
+  
 }
 
 export default SalesCandidate

@@ -30,6 +30,7 @@ function EditCandidateDetails() {
   const { id } = useParams()
   const [loader, setLoader] = useState(false)
   const [recaptcha, setRecaptcha] = useState([])
+  const [candEmail , setCandEmail] = useState("")
   const router = useRouter()
   const form = useForm({
     mode: 'onChange',
@@ -97,7 +98,7 @@ function EditCandidateDetails() {
       if (response?.data?.status === true) {
         const data = response?.data?.data
         const meta = data?.meta
-
+        setCandEmail(data?.email)
         const dataForSet = {
           name: data?.name,
           email: data?.email,
@@ -176,7 +177,7 @@ function EditCandidateDetails() {
       </div> */}
 
       <div className='flex justify-between'>
-        <LayoutHeader pageTitle={'Job Application(Edit)'} />
+        <LayoutHeader pageTitle={`Candidate Details (${candEmail})`} />
       </div>
 
       <div className='mt-5'>{/* <Separator /> */}</div>
@@ -281,7 +282,7 @@ function EditCandidateDetails() {
             {/* Step 2: only edit time Details */}
 
             <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-3'>
-              <FormInputField
+              {/* <FormInputField
                 name='currentAddress'
                 label='Current Address'
                 form={form}
@@ -294,7 +295,7 @@ function EditCandidateDetails() {
                 form={form}
                 inputType='text'
                 className='colum-box-bg-change'
-              />
+              /> */}
 
               <FormDatePicker
                 name='lastIncrementDate'
@@ -377,8 +378,6 @@ function EditCandidateDetails() {
                 options={totalExperienceOptions}
                 className='colum-box-bg-change'
               />
-            </div>
-            <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-2'>
               <FormSelectField
                 name='source'
                 label='How did you hear about us'
@@ -394,6 +393,7 @@ function EditCandidateDetails() {
                 className='colum-box-bg-change !w-[100%]'
               />
             </div>
+      
 
             <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
               <FormTextArea
@@ -413,6 +413,23 @@ function EditCandidateDetails() {
                 }}
               />
             </div>
+            <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-2'>
+                    <FormTextArea
+                      name='currentAddress'
+                      label='Current Address'
+                      form={form}
+                      multiline
+                      inputType='text'
+                      className='col-span-2 !h-[160px] border border-gray-600'
+                      />
+                    <FormTextArea
+                      name='permanentAddress'
+                      label='Permanent Address (As Per Aadhaar)'
+                      form={form}
+                      multiline
+                      inputType='text'
+                      className='col-span-2 !h-[160px] border border-gray-600'
+                      /></div>
             <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
               <FormInputFileUploaderSingle
                 name='resume'
