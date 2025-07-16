@@ -122,22 +122,22 @@ body {
 }
 
 .bg-primary {
-  background-color: #04aee1 !important;
+  background-color: #b82025  !important;
 }
 .bg-cyan-400 {
-  background: #b2ebf2 !important;
+  background: #b82025b8 !important;
 }
 body .button-bg {
-  background-color: #04aee1 !important;
+  background-color: #b82025  !important;
 }
 a:hover {
-  color: #04aee1 !important;
+  color: #b82025 !important;
 }
 .dashboard-tabs button[data-state='active'] {
-  color: #04aee1 !important;
+  color: #b82025 !important;
 }
 .text-sidebar-primary {
-  color: #04aee1 !important;
+  color: #b82025 !important;
 }
 body .bg-red {
   background-color: #b52123 !important;
@@ -163,7 +163,7 @@ body .bg-red {
   background-color: rgba(227, 170, 38, 0.2);
 }
 .bg-yellow-900 {
-  background-color: #04aee1 !important;
+  background-color: #b82025 !important;
 }
 .text-color {
   color: #231f20 !important;
@@ -172,7 +172,7 @@ body .bg-red {
   color: #102039 !important;
 }
 .text-theme-color {
-  color: #04aee1 !important;
+  color: #b82025 !important;
 }
 .bg-orange-900 {
   background-color: #ff9f29 !important;
@@ -180,17 +180,20 @@ body .bg-red {
 
 /* theme-css-classes */
 .site-button {
-  border: 1px solid #04aee1;
+  border: 1px solid #b82025;
   border-radius: 4px;
   padding: 19px 14px;
   font-size: 14px;
   font-weight: 500;
   box-shadow: 0px 0px 0px #605457;
-  background: #04aee1;
+  background: #b82025;
   color: #fff;
   min-width: 110px;
 }
-
+body .main-menu-item[data-state=open] {
+    background-color: #b82025 !important;
+    color: #fff !important;
+}
 .site-button.bg-cyan-400 {
   background: #b2ebf2;
   color: #333;
@@ -202,25 +205,25 @@ body .bg-red {
 
 .site-button:hover {
   color: #fff !important;
-  border-color: #04aee1 !important;
+  border-color: #b82025 !important;
   box-shadow: 0px 0px 0px #231f20 !important;
-  background: #1fc8fa !important;
+  background: #b82025 !important;
 }
 
 .site-button-small {
-  background: #04aee1;
+  background: #b82025;
   text-decoration: none !important;
   padding: 2px 10px;
   display: inline-block;
   border-radius: 3px;
   font-size: 13px;
-  border: 1px solid #04aee1;
+  border: 1px solid #b82025;
   box-shadow: 0px 0px 0px #605457;
   color: #231f20 !important;
   min-width: 80px;
 }
 .site-button-small.bg-cyan-400 {
-  background: #b2ebf2;
+  background: #b82025;
   color: #333;
 }
 .site-button-small.text-white {
@@ -231,24 +234,24 @@ body .bg-red {
 }
 .site-button-small:hover {
   color: #231f20 !important;
-  border-color: #04aee1;
+  border-color: #b82025;
   box-shadow: 0px 0px 0px #231f20;
 }
 
 .site-button-small.bg-white {
   background: #fff !important;
-  color: #04aee1 !important;
+  color: #b82025 !important;
 }
 
 .site-button-dark {
-  border: 1px solid #04aee1;
+  border: 1px solid #b82025;
   border-radius: 4px;
   padding: 19px 14px;
   font-size: 14px;
   font-weight: 500;
   box-shadow: 0px 0px 0px #605457;
   background: #ffffff !important;
-  color: #04aee1;
+  color: #b82025;
   min-width: 110px;
 }
 
