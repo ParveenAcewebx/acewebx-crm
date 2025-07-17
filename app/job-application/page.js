@@ -23,6 +23,7 @@ import { Button } from '@/components/ui/button'
 import Candidate from '@/services/cadidateApis/CandidateApi'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Loader } from 'lucide-react'
+import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
 
 function JobApplicationForm() {
   const [step, setStep] = useState(0)
@@ -99,9 +100,13 @@ function JobApplicationForm() {
         formData.append('resume', file)
       }
 
+      const preferred = JSON.stringify(data?.preferredShift)
+
       Object.entries(data).forEach(([key, value]) => {
+        if (key === 'preferredShift') return // skip it
         formData.append(key, value)
       })
+      formData.append('preferredShift',preferred)
 
       const response = await Candidate.addCandidate(formData)
       if (response?.data?.status == true) {
@@ -247,7 +252,7 @@ function JobApplicationForm() {
                   />
                 </div>
                 <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
-                  <FormSelectField
+                  <FormMultiSelectField
                     name='preferredShift'
                     label='Preferred Shift'
                     form={form}

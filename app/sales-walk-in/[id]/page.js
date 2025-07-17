@@ -24,6 +24,7 @@ import { Button } from '@/components/ui/button'
 import SalesCandidate from '@/services/cadidateApis/SalesCandidateApi'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Loader } from 'lucide-react'
+import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
 
 function EditSalesJobApplicationForm() {
   const { id } = useParams()
@@ -63,7 +64,9 @@ function EditSalesJobApplicationForm() {
 
         // Set form fields first
         form.reset(data)
-
+        form?.setValue('preferredShift',JSON.parse(data?.preferredShift))
+        form?.setValue('businessMethods',JSON.parse(data?.businessMethods))
+        form?.setValue('leadPlatforms',JSON.parse(data?.leadPlatforms))
         // Then load and set the resume file if available
         const resumePath = data?.resume
         if (resumePath) {
@@ -95,9 +98,16 @@ function EditSalesJobApplicationForm() {
         formData.append('resume', file)
       }
 
+      const preferred = JSON.stringify(data?.preferredShift)
       Object.entries(data).forEach(([key, value]) => {
-        formData.append(key, value)
-      })
+        if (['preferredShift', 'businessMethods', 'leadPlatforms'].includes(key)) return; // skip these keys
+        formData.append(key, value);
+      });
+      
+  
+      formData.append('businessMethods',JSON.stringify(data?.businessMethods))
+      formData.append('leadPlatforms',JSON.stringify(data?.leadPlatforms))
+      formData.append('preferredShift',preferred)
 
       const response = await SalesCandidate.updateSalesWalkInCandidate(
         candiId,
@@ -124,7 +134,17 @@ function EditSalesJobApplicationForm() {
 
     candidateDataGetById()
   }, [id])
-  return (
+  return (<>
+
+
+{isVerify == false ? (
+        <>
+          {/* <span className='text-2xl'></span> */}
+          <PageExpired />
+        </>
+      ) : (
+
+        <>
     <div
       className='mobile-view relative flex min-h-screen w-full flex-col items-center justify-start bg-white'
       style={{
@@ -142,12 +162,7 @@ function EditSalesJobApplicationForm() {
           className='h-25 w-40'
         />
       </div>
-      {isVerify == false ? (
-        <>
-          {/* <span className='text-2xl'></span> */}
-          <PageExpired />
-        </>
-      ) : (
+    
         <div className='z-10 w-full max-w-3xl rounded-xl border border-red-100 bg-gradient-to-br from-red-100 via-white to-red-100 p-10 shadow-md'>
           <h2 className='walking mb-6 text-2xl font-semibold text-gray-800'>
             Sales Candidate Job Application(Edit)
@@ -227,7 +242,7 @@ function EditSalesJobApplicationForm() {
                   inputType='number'
                   className='colum-box-bg-change'
                 />
-                <FormSelectField
+                <FormMultiSelectField
                   name='preferredShift'
                   label='Preferred Shift'
                   form={form}
@@ -264,14 +279,14 @@ function EditSalesJobApplicationForm() {
                   inputType='text'
                   className='colum-box-bg-change'
                 />
-                <FormSelectField
+                <FormMultiSelectField
                   name='leadPlatforms'
                   label='Which online platforms do you use for lead generation? '
                   form={form}
                   options={onlinePlatforms}
                   className='colum-box-bg-change'
                 />
-                <FormSelectField
+                <FormMultiSelectField
                   name='businessMethods'
                   label='How do you generate business?'
                   form={form}
@@ -355,8 +370,9 @@ function EditSalesJobApplicationForm() {
             </form>
           </FormProvider>
         </div>
+    </div> </>
       )}
-    </div>
+    </>
   )
 }
 

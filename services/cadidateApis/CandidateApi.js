@@ -4,8 +4,10 @@ const Candidate = {
   addCandidate: data => {
     return api.post(`candidate/save`, data)
   },
-  candidateList: (page, limit) => {
-    return api.get(`candidate/getAllCandidate?page=${page}&limit=${limit}`)
+  candidateList: (newData) => {
+    let start= newData?.startDate == undefined ? "": newData?.startDate
+    let end= newData?.endDate == undefined ? "":newData?.endDate
+    return api.get(`candidate/getAllCandidate?page=${newData?.page}&limit=${newData?.length}&minSalary=${newData?.minSalary}&maxSalary=${newData?.maxSalary}&startDate=${start}&endDate=${end}`)
   },
   candidateGetById: id => {
     return api.get(`candidate/getCandidateById/${id}`)
@@ -25,19 +27,21 @@ const Candidate = {
     return api.get(`candidate/getCandidateById/${id}`)
   },
   candidateListFilters: data => {
-    console.log('datadata', data)
     const search = data?.search ?? ''
-    const maxSalary = data?.maxSalary ?? ''
-    const minSalary = data?.minSalary ?? ''
-
+    
     return api.get(
-      `candidate/getAllCandidate?search=${search}&maxSalary=${maxSalary}&minSalary=${minSalary}`
+      `candidate/getAllCandidate?search=${search}`
     )
   },
-  candidateListAddvanceFilters: data => {
+  candidateListAddvanceFilters: newData => {
+    let start= newData?.startDate == undefined ? "": newData?.startDate
+    let end= newData?.endDate == undefined ? "":newData?.endDate
     return api.get(
-      `candidate/getAllCandidate?page=${data?.page}&limit=${data?.limit}&skill=${data?.Skill}&preferredShift=${data?.preferredShift}&minSalary=${data?.minSalary}&maxSalary=${data?.maxSalary}&startDate=${data?.startDate}&endDate=${data?.endDate}`
+      `candidate/getAllCandidate?minSalary=${newData?.minSalary}&maxSalary=${newData?.maxSalary}&startDate=${start}&endDate=${end}`
     )
+    // return api.get(
+    //   `candidate/getAllCandidate?skill=${newData?.Skill}&preferredShift=${newData?.preferredShift}&minSalary=${newData?.minSalary}&maxSalary=${newData?.maxSalary}&startDate=${newData?.startDate}&endDate=${newData?.endDate}`
+    // )
   },
 
   sendWalkInLink: id => {

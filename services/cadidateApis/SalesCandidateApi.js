@@ -4,8 +4,10 @@ const SalesCandidate = {
   addSalesCandidate: data => {
     return api.post(`candidateSale/save`, data)
   },
-  salesCandidateList: (page, limit) => {
-    return api.get(`candidateSale/getAllCandidateSale?page=${page}&limit=${limit}`)
+  salesCandidateList: (newData) => {
+    let start= newData?.startDate == undefined ? "": newData?.startDate
+    let end= newData?.endDate == undefined ? "":newData?.endDate
+    return api.get(`candidateSale/getAllCandidateSale?page=${newData?.page}&limit=${newData?.length}&minSalary=${newData?.minSalary}&maxSalary=${newData?.maxSalary}&startDate=${start}&endDate=${end}`)
   },
   salesCandidateGetById: id => {
     return api.get(`candidateSale/getCandidateSaleById/${id}`)
@@ -21,21 +23,20 @@ const SalesCandidate = {
   romoveSalesCandidate: id => {
     return api.delete(`candidateSale/deleteCandidateSale/${id}`)
   },
-  viewCandidate: id => {
-    return api.get(`candidateSale/getCandidateById/${id}`)
+  viewSalesCandidate: id => {
+    return api.get(`candidateSale/getCandidateSaleById/${id}`)
   },
   candidateListFilters: data => {
     const search = data?.search ?? ''
-    const maxSalary = data?.maxSalary ?? ''
-    const minSalary = data?.minSalary ?? ''
-
     return api.get(
-      `candidateSale/getAllCandidateSale?search=${search}&maxSalary=${maxSalary}&minSalary=${minSalary}`
+      `candidateSale/getAllCandidateSale?search=${search}`
     )
   },
-  candidateListAddvanceFilters: data => {
+  candidateSaleListAddvanceFilters: newData => {
+    let start= newData?.startDate == undefined ? "": newData?.startDate
+    let end= newData?.endDate == undefined ? "":newData?.endDate
     return api.get(
-      `candidateSale/getAllCandidate?page=${data?.page}&limit=${data?.limit}&skill=${data?.Skill}&preferredShift=${data?.preferredShift}&minSalary=${data?.minSalary}&maxSalary=${data?.maxSalary}&startDate=${data?.startDate}&endDate=${data?.endDate}`
+      `candidateSale/getAllCandidateSale?minSalary=${newData?.minSalary}&maxSalary=${newData?.maxSalary}&startDate=${start}&endDate=${end}`
     )
   },
 

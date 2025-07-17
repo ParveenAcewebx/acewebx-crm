@@ -86,7 +86,7 @@ function ChatCompo() {
 
   return (
     <Card className='w-full p-4 border rounded-lg shadow-sm'>
-      <CardContent className='flex flex-col gap-4 h-[500px] overflow-y-auto'>
+      <CardContent className='flex flex-col gap-4 h-[360px] overflow-y-auto'>
         {allChat.length > 0 ? (
           allChat.map(item => {
             const createdTime = new Date(item?.createdAt)
