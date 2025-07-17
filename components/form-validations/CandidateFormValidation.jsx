@@ -54,8 +54,11 @@ export const CandidateFormValidation = Yup.object().shape({
     .max(500),
   currentAddress: Yup.string().max(500),
   permanentAddress: Yup.string().max(500),
-  preferredShift: Yup.string().required('Preferred Shift is required'),
-
+  // preferredShift: Yup.string().required('Preferred Shift is required'),
+  preferredShift: Yup.array()
+  .of(Yup.string().oneOf(["day", "night", "staggered", "any"]))
+  .min(1, "Select at least one shift")
+  .required('Preferred Shift is required'),
   resume: Yup.mixed()
     .required('Resume is required')
     .test('fileExists', 'Resume is required', value => {

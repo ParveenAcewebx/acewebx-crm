@@ -23,6 +23,7 @@ import { Button } from '@/components/ui/button'
 import SalesCandidate from '@/services/cadidateApis/SalesCandidateApi'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Loader } from 'lucide-react'
+import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
 
 function SalesJobApplicationForm() {
   const [loader, setLoader] = useState(false)
@@ -51,9 +52,16 @@ function SalesJobApplicationForm() {
         formData.append('resume', file)
       }
 
+      const preferred = JSON.stringify(data?.preferredShift)
       Object.entries(data).forEach(([key, value]) => {
-        formData.append(key, value)
-      })
+        if (['preferredShift', 'businessMethods', 'leadPlatforms'].includes(key)) return; // skip these keys
+        formData.append(key, value);
+      });
+      
+  
+      formData.append('businessMethods',JSON.stringify(data?.businessMethods))
+      formData.append('leadPlatforms',JSON.stringify(data?.leadPlatforms))
+      formData.append('preferredShift',preferred)
 
       const response = await SalesCandidate.addSalesCandidate(formData)
       if (response?.data?.status == true) {
@@ -163,7 +171,7 @@ function SalesJobApplicationForm() {
                 inputType='number'
                 className='colum-box-bg-change'
               />
-              <FormSelectField
+              <FormMultiSelectField
                 name='preferredShift'
                 label='Preferred Shift'
                 form={form}
@@ -200,14 +208,14 @@ function SalesJobApplicationForm() {
                 inputType='text'
                 className='colum-box-bg-change'
               />
-              <FormSelectField
+              <FormMultiSelectField
                 name='leadPlatforms'
                 label='Which online platforms do you use for lead generation? '
                 form={form}
                 options={onlinePlatforms}
                 className='colum-box-bg-change'
               />
-              <FormSelectField
+              <FormMultiSelectField
                 name='businessMethods'
                 label='How do you generate business?'
                 form={form}

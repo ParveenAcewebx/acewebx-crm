@@ -17,10 +17,10 @@ export const SalesCandidColumns = (
 ) => [
   {
     accessorKey: 'action',
-    header: 'Actions',
+    header: '',
     cell: ({ row }) => {
       return (
-        <div className='grid grid-cols-3'>
+        <div className='grid grid-cols-3 w-5'>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant='ghost' className='h-8 w-8 p-0'>
@@ -65,7 +65,7 @@ export const SalesCandidColumns = (
   {
     accessorKey: 'id',
     header: '#ID',
-    cell: ({ row }) => row.original?.id
+    cell: ({ row }) => `SAL_${row.original?.id}`
   },
 
   {
@@ -90,7 +90,26 @@ export const SalesCandidColumns = (
     )
   },
 
-  
+  {
+    accessorKey: 'currentSalary',
+    header: () => (
+      <>
+        <span>Current Salary</span>
+        <br />
+        <span>Expected Salary</span>
+        
+        
+      </>
+    ),
+    cell: ({ row }) => (
+      <>
+        <span>{row.original?.currentSalary}</span>
+        <br />
+        <span>{row.original?.expectedSalary}</span>
+     
+      </>
+    )
+  },
   {
     accessorKey: 'totalExperience',
     header: 'Experience',
@@ -114,16 +133,39 @@ export const SalesCandidColumns = (
   {
     accessorKey: 'businessMethods',
     header: 'Business Methods',
-    cell: ({ row }) => row.original?.businessMethods
+    cell: ({ row }) => {
+
+      const data = row.original?.businessMethods?.replace(/[\[\]"]/g, '')
+      return (
+        <>
+        {data}
+        </>
+      )
+    }
   },
   {
     accessorKey: 'leadPlatforms',
     header: 'Lead Platforms',
-    cell: ({ row }) => row.original?.leadPlatforms
+    cell: ({ row }) =>
+    {    const data = row.original?.leadPlatforms?.replace(/[\[\]"]/g, '')
+      return (
+        <>
+        {data}
+        </>
+      )}
+      
   },
   {
     accessorKey: 'preferredShift',
     header: 'Preferred Shift',
-    cell: ({ row }) => row.original?.preferredShift
+    cell: ({ row }) => 
+      
+      {    const data = row.original?.preferredShift?.replace(/[\[\]"]/g, '')
+        return (
+          <>
+          {data}
+          </>
+        )}
+      
   }
 ]

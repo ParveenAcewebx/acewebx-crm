@@ -9,7 +9,6 @@ import {
 } from '@/components/constants/StaticData'
 import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import ReCAPTCHA from 'react-google-recaptcha'
 import { FormProvider, useForm } from 'react-hook-form'
 
 // import Loader from '@/components/Loader'
@@ -25,6 +24,7 @@ import { Button } from '@/components/ui/button'
 import Candidate from '@/services/cadidateApis/CandidateApi'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Loader } from 'lucide-react'
+import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
 
 function EditCandidateDetails() {
   const { id } = useParams()
@@ -35,33 +35,71 @@ function EditCandidateDetails() {
   const form = useForm({
     mode: 'onChange',
     defaultValues: editWalkInForm,
-    resolver: yupResolver(CandidateFormValidationEdit)
+    // resolver: yupResolver(CandidateFormValidationEdit)
   })
 
-  function onReCAPTCHAChange(value) {
-    setRecaptcha(value)
-    form.setValue('recaptcha', value)
-  }
+ 
 
   const reValue = form.watch('recaptcha')
 
+  // const onSubmit = async data => {
+  //   console.log("data",data)
+  
+  //   setLoader(true)
+  //   try {
+  //     const formData = new FormData()
+
+  //     const file = data.resume?.[0]
+  //     if (file) {
+  //       formData.append('resume', file)
+  //     }
+
+  //     const preferred = JSON.stringify(data?.preferredShift)
+
+  //     Object.entries(data).forEach(([key, value]) => {
+  //       if (key === 'preferredShift') return // skip it
+  //       formData.append(key, value)
+  //     })
+  //     formData.append('preferredShift',preferred)
+
+  //     const response = await Candidate.updateCandidate(id, formData)
+  //     if (response?.data?.status == true) {
+  //       form.reset()
+  //       setLoader(false)
+  //       successMessage({ description: 'Updated SuccessFully!' })
+
+  //       router.push('/dashboard/admin/candidates')
+  //     }
+  //   } catch (error) {
+  //     setLoader(false)
+
+  //     setLoader(false)
+  //     errorMessage(
+  //       error?.message || 'Something went wrong while submitting the form.'
+  //     )
+     
+  //   }
+  // }
+
   const onSubmit = async data => {
-    if (reValue == undefined) {
-      return
-    }
+  
     setLoader(true)
     try {
       const formData = new FormData()
 
-      formData.append('g-recaptcha-response', recaptcha)
+      // formData.append('g-recaptcha-response', recaptcha)
       const file = data.resume?.[0]
       if (file) {
         formData.append('resume', file)
       }
 
+      const preferred = JSON.stringify(data?.preferredShift)
+
       Object.entries(data).forEach(([key, value]) => {
+        if (key === 'preferredShift') return // skip it
         formData.append(key, value)
       })
+      formData.append('preferredShift',preferred)
 
       const response = await Candidate.updateCandidate(id, formData)
       if (response?.data?.status == true) {
@@ -78,11 +116,11 @@ function EditCandidateDetails() {
       errorMessage(
         error?.message || 'Something went wrong while submitting the form.'
       )
-      if (error?.message == 'reCaptcha verification failed.') {
-        form.unregister('recaptcha', { keepError: false })
-      }
+     
     }
   }
+
+  
   const urlToFile = async (url, fileName) => {
     const response = await fetch(url)
     const blob = await response.blob()
@@ -113,7 +151,7 @@ function EditCandidateDetails() {
           currentCompanyName: meta?._currentCompanyName,
           noticePeriod: data?.noticePeriod,
           reasonForChange: meta?._reasonForChange,
-          preferredShift: meta?._preferredShift,
+          preferredShift: JSON.parse(meta?._preferredShift),
           reference1Name: meta?._reference1Name,
           reference1ContactNumber: meta?._reference1ContactNumber,
           reference1Designation: meta?._reference1Designation,
@@ -137,7 +175,6 @@ function EditCandidateDetails() {
         const resumePath = response?.data?.data?.resume?.filePath
         // const resumePath = meta?._resume
 
-        console.log('resumePath', resumePath)
         if (resumePath) {
           const fileUrl = `${process.env.NEXT_PUBLIC_API_URL}${resumePath}`
           console.log('fileUrlfileUrl', fileUrl)
@@ -167,14 +204,8 @@ function EditCandidateDetails() {
 
   console.log('formpppp', form.watch('resume'))
   return (
-    <div className='mobile-view items-right relative flex min-h-screen w-full flex-col justify-start bg-white'>
-      {/* <div className='w-2xs acewebx-logo z-10 text-center'>
-        <img
-          src='/../acewebxlogo.png'
-          alt='Acewebx Logo'
-          className='h-25 w-40'
-        />
-      </div> */}
+    <div className='mobile-view items-right relative flex min-h-screen w-full flex-col justify-start'>
+    
 
       <div className='flex justify-between'>
         <LayoutHeader pageTitle={`Candidate Details (${candEmail})`} />
@@ -187,14 +218,18 @@ function EditCandidateDetails() {
             encType='multipart/form-data'
             onSubmit={form.handleSubmit(onSubmit)}
           >
-            <div className='grid grid-cols-1 gap-6 md:grid-cols-3'>
+            <fieldset className='custom-raduis   bg-white font-semibold'>
+                   <legend className="text-lg font-bold  pt-[65px] ml-[25px]">Personal Information</legend>
+              <div class="multipart-field-one">
               <FormInputField
-                name='name'
-                label='Full Name'
-                form={form}
-                inputType='text'
-                className='colum-box-bg-change'
-              />
+                  name='name'
+                  label='Full Name'
+                  form={form}
+                  inputType='text'
+                  className='colum-box-bg-change'
+                  style={{ width: '50%' }}
+                />
+
               <FormInputField
                 name='email'
                 label='Email'
@@ -232,6 +267,32 @@ function EditCandidateDetails() {
                 inputType='text'
                 className='colum-box-bg-change'
               />
+               </div>
+               <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-2 ace-reason'>
+                    <FormTextArea
+                      name='currentAddress'
+                      label='Current Address'
+                      form={form}
+                      multiline
+                      inputType='text'
+                      className='col-span-2 !h-[160px] border border-gray-600'
+                      />
+                    <FormTextArea
+                      name='permanentAddress'
+                      label='Permanent Address (As Per Aadhaar)'
+                      form={form}
+                      multiline
+                      inputType='text'
+                      className='col-span-2 !h-[160px] border border-gray-600'
+                      /></div>
+               </fieldset>
+
+
+
+
+                <fieldset className='custom-raduis   bg-white font-semibold'>
+                <legend className="text-lg font-bold  pt-[65px] ml-[25px]"> Professional Information</legend>
+               <div class="multipart-field-two">
               <FormSelectField
                 name='designationApplyingFor'
                 label='Designation Applying For'
@@ -246,7 +307,7 @@ function EditCandidateDetails() {
                 options={totalExperienceOptions}
                 className='colum-box-bg-change'
               />
-
+              
               <FormInputField
                 name='currentSalary'
                 label='Current Salary (Monthly)'
@@ -275,29 +336,8 @@ function EditCandidateDetails() {
                 inputType='number'
                 className='colum-box-bg-change'
               />
-            </div>
 
-            <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-3'></div>
-
-            {/* Step 2: only edit time Details */}
-
-            <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-3'>
-              {/* <FormInputField
-                name='currentAddress'
-                label='Current Address'
-                form={form}
-                inputType='text'
-                className='colum-box-bg-change'
-              />
-              <FormInputField
-                name='permanentAddress'
-                label='Permanent Address (As Per Aadhaar)'
-                form={form}
-                inputType='text'
-                className='colum-box-bg-change'
-              /> */}
-
-              <FormDatePicker
+             <FormDatePicker
                 name='lastIncrementDate'
                 label='Last Increment Date'
                 form={form}
@@ -313,10 +353,37 @@ function EditCandidateDetails() {
                 inputType='number'
                 className='colum-box-bg-change'
               />
+              <FormSelectField
+                name='source'
+                label='How did you hear about us'
+                form={form}
+                options={sourceOption}
+                className='colum-box-bg-change !w-[100%]'
+              />
+              <FormMultiSelectField
+                name='preferredShift'
+                label='Preferred Shift'
+                form={form}
+                options={preferredShiftOptions}
+                className='colum-box-bg-change !w-[100%]'
+              />
+              </div>
+           
+              </fieldset>
+
+
+
+
+
+            {/* Step 2: only edit time Details */}
+                 <fieldset className='custom-raduis   bg-white font-semibold'>
+                <legend className="text-lg font-bold  pt-[65px] ml-[25px]">Reference </legend>
+              {/* <div class="multipart-field-three"> */}
+             
 
               {/* refrences */}
               {/* expe-1 */}
-
+               <div className='mb-4 grid grid-cols-4 gap-6 md:grid-cols-4 ace-reason'>
               <FormInputField
                 name='reference1Name'
                 label='Reference1 Name'
@@ -347,8 +414,7 @@ function EditCandidateDetails() {
                 options={totalExperienceOptions}
                 className='colum-box-bg-change'
               />
-              {/* expe-2 */}
-              <FormInputField
+                <FormInputField
                 name='reference2Name'
                 label='Reference2 Name'
                 form={form}
@@ -362,8 +428,8 @@ function EditCandidateDetails() {
                 inputType='number'
                 className='colum-box-bg-change'
               />
-              {/* select */}
-              <FormSelectField
+                {/* select */}
+                <FormSelectField
                 name='reference2Designation'
                 label='Reference2 Designation'
                 form={form}
@@ -378,24 +444,14 @@ function EditCandidateDetails() {
                 options={totalExperienceOptions}
                 className='colum-box-bg-change'
               />
-              <FormSelectField
-                name='source'
-                label='How did you hear about us'
-                form={form}
-                options={sourceOption}
-                className='colum-box-bg-change !w-[100%]'
-              />
-              <FormSelectField
-                name='preferredShift'
-                label='Preferred Shift'
-                form={form}
-                options={preferredShiftOptions}
-                className='colum-box-bg-change !w-[100%]'
-              />
             </div>
-      
+              {/* </div> */}
+                </fieldset>
 
-            <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
+
+
+             
+                <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1 ace-reason'>
               <FormTextArea
                 name='reasonForChange'
                 label='Reason for Change'
@@ -412,25 +468,9 @@ function EditCandidateDetails() {
                   borderRadius: '4px'
                 }}
               />
-            </div>
-            <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-2'>
-                    <FormTextArea
-                      name='currentAddress'
-                      label='Current Address'
-                      form={form}
-                      multiline
-                      inputType='text'
-                      className='col-span-2 !h-[160px] border border-gray-600'
-                      />
-                    <FormTextArea
-                      name='permanentAddress'
-                      label='Permanent Address (As Per Aadhaar)'
-                      form={form}
-                      multiline
-                      inputType='text'
-                      className='col-span-2 !h-[160px] border border-gray-600'
-                      /></div>
-            <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
+                </div>
+
+            <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1 ace-reason'>
               <FormInputFileUploaderSingle
                 name='resume'
                 control={form.control}
@@ -438,20 +478,7 @@ function EditCandidateDetails() {
                 label='Drop Resume here or click to upload'
               />
             </div>
-
-            <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
-              <div className='col-span-2 mt-4'>
-                <ReCAPTCHA
-                  sitekey='6LfSqW8rAAAAABmLFmZcFxFQZgfcUusAJNdVXdXn'
-                  onChange={onReCAPTCHAChange}
-                />
-                {reValue === undefined && (
-                  <span className='text-sm text-red-600'>
-                    {form?.formState?.errors?.recaptcha?.message}
-                  </span>
-                )}
-              </div>
-            </div>
+        
             {/* ---------------- */}
 
             {/* Navigation */}

@@ -17,10 +17,10 @@ export const CandidColumns = (
 ) => [
   {
     accessorKey: 'action',
-    header: 'Actions',
+    header: '',
     cell: ({ row }) => {
       return (
-        <div className='grid grid-cols-3'>
+        <div className='grid grid-cols-3 w-5'>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant='ghost' className='h-8 w-8 p-0'>
@@ -65,7 +65,7 @@ export const CandidColumns = (
   {
     accessorKey: 'id',
     header: '#ID',
-    cell: ({ row }) => row.original?.id
+    cell: ({ row }) => `DEV_${row.original?.id}`
   },
 
   {
@@ -101,9 +101,24 @@ export const CandidColumns = (
     cell: ({ row }) => row.original?.totalExperience
   },
   {
-    accessorKey: 'dob',
-    header: 'DOB',
-    cell: ({ row }) => row.original?.dob
+    accessorKey: 'currentSalary',
+    header: () => (
+      <>
+        <span>Current Salary</span>
+        <br />
+        <span>Expected Salary</span>
+        
+        
+      </>
+    ),
+    cell: ({ row }) => (
+      <>
+        <span>{row.original?.currentSalary}</span>
+        <br />
+        <span>{row.original?.expectedSalary}</span>
+     
+      </>
+    )
   },
   {
     accessorKey: '_currentCompanyName',
@@ -128,6 +143,15 @@ export const CandidColumns = (
   {
     accessorKey: '_preferredShift',
     header: 'Preferred Shift',
-    cell: ({ row }) => row.original?.meta?._preferredShift
+    cell: ({ row }) =>
+      
+      
+      {    const data = row.original?.meta?._preferredShift?.replace(/[\[\]"]/g, '')
+        return (
+          <>
+          {data}
+          </>
+        )}
+      
   }
 ]

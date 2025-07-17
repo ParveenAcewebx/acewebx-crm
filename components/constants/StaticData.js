@@ -55,7 +55,7 @@ export const editWalkInForm = {
   currentCompanyName: '',
   noticePeriod: 0,
   reasonForChange: '',
-  preferredShift: '',
+  preferredShift: [],
   resume: '',
   reference1Name: '',
   reference1ContactNumber: '',

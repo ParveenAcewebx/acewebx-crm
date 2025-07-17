@@ -8,7 +8,6 @@ import {
 } from '@/components/constants/StaticData'
 import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import ReCAPTCHA from 'react-google-recaptcha'
 import { FormProvider, useForm } from 'react-hook-form'
 
 // import Loader from '@/components/Loader'
@@ -24,27 +23,23 @@ import { Button } from '@/components/ui/button'
 import SalesCandidate from '@/services/cadidateApis/SalesCandidateApi'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Loader } from 'lucide-react'
+import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
 
 function EditSalesJobApplicationForm() {
   const { id } = useParams()
 
   const [loader, setLoader] = useState(false)
-  const [recaptcha, setRecaptcha] = useState([])
   const [candEmail , setCandEmail] = useState("")
 
   const router = useRouter()
   const form = useForm({
     mode: 'onChange',
     defaultValues: salesCandidateDefaultValue,
-    resolver: yupResolver(SalesCandidateValidation)
+    // resolver: yupResolver(SalesCandidateValidation)
   })
 
-  function onReCAPTCHAChange(value) {
-    setRecaptcha(value)
-    form.setValue('recaptcha', value)
-  }
 
-  const reValue = form.watch('recaptcha')
+
 
   const urlToFile = async (url, fileName) => {
     const response = await fetch(url)
@@ -62,7 +57,9 @@ function EditSalesJobApplicationForm() {
         setCandEmail(data?.email)
         // Set form fields first
         form.reset(data)
-
+        form?.setValue('preferredShift',JSON.parse(data?.preferredShift))
+        form?.setValue('businessMethods',JSON.parse(data?.businessMethods))
+        form?.setValue('leadPlatforms',JSON.parse(data?.leadPlatforms))
         // Then load and set the resume file if available
         const resumePath = data?.resume
         if (resumePath) {
@@ -85,18 +82,26 @@ function EditSalesJobApplicationForm() {
   }
 
   const onSubmit = async data => {
+    console.log("GGGGGGGG")
     try {
       const formData = new FormData()
 
-      formData.append('g-recaptcha-response', recaptcha)
+      // formData.append('g-recaptcha-response', recaptcha)
       const file = data.resume?.[0]
       if (file) {
         formData.append('resume', file)
       }
 
+      const preferred = JSON.stringify(data?.preferredShift)
       Object.entries(data).forEach(([key, value]) => {
-        formData.append(key, value)
-      })
+        if (['preferredShift', 'businessMethods', 'leadPlatforms'].includes(key)) return; // skip these keys
+        formData.append(key, value);
+      });
+      
+  
+      formData.append('businessMethods',JSON.stringify(data?.businessMethods))
+      formData.append('leadPlatforms',JSON.stringify(data?.leadPlatforms))
+      formData.append('preferredShift',preferred)
 
       const response = await SalesCandidate.updateSalesCandidate(id, formData)
       if (response?.data?.status == true) {
@@ -110,9 +115,7 @@ function EditSalesJobApplicationForm() {
 
       console.error('Submission Error:', error?.message)
       errorMessage({ description: error?.message })
-      if (error?.message == 'reCaptcha verification failed.') {
-        form.unregister('recaptcha', { keepError: false })
-      }
+     
     }
   }
 
@@ -122,7 +125,7 @@ function EditSalesJobApplicationForm() {
     candidateDataGetById()
   }, [id])
   return (
-    <div className='mobile-view items-right relative flex min-h-screen w-full flex-col justify-start bg-white'>
+    <div className='mobile-view items-right relative flex min-h-screen w-full flex-col justify-start '>
       {/* <div className='w-2xs acewebx-logo z-10 text-center'>
         <img src='./acewebxlogo.png' alt='Acewebx Logo' className='h-25 w-40' />
       </div> */}
@@ -137,7 +140,9 @@ function EditSalesJobApplicationForm() {
               encType='multipart/form-data'
               onSubmit={form.handleSubmit(onSubmit)}
             >
-              <div className='grid grid-cols-1 gap-6 md:grid-cols-3'>
+               <fieldset className='custom-raduis   bg-white font-semibold'>
+                   <legend className="text-lg font-bold  pt-[65px] ml-[25px]">Personal Information</legend>
+                <div class="multipart-field-one">
                 <FormInputField
                   name='name'
                   label='Full Name'
@@ -189,6 +194,12 @@ function EditSalesJobApplicationForm() {
                   inputType='number'
                   className='colum-box-bg-change'
                 />{' '}
+                </div>
+               </fieldset>
+     
+                  <fieldset className='custom-raduis   bg-white font-semibold'>
+                   <legend className="text-lg font-bold  pt-[65px] ml-[25px]">Sales Profile Overview</legend>
+                <div class="multipart-field-two">
                 <FormInputField
                   name='monthlySalesTarget'
                   label='Current Monthly Sales Target ($)'
@@ -196,7 +207,7 @@ function EditSalesJobApplicationForm() {
                   inputType='number'
                   className='colum-box-bg-change'
                 />
-                <FormSelectField
+                <FormMultiSelectField
                   name='preferredShift'
                   label='Preferred Shift'
                   form={form}
@@ -210,9 +221,6 @@ function EditSalesJobApplicationForm() {
                   inputType='text'
                   className='colum-box-bg-change'
                 />
-              </div>
-
-              <div className='mb-4 mt-6 grid grid-cols-1 gap-6 md:grid-cols-2'>
                 <FormInputField
                   name='freshBusinessTarget'
                   label='New Business Monthly Target ($)'
@@ -233,24 +241,28 @@ function EditSalesJobApplicationForm() {
                   inputType='text'
                   className='colum-box-bg-change'
                 />
-                <FormSelectField
+                </div>
+                 </fieldset>
+                  <fieldset className='custom-raduis   bg-white font-semibold'>
+                   <legend className="text-lg font-bold  pt-[65px] ml-[25px]"> Lead Generation & Business Strategy</legend>
+             <div class="multipart-field-two-platfroms">
+                <FormMultiSelectField
                   name='leadPlatforms'
                   label='Which online platforms do you use for lead generation? '
                   form={form}
                   options={onlinePlatforms}
                   className='colum-box-bg-change'
                 />
-              </div>
-
-              <div className='mb-4 mt-6 grid grid-cols-1 gap-6 md:grid-cols-1'>
-                <FormSelectField
+           
+                <FormMultiSelectField
                   name='businessMethods'
                   label='How do you generate business?'
                   form={form}
                   options={businessGenerate}
                   className='colum-box-bg-change'
                 />
-              </div>
+               </div>
+                </fieldset>
 
               <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'></div>
               <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
@@ -300,19 +312,7 @@ function EditSalesJobApplicationForm() {
                   label='Drop Resume here or click to upload'
                 />
               </div>
-              <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
-                <div className='col-span-2 mt-4'>
-                  <ReCAPTCHA
-                    sitekey='6LfSqW8rAAAAABmLFmZcFxFQZgfcUusAJNdVXdXn'
-                    onChange={onReCAPTCHAChange}
-                  />
-                  {reValue === undefined && (
-                    <span className='text-sm text-red-600'>
-                      {form?.formState?.errors?.recaptcha?.message}
-                    </span>
-                  )}
-                </div>
-              </div>
+             
 
               {/* Navigation */}
               <div className={`mt-10 flex justify-end`}>

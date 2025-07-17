@@ -26,16 +26,15 @@ bg-no-repeat w-full' /> */}
         />
       </div>
       {/* Thank You Message Box */}
-      <div className='logo-ace-defferent z-10 flex w-full max-w-5xl flex-col items-center justify-center rounded-2xl border border-red-100 bg-gradient-to-br from-red-100 via-white to-red-100 p-10 text-center shadow-md'>
+      <div className='logo-ace-defferent z-10 flex w-full max-w-3xl flex-col items-center justify-center rounded-2xl border border-red-100 bg-gradient-to-br from-red-100 via-white to-red-100 p-10 text-center shadow-md'>
         <img
           src='./images/circle.png' // replace with your green check icon
           alt='Success'
           className='even-arrow mb-6 h-16 w-16'
         />
         <p className='content-wrp text-xl font-normal text-black'>
-          Your message has been sent successfully. We’ll get back
-          <br />
-          to you as soon as possible.
+          <spam className="submitted"> Your application has been submitted successfully. </spam><br/>
+       <spam className="possible">We’ll get back to you as soon as possible. </spam> 
         </p>
       </div>
     </div>

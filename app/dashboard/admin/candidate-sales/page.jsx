@@ -20,6 +20,8 @@ import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { SalesCandidColumns } from './sales-candid-columns'
 import { LengthData } from '@/components/constants/StaticData'
+import AddvanceFilterDeveloper from '@/components/modal/AddvanceFilterDeveloper'
+import { Search } from 'lucide-react'
 
 const AllSalesCandidates = () => {
   useDocumentTitle('Leads')
@@ -39,6 +41,10 @@ const AllSalesCandidates = () => {
   const [isAccordionOpen, setIsAccordionOpen] = useState(false)
   const [searchFilter, setSearchFilter] = useState(null)
   const [searchFormData, setSearchFormData] = useState(null)
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [minSalary, setMinSalary] = useState('');
+  const [maxSalary, setMaxSalary] = useState('');
   const methods = useForm({
     defaultValues: {
       length: '10'
@@ -47,8 +53,17 @@ const AllSalesCandidates = () => {
 
   const getListLeads = async () => {
     try {
+
+      const newData = {
+        page, 
+        length,
+        startDate,
+        endDate,
+        minSalary,
+        maxSalary,
+      }
       setLoading(true)
-      const res = await SalesCandidate.salesCandidateList(page, length)
+      const res = await SalesCandidate.salesCandidateList(newData)
       console.log('res', res)
       if (res.data?.status == true) {
         setList(res?.data?.data)
@@ -100,9 +115,9 @@ const AllSalesCandidates = () => {
     setDeleteOpenModal(false)
   }
   const handlePreviewCand = row => {
-    // router.push(`/dashboard/candidate-details/preview?id=${row?.original?.id}`)
+    router.push(`/dashboard/sales-candidate-details/preview?id=${row?.original?.id}`)
   }
-  const DCSOpenModal = row => {
+  const AddvanceOpenModal = row => {
     setSelectedDcsValue(row)
     setDcsModalOpen(true)
   }
@@ -121,8 +136,7 @@ const AllSalesCandidates = () => {
   // filter :--
 
   const search = methods.watch('search')
-  const maxSalary = methods.watch('maxSalary')
-  const minSalary = methods.watch('minSalary')
+  
 
   const handleClearSearch = () => {
     methods.setValue('search', '')
@@ -135,9 +149,8 @@ const AllSalesCandidates = () => {
     try {
       const apiData = await SalesCandidate.candidateListFilters({
         ...data,
-        search,
-        maxSalary,
-        minSalary
+        search
+      
       })
       const candidates = apiData?.data?.data || []
       const paginationInfo = apiData?.data?.data?.pagination
@@ -166,67 +179,76 @@ const AllSalesCandidates = () => {
       })
     }
   }
+
+//Addvance search :-
+const handleAddvanceSearch = async data => {
+  console.log('data--update', data)
+  const newData= {
+    startDate : data.dob.startDate,
+    endDate : data.dob.endDate,
+    minSalary : data.salary[0],
+    maxSalary:data.salary[1]
+
+  }
+  setStartDate(newData.startDate)
+  setEndDate(newData.endDate)
+  setMinSalary(newData.minSalary)
+  setMaxSalary(newData.maxSalary)
+  console.log("newDatanewData",newData)
+  try {
+    const response = await SalesCandidate.candidateSaleListAddvanceFilters(newData)
+    console.log('response', response)
+    if (response?.status === 200) {
+      successMessage({ description: response?.data?.message })
+      setDcsModalOpen(false)
+      const candidates = response?.data?.data || []
+      const paginationInfo = response?.data?.data?.pagination
+
+      setList(candidates)
+      setTotalRecord(paginationInfo?.total || 0)    }
+  } catch (error) {
+    console.log('error', error)
+    // errorMessage({
+    //   description: error?.response?.data?.message
+    // })
+  }
+}
   console.log('getList', getList)
   return (
     <>
       <div className='mb-3 flex items-center justify-between'>
         <LayoutHeader pageTitle='Sales Candidate List' />
       </div>
-      {/* Filters */}
-      <Accordion
-        type='single'
-        collapsible
-        className='theme-bg-light-rgba mb-4 rounded px-4'
-        value={accordionValue}
-        onValueChange={setAccordionValue}
+         {/* Filters */}
+         <div className="col-span-1 flex justify-end items-end gap-4 items-center">
+  <div className="grid grid gap-4 items-end serch-box">
+  <FormProvider {...methods}>
+    {/* Input Field */}
+    <FormInputField
+      name="search"
+      placeholder="Email/Name/Phone"
+      form={methods}
+      inputType="text"
+      className="colum-box-bg-change col-span-2"
+    />
+
+    {/* Search Button */}
+    <Search
+      type="submit"
+      className="cursor-pointer"
+      onClick={() => handlePipeLineFilter()}
+    />
+  </FormProvider>
+  
+</div>
+      <Button
+        type="submit"
+        className="site-button-small bg-white"
+        onClick={() => AddvanceOpenModal()}
       >
-        <AccordionItem value='item-1'>
-          <AccordionTrigger className='py-2 text-xl'>Filter</AccordionTrigger>
-          <AccordionContent className='pt-4'>
-            <div className='flex grid grid-cols-4 gap-4'>
-              <FormProvider {...methods}>
-                <FormInputField
-                  name='search'
-                  label='Email/Name/Phone'
-                  form={methods}
-                  inputType='text'
-                  className='colum-box-bg-change'
-                />
-                <FormInputField
-                  name='minSalary'
-                  label='Min Salary'
-                  form={methods}
-                  inputType='number'
-                  className='colum-box-bg-change'
-                />
-                <FormInputField
-                  name='maxSalary'
-                  label='Max Salary'
-                  form={methods}
-                  inputType='number'
-                  className='colum-box-bg-change'
-                />
-                <div className='mt-5 flex justify-end gap-4'>
-                  <Button
-                    type='Submit'
-                    className='site-button-small bg-white'
-                    onClick={() => handlePipeLineFilter()}
-                  >
-                    Search
-                  </Button>
-                  <Button
-                    type='button'
-                    className='site-button-small text-white'
-                    onClick={handleClearSearch}
-                  >
-                    Clear
-                  </Button>
-                </div>
-              </FormProvider>
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
+        Advance Search
+      </Button>
+    </div>
       <FormProvider {...methods}>
         <FormSelectField
           name='length'
@@ -256,12 +278,13 @@ const AllSalesCandidates = () => {
         deleteOpenModal={deleteOpenModal}
         deleteHandleModalClose={deleteHandleModalClose}
       />
-      {/* <DcsModal
+    <AddvanceFilterDeveloper
         getListLeads={getListLeads}
         isOpen={dcsModalOpen}
         onClose={() => setDcsModalOpen(false)}
         dcsValue={selectedDcsValue}
-      /> */}
+        handleAddvanceSearch={handleAddvanceSearch}
+      />
     </>
   )
 }

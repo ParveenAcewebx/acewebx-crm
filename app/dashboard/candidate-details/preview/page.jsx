@@ -22,7 +22,7 @@
 //     try {
 //       setLoading(true)
 //       const response = await LeadsServices.getleadById(editId)
-  
+
 //       if (response.status === 200) {
 //         if (response?.data?.status === true) {
 //           setLeadData(response?.data?.data)
@@ -109,19 +109,23 @@ function Page() {
     setOpen(false)
   }
 
+
+  const percent = Math.round(((candidateData?.expectedSalary - candidateData?.currentSalary) * 100) / candidateData?.currentSalary)
   return (
     <div>
       {/* <TitleForPage title='Candidate Details' /> */}
 
-      <section className='first-row'>
+      <section className='tittle-bar'>
         <div className='user-name'>
           <span variant='h1'>{candidateData?.name}</span>
         </div>
         <div className='resume' onClick={handleClickOpen}>
-          <div className='resmume-text'>
-            <span variant='h2'>View Resume</span>
-          </div>
-          <img src='/images/pages/eye.png' alt='trophy image' height={11} />
+          <a href="">
+            <div className='resmume-text'>
+              <span variant='h2'>View Resume</span>
+            </div>
+            <img src='/images/pages/eye.png' alt='trophy image' height={11} />
+          </a>
         </div>
       </section>
 
@@ -132,8 +136,8 @@ function Page() {
               <CardContent>
                 <img src='/images/pages/date.png' alt='trophy image' height={60} className='' />
                 <div>
-                  <span>Date of Birth*</span>
-                  <span variant='h4'>{candidateData?.dob}</span>
+                  <span className='tittle'> Date of Birth*</span> <br />
+                  <span className='subtittle' variant='h4'>{candidateData?.dob}</span>
                 </div>
               </CardContent>
             </Card>
@@ -142,8 +146,8 @@ function Page() {
               <CardContent>
                 <img src='/images/pages/gender.png' alt='trophy image' height={60} className='' />
                 <div>
-                  <span>Gender</span>
-                  <span variant='h4'>{candidateData?.meta?._gender}</span>
+                  <span className='tittle'>Gender</span> <br />
+                  <span className='subtittle' variant='h4'>{candidateData?.meta?._gender}</span>
                 </div>
               </CardContent>
             </Card>
@@ -152,8 +156,8 @@ function Page() {
               <CardContent>
                 <img src='/images/pages/number.png' alt='trophy image' height={60} className='' />
                 <div>
-                  <span>Contact Number</span>
-                  <span variant='h4'>{candidateData?.phone}</span>
+                  <span className='tittle'>Contact Number</span> <br />
+                  <span className='subtittle' variant='h4'>{candidateData?.phone}</span>
                 </div>
               </CardContent>
             </Card>
@@ -162,8 +166,8 @@ function Page() {
               <CardContent>
                 <img src='/images/pages/location.png' alt='trophy image' height={60} className='' />
                 <div>
-                  <span>Current Location</span>
-                  <span variant='h4'>{candidateData?.meta?._currentLocation}</span>
+                  <span className='tittle'>Current Location</span> <br />
+                  <span className='subtittle' variant='h4'>{candidateData?.meta?._currentLocation}</span>
                 </div>
               </CardContent>
             </Card>
@@ -172,8 +176,8 @@ function Page() {
               <CardContent>
                 <img src='/images/pages/applying.png' alt='trophy image' height={60} className='' />
                 <div>
-                  <span>Designation Applying For</span>
-                  <span variant='h4'>{candidateData?.meta?._designationApplyingFor}</span>
+                  <span className='tittle'>Designation Applying For</span> <br />
+                  <span className='subtittle' variant='h4'>{candidateData?.meta?._designationApplyingFor}</span>
                 </div>
               </CardContent>
             </Card>
@@ -182,8 +186,8 @@ function Page() {
               <CardContent>
                 <img src='/images/pages/experience.png' alt='trophy image' height={60} className='' />
                 <div>
-                  <span>Total Experience</span>
-                  <span variant='h4'>{candidateData?.totalExperience}</span>
+                  <span className='tittle'>Total Experience</span> <br />
+                  <span className='subtittle' variant='h4'>{candidateData?.totalExperience}</span>
                 </div>
               </CardContent>
             </Card>
@@ -199,20 +203,38 @@ function Page() {
                   <div className='salery-content'>
                     <img src='/images/pages/rs.png' alt='trophy image' height={35} className='' />
                     <div className='salery-inner'>
-                      <span>Current Salary </span>
-                      <span variant='h4'>{candidateData?.currentSalary}</span>
+                      <span className='tittle'>Current Salary </span> <br />
+                      <span className='subtittle' variant='h4'>{candidateData?.currentSalary}</span>
                     </div>
-                  </div>
+                     </div>
+                      </div>
 
-                  <div className='salery-content'>
+             
+              </CardContent>
+
+              <Card>  
+                <CardContent>
+                 <div className='salery-outer'>
+                <div className='salery-content'>
                     <img src='/images/pages/rs.png' alt='trophy image' height={35} className='' />
+                     <div className='salery-inner'>
+                   <span className='tittle'>Expected Salary </span> <br />
+                    <span className='subtittle' variant='h4'>{candidateData?.expectedSalary}</span>
+                    </div>  </div>  </div>
+          </CardContent>
+            </Card>
+            </Card>
+   {/* Percentage */}
+            <Card>
+              <CardContent>
+                     <div className='salery-content !h-40'>
+                    <img src='/images/pages/rs.png' alt='trophy image' height={65} className='' />
 
                     <div className='salery-inner'>
-                      <span>Expected Salary </span>
-                      <span variant='h4'>{candidateData?.expectedSalary}</span>
+                      <span className='tittle'>Hike </span> <br />
+                      <span className='subtittle' variant='h4'>{percent}%</span>
                     </div>
                   </div>
-                </div>
               </CardContent>
             </Card>
           </div>
@@ -221,8 +243,8 @@ function Page() {
               <CardContent>
                 <img src='/images/pages/company.png' alt='trophy image' height={60} className='' />
                 <div>
-                  <span>Last/Current Company Name</span>
-                  <span variant='h4'>{candidateData?.meta?._currentCompanyName}</span>
+                  <span className='tittle'>Last/Current Company Name</span> <br />
+                  <span className='subtittle' variant='h4'>{candidateData?.meta?._currentCompanyName}</span>
                 </div>
               </CardContent>
             </Card>
@@ -231,8 +253,8 @@ function Page() {
               <CardContent>
                 <img src='/images/pages/vacancy.png' alt='trophy image' height={60} className='' />
                 <div>
-                  <span>How did you hear about this vacancy?</span>
-                  <span variant='h4'>{candidateData?.meta?._source}</span>
+                  <span className='tittle'>How did you hear about this vacancy?</span> <br />
+                  <span className='subtittle' variant='h4'>{candidateData?.meta?._source}</span>
                 </div>
               </CardContent>
             </Card>
@@ -243,18 +265,18 @@ function Page() {
           <Card>
             <CardContent className='box'>
               <div className='shift'>
-                <span>Preferred Shift  </span>
-                <span variant='h4'>{candidateData?.meta?._preferredShift}</span>
+                <span className='tittle'>Preferred Shift  </span> <br />
+                <span className='subtittle' variant='h4'>{candidateData?.meta?._preferredShift}</span>
               </div>
 
               <div className='shift'>
-                <span>Notice Period  </span>
-                <span variant='h4'>{candidateData?.noticePeriod} Days</span>
+                <span className='tittle'>Notice Period  </span> <br />
+                <span className='subtittle' variant='h4'>{candidateData?.noticePeriod} Days</span>
               </div>
 
               <div className='Reason'>
-                <span variant='h4'>Reason for Change  </span>
-                <span>{candidateData?.meta?._reasonForChange}</span>
+                <span className='tittle' variant='h4'>Reason for Change  </span> <br />
+                <span className='subtittle'>{candidateData?.meta?._reasonForChange}</span>
               </div>
             </CardContent>
           </Card>
@@ -268,8 +290,8 @@ function Page() {
         <Card>
           <CardContent>
             <div>
-              <span>Reference 1 </span>
-              <div className='refrence-inner'>
+              <span className='tittle'>Reference 1 </span> <br />
+              <div className='refrence-inner subtittle'>
                 <span variant='h4'>{candidateData?.meta?._referenceName}</span>
                 <span variant='h4'>{candidateData?.meta?._referenceContactNumber}</span>
                 <span variant='h4'>{candidateData?.meta?._referenceDesignation}</span>
@@ -278,8 +300,8 @@ function Page() {
             </div>
 
             <div className='reffrence-outer'>
-              <span>Reference 2 </span>
-              <div className='refrence-inner'>
+              <span className='tittle'>Reference 2 </span> <br />
+              <div className='refrence-inner subtittle'>
                 <span variant='h4'>{candidateData?.meta?._referenceName}</span>
                 <span variant='h4'>{candidateData?.meta?._referenceContactNumber}</span>
                 <span variant='h4'>{candidateData?.meta?._referenceDesignation}</span>
