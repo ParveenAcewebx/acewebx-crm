@@ -110,13 +110,13 @@ function JobApplicationForm() {
 
       Object.entries(data).forEach(([key, value]) => {
         if (key === 'preferredShift') return;
-
-        if (key === 'dob') {
-          formData.append(key, moment(value).format('YYYY-MM-DD')); 
+      
+        if (key === 'dob' || key === 'lastIncrementDate') {
+          formData.append(key, moment(value).format('YYYY-MM-DD'));
         } else {
           formData.append(key, value);
         }
-      })
+      });
       formData.append('preferredShift',preferred)
 
       const response = await Candidate.addCandidate(formData)

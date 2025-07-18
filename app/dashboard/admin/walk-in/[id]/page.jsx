@@ -10,6 +10,7 @@ import {
 import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
+import moment from 'moment';
 
 // import Loader from '@/components/Loader'
 import { errorMessage, successMessage } from '@/components/ToasterMessage'
@@ -58,10 +59,20 @@ function EditCandidateDetails() {
 
       const preferred = JSON.stringify(data?.preferredShift)
 
+      // Object.entries(data).forEach(([key, value]) => {
+      //   if (key === 'preferredShift') return // skip it
+      //   formData.append(key, value)
+      // })
+
       Object.entries(data).forEach(([key, value]) => {
-        if (key === 'preferredShift') return // skip it
-        formData.append(key, value)
-      })
+        if (key === 'preferredShift') return;
+      
+        if (key === 'dob' || key === 'lastIncrementDate') {
+          formData.append(key, moment(value).format('YYYY-MM-DD'));
+        } else {
+          formData.append(key, value);
+        }
+      });
       formData.append('preferredShift',preferred)
 
       const response = await Candidate.updateCandidate(id, formData)
