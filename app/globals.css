@@ -1608,16 +1608,9 @@ section.user-profile {
 }
 
 .left-iteam .salery-box {
-  width: 97%;
+  width: 60%;
   text-align: center;
   max-height: 382px !important;
-}
-.salery-section {
-  margin-top: 30px;
-  display: flex;
-  gap: 20px;
-  width: 100%;
-  margin-bottom: 30px;
 }
 .slaery-right-boxes {
   width: 97%;
@@ -1627,20 +1620,22 @@ section.user-profile {
 .slaery-right-boxes .box {
   margin-bottom: 12px !important;
 }
-.salery-content {
+
+.salery-hike-outer{
+  width: 100%;
+
+}
+.salery-hike{
   border: 1px solid #dfdfdf;
-  padding: 7px;
-  text-align: left;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 50%;
+  padding: 28px;
+  text-align: center;
+  width: 100%;
 }
-.salery-outer {
-  display: flex;
-  gap: 10px;
-  margin-top: 20px;
+.salery-hike img {
+  margin-bottom: 10px !important;
+  margin: 0 auto;
 }
+
 /* Reference css start */
 .Reference {
   width: 100%;
@@ -1923,17 +1918,14 @@ width: 30%;
 margin-right: 0px;
 }
 
-.left-iteam .salery-box {
-width: 97%;
-text-align: center;
-max-height: 382px !important;
-}
+
 
 .salery-section {
-display: flex;
-gap: 20px;
-width: 98%;
-margin-bottom: 20px;
+  margin-top: 30px;
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  margin-bottom: 30px;
 }
 
 .slaery-right-boxes {
@@ -1957,7 +1949,7 @@ text-align: left;
 display: flex;
 align-items: center;
 gap: 15px;
-width: 50%;
+width: 100%;
 }
 
 .salery-outer {
