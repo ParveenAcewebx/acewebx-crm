@@ -1,91 +1,73 @@
 'use client'
+
 import {
   Dialog,
   DialogContent,
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog'
-import { useEffect } from 'react'
-import { FormProvider, useForm } from 'react-hook-form'
-import FormSelectField from '../share/form/FormSelect'
-import { errorMessage, successMessage } from '../ToasterMessage'
-import { Button } from '../ui/button'
-import { DealConfidenceScore } from '../constants/StaticData'
+import { Button } from '@/components/ui/button'
 
-const DcsModal = ({ isOpen, onClose, dcsValue, getListLeads }) => {
-  const editId = dcsValue?.original?.id || dcsValue?.id
-  const form = useForm()
+import { Loader2 } from 'lucide-react'
 
-  // Fetch the lead by Id To update the Id
-  // const fetchLeadsById = async () => {
-  //   try {
-  //     const response = await LeadsServices.getleadById(editId)
-  //     if (response?.status === 200) {
-  //       const leadData = response.data.data
-  //       form.reset(leadData)
-  //     }
-  //   } catch (error) {
-  //     console.log('error', error)
-  //     errorMessage({
-  //       description: error?.response?.data?.message
-  //     })
-  //   }
-  // }
+const DocumentView = ({ isOpen, onClose, url ,loading}) => {
+  
 
-  useEffect(() => {
-    if (editId) {
-      // fetchLeadsById()
-    }
-  }, [editId])
-
-  const handleScoreUpdate = async data => {
-    console.log('data--update', data)
-    try {
-      const formData = new FormData()
-      formData.append('id', editId)
-      formData.append('dcs', data.dcs)
-      const response = await LeadsServices.updateLeadDcsById(editId, formData)
-      console.log('response', response)
-      if (response?.status === 200) {
-        await getListLeads()
-        successMessage({ description: response?.data?.message })
-        onClose()
-      }
-    } catch (error) {
-      console.log('error', error)
-      errorMessage({
-        description: error?.response?.data?.message
-      })
-    }
-  }
+  const fullUrl = url ? decodeURIComponent(`${process.env.NEXT_PUBLIC_API_URL}${url}`) : ''
+  const fileExtension = url?.split('.').pop()?.toLowerCase()
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogTrigger />
-      <DialogContent>
-        <DialogTitle>Edit DCS</DialogTitle>
-        <div>
-          <FormProvider {...form}>
-            <form
-              onSubmit={e => {
-                e.preventDefault()
-                e.stopPropagation()
-                form.handleSubmit(handleScoreUpdate)()
-              }}
-            >
-              <FormSelectField
-                name='dcs'
-                label='Deal Confidence Score'
-                placeholder='Select Deal Confidence Score'
-                options={DealConfidenceScore}
+      {/* <DialogTrigger asChild>
+        <div className="hidden" />
+      </DialogTrigger> */}
+      <DialogContent className="w-[90%] max-w-[1000px]">
+        {/* <div className="flex justify-end">
+          <Button
+            variant="ghost"
+            onClick={() => onClose(false)}
+            className="text-xl font-bold text-gray-600"
+          >
+            ✕
+          </Button>
+        </div> */}
+        <DialogTitle>Document Preview</DialogTitle>
+
+        <div className="mt-4">
+          {loading ? (
+            <div className="flex justify-center items-center h-[300px]">
+              <Loader2 className="animate-spin h-6 w-6 text-gray-600" />
+            </div>
+          ) : url ? (
+            fileExtension === 'pdf' ? (
+              <iframe
+                src={fullUrl}
+                width="100%"
+                height="600px"
+                title="PDF Preview"
               />
-              <Button type='submit' className='site-button mt-4'>Update</Button>
-            </form>
-          </FormProvider>
+            ) : fileExtension === 'docx' ? (
+              <div className="text-center space-y-4">
+                <p className="text-gray-600">.docx preview not supported in-browser.</p>
+                <a
+                  href={fullUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline text-blue-600"
+                >
+                  Download Document
+                </a>
+              </div>
+            ) : (
+              <p className="text-red-500">Unsupported file format.</p>
+            )
+          ) : (
+            <p>No document URL provided.</p>
+          )}
         </div>
       </DialogContent>
     </Dialog>
   )
 }
 
-export default DcsModal
+export default DocumentView

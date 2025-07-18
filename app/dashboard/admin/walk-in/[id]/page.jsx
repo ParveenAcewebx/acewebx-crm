@@ -234,31 +234,39 @@ function EditCandidateDetails() {
                 inputType='text'
                 className='colum-box-bg-change'
               />
+                   <FormTextArea
+                    name='currentAddress'
+                    label='Current Address'
+                    form={form}
+                    multiline
+                    inputType='text'
+                    className='col-span-2'
+                    style={{
+                      border: '1px solid #e9e9e9',
+                      height: '47px',
+                      outline: 'none'
+                    }}
+                  />
+
+
+
+
+                   <FormTextArea
+                    name='permanentAddress'
+                    label='Permanent Address (As Per Aadhaar)'
+                    form={form}
+                    multiline
+                    inputType='text'
+                    className='col-span-2'
+                    style={{ border: '1px solid #e9e9e9', height: '47px',outline: 'none' }}
+                    
+                  />
+
+
                </div>
-               <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-2 ace-reason'>
-                    <FormTextArea
-                      name='currentAddress'
-                      label='Current Address'
-                      form={form}
-                      multiline
-                      inputType='text'
-                      className='col-span-2 !h-[160px] border border-gray-600'
-                      />
-                    <FormTextArea
-                      name='permanentAddress'
-                      label='Permanent Address (As Per Aadhaar)'
-                      form={form}
-                      multiline
-                      inputType='text'
-                      className='col-span-2 !h-[160px] border border-gray-600'
-                      /></div>
                </fieldset>
-
-
-
-
                 <fieldset className='custom-raduis   bg-white font-semibold'>
-                <legend className="text-lg font-bold  pt-[65px] ml-[25px]"> Professional Information</legend>
+                <legend className="text-lg font-bold  pt-[65px] ml-[25px]">Application Overview</legend>
                <div class="multipart-field-two">
               <FormSelectField
                 name='designationApplyingFor'

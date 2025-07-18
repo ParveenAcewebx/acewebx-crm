@@ -11,7 +11,6 @@ import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { FormProvider, useForm } from 'react-hook-form'
-
 // import Loader from '@/components/Loader'
 import PageExpired from '@/app/url-expired/page'
 import { errorMessage } from '@/components/ToasterMessage'
@@ -27,7 +26,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { Loader } from 'lucide-react'
 import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
 import { CandidateFormValidationEditClient } from '@/components/form-validations/CandidateFormValidationEditClient'
-
+import moment from 'moment';
 function EditJobApplicationForm() {
   const { id } = useParams()
   const [step, setStep] = useState(2)
@@ -123,9 +122,21 @@ function EditJobApplicationForm() {
 
       const preferred = JSON.stringify(data?.preferredShift)
 
+      // Object.entries(data).forEach(([key, value]) => {
+      //   if (key === 'preferredShift') return // skip it
+      //   formData.append(key, value)
+      // })
+
+
+
       Object.entries(data).forEach(([key, value]) => {
-        if (key === 'preferredShift') return // skip it
-        formData.append(key, value)
+        if (key === 'preferredShift') return;
+
+        if (key === 'dob') {
+          formData.append(key, moment(value).format('YYYY-MM-DD')); 
+        } else {
+          formData.append(key, value);
+        }
       })
       formData.append('preferredShift',preferred)
 

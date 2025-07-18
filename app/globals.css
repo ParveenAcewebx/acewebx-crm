@@ -1466,19 +1466,21 @@ td.site-tab .space-y-2 {
   padding-top: 10px;
 }
 
+
 .multipart-field-one {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    background: #fff;
-    padding: 25px;
-    border-radius: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  background: #fff;
+  padding: 25px;
+  border-radius: 5px;
 }
 .multipart-field-one .space-y-2 {
-    display: flex;
-    width: 33%;
-    row-gap: 10px;
-    flex-direction: column;
+  display: flex;
+  width: 32.7%;
+  row-gap: 10px;
+  flex-direction: column;
+  margin-top: 20px;
 }
 .multipart-field-two {
     display: flex;
