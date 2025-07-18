@@ -69,6 +69,7 @@ import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { Card, CardContent } from '@/components/ui/card'
 import Candidate from '@/services/cadidateApis/CandidateApi'
 import ChatCompo from '../chat/Chat'
+import DcsModal from '@/components/modal/dscForm'
 
 function Page() {
   const router = useRouter()
@@ -76,6 +77,9 @@ function Page() {
   const searchParams = useSearchParams()
   const id = searchParams.get('id')
   const editId = id
+
+  const [dcsModalOpen, setDcsModalOpen] = useState(false) // State for DCS modal
+
   const [candidateData, setCandidateData] = useState({})
   const [candidateUrl, setCandidateUrl] = React.useState('')
   const [open, setOpen] = React.useState(false)
@@ -120,6 +124,37 @@ function Page() {
       setCandidateShifts(candidateShift)
     }
   },[candidateData?.meta?._preferredShift])
+
+  const dosOpenModal = (e) => {
+    e.preventDefault()
+    setDcsModalOpen(true)
+  }
+
+
+  const [url, setUrl] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  const candidateDataGetById = async id => {
+    try {
+      setLoading(true)
+      const response = await Candidate.candidateGetById(id)
+      if (response?.data?.status === true) {
+        const resumePath = response?.data?.data?.resume?.filePath
+        setUrl(resumePath)
+      }
+    } catch (error) {
+      console.error('Submission Error:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    if (!id) return
+    candidateDataGetById(id)
+  }, [id])
+
+
   return (
     <div>
       {/* <TitleForPage title='Candidate Details' /> */}
@@ -128,7 +163,7 @@ function Page() {
         <div className='user-name'>
           <span variant='h1'>{candidateData?.name}</span>
         </div>
-        <div className='resume' onClick={handleClickOpen}>
+        <div className='resume' onClick={(e)=>dosOpenModal(e)}>
           <a href="">
             <div className='resmume-text'>
               <span variant='h2'>View Resume</span>
@@ -327,12 +362,13 @@ function Page() {
         </Card>
       </div>
 
-      {/* <DocumentVeiw
-        candidateUrl={candidateUrl}
-        handleClickOpen={handleClickOpen}
-        handleClose={handleClose}
-        open={open}
-      /> */}
+      <DcsModal
+        isOpen={dcsModalOpen}
+        onClose={() => setDcsModalOpen(false)}
+        dcsValue={""}
+        url={url}
+        loading={loading}
+      />
     </div>
   )
 }
