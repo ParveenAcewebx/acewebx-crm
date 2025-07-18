@@ -138,8 +138,7 @@ const AllCandidates = () => {
 
   const handleClearSearch = () => {
     methods.setValue('search', '')
-    methods.setValue('maxSalary', '')
-    methods.setValue('minSalary', '')
+    
     getListLeads()
   }
 

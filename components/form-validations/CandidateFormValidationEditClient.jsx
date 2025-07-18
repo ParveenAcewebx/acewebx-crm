@@ -1,6 +1,6 @@
 import * as Yup from 'yup'
 
-export const CandidateFormValidationEdit = Yup.object().shape({
+export const CandidateFormValidationEditClient = Yup.object().shape({
   name: Yup.string().trim()
     .required('Full Name is required')
     .min(3, 'Minimum 3 characters are required')
@@ -101,4 +101,5 @@ export const CandidateFormValidationEdit = Yup.object().shape({
       }
     ),
 
+  recaptcha: Yup.string().required('Captcha is required')
 })

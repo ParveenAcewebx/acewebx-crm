@@ -15,7 +15,6 @@ import { FormProvider, useForm } from 'react-hook-form'
 // import Loader from '@/components/Loader'
 import PageExpired from '@/app/url-expired/page'
 import { errorMessage } from '@/components/ToasterMessage'
-import { CandidateFormValidationEdit } from '@/components/form-validations/CandidateFormValidationEdit'
 import LayoutHeader from '@/components/layoutHeader'
 import FormInputField from '@/components/share/form/FormInputField'
 import FormSelectField from '@/components/share/form/FormSelect'
@@ -27,6 +26,7 @@ import Candidate from '@/services/cadidateApis/CandidateApi'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Loader } from 'lucide-react'
 import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
+import { CandidateFormValidationEditClient } from '@/components/form-validations/CandidateFormValidationEditClient'
 
 function EditJobApplicationForm() {
   const { id } = useParams()
@@ -43,7 +43,7 @@ function EditJobApplicationForm() {
     resolver:
       step === 2 && !submitAddValidation
         ? undefined
-        : yupResolver(CandidateFormValidationEdit)
+        : yupResolver(CandidateFormValidationEditClient)
   })
 
   const stepFields = [

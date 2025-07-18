@@ -43,7 +43,7 @@ export function FormDateRangePicker({
                   <CalendarIcon className="mr-2 h-4 w-4" />
                   {value?.startDate
                     ? `${value.startDate.toDateString()} - ${value.endDate.toDateString()}`
-                    : 'Select Date Range'}
+                    : 'Application Submitted Date'}
                 </Button>
               </PopoverTrigger>
 

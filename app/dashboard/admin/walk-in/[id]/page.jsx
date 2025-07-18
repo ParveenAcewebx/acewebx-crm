@@ -35,51 +35,14 @@ function EditCandidateDetails() {
   const form = useForm({
     mode: 'onChange',
     defaultValues: editWalkInForm,
-    // resolver: yupResolver(CandidateFormValidationEdit)
+    resolver: yupResolver(CandidateFormValidationEdit)
   })
 
  
 
   const reValue = form.watch('recaptcha')
 
-  // const onSubmit = async data => {
-  //   console.log("data",data)
-  
-  //   setLoader(true)
-  //   try {
-  //     const formData = new FormData()
 
-  //     const file = data.resume?.[0]
-  //     if (file) {
-  //       formData.append('resume', file)
-  //     }
-
-  //     const preferred = JSON.stringify(data?.preferredShift)
-
-  //     Object.entries(data).forEach(([key, value]) => {
-  //       if (key === 'preferredShift') return // skip it
-  //       formData.append(key, value)
-  //     })
-  //     formData.append('preferredShift',preferred)
-
-  //     const response = await Candidate.updateCandidate(id, formData)
-  //     if (response?.data?.status == true) {
-  //       form.reset()
-  //       setLoader(false)
-  //       successMessage({ description: 'Updated SuccessFully!' })
-
-  //       router.push('/dashboard/admin/candidates')
-  //     }
-  //   } catch (error) {
-  //     setLoader(false)
-
-  //     setLoader(false)
-  //     errorMessage(
-  //       error?.message || 'Something went wrong while submitting the form.'
-  //     )
-     
-  //   }
-  // }
 
   const onSubmit = async data => {
   
