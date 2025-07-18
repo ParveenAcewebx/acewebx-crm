@@ -24,6 +24,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { Loader } from 'lucide-react'
 import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
 import { SalesCandidateValidationEdit } from '@/components/form-validations/SalesCandidateValidationEdit'
+import moment from 'moment'
 
 function EditSalesJobApplicationForm() {
   const { id } = useParams()
@@ -97,10 +98,16 @@ function EditSalesJobApplicationForm() {
 
       const preferred = JSON.stringify(data?.preferredShift)
       Object.entries(data).forEach(([key, value]) => {
-        if (['preferredShift', 'businessMethods', 'leadPlatforms'].includes(key)) return; // skip these keys
-        formData.append(key, value);
-      });
+        // Skip these keys entirely
+        if (['preferredShift', 'businessMethods', 'leadPlatforms'].includes(key)) return;
       
+        // Format 'joiningDate', append everything else as-is
+        if (key === 'joiningDate') {
+          formData.append(key, moment(value).format('YYYY-MM-DD'));
+        } else {
+          formData.append(key, value);
+        }
+      });
   
       formData.append('businessMethods',JSON.stringify(data?.businessMethods))
       formData.append('leadPlatforms',JSON.stringify(data?.leadPlatforms))
