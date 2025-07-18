@@ -67,6 +67,8 @@ function EditSalesJobApplicationForm() {
         form?.setValue('preferredShift',JSON.parse(data?.preferredShift))
         form?.setValue('businessMethods',JSON.parse(data?.businessMethods))
         form?.setValue('leadPlatforms',JSON.parse(data?.leadPlatforms))
+        const joiningDate = new Date(data.joiningDate + 'T00:00:00')
+        form?.setValue('joiningDate',joiningDate)
         // Then load and set the resume file if available
         const resumePath = data?.resume
         if (resumePath) {

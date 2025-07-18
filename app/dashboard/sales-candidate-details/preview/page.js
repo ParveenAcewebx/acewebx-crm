@@ -17,6 +17,7 @@ function Page() {
   const id = searchParams.get('id')
   const editId = id
   const [candidateData, setCandidateData] = useState({})
+  console.log("candidateData",candidateData)
   const [candidateUrl, setCandidateUrl] = React.useState('')
   const [open, setOpen] = React.useState(false)
   const handleGetApi = async () => {
@@ -49,7 +50,31 @@ function Page() {
   const handleClose = () => {
     setOpen(false)
   }
+  const percent = Math.round(((candidateData?.expectedSalary - candidateData?.currentSalary) * 100) / candidateData?.currentSalary)
 
+  const [candidateBusiness   ,setCandidateBusiness]= useState([])
+  const [candidateShifts   ,setCandidateShifts]= useState([])
+  const [candidatePlatForm   ,setCandidatePlatForm]= useState([])
+
+
+  useEffect(()=>{
+
+    if(candidateData?.businessMethods){
+
+      const candidateBusi = JSON?.parse(candidateData?.businessMethods)
+      setCandidateBusiness(candidateBusi)
+    }
+    if(candidateData?.preferredShift){
+
+      const candidateShift = JSON?.parse(candidateData?.preferredShift)
+      setCandidateShifts(candidateShift)
+    }
+    if(candidateData?.leadPlatforms){
+
+      const PlatForm = JSON?.parse(candidateData?.leadPlatforms)
+      setCandidatePlatForm(PlatForm)
+    }
+  },[candidateData?.businessMethods, candidateData?.leadPlatforms, candidateData?.preferredShift])
   return (
     <div>
       {/* <TitleForPage title='Candidate Details' /> */}
@@ -98,7 +123,8 @@ function Page() {
                 <img src='/images/pages/business-methods.png' alt='trophy image' height={60} className='' />
                 <div>
                   <span className='tittle'>Business Methods</span> <br />
-                  <span className='subtittle' variant='h4'>{candidateData?.businessMethods}</span>
+                  {candidateBusiness?.map((v,i)=><span key={i} className='subtittle' variant='h4'>{v}</span>)}
+                  
                 </div>
               </CardContent>
             </Card>
@@ -108,7 +134,8 @@ function Page() {
                 <img src='/images/pages/lead-platforms.png' alt='trophy image' height={60} className='' />
                 <div>
                   <span className='tittle'>Lead Platforms</span> <br />
-                  <span className='subtittle' variant='h4'>{candidateData?.leadPlatforms}</span>
+                  {candidatePlatForm?.map((v,i)=><span key={i} className='subtittle gap-3 ' variant='h4'>{v}, </span>)}
+
                 </div>
               </CardContent>
             </Card>
@@ -178,7 +205,7 @@ function Page() {
           </div>
 
           <div className='salery-section'>
-            <Card className='salery-box'>
+            <Card className='salery-box salery-new'>
               <CardContent>
                 {/* chart */}
                 {/* <CandidateChart current={candidateData?.currentSalary} expect={candidateData?.expectedSalary} /> */}
@@ -190,17 +217,40 @@ function Page() {
                       <span className='tittle'>Current Salary </span> <br />
                       <span className='subtittle' variant='h4'>{candidateData?.currentSalary}</span>
                     </div>
-                  </div>
+                     </div>
+                      </div>
 
-                  <div className='salery-content'>
+             
+              </CardContent>
+
+              <Card>  
+                <CardContent>
+                 <div className='salery-outer'>
+                <div className='salery-content'>
                     <img src='/images/pages/rs.png' alt='trophy image' height={35} className='' />
+                     <div className='salery-inner'>
+                   <span className='tittle'>Expected Salary </span> <br />
+                    <span className='subtittle' variant='h4'>{candidateData?.expectedSalary}</span>
+                    </div>  </div>  </div>
+          </CardContent>
+            </Card>
+            </Card>
+
+
+
+   {/* Percentage */}
+            <Card>
+              <CardContent>
+                <div className="salery-hike-outer">
+                  <div className='salery-hike'>
+                    <img src='/images/pages/rs.png' alt='trophy image' height={65} className='' />
 
                     <div className='salery-inner'>
-                      <span className='tittle'>Expected Salary </span> <br />
-                      <span className='subtittle' variant='h4'>{candidateData?.expectedSalary}</span>
+                      <span className='tittle'>Hike </span> <br />
+                      <span className='subtittle' variant='h4'>{percent}%</span>
                     </div>
                   </div>
-                </div>
+                </div>                
               </CardContent>
             </Card>
           </div>
@@ -211,7 +261,8 @@ function Page() {
             <CardContent className='box'>
               <div className='shift'>
                 <span className='tittle'>Preferred Shift  </span> <br />
-                <span className='subtittle' variant='h4'>{candidateData?.preferredShift}</span>
+                {candidateShifts?.map((v,i)=><span key={i} className='subtittle gap-3 ' variant='h4'>{v}, </span>)}
+               
               </div>
 
               <div className='shift'>

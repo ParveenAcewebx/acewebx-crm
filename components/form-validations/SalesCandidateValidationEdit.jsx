@@ -1,6 +1,6 @@
 import * as Yup from 'yup'
 
-export const SalesCandidateValidation = Yup.object().shape({
+export const SalesCandidateValidationEdit = Yup.object().shape({
   name: Yup.string().trim()
     .required('Full Name is required')
     .min(3, 'Minimum 3 characters are required')
@@ -28,7 +28,6 @@ export const SalesCandidateValidation = Yup.object().shape({
     .nullable()
     .transform((value, originalValue) => (originalValue === '' ? null : value))
     .required('Date of Joining is required'),
-  recaptcha: Yup.string().required('Captcha is required'),
   resume: Yup.mixed()
     .required('Resume is required')
     .test('fileExists', 'Resume is required', value => {

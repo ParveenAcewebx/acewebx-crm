@@ -111,6 +111,15 @@ function Page() {
 
 
   const percent = Math.round(((candidateData?.expectedSalary - candidateData?.currentSalary) * 100) / candidateData?.currentSalary)
+  const [candidateShifts   ,setCandidateShifts]= useState([])
+
+  useEffect(()=>{
+    if(candidateData?.meta?._preferredShift){
+
+      const candidateShift = JSON?.parse(candidateData?.meta?._preferredShift)
+      setCandidateShifts(candidateShift)
+    }
+  },[candidateData?.meta?._preferredShift])
   return (
     <div>
       {/* <TitleForPage title='Candidate Details' /> */}
@@ -194,7 +203,7 @@ function Page() {
           </div>
 
           <div className='salery-section'>
-            <Card className='salery-box'>
+            <Card className='salery-box salery-new'>
               <CardContent>
                 {/* chart */}
                 {/* <CandidateChart current={candidateData?.currentSalary} expect={candidateData?.expectedSalary} /> */}
@@ -224,10 +233,14 @@ function Page() {
           </CardContent>
             </Card>
             </Card>
+
+
+
    {/* Percentage */}
             <Card>
               <CardContent>
-                     <div className='salery-content !h-40'>
+                <div className="salery-hike-outer">
+                  <div className='salery-hike'>
                     <img src='/images/pages/rs.png' alt='trophy image' height={65} className='' />
 
                     <div className='salery-inner'>
@@ -235,6 +248,7 @@ function Page() {
                       <span className='subtittle' variant='h4'>{percent}%</span>
                     </div>
                   </div>
+                </div>                
               </CardContent>
             </Card>
           </div>
@@ -266,7 +280,8 @@ function Page() {
             <CardContent className='box'>
               <div className='shift'>
                 <span className='tittle'>Preferred Shift  </span> <br />
-                <span className='subtittle' variant='h4'>{candidateData?.meta?._preferredShift}</span>
+                {candidateShifts?.map((v,i)=><span key={i} className='subtittle gap-3 ' variant='h4'>{v}, </span>)}
+
               </div>
 
               <div className='shift'>

@@ -12,7 +12,6 @@ import { FormProvider, useForm } from 'react-hook-form'
 
 // import Loader from '@/components/Loader'
 import { errorMessage, successMessage } from '@/components/ToasterMessage'
-import { SalesCandidateValidation } from '@/components/form-validations/SalesCandidateValidation'
 import LayoutHeader from '@/components/layoutHeader'
 import FormInputField from '@/components/share/form/FormInputField'
 import FormSelectField from '@/components/share/form/FormSelect'
@@ -24,6 +23,7 @@ import SalesCandidate from '@/services/cadidateApis/SalesCandidateApi'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Loader } from 'lucide-react'
 import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
+import { SalesCandidateValidationEdit } from '@/components/form-validations/SalesCandidateValidationEdit'
 
 function EditSalesJobApplicationForm() {
   const { id } = useParams()
@@ -35,7 +35,7 @@ function EditSalesJobApplicationForm() {
   const form = useForm({
     mode: 'onChange',
     defaultValues: salesCandidateDefaultValue,
-    // resolver: yupResolver(SalesCandidateValidation)
+    resolver: yupResolver(SalesCandidateValidationEdit)
   })
 
 
@@ -60,6 +60,9 @@ function EditSalesJobApplicationForm() {
         form?.setValue('preferredShift',JSON.parse(data?.preferredShift))
         form?.setValue('businessMethods',JSON.parse(data?.businessMethods))
         form?.setValue('leadPlatforms',JSON.parse(data?.leadPlatforms))
+        const joiningDate = new Date(data.joiningDate + 'T00:00:00')
+        form?.setValue('joiningDate',joiningDate)
+
         // Then load and set the resume file if available
         const resumePath = data?.resume
         if (resumePath) {

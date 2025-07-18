@@ -161,10 +161,12 @@ function EditJobApplicationForm() {
         const data = response?.data?.data
         const meta = data?.meta
         setCandiId(data?.id)
+        const joiningDate = new Date(data.dob + 'T00:00:00')
+
         const dataForSet = {
           name: data?.name,
           email: data?.email,
-          dob: data?.dob,
+          dob: joiningDate,
           gender: meta?._gender,
           phone: data?.phone,
           currentLocation: meta?._currentLocation,
@@ -187,7 +189,7 @@ function EditJobApplicationForm() {
           source: meta?._source,
           currentAddress: meta?._currentAddress,
           permanentAddress: meta?._permanentAddress,
-          lastIncrementDate: meta?._lastIncrementDate,
+          lastIncrementDate: new Date(meta?._lastIncrementDate + 'T00:00:00'),
           lastIncrementAmount: meta?._lastIncrementAmount,
           resume: null // temporarily null until file is loaded
         }
