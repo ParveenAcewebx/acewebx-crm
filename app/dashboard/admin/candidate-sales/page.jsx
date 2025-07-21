@@ -187,8 +187,8 @@ const handleAddvanceSearch = async data => {
     startDate : data.dob.startDate,
     endDate : data.dob.endDate,
     minSalary : data.salary[0],
-    maxSalary:data.salary[1]
-
+    maxSalary:data.salary[1],
+    search:search
   }
   setStartDate(newData.startDate)
   setEndDate(newData.endDate)
@@ -220,43 +220,50 @@ const handleAddvanceSearch = async data => {
         <LayoutHeader pageTitle='Sales Candidate List' />
       </div>
          {/* Filters */}
-         <div className="col-span-1 flex justify-end items-end gap-4 items-center">
-  <div className="grid grid gap-4 items-end serch-box">
-  <FormProvider {...methods}>
-    {/* Input Field */}
-    <FormInputField
-      name="search"
-      placeholder="Email/Name/Phone"
-      form={methods}
-      inputType="text"
-      className="colum-box-bg-change col-span-2"
-    />
+ 
+         <div className='flex justify-between items-center'>
+        <div>
+          <FormProvider {...methods}>
+            <FormSelectField
+              name='length'
+              className='h-10 w-28'
+              form={methods}
+              options={LengthData}
+            />
+          </FormProvider>
+        </div>
+        <div className='flex justify-between items-center gap-4'>
+          <FormProvider {...methods}>
+            {/* Input Field */}
+            <div>
+              <FormInputField
+                name="search"
+                placeholder="Email/Name/Phone"
+                form={methods}
+                inputType="text"
+                className="colum-box-bg-change col-span-2"
+              />
+            </div>
+            <div>
+              {/* Search Button */}
+              <Search
+                type="submit"
+                className="cursor-pointer"
+                onClick={() => handlePipeLineFilter()}
+              />
+            </div>
 
-    {/* Search Button */}
-    <Search
-      type="submit"
-      className="cursor-pointer"
-      onClick={() => handlePipeLineFilter()}
-    />
-  </FormProvider>
-  
-</div>
-      <Button
-        type="submit"
-        className="site-button-small bg-white"
-        onClick={() => AddvanceOpenModal()}
-      >
-        Advance Search
-      </Button>
-    </div>
-      <FormProvider {...methods}>
-        <FormSelectField
-          name='length'
-          className='h-10 w-28'
-          form={methods}
-          options={LengthData}
-        />
-      </FormProvider>
+          </FormProvider>
+          {/* <Button
+            type="submit"
+            className="site-button-small bg-white ml-2"
+            onClick={() => AddvanceOpenModal()}
+          > */}
+            <p onClick={() => AddvanceOpenModal()} className='cursor-pointer text-red-400 hover:text-red-500'>Advance Search</p>
+          {/* </Button> */}
+        </div>
+
+      </div>
       <DataTable
         data={getList?.candidates}
         loading={loading}

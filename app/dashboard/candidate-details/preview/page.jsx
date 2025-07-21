@@ -70,6 +70,9 @@ import { Card, CardContent } from '@/components/ui/card'
 import Candidate from '@/services/cadidateApis/CandidateApi'
 import ChatCompo from '../chat/Chat'
 import DcsModal from '@/components/modal/dscForm'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import EditCandidate from './EditCandidate'
+import CommonLayout from '@/components/CommonLayouyt'
 
 function Page() {
   const router = useRouter()
@@ -115,15 +118,15 @@ function Page() {
 
 
   const percent = Math.round(((candidateData?.expectedSalary - candidateData?.currentSalary) * 100) / candidateData?.currentSalary)
-  const [candidateShifts   ,setCandidateShifts]= useState([])
+  const [candidateShifts, setCandidateShifts] = useState([])
 
-  useEffect(()=>{
-    if(candidateData?.meta?._preferredShift){
+  useEffect(() => {
+    if (candidateData?.meta?._preferredShift) {
 
       const candidateShift = JSON?.parse(candidateData?.meta?._preferredShift)
       setCandidateShifts(candidateShift)
     }
-  },[candidateData?.meta?._preferredShift])
+  }, [candidateData?.meta?._preferredShift])
 
   const dosOpenModal = (e) => {
     e.preventDefault()
@@ -156,220 +159,248 @@ function Page() {
 
 
   return (
-    <div>
-      {/* <TitleForPage title='Candidate Details' /> */}
+    <>
+      <CommonLayout pageTitle='Candidate Detail' />
 
-      <section className='tittle-bar'>
-        <div className='user-name'>
-          <span variant='h1'>{candidateData?.name}</span>
-        </div>
-        <div className='resume' onClick={(e)=>dosOpenModal(e)}>
-          <a href="">
-            <div className='resmume-text'>
-              <span variant='h2'>View Resume</span>
-            </div>
-            <img src='/images/pages/eye.png' alt='trophy image' height={11} />
-          </a>
-        </div>
-      </section>
-
-      <section className='user-profile'>
-        <div class='left-iteam'>
-          <div className='first-section'>
-            <Card className='box'>
-              <CardContent>
-                <img src='/images/pages/date.png' alt='trophy image' height={60} className='' />
-                <div>
-                  <span className='tittle'> Date of Birth*</span> <br />
-                  <span className='subtittle' variant='h4'>{candidateData?.dob}</span>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className='box'>
-              <CardContent>
-                <img src='/images/pages/gender.png' alt='trophy image' height={60} className='' />
-                <div>
-                  <span className='tittle'>Gender</span> <br />
-                  <span className='subtittle' variant='h4'>{candidateData?.meta?._gender}</span>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className='box'>
-              <CardContent>
-                <img src='/images/pages/number.png' alt='trophy image' height={60} className='' />
-                <div>
-                  <span className='tittle'>Contact Number</span> <br />
-                  <span className='subtittle' variant='h4'>{candidateData?.phone}</span>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className='box'>
-              <CardContent>
-                <img src='/images/pages/location.png' alt='trophy image' height={60} className='' />
-                <div>
-                  <span className='tittle'>Current Location</span> <br />
-                  <span className='subtittle' variant='h4'>{candidateData?.meta?._currentLocation}</span>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className='box'>
-              <CardContent>
-                <img src='/images/pages/applying.png' alt='trophy image' height={60} className='' />
-                <div>
-                  <span className='tittle'>Designation Applying For</span> <br />
-                  <span className='subtittle' variant='h4'>{candidateData?.meta?._designationApplyingFor}</span>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className='box'>
-              <CardContent>
-                <img src='/images/pages/experience.png' alt='trophy image' height={60} className='' />
-                <div>
-                  <span className='tittle'>Total Experience</span> <br />
-                  <span className='subtittle' variant='h4'>{candidateData?.totalExperience}</span>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          <div className='salery-section'>
-            <Card className='salery-box salery-new'>
-              <CardContent>
-                {/* chart */}
-                {/* <CandidateChart current={candidateData?.currentSalary} expect={candidateData?.expectedSalary} /> */}
-
-                <div className='salery-outer'>
-                  <div className='salery-content'>
-                    <img src='/images/pages/rs.png' alt='trophy image' height={35} className='' />
-                    <div className='salery-inner'>
-                      <span className='tittle'>Current Salary </span> <br />
-                      <span className='subtittle' variant='h4'>{candidateData?.currentSalary}</span>
-                    </div>
-                     </div>
-                      </div>
-
-             
-              </CardContent>
-
-              <Card>  
-                <CardContent>
-                 <div className='salery-outer'>
-                <div className='salery-content'>
-                    <img src='/images/pages/rs.png' alt='trophy image' height={35} className='' />
-                     <div className='salery-inner'>
-                   <span className='tittle'>Expected Salary </span> <br />
-                    <span className='subtittle' variant='h4'>{candidateData?.expectedSalary}</span>
-                    </div>  </div>  </div>
-          </CardContent>
-            </Card>
-            </Card>
+      <Tabs defaultValue="detail">
+        <TabsList className='custom-tabs mb-3 w-full justify-start gap-2 rounded-none border-b ' >
+          <TabsList>
+            <TabsTrigger className='rounded-none px-4 py-1.5 !shadow-none' value="detail">Details</TabsTrigger>
+            <TabsTrigger className='rounded-none p-1.5 px-4 !shadow-none' value="edit">Edit</TabsTrigger>
+          </TabsList>
+        </TabsList>
 
 
-
-   {/* Percentage */}
-            <Card>
-              <CardContent>
-                <div className="salery-hike-outer">
-                  <div className='salery-hike'>
-                    <img src='/images/pages/rs.png' alt='trophy image' height={65} className='' />
-
-                    <div className='salery-inner'>
-                      <span className='tittle'>Hike </span> <br />
-                      <span className='subtittle' variant='h4'>{percent}%</span>
-                    </div>
+        <TabsContent value="detail">
+          <Card className='border'>
+            <CardContent className='tittle-bar'>
+              <div className='user-name'>
+                <span variant='h1'>{candidateData?.name}</span>
+              </div>
+              <div className='resume' onClick={(e) => dosOpenModal(e)}>
+                <a href="">
+                  <div className='resmume-text'>
+                    <span variant='h2'>View Resume</span>
                   </div>
-                </div>                
-              </CardContent>
-            </Card>
-          </div>
-          <div className='slaery-right-boxes'>
-            <Card className='box'>
-              <CardContent>
-                <img src='/images/pages/company.png' alt='trophy image' height={60} className='' />
-                <div>
-                  <span className='tittle'>Last/Current Company Name</span> <br />
-                  <span className='subtittle' variant='h4'>{candidateData?.meta?._currentCompanyName}</span>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className='box'>
-              <CardContent>
-                <img src='/images/pages/vacancy.png' alt='trophy image' height={60} className='' />
-                <div>
-                  <span className='tittle'>How did you hear about this vacancy?</span> <br />
-                  <span className='subtittle' variant='h4'>{candidateData?.meta?._source}</span>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-
-        <div className='right-iteam'>
-          <Card>
-            <CardContent className='box'>
-              <div className='shift'>
-                <span className='tittle'>Preferred Shift  </span> <br />
-                {candidateShifts?.map((v,i)=><span key={i} className='subtittle gap-3 ' variant='h4'>{v}, </span>)}
-
-              </div>
-
-              <div className='shift'>
-                <span className='tittle'>Notice Period  </span> <br />
-                <span className='subtittle' variant='h4'>{candidateData?.noticePeriod} Days</span>
-              </div>
-
-              <div className='Reason'>
-                <span className='tittle' variant='h4'>Reason for Change  </span> <br />
-                <span className='subtittle'>{candidateData?.meta?._reasonForChange}</span>
+                  <img src='/images/pages/eye.png' alt='trophy image' height={11} />
+                </a>
               </div>
             </CardContent>
           </Card>
-          {/* chat  */}
-          <ChatCompo />
+          <div className='grid grid-cols-2 gap-4'>
+            {/* Left Section */}
 
-        </div>
-      </section>
 
-      <div className='Reference'>
-        <Card>
-          <CardContent>
             <div>
-              <span className='tittle'>Reference 1 </span> <br />
-              <div className='refrence-inner subtittle'>
-                <span variant='h4'>{candidateData?.meta?._referenceName}</span>
-                <span variant='h4'>{candidateData?.meta?._referenceContactNumber}</span>
-                <span variant='h4'>{candidateData?.meta?._referenceDesignation}</span>
-                <span variant='h4'>{candidateData?.meta?._referenceExperience}</span>
+              <div className='grid grid-cols-3 gap-4'>
+                <Card className='box'>
+                  <CardContent>
+                    <img src='/images/pages/date.png' alt='trophy image' height={60} className='' />
+                    <div>
+                      <span className='tittle'> Date of Birth*</span> <br />
+                      <span className='subtittle' variant='h4'>{candidateData?.dob}</span>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className='box'>
+                  <CardContent>
+                    <img src='/images/pages/gender.png' alt='trophy image' height={60} className='' />
+                    <div>
+                      <span className='tittle'>Gender</span> <br />
+                      <span className='subtittle' variant='h4'>{candidateData?.meta?._gender}</span>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className='box'>
+                  <CardContent>
+                    <img src='/images/pages/number.png' alt='trophy image' height={60} className='' />
+                    <div>
+                      <span className='tittle'>Contact Number</span> <br />
+                      <span className='subtittle' variant='h4'>{candidateData?.phone}</span>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className='box'>
+                  <CardContent>
+                    <img src='/images/pages/location.png' alt='trophy image' height={60} className='' />
+                    <div>
+                      <span className='tittle'>Current Location</span> <br />
+                      <span className='subtittle' variant='h4'>{candidateData?.meta?._currentLocation}</span>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className='box'>
+                  <CardContent>
+                    <img src='/images/pages/applying.png' alt='trophy image' height={60} className='' />
+                    <div>
+                      <span className='tittle'>Designation Applying For</span> <br />
+                      <span className='subtittle' variant='h4'>{candidateData?.meta?._designationApplyingFor}</span>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className='box'>
+                  <CardContent>
+                    <img src='/images/pages/experience.png' alt='trophy image' height={60} className='' />
+                    <div>
+                      <span className='tittle'>Total Experience</span> <br />
+                      <span className='subtittle' variant='h4'>{candidateData?.totalExperience}</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <div className="grid grid-cols-[40%,59%] gap-4 items-start"
+              >
+                <div  >
+                  <Card className='min-h-[277px]'>
+                    <CardContent>
+                      <CardContent>
+                        {/* chart */}
+                        {/* <CandidateChart current={candidateData?.currentSalary} expect={candidateData?.expectedSalary} /> */}
+
+                        <div className='salery-outer'>
+                          <div className='salery-content'>
+                            <img src='/images/pages/rs.png' alt='trophy image' height={35} className='' />
+                            <div className='salery-inner'>
+                              <span className='tittle'>Current Salary </span> <br />
+                              <span className='subtittle' variant='h4'>{candidateData?.currentSalary}</span>
+                            </div>
+                          </div>
+                        </div>
+
+
+                      </CardContent>
+                      <CardContent>
+                        <div className='salery-outer'>
+                          <div className='salery-content'>
+                            <img src='/images/pages/rs.png' alt='trophy image' height={35} className='' />
+                            <div className='salery-inner'>
+                              <span className='tittle'>Expected Salary </span> <br />
+                              <span className='subtittle' variant='h4'>{candidateData?.expectedSalary}</span>
+                            </div>  </div>  </div>
+                      </CardContent>
+                    </CardContent>
+                  </Card>
+
+                </div>
+                <div>
+                  <Card className='min-h-[277px]'>
+                    <CardContent>
+                      <div className="w-full">
+                        <div className='salery-hike'>
+                          <img src='/images/pages/rs.png' alt='trophy image' height={65} className='' />
+
+                          <div className='salery-inner'>
+                            <span className='tittle'>Hike </span> <br />
+                            <span className='subtittle' variant='h4'>{percent}%</span>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+
+              <div className='grid grid-cols-2 gap-4'>
+                <Card className='box'>
+                  <CardContent>
+                    <img src='/images/pages/company.png' alt='trophy image' height={60} className='' />
+                    <div>
+                      <span className='tittle'>Last/Current Company Name</span> <br />
+                      <span className='subtittle' variant='h4'>{candidateData?.meta?._currentCompanyName}</span>
+                    </div>
+                  </CardContent>
+                </Card>
+                <Card className='box'>
+                  <CardContent>
+                    <img src='/images/pages/vacancy.png' alt='trophy image' height={60} className='' />
+                    <div>
+                      <span className='tittle'>How did you hear about this vacancy?</span> <br />
+                      <span className='subtittle' variant='h4'>{candidateData?.meta?._source}</span>
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
             </div>
 
-            <div className='reffrence-outer'>
-              <span className='tittle'>Reference 2 </span> <br />
-              <div className='refrence-inner subtittle'>
-                <span variant='h4'>{candidateData?.meta?._referenceName}</span>
-                <span variant='h4'>{candidateData?.meta?._referenceContactNumber}</span>
-                <span variant='h4'>{candidateData?.meta?._referenceDesignation}</span>
-                <span variant='h4'>{candidateData?.meta?._referenceExperience}</span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
 
-      <DcsModal
-        isOpen={dcsModalOpen}
-        onClose={() => setDcsModalOpen(false)}
-        dcsValue={""}
-        url={url}
-        loading={loading}
-      />
-    </div>
+
+            <div>
+              {/* Right Section */}
+              <Card className='w-full  border rounded-lg shadow-sm'>
+                <CardContent>
+                  <div className='grid grid-cols-2 gap-3'>
+                    <Card className='border '>
+                      <CardContent>
+                        <span className='tittle'>Preferred Shift  </span> <br />
+                        {candidateShifts?.map((v, i) => <span key={i} className='subtittle gap-3 ' variant='h4'>{v}, </span>)}
+                      </CardContent>
+
+                    </Card>
+
+                    <Card className='border'>
+                      <CardContent>
+                        <span className='tittle'>Notice Period  </span> <br />
+                        <span className='subtittle' variant='h4'>{candidateData?.noticePeriod} Days</span>
+                      </CardContent>
+                    </Card>
+                  </div>
+
+                  <Card className='border'>
+                    <CardContent><span className='tittle' variant='h4'>Reason for Change  </span> <br />
+                      <span className='subtittle'>{candidateData?.meta?._reasonForChange}</span></CardContent>
+                  </Card>
+                </CardContent>
+              </Card>
+              {/* chat  */}
+              <ChatCompo />
+            </div>
+          </div>
+          <div className='Reference'>
+            <Card>
+              <CardContent>
+                <div>
+                  <span className='tittle'>Reference 1 </span> <br />
+                  <div className='refrence-inner subtittle'>
+                    <span variant='h4'>{candidateData?.meta?._referenceName}</span>
+                    <span variant='h4'>{candidateData?.meta?._referenceContactNumber}</span>
+                    <span variant='h4'>{candidateData?.meta?._referenceDesignation}</span>
+                    <span variant='h4'>{candidateData?.meta?._referenceExperience}</span>
+                  </div>
+                </div>
+
+                <div className='reffrence-outer'>
+                  <span className='tittle'>Reference 2 </span> <br />
+                  <div className='refrence-inner subtittle'>
+                    <span variant='h4'>{candidateData?.meta?._referenceName}</span>
+                    <span variant='h4'>{candidateData?.meta?._referenceContactNumber}</span>
+                    <span variant='h4'>{candidateData?.meta?._referenceDesignation}</span>
+                    <span variant='h4'>{candidateData?.meta?._referenceExperience}</span>
+                  </div>
+                </div>
+                <DcsModal
+                  isOpen={dcsModalOpen}
+                  onClose={() => setDcsModalOpen(false)}
+                  dcsValue={""}
+                  url={url}
+                  loading={loading}
+                />
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+        <TabsContent value='edit'>
+          <EditCandidate editId={editId} />
+        </TabsContent>
+      </Tabs>
+
+
+    </>
   )
 }
 

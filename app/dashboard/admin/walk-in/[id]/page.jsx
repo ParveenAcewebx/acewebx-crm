@@ -26,6 +26,7 @@ import Candidate from '@/services/cadidateApis/CandidateApi'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Loader } from 'lucide-react'
 import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
+import CommonLayout from '@/components/CommonLayouyt'
 
 function EditCandidateDetails() {
   const { id } = useParams()
@@ -186,7 +187,7 @@ function EditCandidateDetails() {
     
 
       <div className='flex justify-between'>
-        <LayoutHeader pageTitle={`Candidate Details (${candEmail})`} />
+        <CommonLayout pageTitle={`Candidate Details (${candEmail})`} />
       </div>
 
       <div className='mt-5'>{/* <Separator /> */}</div>

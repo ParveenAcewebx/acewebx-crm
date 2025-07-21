@@ -54,7 +54,7 @@ const AllCandidates = () => {
   const getListLeads = async () => {
     try {
       const newData = {
-        page, 
+        page,
         length,
         startDate,
         endDate,
@@ -134,11 +134,10 @@ const AllCandidates = () => {
   // filter :--
 
   const search = methods.watch('search')
- 
 
   const handleClearSearch = () => {
     methods.setValue('search', '')
-    
+
     getListLeads()
   }
 
@@ -176,92 +175,95 @@ const AllCandidates = () => {
     }
   }
 
-//Addvance search :-
-const handleAddvanceSearch = async data => {
-  console.log('data--update', data)
-  const newData= {
-    startDate : data?.dob?.startDate,
-    endDate : data?.dob?.endDate,
-    minSalary : data?.salary[0],
-    maxSalary:data?.salary[1]
+  //Addvance search :-
+  const handleAddvanceSearch = async data => {
+    console.log('data--update', data)
+    const newData = {
+      startDate: data?.dob?.startDate,
+      endDate: data?.dob?.endDate,
+      minSalary: data?.salary[0],
+      maxSalary: data?.salary[1],
+      search: search
+    }
 
-  }
-  setStartDate(newData.startDate)
-  setEndDate(newData.endDate)
-  setMinSalary(newData.minSalary)
-  setMaxSalary(newData.maxSalary)
-  try {
-    const response = await Candidate.candidateListAddvanceFilters(newData)
-    if (response?.status === 200) {
-      successMessage({ description: response?.data?.message })
-      setDcsModalOpen(false)
-      const candidates = response?.data?.data || []
-      const paginationInfo = response?.data?.data?.pagination
+    setStartDate(newData.startDate)
+    setEndDate(newData.endDate)
+    setMinSalary(newData.minSalary)
+    setMaxSalary(newData.maxSalary)
+    try {
+      console.log("newDatanewDatanewData", newData)
+      const response = await Candidate.candidateListAddvanceFilters(newData)
+      if (response?.status === 200) {
+        successMessage({ description: response?.data?.message })
+        setDcsModalOpen(false)
+        const candidates = response?.data?.data || []
+        const paginationInfo = response?.data?.data?.pagination
 
-      setList(candidates)
-      setTotalRecord(paginationInfo?.total || 0)    }
-  } catch (error) {
-    console.log('error', error)
-    // errorMessage({
-    //   description: error?.response?.data?.message
-    // })
+        setList(candidates)
+        setTotalRecord(paginationInfo?.total || 0)
+      }
+    } catch (error) {
+      console.log('error', error)
+      // errorMessage({
+      //   description: error?.response?.data?.message
+      // })
+    }
   }
-}
 
 
   console.log('getList', getList)
   return (
     <>
-      <div className='mb-3 flex items-center justify-between'>
+      <div className=''>
         <LayoutHeader pageTitle='Developers List' />
       </div>
       {/* Filters */}
 
-      <div>
 
-  {/* Right-Aligned Buttons */}
+      <div className='flex justify-between items-center'>
+        <div>
+          <FormProvider {...methods}>
+            <FormSelectField
+              name='length'
+              className='h-10 w-28'
+              form={methods}
+              options={LengthData}
+            />
+          </FormProvider>
+        </div>
+        <div className='flex justify-between items-center gap-4'>
+          <FormProvider {...methods}>
+            {/* Input Field */}
+            <div>
+              <FormInputField
+                name="search"
+                placeholder="Email/Name/Phone"
+                form={methods}
+                inputType="text"
+                className="colum-box-bg-change col-span-2"
+              />
+            </div>
+            <div>
+              {/* Search Button */}
+              <Search
+                type="submit"
+                className="cursor-pointer"
+                onClick={() => handlePipeLineFilter()}
+              />
+            </div>
 
-  <div className="col-span-1 flex justify-end items-end gap-4 items-center">
-  <div className="grid grid gap-4 items-end serch-box">
-  <FormProvider {...methods}>
-    {/* Input Field */}
-    <FormInputField
-      name="search"
-      placeholder="Email/Name/Phone"
-      form={methods}
-      inputType="text"
-      className="colum-box-bg-change col-span-2"
-    />
+          </FormProvider>
+          {/* <Button
+            type="submit"
+            className="site-button-small bg-white ml-2"
+            onClick={() => AddvanceOpenModal()}
+          > */}
+            <p onClick={() => AddvanceOpenModal()} className='cursor-pointer text-red-400 hover:text-red-500'>Advance Search</p>
+          {/* </Button> */}
+        </div>
 
-    {/* Search Button */}
-    <Search
-      type="submit"
-      className="cursor-pointer"
-      onClick={() => handlePipeLineFilter()}
-    />
-  </FormProvider>
-  
-</div>
-      <Button
-        type="submit"
-        className="site-button-small bg-white"
-        onClick={() => AddvanceOpenModal()}
-      >
-        Advance Search
-      </Button>
-    </div>
+      </div>
 
-</div>
-
-
-      <FormProvider {...methods}>
-        <FormSelectField
-          name='length'
-          className='h-10 w-28'
-          form={methods}
-          options={LengthData}
-        />
-      </FormProvider>
       <DataTable
         data={getList?.candidates}
         loading={loading}
@@ -288,6 +290,7 @@ const handleAddvanceSearch = async data => {
         isOpen={dcsModalOpen}
         onClose={() => setDcsModalOpen(false)}
         dcsValue={selectedDcsValue}
+        search={search}
         handleAddvanceSearch={handleAddvanceSearch}
       />
     </>

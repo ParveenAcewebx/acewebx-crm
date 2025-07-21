@@ -27,8 +27,9 @@ import { SalesCandidateValidationEdit } from '@/components/form-validations/Sale
 import moment from 'moment'
 import CommonLayout from '@/components/CommonLayouyt'
 
-function EditSalesJobApplicationForm() {
-  const { id } = useParams()
+function EditSalesJobApplication({editId}) {
+    const id = editId
+//   const { id } = useParams()
 
   const [loader, setLoader] = useState(false)
   const [candEmail , setCandEmail] = useState("")
@@ -142,9 +143,9 @@ function EditSalesJobApplicationForm() {
       </div> */}
       {}
       <div className=''>
-        <div className='flex justify-between'>
+        {/* <div className='flex justify-between'>
           <CommonLayout pageTitle={`Sales Candidate Details (${candEmail})`} />
-        </div>
+        </div> */}
         <div className=''>
           <FormProvider {...form}>
             <form
@@ -343,4 +344,4 @@ function EditSalesJobApplicationForm() {
   )
 }
 
-export default EditSalesJobApplicationForm
+export default EditSalesJobApplication

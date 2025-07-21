@@ -35,13 +35,13 @@ export const SalesCandidColumns = (
                 <Eye className='mr-2 h-4 w-4' />
                 View
               </DropdownMenuItem>
-              <DropdownMenuItem
+              {/* <DropdownMenuItem
                 onClick={() => handleEditCand(row)}
                 className='cursor-pointer text-green-600'
               >
                 <Edit className='mr-2 h-4 w-4' />
                 Edit
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
               <DropdownMenuItem
                 onClick={() => handleDeleteCand(row)}
                 className='cursor-pointer text-red-600'
@@ -65,7 +65,7 @@ export const SalesCandidColumns = (
   {
     accessorKey: 'id',
     header: '#ID',
-    cell: ({ row }) => `SAL_${row.original?.id}`
+    cell: ({ row }) => `SAL-${row.original?.id}`
   },
 
   {

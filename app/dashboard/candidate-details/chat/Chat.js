@@ -8,6 +8,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { cn } from '@/lib/utils'
 import ChatApis from '@/services/cadidateApis/ChatApis'
 import ActionsDots from '@/components/ActionsDots'
+import { Separator } from '@/components/ui/separator'
 
 function ChatCompo() {
   const form = useForm({ defaultValues: { chat: '' } })
@@ -85,7 +86,7 @@ function ChatCompo() {
   }, [])
 
   return (
-    <Card className='w-full p-4 border rounded-lg shadow-sm'>
+    <Card className='w-full  border rounded-lg shadow-sm'>
       <CardContent className='flex flex-col gap-4 h-[360px] overflow-y-auto'>
         {allChat.length > 0 ? (
           allChat.map(item => {
@@ -101,37 +102,46 @@ function ChatCompo() {
               createdTime.toLocaleTimeString() !== updatedTime.toLocaleTimeString()
 
             return (
-              <div className='mb-4 p-3 bg-muted rounded-md shadow-sm' key={item?.id}>
-                <div className='flex justify-between items-center'>
-                  <p className='text-sm font-medium text-foreground'>
-                    {item?.userName ?? 'Unknown User'}
-                  </p>
-
-                  {item?.message !== 'This message was deleted' && (
-                    <ActionsDots
-                      id={item?.id}
-                      deleteMsgHandler={deleteMsgHandler}
-                      getByIdMsgHandler={getByIdMsgHandler}
-                    />
-                  )}
-                </div>
-
-                <p className='text-base text-muted-foreground mt-1 mb-2'>{item?.message}</p>
-
-                <div className='flex items-center justify-between text-xs text-gray-500'>
-                  {isEdited && <span className='italic'>Edited</span>}
-                  <span>{formattedTime}</span>
-                </div>
+              <Card className='mb-4 p-3 bg-muted rounded-md shadow-sm' key={item?.id}>
+              {/* Message and action dots */}
+              <div className='flex justify-between items-start'>
+                <p className='text-base text-muted-foreground mt-1 mb-2 flex-1'>
+                  {item?.message}
+                </p>
+                {item?.message !== 'This message was deleted' && (
+                  <ActionsDots
+                    id={item?.id}
+                    deleteMsgHandler={deleteMsgHandler}
+                    getByIdMsgHandler={getByIdMsgHandler}
+                  />
+                )}
               </div>
+            
+              {/* Edited flag if applicable */}
+              {isEdited && (
+                <div className='text-xs italic text-gray-500 mb-1'>
+                  Edited
+                </div>
+              )}
+            
+              {/* User and timestamp */}
+              <div className="text-xs flex ">
+                <span className='mr-2'>{item?.userName ?? 'Unknown User'}</span>
+                <Separator orientation="vertical" className="h-5 bg-gray-300" />
+                <span className='ml-2'>{formattedTime}</span>
+              </div>
+            </Card>
+            
             )
           })
         ) : (
           <p className='text-sm text-muted-foreground'>No Messages Found!</p>
         )}
         <div ref={bottomRef} />
+        
       </CardContent>
-
-      <div className='mt-4 flex items-start gap-2'>
+<CardContent>
+<div className='mt-4 flex items-start gap-2'>
         {isEditMsg && (
           <Button
             variant='destructive'
@@ -171,6 +181,8 @@ function ChatCompo() {
           </Button>
         )}
       </div>
+</CardContent>
+     
     </Card>
   )
 }
