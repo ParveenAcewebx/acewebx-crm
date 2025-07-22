@@ -1,7 +1,11 @@
 import api from "@/lib/api"
 
+
+
+
 const SalesChatApi = {
   addSaleMessage: data => {
+    
     return api.post(`saleChat/sendMessage`,data )
   },
   editSaleMessage: (id, data) => {
