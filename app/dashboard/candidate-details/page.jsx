@@ -163,8 +163,7 @@ function Page() {
 
   const getActivities = async () => {
     try {
-      const res = await Candidate.activityDevCandidate("candidates")
-      console.log("res",res)
+      const res = await Candidate.activityDevCandidate("candidates" , editId)
       if (res?.data?.status === true) {
         setActivitiesData(res?.data?.data)
       }
