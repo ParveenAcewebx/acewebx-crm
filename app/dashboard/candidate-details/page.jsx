@@ -68,11 +68,12 @@ import { useParams, useRouter, useSearchParams } from 'next/navigation'
 // import TitleForPage from '@/components/TitleForPage'
 import { Card, CardContent } from '@/components/ui/card'
 import Candidate from '@/services/cadidateApis/CandidateApi'
-import ChatCompo from '../chat/Chat'
 import DcsModal from '@/components/modal/dscForm'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import EditCandidate from './EditCandidate'
 import CommonLayout from '@/components/CommonLayouyt'
+import ChatCompo from './chat/Chat'
+import ActivitiesList from '@/components/ActivitiesList'
 
 function Page() {
   const router = useRouter()
@@ -85,6 +86,7 @@ function Page() {
 
   const [candidateData, setCandidateData] = useState({})
   const [candidateUrl, setCandidateUrl] = React.useState('')
+
   const [open, setOpen] = React.useState(false)
   const handleGetApi = async () => {
     try {
@@ -157,6 +159,27 @@ function Page() {
     candidateDataGetById(id)
   }, [id])
 
+  const [activitiesData, setActivitiesData] = useState()
+
+  const getActivities = async () => {
+    try {
+      const res = await Candidate.activityDevCandidate("candidates")
+      console.log("res",res)
+      if (res?.data?.status === true) {
+        setActivitiesData(res?.data?.data)
+      }
+    } catch (error) {
+      errorMessage({
+        description: error?.response?.data?.message
+      })
+    }
+  }
+
+  useEffect(() => {
+    getActivities()
+  }, [])
+
+
 
   return (
     <>
@@ -172,7 +195,7 @@ function Page() {
 
 
         <TabsContent value="detail">
-          <Card className='border'>
+        
             <CardContent className='tittle-bar'>
               <div className='user-name'>
                 <span variant='h1'>{candidateData?.name}</span>
@@ -186,7 +209,7 @@ function Page() {
                 </a>
               </div>
             </CardContent>
-          </Card>
+          
           <div className='grid grid-cols-2 gap-4'>
             {/* Left Section */}
 
@@ -254,57 +277,66 @@ function Page() {
                 </Card>
               </div>
 
-              <div className="grid grid-cols-[40%,59%] gap-4 items-start"
-              >
-                <div  >
-                  <Card className='min-h-[277px]'>
-                    <CardContent>
-                      <CardContent>
-                        {/* chart */}
-                        {/* <CandidateChart current={candidateData?.currentSalary} expect={candidateData?.expectedSalary} /> */}
-
-                        <div className='salery-outer'>
-                          <div className='salery-content'>
-                            <img src='/images/pages/rs.png' alt='trophy image' height={35} className='' />
-                            <div className='salery-inner'>
-                              <span className='tittle'>Current Salary </span> <br />
-                              <span className='subtittle' variant='h4'>{candidateData?.currentSalary}</span>
-                            </div>
-                          </div>
-                        </div>
 
 
-                      </CardContent>
-                      <CardContent>
-                        <div className='salery-outer'>
-                          <div className='salery-content'>
-                            <img src='/images/pages/rs.png' alt='trophy image' height={35} className='' />
-                            <div className='salery-inner'>
-                              <span className='tittle'>Expected Salary </span> <br />
-                              <span className='subtittle' variant='h4'>{candidateData?.expectedSalary}</span>
-                            </div>  </div>  </div>
-                      </CardContent>
-                    </CardContent>
-                  </Card>
 
-                </div>
-                <div>
-                  <Card className='min-h-[277px]'>
-                    <CardContent>
-                      <div className="w-full">
-                        <div className='salery-hike'>
-                          <img src='/images/pages/rs.png' alt='trophy image' height={65} className='' />
 
-                          <div className='salery-inner'>
-                            <span className='tittle'>Hike </span> <br />
-                            <span className='subtittle' variant='h4'>{percent}%</span>
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
+{/* working Deve */}
+
+               <div className="grid grid-cols-2 gap-4">
+      {/* Current & Expected Salary Card */}
+       <div>
+     <Card className="min-h-[277px]">
+       <CardContent>
+         {/* Current Salary */}
+           <div className="salery-outer">
+              <div className="salery-content">
+                    <img src="/images/pages/rs.png" alt="trophy image" height={35} />
+                    <div className="salery-inner">
+                  <span className="tittle">Current Salary</span><br />
+                <span className="subtittle">{candidateData?.currentSalary}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Expected Salary */}
+        <div className="salery-outer mt-4">
+          <div className="salery-content">
+            <img src="/images/pages/rs.png" alt="trophy image" height={35} />
+            <div className="salery-inner">
+              <span className="tittle">Expected Salary</span><br />
+              <span className="subtittle">{candidateData?.expectedSalary}</span>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  </div>
+
+  {/* Hike Card */}
+  <div>
+    <Card className="min-h-[277px]">
+      <CardContent>
+        <div className="w-full">
+          <div className="salery-hike">
+            <img src="/images/pages/rs.png" alt="trophy image" height={65} />
+            <div className="salery-inner">
+              <span className="tittle">Hike</span><br />
+              <span className="subtittle">{percent}%</span>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  </div>
               </div>
+
+
+
+
+
+
+
 
               <div className='grid grid-cols-2 gap-4'>
                 <Card className='box'>
@@ -327,8 +359,6 @@ function Page() {
                 </Card>
               </div>
             </div>
-
-
 
             <div>
               {/* Right Section */}
@@ -358,7 +388,8 @@ function Page() {
                 </CardContent>
               </Card>
               {/* chat  */}
-              <ChatCompo />
+              <ChatCompo id={editId} />
+              <ActivitiesList activitiesData={activitiesData}/>
             </div>
           </div>
           <div className='Reference'>

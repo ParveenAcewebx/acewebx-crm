@@ -80,7 +80,7 @@ function EditCandidate({editId}) {
         setLoader(false)
         successMessage({ description: 'Updated SuccessFully!' })
 
-        router.push('/dashboard/admin/candidates')
+        router.push('/dashboard/candidates')
       }
     } catch (error) {
       setLoader(false)
@@ -107,8 +107,6 @@ function EditCandidate({editId}) {
       const response = await Candidate.candidateGetById(editId)
 
       if (response?.data?.status === true) {
-
-       
         const data = response?.data?.data
         const meta = data?.meta
         setCandEmail(data?.email)
@@ -144,22 +142,16 @@ function EditCandidate({editId}) {
           lastIncrementAmount: meta?._lastIncrementAmount,
           resume: null // temporarily null until file is loaded
         }
-        
         // Set form fields first
         form.reset(dataForSet)
-
         // Then load and set the resume file if available
         const resumePath = response?.data?.data?.resume?.filePath
-        // const resumePath = meta?._resume
-
         if (resumePath) {
           const fileUrl = `${process.env.NEXT_PUBLIC_API_URL}${resumePath}`
-          console.log('fileUrlfileUrl', fileUrl)
           const fileName = resumePath.split('/').pop() || 'resume.pdf'
 
           try {
             const fileObj = await urlToFile(fileUrl, fileName)
-            console.log('fileObjfileObj', fileObj)
             form.setValue('resume', fileObj)
           } catch (err) {
             console.error('Failed to convert resume URL to File:', err)
@@ -181,14 +173,6 @@ function EditCandidate({editId}) {
 
   return (
 <>
-{/* // <div className='mobile-view items-right relative flex min-h-screen w-full flex-col justify-start'> */}
-    
-    {/* 
-          <div className='flex justify-between'>
-            <LayoutHeader pageTitle={`Candidate Details (${candEmail})`} />
-          </div> */}
-    
-          {/* <div className=''><Separator /></div> */}
           <div className=''>
             <FormProvider {...form}>
               <form
@@ -196,7 +180,7 @@ function EditCandidate({editId}) {
                 onSubmit={form.handleSubmit(onSubmit)}
               >
                 <fieldset className='custom-raduis   bg-white font-semibold'>
-                       <legend className="text-lg font-bold  pt-[65px] ml-[25px]">Personal Information</legend>
+                       <legend className="text-lg font-bold  ml-[25px]">Personal Information</legend>
                   <div class="multipart-field-one">
                   <FormInputField
                       name='name'

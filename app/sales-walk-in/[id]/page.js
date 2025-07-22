@@ -78,7 +78,6 @@ function EditSalesJobApplicationForm() {
 
           try {
             const fileObj = await urlToFile(fileUrl, fileName)
-            console.log('fileObjfileObj', fileObj)
 
             form.setValue('resume', fileObj)
           } catch (err) {

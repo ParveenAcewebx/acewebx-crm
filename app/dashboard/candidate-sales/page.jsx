@@ -1,6 +1,7 @@
 'use client'
 import LayoutHeader from '@/components/layoutHeader'
 import DialogBox from '@/components/modal/DialogBox'
+import DcsModal from '@/components/modal/dscForm'
 import FormInputField from '@/components/share/form/FormInputField'
 import FormSelectField from '@/components/share/form/FormSelect'
 import { DataTable } from '@/components/Table'
@@ -13,16 +14,16 @@ import {
 } from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
 import useDocumentTitle from '@/components/utils/useDocumentTitle'
-import Candidate from '@/services/cadidateApis/CandidateApi'
+import SalesCandidate from '@/services/cadidateApis/SalesCandidateApi'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { CandidColumns } from './candid-columns'
+import { SalesCandidColumns } from './sales-candid-columns'
 import { LengthData } from '@/components/constants/StaticData'
 import AddvanceFilterDeveloper from '@/components/modal/AddvanceFilterDeveloper'
 import { Search } from 'lucide-react'
 
-const AllCandidates = () => {
+const AllSalesCandidates = () => {
   useDocumentTitle('Leads')
   const [dcsModalOpen, setDcsModalOpen] = useState(false) // State for DCS modal
   const [selectedDcsValue, setSelectedDcsValue] = useState(null) // Store DCS value for modal
@@ -44,7 +45,6 @@ const AllCandidates = () => {
   const [endDate, setEndDate] = useState('');
   const [minSalary, setMinSalary] = useState('');
   const [maxSalary, setMaxSalary] = useState('');
-
   const methods = useForm({
     defaultValues: {
       length: '10'
@@ -53,8 +53,9 @@ const AllCandidates = () => {
 
   const getListLeads = async () => {
     try {
+
       const newData = {
-        page,
+        page, 
         length,
         startDate,
         endDate,
@@ -62,7 +63,7 @@ const AllCandidates = () => {
         maxSalary,
       }
       setLoading(true)
-      const res = await Candidate.candidateList(newData)
+      const res = await SalesCandidate.salesCandidateList(newData)
       if (res.data?.status == true) {
         setList(res?.data?.data)
         setTotalRecord(res?.data?.data?.pagination?.total)
@@ -88,7 +89,7 @@ const AllCandidates = () => {
   const onDelete = async () => {
     if (deleteIndex !== null) {
       try {
-        const res = await Candidate.romoveCandidate(deleteIndex)
+        const res = await SalesCandidate.romoveSalesCandidate(deleteIndex)
         setDeleteOpenModal(false)
         if (res?.status === 200) {
           getListLeads()
@@ -107,13 +108,13 @@ const AllCandidates = () => {
   }
   // edit table row
   const handleEditCand = row => {
-    router.push(`/dashboard/admin/walk-in/${row.original.id}`)
+    router.push(`/dashboard/sales-walk-in/${row.original.id}`)
   }
   const deleteHandleModalClose = () => {
     setDeleteOpenModal(false)
   }
   const handlePreviewCand = row => {
-    router.push(`/dashboard/candidate-details/preview?id=${row?.original?.id}`)
+    router.push(`/dashboard/sales-candidate-details?id=${row?.original?.id}`)
   }
   const AddvanceOpenModal = row => {
     setSelectedDcsValue(row)
@@ -134,23 +135,24 @@ const AllCandidates = () => {
   // filter :--
 
   const search = methods.watch('search')
+  
 
   const handleClearSearch = () => {
     methods.setValue('search', '')
-
+    methods.setValue('maxSalary', '')
+    methods.setValue('minSalary', '')
     getListLeads()
   }
 
   const handlePipeLineFilter = async data => {
     try {
-      const apiData = await Candidate.candidateListFilters({
+      const apiData = await SalesCandidate.candidateListFilters({
         ...data,
-        search,
+        search
+      
       })
-
       const candidates = apiData?.data?.data || []
       const paginationInfo = apiData?.data?.data?.pagination
-
       setList(candidates)
       setTotalRecord(paginationInfo?.total || 0)
     } catch (error) {
@@ -160,7 +162,9 @@ const AllCandidates = () => {
 
   const handleSendWalkInForm = async row => {
     try {
-      const sendEmailLin = await Candidate.sendWalkInLink(row.original.id)
+      const sendEmailLin = await SalesCandidate.sendSalesWalkInLink(
+        row.original.id
+      )
 
       if (sendEmailLin?.data?.status == true) {
         successMessage({
@@ -175,52 +179,42 @@ const AllCandidates = () => {
     }
   }
 
-  //Addvance search :-
-  const handleAddvanceSearch = async data => {
-    console.log('data--update', data)
-    const newData = {
-      startDate: data?.dob?.startDate,
-      endDate: data?.dob?.endDate,
-      minSalary: data?.salary[0],
-      maxSalary: data?.salary[1],
-      search: search
-    }
-
-    setStartDate(newData.startDate)
-    setEndDate(newData.endDate)
-    setMinSalary(newData.minSalary)
-    setMaxSalary(newData.maxSalary)
-    try {
-      console.log("newDatanewDatanewData", newData)
-      const response = await Candidate.candidateListAddvanceFilters(newData)
-      if (response?.status === 200) {
-        successMessage({ description: response?.data?.message })
-        setDcsModalOpen(false)
-        const candidates = response?.data?.data || []
-        const paginationInfo = response?.data?.data?.pagination
-
-        setList(candidates)
-        setTotalRecord(paginationInfo?.total || 0)
-      }
-    } catch (error) {
-      console.log('error', error)
-      // errorMessage({
-      //   description: error?.response?.data?.message
-      // })
-    }
+//Addvance search :-
+const handleAddvanceSearch = async data => {
+  const newData= {
+    startDate : data.dob.startDate,
+    endDate : data.dob.endDate,
+    minSalary : data.salary[0],
+    maxSalary:data.salary[1],
+    search:search
   }
+  setStartDate(newData.startDate)
+  setEndDate(newData.endDate)
+  setMinSalary(newData.minSalary)
+  setMaxSalary(newData.maxSalary)
+  try {
+    const response = await SalesCandidate.candidateSaleListAddvanceFilters(newData)
+    if (response?.status === 200) {
+      successMessage({ description: response?.data?.message })
+      setDcsModalOpen(false)
+      const candidates = response?.data?.data || []
+      const paginationInfo = response?.data?.data?.pagination
 
-
-  console.log('getList', getList)
+      setList(candidates)
+      setTotalRecord(paginationInfo?.total || 0)    }
+  } catch (error) {
+    console.log('error', error)
+    
+  }
+}
   return (
     <>
-      <div className=''>
-        <LayoutHeader pageTitle='Developers List' />
+      <div className='mb-3 flex items-center justify-between'>
+        <LayoutHeader pageTitle='Sales Candidate List' />
       </div>
-      {/* Filters */}
-
-
-      <div className='flex justify-between items-center'>
+         {/* Filters */}
+ 
+         <div className='flex justify-between items-center'>
         <div>
           <FormProvider {...methods}>
             <FormSelectField
@@ -263,11 +257,10 @@ const AllCandidates = () => {
         </div>
 
       </div>
-
       <DataTable
         data={getList?.candidates}
         loading={loading}
-        columns={CandidColumns(
+        columns={SalesCandidColumns(
           handleDeleteCand,
           handleEditCand,
           handlePreviewCand,
@@ -285,16 +278,15 @@ const AllCandidates = () => {
         deleteOpenModal={deleteOpenModal}
         deleteHandleModalClose={deleteHandleModalClose}
       />
-      <AddvanceFilterDeveloper
+    <AddvanceFilterDeveloper
         getListLeads={getListLeads}
         isOpen={dcsModalOpen}
         onClose={() => setDcsModalOpen(false)}
         dcsValue={selectedDcsValue}
-        search={search}
         handleAddvanceSearch={handleAddvanceSearch}
       />
     </>
   )
 }
 
-export default AllCandidates
+export default AllSalesCandidates

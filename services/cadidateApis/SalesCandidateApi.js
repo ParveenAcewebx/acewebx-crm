@@ -49,7 +49,11 @@ const SalesCandidate = {
   SalesCandidateGetByUUID: id => {
     return api.post(`candidateSale/confirm-candidate-token/${id}`)
   },
-  
+  activitySalesCandidate:(module)=>{
+    return api.get(
+      `activity/logs?module=${module}`
+    )
+  }
 }
 
 export default SalesCandidate

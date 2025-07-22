@@ -25,10 +25,9 @@ import { Loader } from 'lucide-react'
 import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
 import { SalesCandidateValidationEdit } from '@/components/form-validations/SalesCandidateValidationEdit'
 import moment from 'moment'
-import CommonLayout from '@/components/CommonLayouyt'
 
-function EditSalesJobApplicationForm() {
-  const { id } = useParams()
+function EditSalesJobApplication({editId}) {
+    const id = editId
 
   const [loader, setLoader] = useState(false)
   const [candEmail , setCandEmail] = useState("")
@@ -73,7 +72,6 @@ function EditSalesJobApplicationForm() {
 
           try {
             const fileObj = await urlToFile(fileUrl, fileName)
-            console.log('fileObjfileObj', fileObj)
 
             form.setValue('resume', fileObj)
           } catch (err) {
@@ -87,11 +85,9 @@ function EditSalesJobApplicationForm() {
   }
 
   const onSubmit = async data => {
-    console.log("GGGGGGGG")
     try {
       const formData = new FormData()
 
-      // formData.append('g-recaptcha-response', recaptcha)
       const file = data.resume?.[0]
       if (file) {
         formData.append('resume', file)
@@ -119,7 +115,7 @@ function EditSalesJobApplicationForm() {
         form.reset()
         setLoader(false)
         successMessage({ description: 'Updated SuccessFully!' })
-        router.push('/dashboard/admin/candidate-sales')
+        router.push('/dashboard/candidate-sales')
       }
     } catch (error) {
       setLoader(false)
@@ -137,14 +133,7 @@ function EditSalesJobApplicationForm() {
   }, [id])
   return (
     <div className='mobile-view items-right relative flex min-h-screen w-full flex-col justify-start '>
-      {/* <div className='w-2xs acewebx-logo z-10 text-center'>
-        <img src='./acewebxlogo.png' alt='Acewebx Logo' className='h-25 w-40' />
-      </div> */}
-      {}
       <div className=''>
-        <div className='flex justify-between'>
-          <CommonLayout pageTitle={`Sales Candidate Details (${candEmail})`} />
-        </div>
         <div className=''>
           <FormProvider {...form}>
             <form
@@ -152,7 +141,7 @@ function EditSalesJobApplicationForm() {
               onSubmit={form.handleSubmit(onSubmit)}
             >
                <fieldset className='custom-raduis   bg-white font-semibold'>
-                   <legend className="text-lg font-bold  pt-[65px] ml-[25px]">Personal Information</legend>
+                   <legend className="text-lg font-bold  ml-[25px]">Personal Information</legend>
                 <div class="multipart-field-one">
                 <FormInputField
                   name='name'
@@ -177,13 +166,6 @@ function EditSalesJobApplicationForm() {
                   disabled={{ before: new Date('2024-12-31') }}
                   defaultMonth={new Date()}
                 />
-                {/* <FormSelectField
-                name='gender'
-                label='Gender'
-                form={form}
-                options={GenderData}
-                className='colum-box-bg-change'
-              /> */}
                 <FormInputField
                   name='phone'
                   label='Contact Number'
@@ -343,4 +325,4 @@ function EditSalesJobApplicationForm() {
   )
 }
 
-export default EditSalesJobApplicationForm
+export default EditSalesJobApplication

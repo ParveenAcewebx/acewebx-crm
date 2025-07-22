@@ -20,7 +20,6 @@ const AddvanceFilterDeveloper = ({ isOpen, onClose, search, dcsValue, getListLea
       }
     }
   })
-  console.log("searchsearchsearch", search)
   const handleDateChnage = (date) => {
     console.log("valuedate", date)
   }

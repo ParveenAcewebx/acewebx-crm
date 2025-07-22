@@ -35,7 +35,7 @@ export function DataTable({
       <div className='rounded-6 border-color-grey custom-tabels border bg-white'>
         <Table>
           <TableHeader className='theme-bg-light-rgba'>
-            {table?.getHeaderGroups().map(headerGroup => (
+            { table?.getHeaderGroups().map(headerGroup => (
               <TableRow key={headerGroup?.id}>
                 {headerGroup?.headers.map(header => (
                   <TableHead
@@ -61,10 +61,6 @@ export function DataTable({
                   colSpan={columns?.length + 1}
                   className='h-16 px-2 py-3 text-center'
                 >
-                  {/* <Spinner
-                    size='lg'
-                    className='m-auto bg-black dark:bg-white'
-                  /> */}
                 </TableCell>
               </TableRow>
             ) : data?.length === 0 ? (

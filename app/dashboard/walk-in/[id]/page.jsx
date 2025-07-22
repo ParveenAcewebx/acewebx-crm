@@ -31,7 +31,6 @@ import CommonLayout from '@/components/CommonLayouyt'
 function EditCandidateDetails() {
   const { id } = useParams()
   const [loader, setLoader] = useState(false)
-  const [recaptcha, setRecaptcha] = useState([])
   const [candEmail , setCandEmail] = useState("")
   const router = useRouter()
   const form = useForm({
@@ -40,11 +39,6 @@ function EditCandidateDetails() {
     resolver: yupResolver(CandidateFormValidationEdit)
   })
 
- 
-
-  const reValue = form.watch('recaptcha')
-
-
 
   const onSubmit = async data => {
   
@@ -52,7 +46,6 @@ function EditCandidateDetails() {
     try {
       const formData = new FormData()
 
-      // formData.append('g-recaptcha-response', recaptcha)
       const file = data.resume?.[0]
       if (file) {
         formData.append('resume', file)
@@ -60,10 +53,7 @@ function EditCandidateDetails() {
 
       const preferred = JSON.stringify(data?.preferredShift)
 
-      // Object.entries(data).forEach(([key, value]) => {
-      //   if (key === 'preferredShift') return // skip it
-      //   formData.append(key, value)
-      // })
+     
 
       Object.entries(data).forEach(([key, value]) => {
         if (key === 'preferredShift') return;
@@ -82,7 +72,7 @@ function EditCandidateDetails() {
         setLoader(false)
         successMessage({ description: 'Updated SuccessFully!' })
 
-        router.push('/dashboard/admin/candidates')
+        router.push('/dashboard/candidates')
       }
     } catch (error) {
       setLoader(false)
@@ -156,12 +146,10 @@ function EditCandidateDetails() {
 
         if (resumePath) {
           const fileUrl = `${process.env.NEXT_PUBLIC_API_URL}${resumePath}`
-          console.log('fileUrlfileUrl', fileUrl)
           const fileName = resumePath.split('/').pop() || 'resume.pdf'
 
           try {
             const fileObj = await urlToFile(fileUrl, fileName)
-            console.log('fileObjfileObj', fileObj)
             form.setValue('resume', fileObj)
           } catch (err) {
             console.error('Failed to convert resume URL to File:', err)
@@ -181,7 +169,6 @@ function EditCandidateDetails() {
     candidateDataGetById(id, form)
   }, [id])
 
-  console.log('formpppp', form.watch('resume'))
   return (
     <div className='mobile-view items-right relative flex min-h-screen w-full flex-col justify-start'>
     
