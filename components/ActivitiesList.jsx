@@ -15,6 +15,7 @@ const ActivitiesList = ({ activitiesData }) => {
           </CardTitle>
         </CardHeader>
         <div className='h-96 overflow-auto p-4'>
+          {activitiesData?.length ?  
           <Card className='w-full rounded-none shadow-none'>
             {activitiesData?.map(item => (
               <>
@@ -47,7 +48,7 @@ const ActivitiesList = ({ activitiesData }) => {
                 </Card>
               </>
             ))}
-          </Card>
+          </Card> : "No Activity Found!"}
 
 
         </div></Card>

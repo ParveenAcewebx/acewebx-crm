@@ -116,7 +116,7 @@ function Page() {
 
   const getActivities = async () => {
     try {
-      const res = await SalesCandidate.activitySalesCandidate("candidateSales")
+      const res = await SalesCandidate.activitySalesCandidate("candidateSales" , editId)
       console.log("res", res)
       if (res?.data?.status === true) {
         setActivitiesData(res?.data?.data)

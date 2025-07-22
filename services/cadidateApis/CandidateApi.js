@@ -49,9 +49,9 @@ const Candidate = {
   candidateGetByUUID: id => {
     return api.post(`confirm-candidate-token/${id}`)
   },
-  activityDevCandidate:(module)=>{
+  activityDevCandidate:(module ,editId)=>{
     return api.get(
-      `activity/logs?module=${module}`
+      `activity/logs?module=${module}&moduleId=${editId}`
     )
   }
 
