@@ -36,12 +36,10 @@ const Candidate = {
   candidateListAddvanceFilters: newData => {
     let start= newData?.startDate == undefined ? "": newData?.startDate
     let end= newData?.endDate == undefined ? "":newData?.endDate
+    let search = newData?.search==undefined?"":newData?.search
     return api.get(
-      `candidate/getAllCandidate?minSalary=${newData?.minSalary}&maxSalary=${newData?.maxSalary}&startDate=${start}&endDate=${end}`
+      `candidate/getAllCandidate?minSalary=${newData?.minSalary}&maxSalary=${newData?.maxSalary}&startDate=${start}&endDate=${end}&search=${search}`
     )
-    // return api.get(
-    //   `candidate/getAllCandidate?skill=${newData?.Skill}&preferredShift=${newData?.preferredShift}&minSalary=${newData?.minSalary}&maxSalary=${newData?.maxSalary}&startDate=${newData?.startDate}&endDate=${newData?.endDate}`
-    // )
   },
 
   sendWalkInLink: id => {
@@ -50,7 +48,14 @@ const Candidate = {
 
   candidateGetByUUID: id => {
     return api.post(`confirm-candidate-token/${id}`)
+  },
+  activityDevCandidate:(module)=>{
+    return api.get(
+      `activity/logs?module=${module}`
+    )
   }
+
+
 }
 
 export default Candidate

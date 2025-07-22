@@ -22,7 +22,6 @@ const FormInputField = ({
   readOnly,
   inputType
 }) => {
-  // console.log('value', value)
   return (
     <FormField
       control={form?.control}

@@ -35,8 +35,10 @@ const SalesCandidate = {
   candidateSaleListAddvanceFilters: newData => {
     let start= newData?.startDate == undefined ? "": newData?.startDate
     let end= newData?.endDate == undefined ? "":newData?.endDate
+    let search= newData?.search == undefined ? "":newData?.search
+
     return api.get(
-      `candidateSale/getAllCandidateSale?minSalary=${newData?.minSalary}&maxSalary=${newData?.maxSalary}&startDate=${start}&endDate=${end}`
+      `candidateSale/getAllCandidateSale?minSalary=${newData?.minSalary}&maxSalary=${newData?.maxSalary}&startDate=${start}&endDate=${end}&search=${search}`
     )
   },
 
@@ -47,7 +49,11 @@ const SalesCandidate = {
   SalesCandidateGetByUUID: id => {
     return api.post(`candidateSale/confirm-candidate-token/${id}`)
   },
-  
+  activitySalesCandidate:(module)=>{
+    return api.get(
+      `activity/logs?module=${module}`
+    )
+  }
 }
 
 export default SalesCandidate

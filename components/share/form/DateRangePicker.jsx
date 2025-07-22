@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { DateRange } from 'react-date-range'
 import { addDays, startOfWeek, endOfWeek, startOfMonth, endOfMonth, subDays } from 'date-fns'
 import { Button } from '@/components/ui/button'
@@ -25,7 +25,11 @@ export function FormDateRangePicker({
       key: 'selection',
     })
   }
+useEffect(()=>{
+// if(){
 
+// }
+},[])
   return (
     <div className="flex flex-col gap-2">
 
@@ -47,10 +51,14 @@ export function FormDateRangePicker({
                 </Button>
               </PopoverTrigger>
 
-              <PopoverContent className="p-0 w-auto dark-calendar-popover">
+              <PopoverContent className="p-0 w-auto dark-calendar-popover"
+              onInteractOutside={(e) => e.preventDefault()}
+              onPointerDownOutside={(e) => e.preventDefault()}
+              >
                 <div className="flex">
                   {/* Presets */}
                   <div className="flex flex-col gap-1 bg-[#b82025] p-4 text-white text-base w-40 !leading-[35px] font-medium">
+                    <button onClick={()=>setOpen(false)}>Close</button>
                     <button onClick={() => setRange(new Date(), new Date())}>Today</button>
                     <button onClick={() => setRange(subDays(new Date(), 1), subDays(new Date(), 1))}>Yesterday</button>
                     <button onClick={() => setRange(startOfWeek(new Date()), endOfWeek(new Date()))}>This Week</button>
@@ -62,7 +70,7 @@ export function FormDateRangePicker({
                   {/* Calendar */}
                   <DateRange
                     editableDateInputs={true}
-                    onChange={(item) => onChange(item.selection)}
+                    onChange={(item) => onChange(item.selection) }
                     moveRangeOnFirstSelection={false}
                     ranges={[
                       value || {

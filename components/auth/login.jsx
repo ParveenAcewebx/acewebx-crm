@@ -37,7 +37,6 @@ export default function Login() {
         redirect: false
       })
 
-      console.log("signInResponse",signInResponse)
 
       if (signInResponse?.status === 401) {
         errorMessage({ description: 'Invalid email or password' })

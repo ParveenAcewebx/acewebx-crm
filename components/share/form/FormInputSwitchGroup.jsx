@@ -2,7 +2,6 @@ import { Switch } from '@/components/ui/switch'
 import { useEffect } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 const FormInputSwitchGroup = ({ label, items, formKey, idKey }) => {
-  console.log('budget-key-areas?', items)
 
   const { control, setValue, watch } = useFormContext()
   const data = watch(formKey) || []

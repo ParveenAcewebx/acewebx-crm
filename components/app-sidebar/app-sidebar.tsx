@@ -24,11 +24,11 @@ const data = {
       items: [
         {
           title: 'Developers',
-          url: '/dashboard/admin/candidates'
+          url: '/dashboard/candidates'
         },
         {
           title: 'Sales',
-          url: '/dashboard/admin/candidate-sales'
+          url: '/dashboard/candidate-sales'
         }
       ]
     }

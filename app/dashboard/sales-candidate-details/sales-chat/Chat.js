@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils'
 import ChatApis from '@/services/cadidateApis/ChatApis'
 import ActionsDots from '@/components/ActionsDots'
 import { Separator } from '@/components/ui/separator'
+import SalesChatApi from '@/services/cadidateApis/SalesChatApi'
 
 function ChatCompo({id}) {
   const form = useForm({ defaultValues: { chat: '' } })
@@ -26,11 +27,11 @@ function ChatCompo({id}) {
     if (!message?.trim()) return
 const data = {
   message,
-  candidateId : id
+  candidateSaleId : id
 }
 
     try {
-      await ChatApis.addMessage(data)
+      await SalesChatApi.addSaleMessage(data)
       form.reset()
       await getAllChats()
     } catch (error) {
@@ -41,7 +42,7 @@ const data = {
   const editMsgHandler = async () => {
     if (!message?.trim() || !editMsgId) return
     try {
-      await ChatApis.editMessage(editMsgId, message)
+      await SalesChatApi.editSaleMessage(editMsgId, message)
       form.reset()
       setIsEditMsg(false)
       setEditMsgId(null)
@@ -55,7 +56,7 @@ const data = {
     try {
       setIsEditMsg(true)
       setEditMsgId(id)
-      const oldMsg = await ChatApis.getByIdMessage(id)
+      const oldMsg = await SalesChatApi.getByIdSaleMessage(id)
       form.setValue('chat', oldMsg?.data?.data?.message || '')
     } catch (error) {
       console.error('Error fetching message by ID:', error)
@@ -64,7 +65,7 @@ const data = {
 
   const deleteMsgHandler = async id => {
     try {
-      await ChatApis.deleteMessage(id)
+      await SalesChatApi.deleteSaleMessage(id)
       await getAllChats()
     } catch (error) {
       console.error('Error deleting message:', error)
@@ -73,7 +74,7 @@ const data = {
 
   const getAllChats = async () => {
     try {
-      const allMsg = await ChatApis.getAllMessages(id)
+      const allMsg = await SalesChatApi.getAllSaleMessages(id)
       setAllChat(allMsg?.data?.data || [])
     } catch (error) {
       console.error('Error fetching messages:', error)
