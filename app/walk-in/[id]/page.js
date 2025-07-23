@@ -131,14 +131,14 @@ function EditJobApplicationForm() {
 
       Object.entries(data).forEach(([key, value]) => {
         if (key === 'preferredShift') return;
-      
+
         if (key === 'dob' || key === 'lastIncrementDate') {
           formData.append(key, moment(value).format('YYYY-MM-DD'));
         } else {
           formData.append(key, value);
         }
       });
-      formData.append('preferredShift',preferred)
+      formData.append('preferredShift', preferred)
 
       const response = await Candidate.updateWalkinCandidate(candiId, formData)
       if (response?.data?.status == true) {
@@ -252,341 +252,343 @@ function EditJobApplicationForm() {
               backgroundAttachment: 'fixed'
             }}
           >
-          <div className='w-2xs acewebx-logo z-10 text-center'>
-            <img
-              src='../acewebxlogo.png'
-              alt='Acewebx Logo'
-              className='h-25 w-40'
-            />
-          </div>
-
-          <div className='z-10 w-full max-w-3xl rounded-xl border border-red-100 bg-gradient-to-br from-red-100 via-white to-red-100 p-10 shadow-md'>
-            <div className='flex justify-between'>
-              <LayoutHeader pageTitle={`Walk-In Form`} />
-              {step == 2 && (
-                <Button
-                  onClick={() => setStep(0)}
-                  style={{ fontWeight: '600' }}
-                  type='button'
-                  variant='contained'
-                  className='bg-[#B82025] !text-white'
-                >
-                  Review Application
-                </Button>
-              )}
+            <div className='w-2xs acewebx-logo z-10 text-center'>
+              <img
+                src='../acewebxlogo.png'
+                alt='Acewebx Logo'
+                className='h-25 w-40'
+              />
             </div>
-            <h4 className='mb-8'>
-              Please fill out this form with accurate details. The information
-              will be used for the interview process.
-            </h4>
-            <p className='mb-4 text-sm text-gray-500'>Step {step + 1} of 3</p>
-            <FormProvider {...form}>
-              <form
-                encType='multipart/form-data'
-                onSubmit={form.handleSubmit(onSubmit)}
-              >
-                {/* Step 0: Personal Info */}
-                {step === 0 && (
-                  <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
-                    <FormInputField
-                      name='name'
-                      disable={true}
-                      label='Full Name'
-                      form={form}
-                      inputType='text'
-                      className='colum-box-bg-change'
-                    />
-                    <FormInputField
-                      name='email'
-                      label='Email'
-                      disable={true}
-                      form={form}
-                      inputType='email'
-                      className='colum-box-bg-change'
-                    />
-                    <FormDatePicker
-                      name='dob'
-                      label='Date of Birth'
-                      form={form}
-                      inputFormat='YYYY-MM-DD'
-                      className='datepickerouter'
-                      disabled={{ after: new Date('2005-12-31') }}
-                      defaultMonth={new Date('2005-12-31')}
-                    />
-                    <FormSelectField
-                      name='gender'
-                      label='Gender'
-                      form={form}
-                      options={GenderData}
-                      className='colum-box-bg-change'
-                    />
-                    <FormInputField
-                      name='phone'
-                      label='Contact Number'
-                      form={form}
-                      inputType='number'
-                      className='colum-box-bg-change'
-                    />
-                    <FormInputField
-                      name='currentLocation'
-                      label='Current Location'
-                      form={form}
-                      inputType='text'
-                      className='colum-box-bg-change'
-                    />
-                    <FormSelectField
-                      name='designationApplyingFor'
-                      label='Designation Applying For'
-                      form={form}
-                      options={designationOptions}
-                      className='colum-box-bg-change'
-                    />
-                    <FormSelectField
-                      name='totalExperience'
-                      label='Total Experience'
-                      form={form}
-                      options={totalExperienceOptions}
-                      className='colum-box-bg-change'
-                    />
-                  </div>
-                )}
 
-                {/* Step 1: Job Details */}
-                {step === 1 && (
-                  <>
-                    <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-2'>
+            <div className='z-10 w-full max-w-3xl rounded-xl border border-red-100 bg-gradient-to-br from-red-100 via-white to-red-100 p-10 shadow-md ace-sales'>
+              <div className='flex justify-between'>
+                <h2 className='walking mb-6 text-2xl font-semibold text-gray-800'>
+                  Walk-In Form
+                </h2>
+                {step == 2 && (
+                  <Button
+                    onClick={() => setStep(0)}
+                    style={{ fontWeight: '600' }}
+                    type='button'
+                    variant='contained'
+                    className='bg-[#B82025] !text-white'
+                  >
+                    Review Application
+                  </Button>
+                )}
+              </div>
+              <h4 className='mb-8'>
+                Please fill out this form with accurate details. The information
+                will be used for the interview process.
+              </h4>
+              <p className='mb-4 text-sm text-gray-500'>Step {step + 1} of 3</p>
+              <FormProvider {...form}>
+                <form
+                  encType='multipart/form-data'
+                  onSubmit={form.handleSubmit(onSubmit)}
+                >
+                  {/* Step 0: Personal Info */}
+                  {step === 0 && (
+                    <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
                       <FormInputField
-                        name='currentSalary'
-                        label='Current Salary (Monthly)'
-                        form={form}
-                        inputType='number'
-                        className='colum-box-bg-change'
-                      />
-                      <FormInputField
-                        name='expectedSalary'
-                        label='Expected Salary (Monthly)'
-                        form={form}
-                        inputType='number'
-                        className='colum-box-bg-change'
-                      />
-                      <FormInputField
-                        name='currentCompanyName'
-                        label='Current Company'
+                        name='name'
+                        disable={true}
+                        label='Full Name'
                         form={form}
                         inputType='text'
                         className='colum-box-bg-change'
                       />
                       <FormInputField
-                        name='noticePeriod'
-                        label='Notice Period (Days)'
+                        name='email'
+                        label='Email'
+                        disable={true}
                         form={form}
-                        inputType='number'
+                        inputType='email'
                         className='colum-box-bg-change'
                       />
-                    </div>
-                    <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
-                      <FormMultiSelectField
-                        name='preferredShift'
-                        label='Preferred Shift'
-                        form={form}
-                        options={preferredShiftOptions}
-                        className='colum-box-bg-change !w-[100%]'
-                      />
-                    </div>
-                    <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
-                      <FormTextArea
-                        name='reasonForChange'
-                        label='Reason for Change'
-                        form={form}
-                        multiline
-                        className='col-span-2 !h-[160px] border border-gray-600'
-                        style={{
-                          width: '100%',
-                          resize: 'none',
-                          marginTop: '25px',
-                          overflow: 'auto',
-                          padding: '15px',
-                          borderColor: '#ccc',
-                          borderRadius: '4px'
-                        }}
-                      />
-                    </div>
-                    <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
-                      <FormInputFileUploaderSingle
-                        name='resume'
-                        control={form.control}
-                        form={form}
-                        label='Drop Resume here or click to upload'
-                      />
-                    </div>
-                  </>
-                )}
-                {/* Step 2: only edit time Details */}
-
-                {step === 2 && (
-                  <>
-                    <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-2'>
                       <FormDatePicker
-                        name='lastIncrementDate'
-                        label='Last Increment Date'
+                        name='dob'
+                        label='Date of Birth'
                         form={form}
                         inputFormat='YYYY-MM-DD'
                         className='datepickerouter'
-                        disabled={''}
-                        defaultMonth={new Date()}
+                        disabled={{ after: new Date('2005-12-31') }}
+                        defaultMonth={new Date('2005-12-31')}
+                      />
+                      <FormSelectField
+                        name='gender'
+                        label='Gender'
+                        form={form}
+                        options={GenderData}
+                        className='colum-box-bg-change'
                       />
                       <FormInputField
-                        name='lastIncrementAmount'
-                        label='Last Increment Amount'
+                        name='phone'
+                        label='Contact Number'
                         form={form}
                         inputType='number'
                         className='colum-box-bg-change'
                       />
-
-                      {/* refrences */}
-                      {/* expe-1 */}
-
                       <FormInputField
-                        name='reference1Name'
-                        label='Reference1 Name'
+                        name='currentLocation'
+                        label='Current Location'
                         form={form}
                         inputType='text'
                         className='colum-box-bg-change'
                       />
-                      <FormInputField
-                        name='reference1ContactNumber'
-                        label='Reference1 Contact Number'
-                        form={form}
-                        inputType='number'
-                        className='colum-box-bg-change'
-                      />
-                      {/* select */}
                       <FormSelectField
-                        name='reference1Designation'
-                        label='Reference1 Designation'
+                        name='designationApplyingFor'
+                        label='Designation Applying For'
                         form={form}
                         options={designationOptions}
                         className='colum-box-bg-change'
                       />
-                      {/* select */}
                       <FormSelectField
-                        name='reference1Experience'
-                        label='Reference1 Experience'
-                        form={form}
-                        options={totalExperienceOptions}
-                        className='colum-box-bg-change'
-                      />
-                      {/* expe-2 */}
-                      <FormInputField
-                        name='reference2Name'
-                        label='Reference2 Name'
-                        form={form}
-                        inputType='text'
-                        className='colum-box-bg-change'
-                      />
-                      <FormInputField
-                        name='reference2ContactNumber'
-                        label='Reference2 Contact Number'
-                        form={form}
-                        inputType='number'
-                        className='colum-box-bg-change'
-                      />
-                      {/* select */}
-                      <FormSelectField
-                        name='reference2Designation'
-                        label='Reference2 Designation'
-                        form={form}
-                        options={designationOptions}
-                        className='colum-box-bg-change'
-                      />
-                      {/* select */}
-                      <FormSelectField
-                        name='reference2Experience'
-                        label='Reference2 Experience'
+                        name='totalExperience'
+                        label='Total Experience'
                         form={form}
                         options={totalExperienceOptions}
                         className='colum-box-bg-change'
                       />
                     </div>
-                    <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
-                      <FormSelectField
-                        name='source'
-                        label='How did you hear about us'
-                        form={form}
-                        options={sourceOption}
-                        className='colum-box-bg-change !w-[100%]'
-                      />
-                    </div>
-                    <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-2'>
-                      <FormTextArea
-                        name='currentAddress'
-                        label='Current Address'
-                        form={form}
-                        multiline
-                        inputType='text'
-                        className='col-span-2 !h-[160px] border border-gray-600'
-                      />
-                      <FormTextArea
-                        name='permanentAddress'
-                        label='Permanent Address (As Per Aadhaar)'
-                        form={form}
-                        multiline
-                        inputType='text'
-                        className='col-span-2 !h-[160px] border border-gray-600'
-                      />
-                    </div>
-                    <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
-                      <div className='col-span-2 mt-4'>
-                        <ReCAPTCHA
-                          sitekey='6LfSqW8rAAAAABmLFmZcFxFQZgfcUusAJNdVXdXn'
-                          onChange={onReCAPTCHAChange}
+                  )}
+
+                  {/* Step 1: Job Details */}
+                  {step === 1 && (
+                    <>
+                      <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-2'>
+                        <FormInputField
+                          name='currentSalary'
+                          label='Current Salary (Monthly)'
+                          form={form}
+                          inputType='number'
+                          className='colum-box-bg-change'
                         />
-                        {reValue === undefined && (
-                          <span className='text-sm text-red-600'>
-                            {form?.formState?.errors?.recaptcha?.message}
-                          </span>
-                        )}
+                        <FormInputField
+                          name='expectedSalary'
+                          label='Expected Salary (Monthly)'
+                          form={form}
+                          inputType='number'
+                          className='colum-box-bg-change'
+                        />
+                        <FormInputField
+                          name='currentCompanyName'
+                          label='Current Company'
+                          form={form}
+                          inputType='text'
+                          className='colum-box-bg-change'
+                        />
+                        <FormInputField
+                          name='noticePeriod'
+                          label='Notice Period (Days)'
+                          form={form}
+                          inputType='number'
+                          className='colum-box-bg-change'
+                        />
                       </div>
-                    </div>
-                    {/* ---------------- */}
-                  </>
-                )}
-                {/* Navigation */}
-                <div
-                  className={`mt-10 flex ${step === 0 ? 'justify-end' : 'justify-between'}`}
-                >
-                  {step > 0 && (
-                    <Button
-                      variant='outlined'
-                      onClick={prevStep}
-                      className='border border-red-500 text-[#B82025] hover:bg-white hover:text-[#B82025]'
-                    >
-                      Back
-                    </Button>
+                      <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
+                        <FormMultiSelectField
+                          name='preferredShift'
+                          label='Preferred Shift'
+                          form={form}
+                          options={preferredShiftOptions}
+                          className='colum-box-bg-change !w-[100%]'
+                        />
+                      </div>
+                      <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
+                        <FormTextArea
+                          name='reasonForChange'
+                          label='Reason for Change'
+                          form={form}
+                          multiline
+                          className='col-span-2 !h-[160px] border border-gray-600'
+                          style={{
+                            width: '100%',
+                            resize: 'none',
+                            marginTop: '25px',
+                            overflow: 'auto',
+                            padding: '15px',
+                            borderColor: '#ccc',
+                            borderRadius: '4px'
+                          }}
+                        />
+                      </div>
+                      <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
+                        <FormInputFileUploaderSingle
+                          name='resume'
+                          control={form.control}
+                          form={form}
+                          label='Drop Resume here or click to upload'
+                        />
+                      </div>
+                    </>
                   )}
+                  {/* Step 2: only edit time Details */}
 
-                  {step < 2 ? (
-                    <Button
-                      variant='contained'
-                      onClick={nextStep}
-                      className='bg-[#B82025] !text-white'
-                    >
-                      Next
-                    </Button>
-                  ) : (
-                    <Button
-                      type='submit'
-                      variant='contained'
-                      className='bg-[#B82025] !text-white'
-                    >
-                      {loader ? <Loader /> : 'Update'}
-                    </Button>
+                  {step === 2 && (
+                    <>
+                      <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-2'>
+                        <FormDatePicker
+                          name='lastIncrementDate'
+                          label='Last Increment Date'
+                          form={form}
+                          inputFormat='YYYY-MM-DD'
+                          className='datepickerouter'
+                          disabled={''}
+                          defaultMonth={new Date()}
+                        />
+                        <FormInputField
+                          name='lastIncrementAmount'
+                          label='Last Increment Amount'
+                          form={form}
+                          inputType='number'
+                          className='colum-box-bg-change'
+                        />
+
+                        {/* refrences */}
+                        {/* expe-1 */}
+
+                        <FormInputField
+                          name='reference1Name'
+                          label='Reference1 Name'
+                          form={form}
+                          inputType='text'
+                          className='colum-box-bg-change'
+                        />
+                        <FormInputField
+                          name='reference1ContactNumber'
+                          label='Reference1 Contact Number'
+                          form={form}
+                          inputType='number'
+                          className='colum-box-bg-change'
+                        />
+                        {/* select */}
+                        <FormSelectField
+                          name='reference1Designation'
+                          label='Reference1 Designation'
+                          form={form}
+                          options={designationOptions}
+                          className='colum-box-bg-change'
+                        />
+                        {/* select */}
+                        <FormSelectField
+                          name='reference1Experience'
+                          label='Reference1 Experience'
+                          form={form}
+                          options={totalExperienceOptions}
+                          className='colum-box-bg-change'
+                        />
+                        {/* expe-2 */}
+                        <FormInputField
+                          name='reference2Name'
+                          label='Reference2 Name'
+                          form={form}
+                          inputType='text'
+                          className='colum-box-bg-change'
+                        />
+                        <FormInputField
+                          name='reference2ContactNumber'
+                          label='Reference2 Contact Number'
+                          form={form}
+                          inputType='number'
+                          className='colum-box-bg-change'
+                        />
+                        {/* select */}
+                        <FormSelectField
+                          name='reference2Designation'
+                          label='Reference2 Designation'
+                          form={form}
+                          options={designationOptions}
+                          className='colum-box-bg-change'
+                        />
+                        {/* select */}
+                        <FormSelectField
+                          name='reference2Experience'
+                          label='Reference2 Experience'
+                          form={form}
+                          options={totalExperienceOptions}
+                          className='colum-box-bg-change'
+                        />
+                      </div>
+                      <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
+                        <FormSelectField
+                          name='source'
+                          label='How did you hear about us'
+                          form={form}
+                          options={sourceOption}
+                          className='colum-box-bg-change !w-[100%]'
+                        />
+                      </div>
+                      <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-2'>
+                        <FormTextArea
+                          name='currentAddress'
+                          label='Current Address'
+                          form={form}
+                          multiline
+                          inputType='text'
+                          className='col-span-2 !h-[160px] border border-gray-600'
+                        />
+                        <FormTextArea
+                          name='permanentAddress'
+                          label='Permanent Address (As Per Aadhaar)'
+                          form={form}
+                          multiline
+                          inputType='text'
+                          className='col-span-2 !h-[160px] border border-gray-600'
+                        />
+                      </div>
+                      <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
+                        <div className='col-span-2 mt-4'>
+                          <ReCAPTCHA
+                            sitekey='6LfSqW8rAAAAABmLFmZcFxFQZgfcUusAJNdVXdXn'
+                            onChange={onReCAPTCHAChange}
+                          />
+                          {reValue === undefined && (
+                            <span className='text-sm text-red-600'>
+                              {form?.formState?.errors?.recaptcha?.message}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      {/* ---------------- */}
+                    </>
                   )}
-                </div>
-              </form>
-            </FormProvider>
-          </div>
-        
+                  {/* Navigation */}
+                  <div
+                    className={`mt-10 flex ${step === 0 ? 'justify-end' : 'justify-between'}`}
+                  >
+                    {step > 0 && (
+                      <Button
+                        variant='outlined'
+                        onClick={prevStep}
+                        className='border border-red-500 text-[#B82025] hover:bg-white hover:text-[#B82025]'
+                      >
+                        Back
+                      </Button>
+                    )}
+
+                    {step < 2 ? (
+                      <Button
+                        variant='contained'
+                        onClick={nextStep}
+                        className='bg-[#B82025] !text-white'
+                      >
+                        Next
+                      </Button>
+                    ) : (
+                      <Button
+                        type='submit'
+                        variant='contained'
+                        className='bg-[#B82025] !text-white'
+                      >
+                        {loader ? <Loader /> : 'Update'}
+                      </Button>
+                    )}
+                  </div>
+                </form>
+              </FormProvider>
+            </div>
+
           </div>
         </>
       )}

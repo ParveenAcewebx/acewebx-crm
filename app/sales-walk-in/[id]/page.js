@@ -175,7 +175,7 @@ function EditSalesJobApplicationForm() {
     
         <div className='z-10 w-full max-w-3xl rounded-xl border border-red-100 bg-gradient-to-br from-red-100 via-white to-red-100 p-10 shadow-md'>
           <h2 className='walking mb-6 text-2xl font-semibold text-gray-800'>
-            Sales Candidate Job Application(Edit)
+            Sales Candidate Job Application
           </h2>
 
           <h4 className='mb-8'>
