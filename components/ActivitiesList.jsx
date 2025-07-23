@@ -8,12 +8,12 @@ const ActivitiesList = ({ activitiesData }) => {
   return (
     <>
       <Card className='w-full  border rounded-lg shadow-sm'>
-        <CardHeader className='theme-bg-light-rgba border-color-grey min-h-14 border-b p-3'>
-          <CardTitle className='flex justify-between'>
-            <div className='!text-lg'>Candidate Activities</div>
+      <CardHeader className='theme-bg-white-rgba border-color-grey min-h-14 border-b p-3'>
+                  <CardTitle className='flex justify-between'>
+                    <div className='!text-lg '>Candidate Activities</div>
 
-          </CardTitle>
-        </CardHeader>
+                  </CardTitle>
+                </CardHeader> 
         <div className='h-96 overflow-auto p-4'>
           {activitiesData?.length ?
             <Card className='w-full rounded-none shadow-none'>

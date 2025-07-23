@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { cn } from '@/lib/utils'
@@ -92,7 +92,12 @@ const data = {
 
   return (
     <Card className='w-full  border rounded-lg shadow-sm'>
-      <CardContent className='flex flex-col gap-4 h-[360px] overflow-y-auto'>
+  <CardHeader className='theme-bg-white-rgba border-color-grey min-h-14 border-b p-3'>
+                  <CardTitle className='flex justify-between'>
+                    <div className='!text-lg '>Notes</div>
+
+                  </CardTitle>
+                </CardHeader>      <CardContent className='flex flex-col gap-4 h-[360px] overflow-y-auto'>
         {allChat.length > 0 ? (
           allChat.map(item => {
             const createdTime = new Date(item?.createdAt)
