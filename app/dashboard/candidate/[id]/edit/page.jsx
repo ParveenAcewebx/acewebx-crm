@@ -1,93 +1,25 @@
-// 'use client'
 
-// import LayoutHeader from '@/components/layoutHeader'
-// import LeadsServices from '@/services/Leads/lead'
-// import { errorMessage } from '@/components/ToasterMessage'
-// import useDocumentTitle from '@/components/utils/useDocumentTitle'
-// import { DashboardLeadTabs } from '@/components/ViewPage/dashboard-lead-tabs'
-// import { useRouter, useSearchParams } from 'next/navigation'
-// import { useEffect, useState } from 'react'
-
-
-// const LeadDashboard = () => {
-//   useDocumentTitle('View Lead Dashboard')
-//   const searchParams = useSearchParams()
-//   const router = useRouter()
-//   const editId = searchParams.get('id')
-
-//   const [leadData, setLeadData] = useState([])
-//   const [loading, setLoading] = useState(true)
-//   //   const form = useForm({})
-//   const fetchLeadById = async () => {
-//     try {
-//       setLoading(true)
-//       const response = await LeadsServices.getleadById(editId)
-
-//       if (response.status === 200) {
-//         if (response?.data?.status === true) {
-//           setLeadData(response?.data?.data)
-//         } else {
-//           errorMessage({ description: response?.data?.message })
-//         }
-//       }
-//     } catch (err) {
-//       if (err) {
-//         errorMessage({
-//           description: err?.response?.data?.message || err?.message
-//         })
-//       }
-//     } finally {
-//       setLoading(false)
-//     }
-//   }
-
-//   useEffect(() => {
-//     if (editId) {
-//       fetchLeadById()
-//     }
-//   }, [editId])
-
-//   return (
-//     <>
-//       <LayoutHeader pageTitle={'Lead'} />
-
-//       <DashboardLeadTabs editData={leadData} editId={editId} fetchLeadById={fetchLeadById}/>
-//     </>
-//   )
-// }
-
-// export default LeadDashboard
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { useParams, useRouter, useSearchParams } from 'next/navigation'
-// import Candidate from '@/components/services/CandidateApi'
-// import CandidateChart from '@/components/CadidateChart'
-// import DocumentVeiw from '@/components/DocumentVeiw'
-// import ChatCompo from '@/components/ChatCompo'
-// import TitleForPage from '@/components/TitleForPage'
+import {usePathname, useRouter } from 'next/navigation'
 import { Card, CardContent } from '@/components/ui/card'
 import Candidate from '@/services/cadidateApis/CandidateApi'
 import DcsModal from '@/components/modal/dscForm'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import EditCandidate from './EditCandidate'
 import CommonLayout from '@/components/CommonLayouyt'
-import ChatCompo from './chat/Chat'
 import ActivitiesList from '@/components/ActivitiesList'
+import EditCandidate from '../../EditCandidate'
+import ChatCompo from '../../chat/Chat'
 
-function Page() {
+function Page({ params }) {
   const router = useRouter()
-  // useDocumentTitle('View Lead Dashboard')
-  const searchParams = useSearchParams()
-  const id = searchParams.get('id')
+  const id = params?.id
   const editId = id
 
   const [dcsModalOpen, setDcsModalOpen] = useState(false) // State for DCS modal
-
   const [candidateData, setCandidateData] = useState({})
-  const [candidateUrl, setCandidateUrl] = React.useState('')
-
-  const [open, setOpen] = React.useState(false)
+  const [candidateShifts, setCandidateShifts] = useState([])
   const handleGetApi = async () => {
     try {
       const apiData = await Candidate.viewCandidate(editId)
@@ -103,24 +35,12 @@ function Page() {
     }
   }, [id, router])
 
-  // document popup:-
-  const handleClickOpen = async () => {
-    try {
-      const apiData = await Candidate.viewCandidate(id)
-      setCandidateUrl(apiData?.data?.data?.meta?._resume)
-    } catch (error) {
-      console.error('API error', error)
-    }
-    setOpen(true)
-  }
 
-  const handleClose = () => {
-    setOpen(false)
-  }
+
+  
 
 
   const percent = Math.round(((candidateData?.expectedSalary - candidateData?.currentSalary) * 100) / candidateData?.currentSalary)
-  const [candidateShifts, setCandidateShifts] = useState([])
 
   useEffect(() => {
     if (candidateData?.meta?._preferredShift) {
@@ -163,7 +83,7 @@ function Page() {
 
   const getActivities = async () => {
     try {
-      const res = await Candidate.activityDevCandidate("candidates" , editId)
+      const res = await Candidate.activityDevCandidate("candidates", editId)
       if (res?.data?.status === true) {
         setActivitiesData(res?.data?.data)
       }
@@ -179,36 +99,40 @@ function Page() {
   }, [])
 
 
-
+  const pathname = usePathname()
+  const currentTab = pathname?.endsWith('edit') ? 'edit' : 'detail'
+  const handleTabChange = (value) => {
+    router.replace(value)
+  }
   return (
     <>
       <CommonLayout pageTitle='Candidate Detail' />
 
-      <Tabs defaultValue="detail">
-        <TabsList className='custom-tabs mb-3 w-full justify-start gap-2 rounded-none border-b ' >
-          <TabsList>
-            <TabsTrigger className='rounded-none px-4 py-1.5 !shadow-none' value="detail">Details</TabsTrigger>
-            <TabsTrigger className='rounded-none p-1.5 px-4 !shadow-none' value="edit">Edit</TabsTrigger>
-          </TabsList>
+      <Tabs value={currentTab} onValueChange={handleTabChange}>
+      <TabsList className='custom-tabs mb-3 w-full justify-start gap-2 rounded-none border-b ' >
+        <TabsList>
+          <TabsTrigger  className='rounded-none px-4 py-1.5 !shadow-none' value="detail">Details</TabsTrigger>
+          <TabsTrigger  className='rounded-none p-1.5 px-4 !shadow-none' value="edit">Edit</TabsTrigger>
         </TabsList>
+      </TabsList>
 
 
         <TabsContent value="detail">
-        
-            <CardContent className='tittle-bar'>
-              <div className='user-name'>
-                <span variant='h1'>{candidateData?.name}</span>
-              </div>
-              <div className='resume' onClick={(e) => dosOpenModal(e)}>
-                <a href="">
-                  <div className='resmume-text'>
-                    <span variant='h2'>View Resume</span>
-                  </div>
-                  <img src='/images/pages/eye.png' alt='trophy image' height={11} />
-                </a>
-              </div>
-            </CardContent>
-          
+
+          <CardContent className='tittle-bar'>
+            <div className='user-name'>
+              <span variant='h1'>{candidateData?.name}</span>
+            </div>
+            <div className='resume' onClick={(e) => dosOpenModal(e)}>
+              <a href="">
+                <div className='resmume-text'>
+                  <span variant='h2'>View Resume</span>
+                </div>
+                <img src='/images/pages/eye.png' alt='trophy image' height={11} />
+              </a>
+            </div>
+          </CardContent>
+
           <div className='grid grid-cols-2 gap-4'>
             {/* Left Section */}
 
@@ -280,54 +204,54 @@ function Page() {
 
 
 
-{/* working Deve */}
+              {/* working Deve */}
 
-               <div className="grid grid-cols-2 gap-4">
-      {/* Current & Expected Salary Card */}
-       <div>
-     <Card className="min-h-[277px]">
-       <CardContent>
-         {/* Current Salary */}
-           <div className="salery-outer">
-              <div className="salery-content">
-                    <img src="/images/pages/rs.png" alt="trophy image" height={35} />
-                    <div className="salery-inner">
-                  <span className="tittle">Current Salary</span><br />
-                <span className="subtittle">{candidateData?.currentSalary}</span>
-            </div>
-          </div>
-        </div>
+              <div className="grid grid-cols-2 gap-4">
+                {/* Current & Expected Salary Card */}
+                <div>
+                  <Card className="min-h-[277px]">
+                    <CardContent>
+                      {/* Current Salary */}
+                      <div className="salery-outer">
+                        <div className="salery-content">
+                          <img src="/images/pages/rs.png" alt="trophy image" height={35} />
+                          <div className="salery-inner">
+                            <span className="tittle">Current Salary</span><br />
+                            <span className="subtittle">{candidateData?.currentSalary}</span>
+                          </div>
+                        </div>
+                      </div>
 
-        {/* Expected Salary */}
-        <div className="salery-outer mt-4">
-          <div className="salery-content">
-            <img src="/images/pages/rs.png" alt="trophy image" height={35} />
-            <div className="salery-inner">
-              <span className="tittle">Expected Salary</span><br />
-              <span className="subtittle">{candidateData?.expectedSalary}</span>
-            </div>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  </div>
+                      {/* Expected Salary */}
+                      <div className="salery-outer mt-4">
+                        <div className="salery-content">
+                          <img src="/images/pages/rs.png" alt="trophy image" height={35} />
+                          <div className="salery-inner">
+                            <span className="tittle">Expected Salary</span><br />
+                            <span className="subtittle">{candidateData?.expectedSalary}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
 
-  {/* Hike Card */}
-  <div>
-    <Card className="min-h-[277px]">
-      <CardContent>
-        <div className="w-full">
-          <div className="salery-hike">
-            <img src="/images/pages/rs.png" alt="trophy image" height={65} />
-            <div className="salery-inner">
-              <span className="tittle">Hike</span><br />
-              <span className="subtittle">{percent}%</span>
-            </div>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  </div>
+                {/* Hike Card */}
+                <div>
+                  <Card className="min-h-[277px]">
+                    <CardContent>
+                      <div className="w-full">
+                        <div className="salery-hike">
+                          <img src="/images/pages/rs.png" alt="trophy image" height={65} />
+                          <div className="salery-inner">
+                            <span className="tittle">Hike</span><br />
+                            <span className="subtittle">{percent}%</span>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
               </div>
 
 
@@ -388,7 +312,7 @@ function Page() {
               </Card>
               {/* chat  */}
               <ChatCompo id={editId} />
-              <ActivitiesList activitiesData={activitiesData}/>
+              <ActivitiesList activitiesData={activitiesData} />
             </div>
           </div>
           <div className='Reference'>

@@ -7,7 +7,7 @@ import {
   sourceOption,
   totalExperienceOptions
 } from '@/components/constants/StaticData'
-import { useParams, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import moment from 'moment';
@@ -15,7 +15,6 @@ import moment from 'moment';
 // import Loader from '@/components/Loader'
 import { errorMessage, successMessage } from '@/components/ToasterMessage'
 import { CandidateFormValidationEdit } from '@/components/form-validations/CandidateFormValidationEdit'
-import LayoutHeader from '@/components/layoutHeader'
 import FormInputField from '@/components/share/form/FormInputField'
 import FormSelectField from '@/components/share/form/FormSelect'
 import FormInputFileUploaderSingle from '@/components/share/form/SingleFileUpload'
@@ -29,7 +28,6 @@ import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
 
 function EditCandidate({editId}) {
   const [loader, setLoader] = useState(false)
-  const [recaptcha, setRecaptcha] = useState([])
   const [candEmail , setCandEmail] = useState("")
   const router = useRouter()
   const form = useForm({
@@ -38,11 +36,6 @@ function EditCandidate({editId}) {
     resolver: yupResolver(CandidateFormValidationEdit)
   })
 
- 
-
-  const reValue = form.watch('recaptcha')
-
-
 
   const onSubmit = async data => {
   
@@ -50,18 +43,12 @@ function EditCandidate({editId}) {
     try {
       const formData = new FormData()
 
-      // formData.append('g-recaptcha-response', recaptcha)
       const file = data.resume?.[0]
       if (file) {
         formData.append('resume', file)
       }
 
       const preferred = JSON.stringify(data?.preferredShift)
-
-      // Object.entries(data).forEach(([key, value]) => {
-      //   if (key === 'preferredShift') return // skip it
-      //   formData.append(key, value)
-      // })
 
       Object.entries(data).forEach(([key, value]) => {
         if (key === 'preferredShift') return;

@@ -114,7 +114,7 @@ const AllSalesCandidates = () => {
     setDeleteOpenModal(false)
   }
   const handlePreviewCand = row => {
-    router.push(`/dashboard/sales-candidate-details?id=${row?.original?.id}`)
+    router.push(`/dashboard/sales-candidate/${row?.original?.id}/detail`)
   }
   const AddvanceOpenModal = row => {
     setSelectedDcsValue(row)
