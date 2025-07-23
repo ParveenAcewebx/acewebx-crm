@@ -2,7 +2,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 import { Card, CardContent } from '@/components/ui/card'
 import Candidate from '@/services/cadidateApis/CandidateApi'
@@ -11,15 +11,14 @@ import LayoutHeader from '@/components/layoutHeader'
 import DcsModal from '@/components/modal/dscForm'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { TabsContent } from '@radix-ui/react-tabs'
-import EditSalesJobApplication from './SalesCandidateEdit'
-import ChatCompo from '../candidate-details/chat/Chat'
 import ActivitiesList from '@/components/ActivitiesList'
+import ChatCompo from '../../sales-chat/Chat'
+import EditSalesJobApplication from '../../SalesCandidateEdit'
 
-function Page() {
+function Page({params}) {
   const router = useRouter()
   // useDocumentTitle('View Lead Dashboard')
-  const searchParams = useSearchParams()
-  const id = searchParams.get('id')
+  const id = params?.id
   const editId = id
   const [dcsModalOpen, setDcsModalOpen] = useState(false) // State for DCS modal
 
@@ -132,13 +131,17 @@ function Page() {
     getActivities()
   }, [])
 
-
+  const pathname = usePathname() 
+  const currentTab = pathname?.endsWith('edit') ? 'edit' : 'detail'
+  const handleTabChange = (value) => {
+    router.replace(value) 
+  }
   return (
     <>
       <div className='mb-3 flex items-center justify-between'>
         <LayoutHeader pageTitle='Sales Candidate Deatils' />
       </div>
-      <Tabs defaultValue="detail">
+      <Tabs value={currentTab} onValueChange={handleTabChange}>
         <TabsList className='custom-tabs mb-3 w-full justify-start gap-2 rounded-none border-b ' >
           <TabsList>
             <TabsTrigger className='rounded-none px-4 py-1.5 !shadow-none' value="detail">Details</TabsTrigger>

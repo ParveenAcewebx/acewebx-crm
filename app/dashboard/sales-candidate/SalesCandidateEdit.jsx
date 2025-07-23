@@ -1,18 +1,16 @@
 'use client'
 import {
   businessGenerate,
+  GenderData,
   onlinePlatforms,
   preferredShiftOptions,
   salesCandidateDefaultValue,
   totalExperienceOptions
 } from '@/components/constants/StaticData'
-import { useParams, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-
-// import Loader from '@/components/Loader'
 import { errorMessage, successMessage } from '@/components/ToasterMessage'
-import LayoutHeader from '@/components/layoutHeader'
 import FormInputField from '@/components/share/form/FormInputField'
 import FormSelectField from '@/components/share/form/FormSelect'
 import FormInputFileUploaderSingle from '@/components/share/form/SingleFileUpload'
@@ -187,7 +185,14 @@ function EditSalesJobApplication({editId}) {
                   inputType='number'
                   className='colum-box-bg-change'
                 />{' '}
-                </div>
+                
+                <FormSelectField
+                name='gender'
+                label='Gender'
+                form={form}
+                options={GenderData}
+                className='colum-box-bg-change'
+              /></div>
                </fieldset>
      
                   <fieldset className='custom-raduis   bg-white font-semibold'>

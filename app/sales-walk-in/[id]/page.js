@@ -1,6 +1,7 @@
 'use client'
 import {
   businessGenerate,
+  GenderData,
   onlinePlatforms,
   preferredShiftOptions,
   salesCandidateDefaultValue,
@@ -216,13 +217,13 @@ function EditSalesJobApplicationForm() {
                   disabled={{ before: new Date('2024-12-31') }}
                   defaultMonth={new Date()}
                 />
-                {/* <FormSelectField
+                <FormSelectField
                 name='gender'
                 label='Gender'
                 form={form}
                 options={GenderData}
                 className='colum-box-bg-change'
-              /> */}
+              />
                 <FormInputField
                   name='phone'
                   label='Contact Number'
@@ -265,15 +266,16 @@ function EditSalesJobApplicationForm() {
                   inputType='text'
                   className='colum-box-bg-change'
                 />
-                <FormInputField
+                
+              </div>
+
+              <div className='mb-4 mt-6 grid grid-cols-1 gap-6 md:grid-cols-1'>
+              <FormInputField
                   name='freshBusinessTarget'
                   label='New Business Monthly Target ($)'
                   form={form}
                   className='colum-box-bg-change'
                 />
-              </div>
-
-              <div className='mb-4 mt-6 grid grid-cols-1 gap-6 md:grid-cols-1'>
                 <FormSelectField
                   name='totalExperience'
                   label='How many years of experience do you have in sales? '

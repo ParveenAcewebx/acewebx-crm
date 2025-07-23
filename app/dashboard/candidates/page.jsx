@@ -113,7 +113,7 @@ const AllCandidates = () => {
     setDeleteOpenModal(false)
   }
   const handlePreviewCand = row => {
-    router.push(`/dashboard/candidate-details?id=${row?.original?.id}`)
+    router.push(`/dashboard/candidate/${row?.original?.id}/detail`)
   }
   const AddvanceOpenModal = row => {
     setSelectedDcsValue(row)
