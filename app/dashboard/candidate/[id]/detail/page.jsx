@@ -301,7 +301,7 @@ function Page({ params }) {
               <Card>
                 <CardHeader className='theme-bg-white-rgba border-color-grey min-h-14 border-b p-3'>
                   <CardTitle className='flex justify-between'>
-                    <div className='!text-lg '>Reffernce</div>
+                    <div className='!text-lg '>Reference</div>
 
                   </CardTitle>
                 </CardHeader>
