@@ -121,10 +121,10 @@ function Page({params}) {
 
 
   const gendColor = (val) => {
-    if (val === "female") return "!bg-pink-700"
+    if (val === "female") return "!bg-pink-400"
     if (val === "male") return "!bg-blue-500"
     if (val === "others") return "!bg-green-500"
-    return "!bg-gray-400"
+    return "!bg-[#b82025]"
   }
 const genCol = gendColor(candidateData?.meta?._gender)
   return (

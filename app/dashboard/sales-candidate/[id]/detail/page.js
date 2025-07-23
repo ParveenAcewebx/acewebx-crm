@@ -137,7 +137,13 @@ function Page({params}) {
   const handleTabChange = (value) => {
     router.replace(value) 
   }
-
+  const gendColor = (val) => {
+    if (val === "female") return "!bg-pink-400"
+    if (val === "male") return "!bg-blue-500"
+    if (val === "others") return "!bg-green-500"
+    return "!bg-[#b82025]"
+  }
+const genCol = gendColor(candidateData?.gender)
   return (
     <>
       <div className='mb-3 flex items-center justify-between'>
@@ -152,9 +158,9 @@ function Page({params}) {
         </TabsList>
         <TabsContent value='detail'>
           {/* Top Section */}
-          <div className='tittle-bar'>
+          <div className={`tittle-bar ${genCol}`}>
             <div className='user-name'>
-              <span variant='h1'>{candidateData?.name}</span>
+              <span variant='h1'>{candidateData?.name} ({candidateData?.email})</span>
             </div>
             <div className='resume' onClick={(e) => dosOpenModal(e)}>
               <a href="">
