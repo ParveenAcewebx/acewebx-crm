@@ -1633,11 +1633,8 @@ section.user-profile {
 
 
 .salery-hike{
-  border: 1px solid #dfdfdf;
-  padding: 28px;
   text-align: center;
   width: 100%;
-  height: 14.3rem;
 }
 .salery-hike img {
   margin-bottom: 10px !important;
@@ -1647,7 +1644,7 @@ section.user-profile {
 /* Reference css start */
 .Reference {
   width: 100%;
-  margin-top: 20px;
+  margin-top: 0px;
 }
 
 .Reference h4 {
@@ -1868,8 +1865,8 @@ color: #ffffff;
 font-size: 20px;
 line-height: 27px;
 font-weight: 500;
-margin-left: 20px;
-text-transform: capitalize;
+/* margin-left: 20px; */
+/* text-transform: capitalize; */
 }
 
 .tittle-bar {
@@ -1950,25 +1947,16 @@ width: 48%;
   margin-bottom: 15px;
 }
 
-.salery-content {
-border: 1px solid #dfdfdf;
-padding: 7px;
-text-align: left;
-display: flex;
-align-items: center;
-gap: 15px;
-width: 100%;
-}
 
-.salery-outer {
+
+/* .salery-outer {
 display: flex;
 gap: 30px;
-}
+} */
 
 /* Reference css start */
 .Reference {
 width: 100%;
-margin-top: 20px;
 }
 
 .Reference h4 {
@@ -2020,3 +2008,23 @@ width: 99%;
 .rdrDateDisplayItemActive {
   border-color: rgb(184 32 37);
 }
+
+@media (max-width: 850px) {
+  .mobile-view {
+    padding: 0px 15px;
+  }
+  .ace-sales {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+.walking {
+  font-weight: 800;
+  font-size: 20px;
+  color: #333;
+}
+  }
+
+
+/* july-23 css module candate details start */
+
+/* july-23 css module candate details end */

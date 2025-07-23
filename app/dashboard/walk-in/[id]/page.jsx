@@ -99,12 +99,9 @@ function EditCandidateDetails() {
       const response = await Candidate.candidateGetById(id)
 
       if (response?.data?.status === true) {
-
-       
         const data = response?.data?.data
         const meta = data?.meta
         setCandEmail(data?.email)
-
         const joiningDate = new Date(data.dob + 'T00:00:00')
         const dataForSet = {
           name: data?.name,

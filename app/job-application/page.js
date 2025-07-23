@@ -151,7 +151,7 @@ function JobApplicationForm() {
         <img src='./acewebxlogo.png' alt='Acewebx Logo' className='h-25 w-40' />
       </div>
 
-      <div className='z-10 w-full max-w-3xl rounded-xl border border-red-100 bg-gradient-to-br from-red-100 via-white to-red-100 p-10 shadow-md'>
+      <div className='z-10 w-full max-w-3xl rounded-xl border border-red-100 bg-gradient-to-br from-red-100 via-white to-red-100 p-10 shadow-md '>
         <h2 className='walking mb-6 text-2xl font-semibold text-gray-800'>
           Job Application
         </h2>
