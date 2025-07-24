@@ -113,7 +113,9 @@ function EditSalesJobApplication({editId}) {
         form.reset()
         setLoader(false)
         successMessage({ description: 'Updated SuccessFully!' })
-        router.push('/dashboard/candidate-sales')
+        router.replace("detail")
+
+        // router.push('/dashboard/candidate-sales')
       }
     } catch (error) {
       setLoader(false)

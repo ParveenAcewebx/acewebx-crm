@@ -4,9 +4,7 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
-  DialogTrigger
 } from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
 
 import { Loader2 } from 'lucide-react'
 
@@ -18,21 +16,8 @@ const DocumentView = ({ isOpen, onClose, url ,loading}) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      {/* <DialogTrigger asChild>
-        <div className="hidden" />
-      </DialogTrigger> */}
       <DialogContent className="w-[90%] max-w-[1000px]">
-        {/* <div className="flex justify-end">
-          <Button
-            variant="ghost"
-            onClick={() => onClose(false)}
-            className="text-xl font-bold text-gray-600"
-          >
-            ✕
-          </Button>
-        </div> */}
         <DialogTitle>Document Preview</DialogTitle>
-
         <div className="mt-4">
           {loading ? (
             <div className="flex justify-center items-center h-[300px]">

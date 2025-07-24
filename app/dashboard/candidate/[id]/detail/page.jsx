@@ -205,6 +205,16 @@ function Page({ params }) {
                 </div>
               </CardContent>
             </Card>
+            <Card className='box'>
+              <CardContent className='flex items-center gap-4'>
+
+                <img src='/images/pages/Notice Period.png' alt='trophy image' height={60} className='' />
+                <div>
+                  <span className='tittle'>Notice Period  </span> <br />
+                  <span className='subtittle' variant='h4'>{candidateData?.noticePeriod} Days</span>
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
 
@@ -280,16 +290,7 @@ function Page({ params }) {
               </CardContent>
             </Card>
 
-            <Card className='box'>
-              <CardContent className='flex items-center gap-4'>
-
-                <img src='/images/pages/Notice Period.png' alt='trophy image' height={60} className='' />
-                <div>
-                  <span className='tittle'>Notice Period  </span> <br />
-                  <span className='subtittle' variant='h4'>{candidateData?.noticePeriod} Days</span>
-                </div>
-              </CardContent>
-            </Card>
+           
 
             {/* chat  */}
           </div>

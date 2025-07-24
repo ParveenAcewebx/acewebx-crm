@@ -66,8 +66,8 @@ function EditCandidate({editId}) {
         form.reset()
         setLoader(false)
         successMessage({ description: 'Updated SuccessFully!' })
-
-        router.push('/dashboard/candidates')
+        router.replace("detail")
+        // router.push('/dashboard/candidates')
       }
     } catch (error) {
       setLoader(false)
