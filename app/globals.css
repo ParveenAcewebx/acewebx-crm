@@ -2032,3 +2032,9 @@ width: 99%;
   align-items: center;
 }
 /* july-23 css module candate details end */
+
+.custom-tabs {
+  background-color: transparent !important;
+  padding: 0 !important;
+  height: auto !important;
+}

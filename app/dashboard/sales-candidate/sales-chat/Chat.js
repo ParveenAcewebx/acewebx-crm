@@ -98,7 +98,7 @@ const data = {
                       <div className='!text-lg '>Notes</div>
   
                     </CardTitle>
-                  </CardHeader>      <CardContent className='flex !p-4 flex-col gap-4 h-[360px] overflow-y-auto'>
+                  </CardHeader>      <CardContent className='flex !p-4 flex-col gap-2 h-[360px] overflow-y-auto'>
           {allChat.length > 0 ? (
             allChat.map(item => {
               const createdTime = new Date(item?.createdAt)
@@ -113,7 +113,7 @@ const data = {
                 createdTime.toLocaleTimeString() !== updatedTime.toLocaleTimeString()
   
               return (
-                <Card className='mb-4 p-3 bg-muted rounded-md shadow-sm' key={item?.id}>
+                <Card className='mb-0 p-3 bg-muted rounded-md shadow-sm' key={item?.id}>
                 {/* Message and action dots */}
                 <div className='flex justify-between items-start'>
                   <p className='text-base text-muted-foreground !text-black mt-1 mb-2 flex-1'>

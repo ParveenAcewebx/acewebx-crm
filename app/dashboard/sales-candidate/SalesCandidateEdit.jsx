@@ -87,11 +87,8 @@ function EditSalesJobApplication({ editId }) {
       const formData = new FormData()
       // need only those key and values which touched :-
       const dirtyFields = form.formState.dirtyFields
-      const allValues = form.getValues()
-      const updateFieldsValue = Object.keys(dirtyFields).reduce((acc, key) => {
-        acc[key] = allValues[key];
-        return acc;
-      }, {});
+      const updateFieldsValue = Object.keys(dirtyFields);
+
       if (updateFieldsValue) {
         formData.append('updateField', JSON.stringify(updateFieldsValue))
       }

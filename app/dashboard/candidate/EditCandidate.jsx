@@ -43,16 +43,13 @@ function EditCandidate({ editId }) {
     try {
       const formData = new FormData()
 
-      // need only those key and values which touched :-
-      const dirtyFields = form.formState.dirtyFields
-      const allValues = form.getValues()
-      const updateFieldsValue = Object.keys(dirtyFields).reduce((acc, key) => {
-        acc[key] = allValues[key];
-        return acc;
-      }, {});
-      if (updateFieldsValue) {
-        formData.append('updateField', JSON.stringify(updateFieldsValue))
-      }
+      // Need only those keys which are touched
+const dirtyFields = form.formState.dirtyFields;
+
+const updateFieldsValue = Object.keys(dirtyFields);
+if (updateFieldsValue) {
+formData.append('updateField', JSON.stringify(updateFieldsValue))
+ }
 
 
       const file = data.resume?.[0]
