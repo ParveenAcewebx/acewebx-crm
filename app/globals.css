@@ -1862,8 +1862,8 @@ span.subtittle {
 
 .user-name span {
 color: #ffffff;
-font-size: 20px;
-line-height: 27px;
+font-size: 16px;
+line-height: 24px;
 font-weight: 500;
 /* margin-left: 20px; */
 /* text-transform: capitalize; */
@@ -1888,14 +1888,14 @@ gap: 15px;
 
 .resume {
   background-color: #ffffff;
-  padding: 8px 25px;
+  padding: 6px 17px;
   border-radius: 4px;
 }
 
 .resmume-text span {
   color: #b82025;
   font-weight: 500;
-  font-size: 15px;
+  font-size: 12px;
 }
 
 
@@ -2026,5 +2026,9 @@ width: 99%;
 
 
 /* july-23 css module candate details start */
-
+.resume-btn {
+  display: flex;
+  gap: 11px;
+  align-items: center;
+}
 /* july-23 css module candate details end */

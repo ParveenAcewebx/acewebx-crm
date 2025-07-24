@@ -93,109 +93,108 @@ const data = {
 
   return (
     <Card className='w-full  border rounded-lg shadow-sm'>
-       <CardHeader className='theme-bg-white-rgba border-color-grey min-h-14 border-b p-3'>
-                  <CardTitle className='flex justify-between'>
-                    <div className='!text-lg '>Notes</div>
-
-                  </CardTitle>
-                </CardHeader> 
-      <CardContent className='flex flex-col gap-4 h-[360px] overflow-y-auto'>
-        {allChat.length > 0 ? (
-          allChat.map(item => {
-            const createdTime = new Date(item?.createdAt)
-            const updatedTime = new Date(item?.updatedAt)
-            const formattedTime = createdTime.toLocaleTimeString([], {
-              hour: '2-digit',
-              minute: '2-digit'
-            })
-
-            const isEdited =
-              item?.message !== 'This message was deleted' &&
-              createdTime.toLocaleTimeString() !== updatedTime.toLocaleTimeString()
-
-            return (
-              <Card className='mb-4 p-3 bg-muted rounded-md shadow-sm' key={item?.id}>
-              {/* Message and action dots */}
-              <div className='flex justify-between items-start'>
-                <p className='text-base text-muted-foreground mt-1 mb-2 flex-1'>
-                  {item?.message}
-                </p>
-                {item?.message !== 'This message was deleted' && (
-                  <ActionsDots
-                    id={item?.id}
-                    deleteMsgHandler={deleteMsgHandler}
-                    getByIdMsgHandler={getByIdMsgHandler}
-                  />
-                )}
-              </div>
-            
-              {/* Edited flag if applicable */}
-              {isEdited && (
-                <div className='text-xs italic text-gray-500 mb-1'>
-                  Edited
+    <CardHeader className='theme-bg-white-rgba border-color-grey min-h-14 border-b p-3'>
+                    <CardTitle className='flex justify-between'>
+                      <div className='!text-lg '>Notes</div>
+  
+                    </CardTitle>
+                  </CardHeader>      <CardContent className='flex !p-4 flex-col gap-4 h-[360px] overflow-y-auto'>
+          {allChat.length > 0 ? (
+            allChat.map(item => {
+              const createdTime = new Date(item?.createdAt)
+              const updatedTime = new Date(item?.updatedAt)
+              const formattedTime = createdTime.toLocaleTimeString([], {
+                hour: '2-digit',
+                minute: '2-digit'
+              })
+  
+              const isEdited =
+                item?.message !== 'This message was deleted' &&
+                createdTime.toLocaleTimeString() !== updatedTime.toLocaleTimeString()
+  
+              return (
+                <Card className='mb-4 p-3 bg-muted rounded-md shadow-sm' key={item?.id}>
+                {/* Message and action dots */}
+                <div className='flex justify-between items-start'>
+                  <p className='text-base text-muted-foreground !text-black mt-1 mb-2 flex-1'>
+                    {item?.message}
+                  </p>
+                  {item?.message !== 'This message was deleted' && (
+                    <ActionsDots
+                      id={item?.id}
+                      deleteMsgHandler={deleteMsgHandler}
+                      getByIdMsgHandler={getByIdMsgHandler}
+                    />
+                  )}
                 </div>
-              )}
-            
-              {/* User and timestamp */}
-              <div className="text-xs flex ">
-                <span className='mr-2'>{item?.userName ?? 'Unknown User'}</span>
-                <Separator orientation="vertical" className="h-5 bg-gray-300" />
-                <span className='ml-2'>{formattedTime}</span>
-              </div>
-            </Card>
-            
-            )
-          })
-        ) : (
-          <p className='text-sm text-muted-foreground'>No Messages Found!</p>
-        )}
-        <div ref={bottomRef} />
-        
-      </CardContent>
-<CardContent>
-<div className='mt-4 flex items-start gap-2'>
-        {isEditMsg && (
-          <Button
-            variant='destructive'
-            size='sm'
-            onClick={cancelEditHandler}
-            className='shrink-0'
-          >
-            X
-          </Button>
-        )}
-
-        <Textarea
-          {...form.register('chat')}
-          placeholder='Type your message here...'
-          className='flex-1 resize-none max-h-[150px] overflow-y-auto'
-        />
-
-        {message?.trim() && (
-          <Button
-            onClick={isEditMsg ? editMsgHandler : messageSendHandler}
-            size='icon'
-            variant='outline'
-            className='shrink-0 border-gray-400 hover:bg-accent'
-          >
-            <svg
-              viewBox='0 0 24 24'
-              fill='none'
-              stroke='#8C57FF'
-              strokeWidth='2'
-              strokeLinecap='round'
-              strokeLinejoin='round'
-              className='w-5 h-5'
+              
+                {/* Edited flag if applicable */}
+                {isEdited && (
+                  <div className='text-xs italic text-gray-500 mb-1'>
+                    Edited
+                  </div>
+                )}
+              
+                {/* User and timestamp */}
+                <div className="text-xs flex ">
+                  <span className='mr-2 text-gray-500'>{item?.userName ?? 'Unknown User'}</span>
+                  <Separator orientation="vertical" className="h-5 bg-gray-300" />
+                  <span className='ml-2 text-gray-500'>{formattedTime}</span>
+                </div>
+              </Card>
+              
+              )
+            })
+          ) : (
+            <p className='text-sm text-muted-foreground'>No Messages Found!</p>
+          )}
+          <div ref={bottomRef} />
+          
+        </CardContent>
+  <CardContent>
+  <div className='mt-4 flex items-start gap-2'>
+          {isEditMsg && (
+            <Button
+              variant='destructive'
+              size='sm'
+              onClick={cancelEditHandler}
+              className='shrink-0'
             >
-              <path d='M22 2L11 13' />
-              <path d='M22 2L15 22L11 13L2 9L22 2Z' />
-            </svg>
-          </Button>
-        )}
-      </div>
-</CardContent>
-     
-    </Card>
+              X
+            </Button>
+          )}
+  
+          <Textarea
+            {...form.register('chat')}
+            placeholder='Type your message here...'
+            className='flex-1 resize-none max-h-[150px] overflow-y-auto'
+          />
+  
+          {message?.trim() && (
+            <Button
+              onClick={isEditMsg ? editMsgHandler : messageSendHandler}
+              size='icon'
+              variant='outline'
+              className='shrink-0 border-gray-400 hover:bg-accent'
+            >
+              <svg
+                viewBox='0 0 24 24'
+                fill='none'
+                stroke='#8C57FF'
+                strokeWidth='2'
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                className='w-5 h-5'
+              >
+                <path d='M22 2L11 13' />
+                <path d='M22 2L15 22L11 13L2 9L22 2Z' />
+              </svg>
+            </Button>
+          )}
+        </div>
+  </CardContent>
+       
+      </Card>
   )
 }
 

@@ -15,8 +15,10 @@ import ActivitiesList from '@/components/ActivitiesList'
 import ChatCompo from '../../sales-chat/Chat'
 import { Mail, Phone, UserIcon } from 'lucide-react'
 import CommonLayout from '@/components/CommonLayouyt'
+import { Button } from '@/components/ui/button'
+import { errorMessage, successMessage } from '@/components/ToasterMessage'
 
-function Page({params}) {
+function Page({ params }) {
   const router = useRouter()
   // useDocumentTitle('View Lead Dashboard')
   const id = params?.id
@@ -70,7 +72,7 @@ function Page({params}) {
         setCandidateBusiness([]); // fallback to raw string
       }
     }
-  
+
     if (candidateData?.preferredShift) {
       try {
         const candidateShift = JSON.parse(candidateData.preferredShift);
@@ -79,7 +81,7 @@ function Page({params}) {
         setCandidateShifts([]); // fallback to single value array
       }
     }
-  
+
     if (candidateData?.leadPlatforms) {
       try {
         const PlatForm = JSON.parse(candidateData.leadPlatforms);
@@ -93,7 +95,7 @@ function Page({params}) {
     candidateData?.leadPlatforms,
     candidateData?.preferredShift
   ]);
-  
+
 
 
   const dosOpenModal = (e) => {
@@ -131,7 +133,7 @@ function Page({params}) {
 
   const getActivities = async () => {
     try {
-      const res = await SalesCandidate.activitySalesCandidate("candidateSales" , editId)
+      const res = await SalesCandidate.activitySalesCandidate("candidateSales", editId)
       console.log("res", res)
       if (res?.data?.status === true) {
         setActivitiesData(res?.data?.data)
@@ -148,10 +150,10 @@ function Page({params}) {
   }, [])
 
 
-  const pathname = usePathname() 
+  const pathname = usePathname()
   const currentTab = pathname?.endsWith('edit') ? 'edit' : 'detail'
   const handleTabChange = (value) => {
-    router.replace(value) 
+    router.replace(value)
   }
   const genderColor = (val) => {
     if (val === "female") return "!bg-pink-700"
@@ -159,24 +161,45 @@ function Page({params}) {
     if (val === "others") return "w-full h-16 bg-[linear-gradient(to_right,_red,_orange,_yellow,_green,_blue,_indigo,_violet)]"
     return "!bg-gray-400"
   }
-  
-const genderCol = genderColor(candidateData?.gender)
+
+  const genderCol = genderColor(candidateData?.gender)
+
+  // send sales walk-in form:-
+  const handleSendWalkInForm = async row => {
+    try {
+      const sendEmailLin = await SalesCandidate.sendSalesWalkInLink(
+        row.original.id
+      )
+
+      if (sendEmailLin?.data?.status == true) {
+        successMessage({
+          description: 'Link sent successfully to the mail.'
+        })
+      }
+    } catch (error) {
+      console.log('error', error)
+      errorMessage({
+        description: 'Something Went Wrong!'
+      })
+    }
+  }
+
   return (
     <>
-  
-    <CommonLayout pageTitle='Sales Candidate Deatils' />
 
-    <Tabs value={currentTab} onValueChange={handleTabChange}>
-              <TabsList className='custom-tabs mb-3 w-full justify-start gap-2 rounded-none border-b ' >
-        <TabsList>
-          <TabsTrigger className='rounded-none px-4 py-1.5 !shadow-none' value="detail">Details</TabsTrigger>
-          <TabsTrigger className='rounded-none p-1.5 px-4 !shadow-none' value="edit">Edit</TabsTrigger>
+      <CommonLayout pageTitle='Sales Candidate Deatils' />
+
+      <Tabs value={currentTab} onValueChange={handleTabChange}>
+        <TabsList className='inline-flex h-9 items-center p-1 text-muted-foreground custom-tabs mb-3 w-full justify-start gap-2 rounded-none border-b'>
+          <TabsList>
+            <TabsTrigger className='rounded-none px-4 py-1.5 !shadow-none' value="detail">Details</TabsTrigger>
+            <TabsTrigger className='rounded-none p-1.5 px-4 !shadow-none' value="edit">Edit</TabsTrigger>
+          </TabsList>
         </TabsList>
-      </TabsList>
-      <TabsContent value='detail'>
-        {/* Top Section */}
-        <div className={`tittle-bar ${genderCol}`}>
-        <div className='user-name flex items-center gap-2 text-base font-medium text-gray-800'>
+        <TabsContent value='detail'>
+          {/* Top Section */}
+          <div className={`tittle-bar ${genderCol}`}>
+            <div className='user-name flex items-center gap-2 text-base font-medium text-gray-800'>
               <UserIcon className='w-5 h-5 text-yellow-600' />
               <span>{candidateData?.name} </span>
 
@@ -186,154 +209,172 @@ const genderCol = genderColor(candidateData?.gender)
               <Phone className='w-5 h-5 text-yellow-600 ml-4' />
               <span>{candidateData?.phone}</span>
             </div>
-          <div className='resume' onClick={(e) => dosOpenModal(e)}>
-            <a href="">
-              <div className='resmume-text'>
-                <span variant='h2'>View Resume</span>
+
+            <div className=' resume-btn'>
+              <div>
+                <Button
+                  onClick={handleSendWalkInForm}
+                  size='icon'
+                  variant='outline'
+                  className='shrink-0 border-red-400 hover:bg-accent'
+                >
+                  <svg
+                    viewBox='0 0 24 24'
+                    fill='none'
+                    stroke='#C21E56'
+                    strokeWidth='2'
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    className='w-5 h-5'
+                  >
+                    <path d='M22 2L11 13' />
+                    <path d='M22 2L15 22L11 13L2 9L22 2Z' />
+                  </svg>
+                </Button>
               </div>
-              <img src='/images/pages/eye.png' alt='trophy image' height={11} />
-            </a>
+              <div className='resume' onClick={(e) => dosOpenModal(e)}>
+                <a href="">
+                  <div className='resmume-text'>
+                    <span variant='h2'>View Resume</span>
+                  </div>
+                  <img src='/images/pages/eye.png' alt='trophy image' height={11} />
+                </a>
+              </div>
+            </div>
           </div>
-        </div>
 
 
-        {/* Main Section */}
-       
+          {/* Main Section */}
+
           {/* Left Section */}
           <div className="flex gap-4 ">
-              <Card className='box'>
-               <CardContent className="flex gap-3">
-                  <img src='/images/pages/target.png' alt='trophy image' className='' />
-                  <div>
-                    <span className='tittle'>Fresh Business Target</span> <br />
-                    <span className='subtittle' variant='h4'>{candidateData?.freshBusinessTarget}</span>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className='box'>
-               <CardContent className="flex gap-3">
-                  <img src='/images/pages/business-methods.png' alt='trophy image'  className='' />
-                  <div>
-                    <span className='tittle'>Business Methods</span> <br />
-                    {candidateBusiness?.map((v, i) => <span key={i} className='subtittle' variant='h4'>{v}{i < candidateBusiness?.length - 1 ? ', ' : ''}</span>)}
-
-                  </div>
-                </CardContent>
-              </Card>
-              <Card className='box'>
-             <CardContent className="flex gap-3">
-                  <img src='/images/pages/lead-platforms.png' alt='trophy image' className='' />
-                  <div>
-                    <span className='tittle'>Lead Platforms</span> <br />
-                    {candidatePlatForm?.map((v, i) => <span key={i} className='subtittle gap-3 ' variant='h4'>{v}{i < candidatePlatForm?.length - 1 ? ', ' : ''} </span>)}
-
-                  </div>
-                </CardContent>
-              </Card>
-              <Card className='box'>
-          <CardContent className="flex gap-3">
-                  <img src='/images/pages/regions.png' alt='trophy image'  className='' />
-                  <div>
-                    <span className='tittle'>Preferred Regions</span> <br />
-                    <span className='subtittle' variant='h4'>{candidateData?.preferredRegions}</span>
-                  </div>
-                </CardContent>
-              </Card>
-              </div>
-                <div className="flex gap-4">
-              <Card className='box'>
-            <CardContent className="flex gap-3">
-                  <img src='/images/pages/sales.png' alt='trophy image'  className='' />
-                  <div>
-                    <span className='tittle'>Top Sales Achievement</span> <br />
-                    <span className='subtittle' variant='h4'>{candidateData?.topSalesAchievement}</span>
-                  </div>
-                </CardContent>
-              </Card>
-              <Card className='box'>
-               <CardContent className="flex gap-3">
-                  <img src='/images/pages/target.png' alt='trophy image'  className='' />
-                  <div>
-                    <span className='tittle'>Achieved Target</span> <br />
-                    <span className='subtittle' variant='h4'>{candidateData?.achievedTarget}</span>
-                  </div>
-                </CardContent>
-              </Card>
-              {/* <Card className='box'>
-               <CardContent className="flex gap-3">
-                  <img src='/images/pages/applying.png' alt='trophy image' className='' />
-                  <div>
-                    <span className='tittle'>Designation</span> <br />
-                    <span className='subtittle' variant='h4'>{candidateData?.designationApplyingFor}</span>
-                  </div>
-                </CardContent>
-              </Card> */}
-
-              <Card className='box'>
+            <Card className='box'>
               <CardContent className="flex gap-3">
-                  <img src='/images/pages/experience.png' alt='trophy image' height={60} className='' />
-                  <div>
-                    <span className='tittle'>Total Experience</span> <br />
-                    <span className='subtittle' variant='h4'>{candidateData?.totalExperience}</span>
-                  </div>
-                </CardContent>
-              </Card>
+                <img src='/images/pages/target.png' alt='trophy image' className='w-[60px] h-[60px]' />
+                <div>
+                  <span className='tittle'>Fresh Business Target</span> <br />
+                  <span className='subtittle' variant='h4'>{candidateData?.freshBusinessTarget}</span>
                 </div>
+              </CardContent>
+            </Card>
 
-
-
-         
-             <div className="flex gap-4">
-                <Card className='salery-box salery-new  flex' >
-                  <CardContent>
-                    <div className='salery-outer'>
-                      <div className='salery-content flex gap-4'>
-                        <img src='/images/pages/rs.png' alt='trophy image' className='' />
-                        <div className='salery-inner'>
-                          <span className='tittle'>Current Salary </span> <br />
-                          <span className='subtittle' variant='h4'>{candidateData?.currentSalary}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                  <CardContent>
-                    <div className='salery-outer'>
-                      <div className='salery-content'>
-                        <div className='salery-inner'>
-                          <span className='tittle'>Expected Salary </span> <br />
-                          <span className='subtittle' variant='h4'>{candidateData?.expectedSalary}</span>
-                        </div>  </div>  </div>
-                  </CardContent>
-                </Card>
-  
-
-               <Card className='box'>
-               <CardContent className="flex gap-3">
-                   <img src='/images/pages/hike.png' alt='trophy image' height={65} className='' />
-                  <div>
-                    <span className='tittle'>Hike </span> <br />
-                          <span className='subtittle' variant='h4'>{percent}%</span>
-                  </div>
-                </CardContent>
-              </Card>
-
-
-   
-
-                <Card className='box'>
+            <Card className='box'>
               <CardContent className="flex gap-3">
-                  <img src='/images/pages/PreferredShift .png' alt='trophy image' height={60} className='' />
-                  <div>
-                  <span className='tittle'>Preferred Shift  </span> <br />
-                      {candidateShifts && candidateShifts?.map((v, i) => <span key={i} className='subtittle gap-3 ' variant='h4'>{v}{i < candidateShifts?.length - 1 ? ', ' : ''} </span>)}
+                <img src='/images/pages/business-methods.png' alt='trophy image' className='w-[60px] h-[60px]' />
+                <div>
+                  <span className='tittle'>Business Methods</span> <br />
+                  {candidateBusiness?.map((v, i) => <span key={i} className='subtittle' variant='h4'>{v}{i < candidateBusiness?.length - 1 ? ', ' : ''}</span>)}
+
+                </div>
+              </CardContent>
+            </Card>
+            <Card className='box'>
+              <CardContent className="flex gap-3">
+                <img src='/images/pages/lead-platforms.png' alt='trophy image' className='w-[60px] h-[60px] rounded-full object-cover' />
+
+                <div>
+                  <span className='tittle'>Lead Platforms</span> <br />
+                  {candidatePlatForm?.map((v, i) => <span key={i} className='subtittle gap-3 ' variant='h4'>{v}{i < candidatePlatForm?.length - 1 ? ', ' : ''} </span>)}
+
+                </div>
+              </CardContent>
+            </Card>
+            <Card className='box'>
+              <CardContent className="flex gap-3">
+                <img src='/images/pages/regions.png' alt='trophy image' className='w-[60px] h-[60px]' />
+
+                <div>
+                  <span className='tittle'>Preferred Regions</span> <br />
+                  <span className='subtittle' variant='h4'>{candidateData?.preferredRegions}</span>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+          <div className="flex gap-4">
+            <Card className='box'>
+              <CardContent className="flex gap-3">
+                <img src='/images/pages/sales.png' alt='trophy image' className='w-[60px] h-[60px]' />
+                <div>
+                  <span className='tittle'>Top Sales Achievement</span> <br />
+                  <span className='subtittle' variant='h4'>{candidateData?.topSalesAchievement}</span>
+                </div>
+              </CardContent>
+            </Card>
+            <Card className='box'>
+              <CardContent className="flex gap-3">
+                <img src='/images/pages/target.png' alt='trophy image' className='' />
+                <div>
+                  <span className='tittle'>Achieved Target</span> <br />
+                  <span className='subtittle' variant='h4'>{candidateData?.achievedTarget}</span>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className='box'>
+              <CardContent className="flex gap-3">
+                <img src='/images/pages/experience.png' alt='trophy image' height={60} className='' />
+                <div>
+                  <span className='tittle'>Experience</span> <br />
+                  <span className='subtittle' variant='h4'>{candidateData?.totalExperience}</span>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+
+
+
+          <div className="flex gap-4">
+            <Card className='salery-box salery-new  flex' >
+              <CardContent>
+                <div className='salery-outer'>
+                  <div className='salery-content flex gap-4'>
+                    <img src='/images/pages/rs.png' alt='trophy image' className='w-[60px] h-[60px] rounded-full object-cover' />
+
+                    <div className='salery-inner'>
+                      <span className='tittle'>Current Salary </span> <br />
+                      <span className='subtittle' variant='h4'>{candidateData?.currentSalary}</span>
+                    </div>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </CardContent>
+              <CardContent>
+                <div className='salery-outer'>
+                  <div className='salery-content'>
+                    <div className='salery-inner'>
+                      <span className='tittle'>Expected Salary </span> <br />
+                      <span className='subtittle' variant='h4'>{candidateData?.expectedSalary}</span>
+                    </div>  </div>  </div>
+              </CardContent>
+            </Card>
 
 
-          
-                    {/* <Card className='box'>
+            <Card className='box'>
+              <CardContent className="flex gap-3">
+                <img src='/images/pages/hike.png' alt='trophy image' height={65} className='' />
+                <div>
+                  <span className='tittle'>Hike </span> <br />
+                  <span className='subtittle' variant='h4'>{percent}%</span>
+                </div>
+              </CardContent>
+            </Card>
+
+
+
+
+            <Card className='box'>
+              <CardContent className="flex gap-3">
+                <img src='/images/pages/PreferredShift .png' alt='trophy image' className='w-[60px] h-[60px]' />
+                <div>
+                  <span className='tittle'>Preferred Shift  </span> <br />
+                  {candidateShifts && candidateShifts?.map((v, i) => <span key={i} className='subtittle gap-3 ' variant='h4'>{v}{i < candidateShifts?.length - 1 ? ', ' : ''} </span>)}
+                </div>
+              </CardContent>
+            </Card>
+
+
+
+            {/* <Card className='box'>
                  <CardContent className="flex gap-3">
                   <img src='/images/pages/Notice Period.png' alt='trophy image' height={60} className='' />
                   <div>
@@ -344,37 +385,37 @@ const genderCol = genderColor(candidateData?.gender)
               </Card> */}
 
 
-                </div>
-        
+          </div>
+
 
 
 
           {/* Right Section */}
           <div>
-  <div className="flex gap-4 py-4"> 
+            <div className="flex gap-4 py-4">
 
-            {/* chat  */}
-            <ChatCompo id={id} />
-            <ActivitiesList activitiesData={activitiesData} />
+              {/* chat  */}
+              <ChatCompo id={id} />
+              <ActivitiesList activitiesData={activitiesData} />
 
+            </div>
+
+            <DcsModal
+              isOpen={dcsModalOpen}
+              onClose={() => setDcsModalOpen(false)}
+              dcsValue={""}
+              url={url}
+              loading={loading}
+            />
           </div>
-          
-          <DcsModal
-            isOpen={dcsModalOpen}
-            onClose={() => setDcsModalOpen(false)}
-            dcsValue={""}
-            url={url}
-            loading={loading}
-          />
-           </div>
-      
-      </TabsContent>
-      <TabsContent value='edit'>
-        {/* <EditSalesJobApplication editId={editId} /> */}
-      </TabsContent>
-    </Tabs>
 
-  </>
+        </TabsContent>
+        <TabsContent value='edit'>
+          {/* <EditSalesJobApplication editId={editId} /> */}
+        </TabsContent>
+      </Tabs>
+
+    </>
   )
 }
 

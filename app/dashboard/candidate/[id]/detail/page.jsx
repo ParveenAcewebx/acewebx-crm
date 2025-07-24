@@ -12,6 +12,8 @@ import ActivitiesList from '@/components/ActivitiesList'
 import EditCandidate from '../../EditCandidate'
 import ChatCompo from '../../chat/Chat'
 import { Mail, Phone, UserIcon } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { errorMessage, successMessage } from '@/components/ToasterMessage'
 
 function Page({ params }) {
   const router = useRouter()
@@ -118,15 +120,37 @@ function Page({ params }) {
     if (val === "others") return "w-full h-16 bg-[linear-gradient(to_right,_red,_orange,_yellow,_green,_blue,_indigo,_violet)]"
     return "!bg-gray-400"
   }
-  
+
 
   const genderCol = genderColor(candidateData?.meta?._gender)
+
+
+// send walk-in form
+const handleSendWalkInForm = async row => {
+  try {
+    const sendEmailLin = await Candidate.sendWalkInLink(id)
+
+    if (sendEmailLin?.data?.status == true) {
+      successMessage({
+        description: 'Link sent successfully to the mail.'
+      })
+    }
+  } catch (error) {
+    console.log('error', error)
+    errorMessage({
+      description: 'Something Went Wrong!'
+    })
+  }
+}
+
+
   return (
     <>
       <CommonLayout pageTitle='Candidate Detail' />
 
       <Tabs value={currentTab} onValueChange={handleTabChange}>
-        <TabsList className='custom-tabs mb-3 w-full justify-start gap-2 rounded-none border-b ' >
+        {/* <TabsList className='custom-tabs mb-3 w-full justify-start gap-2 rounded-none border-b ' > */}
+        <TabsList className='inline-flex h-9 items-center p-1 text-muted-foreground custom-tabs mb-3 w-full justify-start gap-2 rounded-none border-b'>
           <TabsList>
             <TabsTrigger className='rounded-none px-4 py-1.5 !shadow-none' value="detail">Details</TabsTrigger>
             <TabsTrigger className='rounded-none p-1.5 px-4 !shadow-none' value="edit">Edit</TabsTrigger>
@@ -147,13 +171,37 @@ function Page({ params }) {
               <Phone className='w-5 h-5 text-yellow-600 ml-4' />
               <span>{candidateData?.phone}</span>
             </div>
-            <div className='resume' onClick={(e) => dosOpenModal(e)}>
-              <a href="">
-                <div className='resmume-text'>
-                  <span variant='h2'>View Resume</span>
-                </div>
-                <img src='/images/pages/eye.png' alt='trophy image' height={11} />
-              </a>
+
+            <div className=' resume-btn'>
+              <div>
+                <Button
+                  onClick={handleSendWalkInForm}
+                  size='icon'
+                  variant='outline'
+                  className='shrink-0 border-red-400 hover:bg-accent'
+                >
+                  <svg
+                    viewBox='0 0 24 24'
+                    fill='none'
+                    stroke='#C21E56'
+                    strokeWidth='2'
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    className='w-5 h-5'
+                  >
+                    <path d='M22 2L11 13' />
+                    <path d='M22 2L15 22L11 13L2 9L22 2Z' />
+                  </svg>
+                </Button>
+              </div>
+              <div className='resume' onClick={(e) => dosOpenModal(e)}>
+                <a href="">
+                  <div className='resmume-text'>
+                    <span variant='h2'>View Resume</span>
+                  </div>
+                  <img src='/images/pages/eye.png' alt='trophy image' height={11} />
+                </a>
+              </div>
             </div>
           </CardContent>
 
@@ -168,7 +216,7 @@ function Page({ params }) {
 
                 <img src='/images/pages/location.png' alt='trophy image' height={60} className='' />
                 <div>
-                  <span className='tittle'>Current Location</span> <br />
+                  <span className='tittle'>Location</span> <br />
                   <span className='subtittle' variant='h4'>{candidateData?.meta?._currentLocation}</span>
                 </div>
               </CardContent>
@@ -190,7 +238,7 @@ function Page({ params }) {
 
                 <img src='/images/pages/experience.png' alt='trophy image' height={60} className='' />
                 <div>
-                  <span className='tittle'>Total Experience</span> <br />
+                  <span className='tittle'>Experience</span> <br />
                   <span className='subtittle' variant='h4'>{candidateData?.totalExperience}</span>
                 </div>
               </CardContent>
@@ -200,7 +248,7 @@ function Page({ params }) {
 
                 <img src='/images/pages/company.png' alt='trophy image' height={60} className='' />
                 <div>
-                  <span className='tittle'>Last/Current Company Name</span> <br />
+                  <span className='tittle'>Company</span> <br />
                   <span className='subtittle' variant='h4'>{candidateData?.meta?._currentCompanyName}</span>
                 </div>
               </CardContent>
@@ -290,7 +338,7 @@ function Page({ params }) {
               </CardContent>
             </Card>
 
-           
+
 
             {/* chat  */}
           </div>
@@ -308,32 +356,34 @@ function Page({ params }) {
                 </CardHeader>
                 <CardContent>
                   <div>
-                    <span className='tittle'>Reference 1 </span> <br />
-                    <div className='refrence-inner subtittle'>
-                      <span variant='h4'>{candidateData?.meta?._reference1Name}</span>
-                      <span variant='h4'>{candidateData?.meta?._reference1ContactNumber}</span>
-                      <span variant='h4'>{candidateData?.meta?._reference1Designation}</span>
-                      <span variant='h4'>{candidateData?.meta?._reference1Experience}</span>
+                    
+                    <div className='mb-4'>
+                      <p className='font-semibold mb-1'>Reference 1</p>
+                      <p><span className='font-semibold'>Name:</span> {candidateData?.meta?._reference1Name}</p>
+                      <p><span className='font-semibold'>Phone:</span> {candidateData?.meta?._reference1ContactNumber}</p>
+                      <p><span className='font-semibold'>Skill:</span> {candidateData?.meta?._reference1Designation}</p>
+                      <p><span className='font-semibold'>Experience:</span> {candidateData?.meta?._reference1Experience}</p>
+                    </div>
+
+                    <div>
+                      <p className='font-semibold mb-1'>Reference 2</p>
+                      <p><span className='font-semibold'>Name:</span> {candidateData?.meta?._reference2Name}</p>
+                      <p><span className='font-semibold'>Phone:</span> {candidateData?.meta?._reference2ContactNumber}</p>
+                      <p><span className='font-semibold'>Skill:</span> {candidateData?.meta?._reference2Designation}</p>
+                      <p><span className='font-semibold'>Experience:</span> {candidateData?.meta?._reference2Experience}</p>
                     </div>
                   </div>
 
-                  <div className='reffrence-outer'>
-                    <span className='tittle'>Reference 2 </span> <br />
-                    <div className='refrence-inner subtittle'>
-                      <span variant='h4'>{candidateData?.meta?._reference2Name}</span>
-                      <span variant='h4'>{candidateData?.meta?._reference2ContactNumber}</span>
-                      <span variant='h4'>{candidateData?.meta?._reference2Designation}</span>
-                      <span variant='h4'>{candidateData?.meta?._reference2Experience}</span>
-                    </div>
-                  </div>
                   <DcsModal
                     isOpen={dcsModalOpen}
                     onClose={() => setDcsModalOpen(false)}
-                    dcsValue={""}
+                    dcsValue={''}
                     url={url}
                     loading={loading}
                   />
                 </CardContent>
+
+
               </Card>
             </div>
           </div>
