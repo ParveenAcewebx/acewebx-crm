@@ -113,6 +113,16 @@ function EditJobApplicationForm() {
     setLoader(true)
     try {
       const formData = new FormData()
+      // need only those key and values which touched :-
+      const dirtyFields = form.formState.dirtyFields
+      const allValues = form.getValues()
+      const updateFieldsValue = Object.keys(dirtyFields).reduce((acc, key) => {
+        acc[key] = allValues[key];
+        return acc;
+      }, {});
+      if (updateFieldsValue) {
+        formData.append('updateField', JSON.stringify(updateFieldsValue))
+      }
 
       formData.append('g-recaptcha-response', recaptcha)
       const file = data.resume?.[0]
@@ -121,13 +131,6 @@ function EditJobApplicationForm() {
       }
 
       const preferred = JSON.stringify(data?.preferredShift)
-
-      // Object.entries(data).forEach(([key, value]) => {
-      //   if (key === 'preferredShift') return // skip it
-      //   formData.append(key, value)
-      // })
-
-
 
       Object.entries(data).forEach(([key, value]) => {
         if (key === 'preferredShift') return;
@@ -157,6 +160,13 @@ function EditJobApplicationForm() {
       }
     }
   }
+
+
+
+
+
+
+
   const urlToFile = async (url, fileName) => {
     const response = await fetch(url)
     const blob = await response.blob()

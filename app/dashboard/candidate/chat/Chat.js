@@ -97,7 +97,7 @@ const data = {
                     <div className='!text-lg '>Notes</div>
 
                   </CardTitle>
-                </CardHeader>      <CardContent className='flex flex-col gap-4 h-[360px] overflow-y-auto'>
+                </CardHeader>      <CardContent className='flex !p-4 flex-col gap-4 h-[360px] overflow-y-auto'>
         {allChat.length > 0 ? (
           allChat.map(item => {
             const createdTime = new Date(item?.createdAt)
@@ -115,7 +115,7 @@ const data = {
               <Card className='mb-4 p-3 bg-muted rounded-md shadow-sm' key={item?.id}>
               {/* Message and action dots */}
               <div className='flex justify-between items-start'>
-                <p className='text-base text-muted-foreground mt-1 mb-2 flex-1'>
+                <p className='text-base text-muted-foreground !text-black mt-1 mb-2 flex-1'>
                   {item?.message}
                 </p>
                 {item?.message !== 'This message was deleted' && (
@@ -136,9 +136,9 @@ const data = {
             
               {/* User and timestamp */}
               <div className="text-xs flex ">
-                <span className='mr-2'>{item?.userName ?? 'Unknown User'}</span>
+                <span className='mr-2 text-gray-500'>{item?.userName ?? 'Unknown User'}</span>
                 <Separator orientation="vertical" className="h-5 bg-gray-300" />
-                <span className='ml-2'>{formattedTime}</span>
+                <span className='ml-2 text-gray-500'>{formattedTime}</span>
               </div>
             </Card>
             

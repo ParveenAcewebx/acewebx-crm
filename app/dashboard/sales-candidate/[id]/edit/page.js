@@ -142,8 +142,8 @@ function Page({params}) {
         <LayoutHeader pageTitle='Sales Candidate Deatils' />
       </div>
       <Tabs value={currentTab} onValueChange={handleTabChange}>
-        <TabsList className='custom-tabs mb-3 w-full justify-start gap-2 rounded-none border-b ' >
-          <TabsList>
+      <TabsList className='inline-flex h-9 items-center p-1 text-muted-foreground custom-tabs mb-3 w-full justify-start gap-2 rounded-none border-b'>
+      <TabsList>
             <TabsTrigger className='rounded-none px-4 py-1.5 !shadow-none' value="detail">Details</TabsTrigger>
             <TabsTrigger className='rounded-none p-1.5 px-4 !shadow-none' value="edit">Edit</TabsTrigger>
           </TabsList>
