@@ -14,6 +14,7 @@ import ChatCompo from '../../chat/Chat'
 import { Mail, Phone, UserIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { errorMessage, successMessage } from '@/components/ToasterMessage'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 
 function Page({ params }) {
   const router = useRouter()
@@ -174,25 +175,34 @@ function Page({ params }) {
 
             <div className=' resume-btn'>
               <div>
-                <Button
-                  onClick={handleSendWalkInForm}
-                  size='icon'
-                  variant='outline'
-                  className='shrink-0 border-red-400 hover:bg-accent'
-                >
-                  <svg
-                    viewBox='0 0 24 24'
-                    fill='none'
-                    stroke='#C21E56'
-                    strokeWidth='2'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    className='w-5 h-5'
-                  >
-                    <path d='M22 2L11 13' />
-                    <path d='M22 2L15 22L11 13L2 9L22 2Z' />
-                  </svg>
-                </Button>
+              <Tooltip>
+  <TooltipTrigger asChild>
+    <Button
+      onClick={handleSendWalkInForm}
+      size='icon'
+      variant='outline'
+      className='shrink-0 border-red-400 hover:bg-accent'
+    >
+      <svg
+        viewBox='0 0 24 24'
+        fill='none'
+        stroke='#C21E56'
+        strokeWidth='2'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+        className='w-5 h-5'
+      >
+        <path d='M22 2L11 13' />
+        <path d='M22 2L15 22L11 13L2 9L22 2Z' />
+      </svg>
+    </Button>
+  </TooltipTrigger>
+  <TooltipContent className='w-auto rounded-sm bg-[#b82025] text-sm'>
+    Send Walk In Form
+  </TooltipContent>
+</Tooltip>
+
+
               </div>
               <div className='resume' onClick={(e) => dosOpenModal(e)}>
                 <a href="">
