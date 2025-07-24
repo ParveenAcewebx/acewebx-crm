@@ -125,23 +125,23 @@ function Page({ params }) {
   const genderCol = genderColor(candidateData?.meta?._gender)
 
 
-// send walk-in form
-const handleSendWalkInForm = async row => {
-  try {
-    const sendEmailLin = await Candidate.sendWalkInLink(id)
+  // send walk-in form
+  const handleSendWalkInForm = async row => {
+    try {
+      const sendEmailLin = await Candidate.sendWalkInLink(id)
 
-    if (sendEmailLin?.data?.status == true) {
-      successMessage({
-        description: 'Link sent successfully to the mail.'
+      if (sendEmailLin?.data?.status == true) {
+        successMessage({
+          description: 'Link sent successfully to the mail.'
+        })
+      }
+    } catch (error) {
+      console.log('error', error)
+      errorMessage({
+        description: 'Something Went Wrong!'
       })
     }
-  } catch (error) {
-    console.log('error', error)
-    errorMessage({
-      description: 'Something Went Wrong!'
-    })
   }
-}
 
 
   return (
@@ -149,8 +149,8 @@ const handleSendWalkInForm = async row => {
       <CommonLayout pageTitle='Candidate Detail' />
 
       <Tabs value={currentTab} onValueChange={handleTabChange}>
-        {/* <TabsList className='custom-tabs mb-3 w-full justify-start gap-2 rounded-none border-b ' > */}
-        <TabsList className='inline-flex h-9 items-center p-1 text-muted-foreground custom-tabs mb-3 w-full justify-start gap-2 rounded-none border-b'>
+        <TabsList className='custom-tabs mb-3 w-full justify-start gap-2 rounded-none border-b custom-tabs ' >
+          {/* <TabsList className='inline-flex h-9 items-center p-1 text-muted-foreground custom-tabs mb-3 w-full justify-start gap-2 rounded-none border-b'> */}
           <TabsList>
             <TabsTrigger className='rounded-none px-4 py-1.5 !shadow-none' value="detail">Details</TabsTrigger>
             <TabsTrigger className='rounded-none p-1.5 px-4 !shadow-none' value="edit">Edit</TabsTrigger>
@@ -356,22 +356,25 @@ const handleSendWalkInForm = async row => {
                 </CardHeader>
                 <CardContent>
                   <div>
-                    
-                    <div className='mb-4'>
+                    {candidateData?.meta?._reference1Name && <div className='mb-4'>
                       <p className='font-semibold mb-1'>Reference 1</p>
                       <p><span className='font-semibold'>Name:</span> {candidateData?.meta?._reference1Name}</p>
                       <p><span className='font-semibold'>Phone:</span> {candidateData?.meta?._reference1ContactNumber}</p>
                       <p><span className='font-semibold'>Skill:</span> {candidateData?.meta?._reference1Designation}</p>
                       <p><span className='font-semibold'>Experience:</span> {candidateData?.meta?._reference1Experience}</p>
-                    </div>
+                    </div>}
 
-                    <div>
+                    {candidateData?.meta?._reference2Name && <div>
                       <p className='font-semibold mb-1'>Reference 2</p>
                       <p><span className='font-semibold'>Name:</span> {candidateData?.meta?._reference2Name}</p>
                       <p><span className='font-semibold'>Phone:</span> {candidateData?.meta?._reference2ContactNumber}</p>
                       <p><span className='font-semibold'>Skill:</span> {candidateData?.meta?._reference2Designation}</p>
                       <p><span className='font-semibold'>Experience:</span> {candidateData?.meta?._reference2Experience}</p>
                     </div>
+                    }
+                    {!candidateData?.meta?._reference2Name && !candidateData?.meta?._reference1Name && "No Reference Found!"  }
+
+
                   </div>
 
                   <DcsModal
