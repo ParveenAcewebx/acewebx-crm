@@ -38,9 +38,9 @@ const ActivitiesList = ({ activitiesData }) => {
                           ?.replace(/_/g, ' ')                             // Replace underscores with spaces
                           ?.replace(/([a-z])([A-Z])/g, '$1 $2')            // Add space between camelCase
                           ?.replace(/\b\w/g, char => char.toUpperCase())}                     </CardDescription>
-                      <p className='text-gray '>{item?.value}</p>
+                      <p className='text-gray '>{item?.oldValue} - {item?.newValue}</p>
                       <p className='text-sm text-black'>
-                        {item?.contact?.name} at{' '}
+                         at{' '}
                         {new Date(item?.updatedAt).toISOString().slice(0, 10) +
                           ' -' +
                           new Date(item?.updatedAt).toTimeString().slice(0, 8)}
