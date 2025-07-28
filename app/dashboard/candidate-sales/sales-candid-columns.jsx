@@ -65,51 +65,43 @@ export const SalesCandidColumns = (
   {
     accessorKey: 'id',
     header: '#ID',
-    cell: ({ row }) => `SAL-${row.original?.id}`
-  },
-
-  {
-    accessorKey: 'name',
-    header: () => (
-      <>
-        <span>Name</span>
-        <br />
-        <span>Email</span>
-        <br />
-        <span>Phone</span>
-      </>
-    ),
+    size: 80, 
     cell: ({ row }) => (
-      <>
-        <span>{row.original?.name}</span>
-        <br />
-        <span>{row.original?.email}</span>
-        <br />
-        <span>{row.original?.phone}</span>
-      </>
-    )
-  },
+      <div className='w-[60px] truncate'>{`SAL-${row.original?.id}`}</div>
+    )},
 
-  {
-    accessorKey: 'currentSalary',
-    header: () => (
-      <>
-        <span>Current Salary</span>
-        <br />
-        <span>Expected Salary</span>
-        
-        
-      </>
-    ),
-    cell: ({ row }) => (
-      <>
-        <span>{row.original?.currentSalary}</span>
-        <br />
-        <span>{row.original?.expectedSalary}</span>
-     
-      </>
-    )
-  },
+    {
+      accessorKey: 'name',
+      header: () => (
+        <>
+          Contact Information
+        </>
+      ),
+      cell: ({ row }) => (
+        <>
+          <span>
+            {`${row.original?.name} - ${row.original?.email} - ${row.original?.phone}`}
+          </span>
+        </>
+      )
+    },
+
+    {
+      accessorKey: 'currentSalary',
+      header: () => (
+        <>
+          Current / Expected 
+        </>
+      ),
+      cell: ({ row }) => (
+        <>
+          <span>{row.original?.currentSalary}</span>
+   -
+          <span>{row.original?.expectedSalary}</span>
+
+        </>
+      )
+    },
   {
     accessorKey: 'totalExperience',
     header: 'Experience',

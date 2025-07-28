@@ -47,7 +47,7 @@ useEffect(()=>{
                   <CalendarIcon className="mr-2 h-4 w-4" />
                   {value?.startDate
                     ? `${value.startDate.toDateString()} - ${value.endDate.toDateString()}`
-                    : 'Application Submitted Date'}
+                    : 'Select Date'}
                 </Button>
               </PopoverTrigger>
 

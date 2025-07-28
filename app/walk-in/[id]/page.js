@@ -14,7 +14,6 @@ import { FormProvider, useForm } from 'react-hook-form'
 // import Loader from '@/components/Loader'
 import PageExpired from '@/app/url-expired/page'
 import { errorMessage } from '@/components/ToasterMessage'
-import LayoutHeader from '@/components/layoutHeader'
 import FormInputField from '@/components/share/form/FormInputField'
 import FormSelectField from '@/components/share/form/FormSelect'
 import FormInputFileUploaderSingle from '@/components/share/form/SingleFileUpload'
@@ -27,6 +26,7 @@ import { Loader } from 'lucide-react'
 import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
 import { CandidateFormValidationEditClient } from '@/components/form-validations/CandidateFormValidationEditClient'
 import moment from 'moment';
+import TagInputController from '@/components/share/form/TagInputController'
 function EditJobApplicationForm() {
   const { id } = useParams()
   const [step, setStep] = useState(2)
@@ -78,6 +78,7 @@ function EditJobApplicationForm() {
       'currentAddress',
       'permanentAddress',
       'lastIncrementDate',
+      'skill',
       'lastIncrementAmount'
     ]
   ]
@@ -138,6 +139,7 @@ function EditJobApplicationForm() {
           formData.append(key, value);
         }
       });
+      formData.append("skill",JSON.stringify(data?.skill))
       formData.append('preferredShift', preferred)
 
       const response = await Candidate.updateWalkinCandidate(candiId, formData)
@@ -196,6 +198,7 @@ function EditJobApplicationForm() {
           noticePeriod: data?.noticePeriod,
           reasonForChange: meta?._reasonForChange,
           preferredShift: JSON.parse(meta?._preferredShift),
+          skill:meta?._skill ?JSON.parse(meta?._skill) : [],
           reference1Name: meta?._reference1Name,
           reference1ContactNumber: meta?._reference1ContactNumber,
           reference1Designation: meta?._reference1Designation,
@@ -240,6 +243,7 @@ function EditJobApplicationForm() {
     candidateDataGetById(id, form)
   }, [id])
 
+  console.log("skill", form.watch("skill"))
   return (
     <>
       {isVerify == false ? (
@@ -408,7 +412,7 @@ function EditJobApplicationForm() {
                           label='Reason for Change'
                           form={form}
                           multiline
-                          className='col-span-2 !h-[160px] border border-gray-600'
+                          className='col-span-2 !h-[160px] border '
                           style={{
                             width: '100%',
                             resize: 'none',
@@ -525,8 +529,18 @@ function EditJobApplicationForm() {
                           options={sourceOption}
                           className='colum-box-bg-change !w-[100%]'
                         />
+                          <TagInputController
+                          name="skill"
+                          form={form}
+                          label="Skills"
+                          placeholder="Enter Your Skills"
+                          className="mt-2"
+                        />
                       </div>
                       <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-2'>
+
+                      
+
                         <FormTextArea
                           name='currentAddress'
                           label='Current Address'

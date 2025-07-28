@@ -2038,3 +2038,14 @@ width: 99%;
   padding: 0 !important;
   height: auto !important;
 }
+
+
+.searchError {
+  position: fixed;
+  padding: 0px;
+  margin: 1px;
+}
+
+.sendIcon{
+  border-radius: 4px !important;
+}

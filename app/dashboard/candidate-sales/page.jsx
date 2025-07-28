@@ -1,17 +1,11 @@
 'use client'
 import LayoutHeader from '@/components/layoutHeader'
 import DialogBox from '@/components/modal/DialogBox'
-import DcsModal from '@/components/modal/dscForm'
+import Papa from 'papaparse'
 import FormInputField from '@/components/share/form/FormInputField'
 import FormSelectField from '@/components/share/form/FormSelect'
 import { DataTable } from '@/components/Table'
 import { errorMessage, successMessage } from '@/components/ToasterMessage'
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger
-} from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
 import useDocumentTitle from '@/components/utils/useDocumentTitle'
 import SalesCandidate from '@/services/cadidateApis/SalesCandidateApi'
@@ -21,7 +15,9 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { SalesCandidColumns } from './sales-candid-columns'
 import { LengthData } from '@/components/constants/StaticData'
 import AddvanceFilterDeveloper from '@/components/modal/AddvanceFilterDeveloper'
-import { Search } from 'lucide-react'
+import { Import, Search } from 'lucide-react'
+import { SearchValidation } from '@/components/form-validations/SearchValidation'
+import { yupResolver } from '@hookform/resolvers/yup'
 
 const AllSalesCandidates = () => {
   useDocumentTitle('Leads')
@@ -31,20 +27,20 @@ const AllSalesCandidates = () => {
   const [getList, setList] = useState([])
   const [page, setPage] = useState(1)
   const [totalRecord, setTotalRecord] = useState()
-  const [viewFilesOpenModal, setViewFilesOpenModal] = useState(false)
-  const [accordionValue, setAccordionValue] = useState(false)
-
   const [deleteOpenModal, setDeleteOpenModal] = useState(false)
   const [loading, setLoading] = useState(true)
   const [deleteIndex, setDeleteIndex] = useState(null)
   const [length, setLength] = useState(10)
-  const [isAccordionOpen, setIsAccordionOpen] = useState(false)
-  const [searchFilter, setSearchFilter] = useState(null)
   const [searchFormData, setSearchFormData] = useState(null)
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [minSalary, setMinSalary] = useState('');
   const [maxSalary, setMaxSalary] = useState('');
+  const [totalExperience, setTotalExperience] = useState("");
+  const [preferredShift, setPreferredShift] = useState("");
+  const [skill, setSkill] = useState("");
+
+
   const methods = useForm({
     defaultValues: {
       length: '10'
@@ -55,12 +51,15 @@ const AllSalesCandidates = () => {
     try {
 
       const newData = {
-        page, 
+        page,
         length,
         startDate,
         endDate,
         minSalary,
         maxSalary,
+        totalExperience,
+        preferredShift,
+        skill
       }
       setLoading(true)
       const res = await SalesCandidate.salesCandidateList(newData)
@@ -133,23 +132,27 @@ const AllSalesCandidates = () => {
   }, [methods, totalRecord])
 
   // filter :--
-
-  const search = methods.watch('search')
-  
+  const form = useForm({
+    resolver: yupResolver(SearchValidation),
+    mode: 'onChange',
+  });
+  const search = form.watch('search')
 
   const handleClearSearch = () => {
-    methods.setValue('search', '')
-    methods.setValue('maxSalary', '')
-    methods.setValue('minSalary', '')
+    form.setValue('search', '')
+
     getListLeads()
   }
 
-  const handlePipeLineFilter = async data => {
+  const handleSimpleFilter = async data => {
     try {
+      const isValid = await form.trigger('search'); // only validate 'search'
+
+      if (!isValid) return;
       const apiData = await SalesCandidate.candidateListFilters({
         ...data,
         search
-      
+
       })
       const candidates = apiData?.data?.data || []
       const paginationInfo = apiData?.data?.data?.pagination
@@ -179,42 +182,82 @@ const AllSalesCandidates = () => {
     }
   }
 
-//Addvance search :-
-const handleAddvanceSearch = async data => {
-  const newData= {
-    startDate : data.dob.startDate,
-    endDate : data.dob.endDate,
-    minSalary : data.salary[0],
-    maxSalary:data.salary[1],
-    search:search
-  }
-  setStartDate(newData.startDate)
-  setEndDate(newData.endDate)
-  setMinSalary(newData.minSalary)
-  setMaxSalary(newData.maxSalary)
-  try {
-    const response = await SalesCandidate.candidateSaleListAddvanceFilters(newData)
-    if (response?.status === 200) {
-      successMessage({ description: response?.data?.message })
-      setDcsModalOpen(false)
-      const candidates = response?.data?.data || []
-      const paginationInfo = response?.data?.data?.pagination
+  //Addvance search :-
+  const handleAddvanceSearch = async data => {
+    const newData = {
+      startDate: data?.dob?.startDate,
+      endDate: data?.dob?.endDate,
+      minSalary: data?.salary[0],
+      maxSalary: data?.salary[1],
+      search: search,
+      totalExperience: data?.totalExperience,
+      preferredShift: data?.preferredShift,
+      skill: ""
+    }
+    setStartDate(newData.startDate)
+    setEndDate(newData.endDate)
+    setMinSalary(newData.minSalary)
+    setMaxSalary(newData.maxSalary)
 
-      setList(candidates)
-      setTotalRecord(paginationInfo?.total || 0)    }
-  } catch (error) {
-    console.log('error', error)
-    
+    setTotalExperience(newData.totalExperience)
+    setPreferredShift(newData.preferredShift)
+    setSkill(newData.skill)
+    try {
+      const response = await SalesCandidate.candidateSaleListAddvanceFilters(newData)
+      if (response?.status === 200) {
+        successMessage({ description: response?.data?.message })
+        setDcsModalOpen(false)
+        const candidates = response?.data?.data || []
+        const paginationInfo = response?.data?.data?.pagination
+
+        setList(candidates)
+        setTotalRecord(paginationInfo?.total || 0)
+      }
+    } catch (error) {
+      console.log('error', error)
+
+    }
   }
-}
+
+  const handleDownloadCSV = async () => {
+    const newData = {
+      startDate,
+      endDate,
+      minSalary,
+      maxSalary,
+      totalExperience,
+      preferredShift,
+      skill,
+    };
+  
+    try {
+      const response = await SalesCandidate.salesCandidateCSVList(newData, {
+        responseType: 'blob', // ✅ Correct response type for CSV
+      });
+  
+      const blob = new Blob([response.data], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+  
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'filtered_users.csv';
+      a.click();
+  
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Download failed", error);
+    }
+  };
+  
   return (
     <>
       <div className='mb-3 flex items-center justify-between'>
         <LayoutHeader pageTitle='Sales Candidate List' />
       </div>
-         {/* Filters */}
- 
-         <div className='flex justify-between items-center'>
+
+      {/* Filters */}
+
+      <div className='flex justify-between items-center mb-5'>
         <div>
           <FormProvider {...methods}>
             <FormSelectField
@@ -225,36 +268,43 @@ const handleAddvanceSearch = async data => {
             />
           </FormProvider>
         </div>
-        <div className='flex justify-between items-center gap-4'>
-          <FormProvider {...methods}>
-            {/* Input Field */}
+
+
+        <p
+          onClick={handleDownloadCSV}
+          className="cursor-pointer text-red-400 hover:text-red-500 text-center flex gap-2 "
+        >
+          <Import />
+          Export CSV
+        </p>
+        <FormProvider {...form}>
+          <div className="flex justify-between items-center gap-4">
             <div>
               <FormInputField
                 name="search"
                 placeholder="Email/Name/Phone"
-                form={methods}
+                form={form}
                 inputType="text"
                 className="colum-box-bg-change col-span-2"
+                searchError="searchError"
               />
             </div>
             <div>
-              {/* Search Button */}
               <Search
                 type="submit"
                 className="cursor-pointer"
-                onClick={() => handlePipeLineFilter()}
+                onClick={() => handleSimpleFilter()}
               />
             </div>
+            <p
+              onClick={() => AddvanceOpenModal()}
+              className="cursor-pointer text-red-400 hover:text-red-500"
+            >
+              Advance Search
+            </p>
+          </div>
+        </FormProvider>
 
-          </FormProvider>
-          {/* <Button
-            type="submit"
-            className="site-button-small bg-white ml-2"
-            onClick={() => AddvanceOpenModal()}
-          > */}
-            <p onClick={() => AddvanceOpenModal()} className='cursor-pointer text-red-400 hover:text-red-500'>Advance Search</p>
-          {/* </Button> */}
-        </div>
 
       </div>
       <DataTable
@@ -278,7 +328,7 @@ const handleAddvanceSearch = async data => {
         deleteOpenModal={deleteOpenModal}
         deleteHandleModalClose={deleteHandleModalClose}
       />
-    <AddvanceFilterDeveloper
+      <AddvanceFilterDeveloper
         getListLeads={getListLeads}
         isOpen={dcsModalOpen}
         onClose={() => setDcsModalOpen(false)}
