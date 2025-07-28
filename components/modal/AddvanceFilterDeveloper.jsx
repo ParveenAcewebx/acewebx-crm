@@ -10,28 +10,44 @@ import { Button } from '../ui/button'
 import { FormDateRangePicker } from '../share/form/DateRangePicker'
 import { SalaryRangInput } from '../share/form/SalaryRangInput'
 import FormMultiSelectField from '../share/form/FormMultiSelect'
-import { preferredShiftOptions, totalExperienceOptions } from '../constants/StaticData'
+import { preferredShiftOptions } from '../constants/StaticData'
 import { Label } from '../ui/label'
+import { startOfWeek, endOfWeek, subDays } from 'date-fns'
+import { YearRangInput } from '../share/form/YearRangInput'
 
-const AddvanceFilterDeveloper = ({ isOpen, onClose, search, dcsValue, getListLeads, handleAddvanceSearch }) => {
+const AddvanceFilterDeveloper = ({ isOpen, onClose, handleAddvanceSearch }) => {
+  const today = new Date()
+  const startOfLastWeek = subDays(startOfWeek(today), 7)
+  const endOfLastWeek = subDays(endOfWeek(today), 7)
   const form = useForm({
     defaultValues: {
-      dateRange: {
-        startDate: new Date(),
-        endDate: new Date(),
+      dob: {
+        startDate: startOfLastWeek,
+        endDate: endOfLastWeek,
         key: 'selection'
       },
+
       preferredShift: [],
       totalExperience: "",
       lastContected: {
-        startDate: new Date(),
-        endDate: new Date(),
+        startDate: startOfLastWeek,
+        endDate: endOfLastWeek,
         key: 'selection'
       },
     }
   })
   const handleDateChnage = (date) => {
     console.log("valuedate", date)
+  }
+
+  const clearFilter = (e) => {
+    e.preventDefault()
+    // form.setValue("dob", "")
+    form.setValue("preferredShift", "")
+    form.setValue("lastContected", "")
+    form.setValue("totalExperience", "")
+
+
   }
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -66,7 +82,11 @@ const AddvanceFilterDeveloper = ({ isOpen, onClose, search, dcsValue, getListLea
                 />
               </div>
               {/* salary range */}
-              <SalaryRangInput form={form} name="salary" label="Salary" />
+
+              <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
+                <SalaryRangInput form={form} name="salary" label="Salary" />
+                <YearRangInput form={form} name="totalExperience" label="Total Experience" />
+              </div>
               <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
                 <FormMultiSelectField
                   name='preferredShift'
@@ -78,7 +98,7 @@ const AddvanceFilterDeveloper = ({ isOpen, onClose, search, dcsValue, getListLea
               </div>
               <div>
                 {/* Daten lastContected */}
-                <Label>Last Contected</Label>
+                <Label>Last Contacted</Label>
                 <FormDateRangePicker
                   name='lastContected'
                   label='Last Contected'
@@ -89,15 +109,16 @@ const AddvanceFilterDeveloper = ({ isOpen, onClose, search, dcsValue, getListLea
 
                 />
               </div>
-              <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
-                <FormMultiSelectField
-                  name='totalExperience'
-                  label='Total Experience'
-                  form={form}
-                  options={totalExperienceOptions}
-                  className='colum-box-bg-change'
-                /> </div>
-              <Button type='submit' className='site-button mt-4'>Search</Button>
+
+              <div className="flex justify-between items-center gap-4 mt-4">
+                <Button className="site-button" variant="outline" onClick={(e) => clearFilter(e)}>
+                  Clear
+                </Button>
+                <Button type="submit" className="site-button">
+                  Search
+                </Button>
+              </div>
+
             </form>
           </FormProvider>
         </div>

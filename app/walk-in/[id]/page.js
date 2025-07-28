@@ -198,7 +198,12 @@ function EditJobApplicationForm() {
           noticePeriod: data?.noticePeriod,
           reasonForChange: meta?._reasonForChange,
           preferredShift: JSON.parse(meta?._preferredShift),
-          skill:meta?._skill ?JSON.parse(meta?._skill) : [],
+          // skill:meta?._skill ?JSON.parse(meta?._skill) : [],
+          skill: Array.isArray(meta?._skill)
+          ? meta._skill
+          : meta?._skill
+          ? JSON.parse(meta._skill)
+          : [], 
           reference1Name: meta?._reference1Name,
           reference1ContactNumber: meta?._reference1ContactNumber,
           reference1Designation: meta?._reference1Designation,

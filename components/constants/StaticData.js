@@ -72,18 +72,18 @@ export const editWalkInForm = {
   lastIncrementAmount: ''
 }
 export const experienceOptions = [
-  { label: 'Fresher', value: 'fresher' },
-  { label: '6 Months', value: '6 months' },
-  { label: '1+ Years', value: '1 plus years' },
-  { label: '2+ Years', value: '2 plus years' },
-  { label: '3+ Years', value: '3 plus years' },
-  { label: '4+ Years', value: '4 plus years' },
-  { label: '5+ Years', value: '5 plus years' },
-  { label: '6+ Years', value: '6 plus years' },
-  { label: '7+ Years', value: '7 plus years' },
-  { label: '8+ Years', value: '8 plus years' },
-  { label: '9+ Years', value: '9 plus years' },
-  { label: '10+ Years', value: '10 plus years' }
+  { label: 'Fresher', value: '0' },
+  { label: '6 Months', value: '0.6' },
+  { label: '1+ Years', value: '1' },
+  { label: '2+ Years', value: '2' },
+  { label: '3+ Years', value: '3' },
+  { label: '4+ Years', value: '4' },
+  { label: '5+ Years', value: '5' },
+  { label: '6+ Years', value: '6 ' },
+  { label: '7+ Years', value: '7 ' },
+  { label: '8+ Years', value: '8 ' },
+  { label: '9+ Years', value: '9' },
+  { label: '10+ Years', value: '10' }
 ]
 
 export const GenderData = [
@@ -92,18 +92,18 @@ export const GenderData = [
   { label: 'Others', value: 'others' }
 ]
 export const totalExperienceOptions = [
-  { label: 'Fresher', value: 'fresher' },
-  { label: '6 Months', value: '6 months' },
-  { label: '1+ Years', value: '1 plus years' },
-  { label: '2+ Years', value: '2 plus years' },
-  { label: '3+ Years', value: '3 plus years' },
-  { label: '4+ Years', value: '4 plus years' },
-  { label: '5+ Years', value: '5 plus years' },
-  { label: '6+ Years', value: '6 plus years' },
-  { label: '7+ Years', value: '7 plus years' },
-  { label: '8+ Years', value: '8 plus years' },
-  { label: '9+ Years', value: '9 plus years' },
-  { label: '10+ Years', value: '10 plus years' }
+  { label: 'Fresher', value: '0' },
+  { label: '6 Months', value: '0.6' },
+  { label: '1+ Years', value: '1' },
+  { label: '2+ Years', value: '2' },
+  { label: '3+ Years', value: '3' },
+  { label: '4+ Years', value: '4 ' },
+  { label: '5+ Years', value: '5' },
+  { label: '6+ Years', value: '6' },
+  { label: '7+ Years', value: '7' },
+  { label: '8+ Years', value: '8' },
+  { label: '9+ Years', value: '9' },
+  { label: '10+ Years', value: '10' }
 ]
 
 export const designationOptions = [

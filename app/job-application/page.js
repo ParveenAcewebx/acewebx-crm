@@ -101,16 +101,9 @@ function JobApplicationForm() {
       }
 
       const preferred = JSON.stringify(data?.preferredShift)
-
-      // Object.entries(data).forEach(([key, value]) => {
-      //   if (key === 'preferredShift') return // skip it
-      //   formData.append(key, value)
-      // })
-
-
+      
       Object.entries(data).forEach(([key, value]) => {
         if (key === 'preferredShift') return;
-      
         if (key === 'dob' || key === 'lastIncrementDate') {
           formData.append(key, moment(value).format('YYYY-MM-DD'));
         } else {
@@ -121,7 +114,6 @@ function JobApplicationForm() {
 
       const response = await Candidate.addCandidate(formData)
       if (response?.data?.status == true) {
-        // successMessage('Candidate form submitted successfully!')
         form.reset()
         setLoader(false)
         router.push('/thankyou')

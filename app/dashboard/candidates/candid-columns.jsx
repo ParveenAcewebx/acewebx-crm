@@ -67,7 +67,7 @@ export const CandidColumns = (
       header: '#ID',
       size: 80, 
       cell: ({ row }) => (
-        <div className='w-[60px] truncate'>{`DEV-${row.original?.id}`}</div>
+        <div className='w-[60px] truncate'>{`#DEV-${row.original?.id}`}</div>
       )},
 
     {

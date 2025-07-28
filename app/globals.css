@@ -2041,11 +2041,16 @@ width: 99%;
 
 
 .searchError {
-  position: fixed;
+  position: absolute;
   padding: 0px;
   margin: 1px;
+  top : -25px
 }
-
+.filttersSearch {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+}
 .sendIcon{
   border-radius: 4px !important;
 }
