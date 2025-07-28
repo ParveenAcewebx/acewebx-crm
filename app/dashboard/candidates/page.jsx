@@ -300,18 +300,14 @@ const AllCandidates = () => {
                   />
                 </div>
               </div>
+              <div className='flex advanceSearchOuter'>
               <p
                 onClick={() => AddvanceOpenModal()}
                 className="cursor-pointer text-red-400 hover:text-red-500 "
               >
                 Advance Search
               </p>
-
-            </div>
-
-
-
-            <Tooltip>
+              <Tooltip>
               <TooltipTrigger>
                 <p
                   onClick={handleDownloadCSV}
@@ -324,6 +320,12 @@ const AllCandidates = () => {
               </TooltipTrigger>
 
             </Tooltip>
+            </div>
+            </div>
+
+
+
+
           </div>
         </FormProvider>
       </div>
