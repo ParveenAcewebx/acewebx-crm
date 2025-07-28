@@ -23,6 +23,7 @@ import { Loader } from 'lucide-react'
 import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
 import { SalesCandidateValidationEdit } from '@/components/form-validations/SalesCandidateValidationEdit'
 import moment from 'moment'
+import TagInputController from '@/components/share/form/TagInputController'
 
 function EditSalesJobApplication({ editId }) {
   const id = editId
@@ -59,6 +60,8 @@ function EditSalesJobApplication({ editId }) {
         form?.setValue('preferredShift', JSON.parse(data?.preferredShift))
         form?.setValue('businessMethods', JSON.parse(data?.businessMethods))
         form?.setValue('leadPlatforms', JSON.parse(data?.leadPlatforms))
+        form?.setValue('skill', JSON.parse(data?.skill))
+
         const joiningDate = new Date(data.joiningDate + 'T00:00:00')
         form?.setValue('joiningDate', joiningDate)
 
@@ -100,7 +103,7 @@ function EditSalesJobApplication({ editId }) {
       const preferred = JSON.stringify(data?.preferredShift)
       Object.entries(data).forEach(([key, value]) => {
         // Skip these keys entirely
-        if (['preferredShift', 'businessMethods', 'leadPlatforms'].includes(key)) return;
+        if (['preferredShift', 'businessMethods', 'leadPlatforms','skill'].includes(key)) return;
 
         // Format 'joiningDate', append everything else as-is
         if (key === 'joiningDate') {
@@ -112,6 +115,7 @@ function EditSalesJobApplication({ editId }) {
 
       formData.append('businessMethods', JSON.stringify(data?.businessMethods))
       formData.append('leadPlatforms', JSON.stringify(data?.leadPlatforms))
+      formData.append("skill",JSON.stringify(data?.skill))
       formData.append('preferredShift', preferred)
 
       const response = await SalesCandidate.updateSalesCandidate(id, formData)
@@ -273,14 +277,20 @@ function EditSalesJobApplication({ editId }) {
                 </div>
               </fieldset>
 
-              <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'></div>
-              <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
+              <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>  <TagInputController
+                name="skill"
+                form={form}
+                label="Skills"
+                placeholder="Enter Your Skills"
+                className=""
+              /></div>     
+                <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
                 <FormTextArea
                   name='reasonForLeaving'
                   label='Reason for leaving your current company?'
                   form={form}
                   multiline
-                  className='col-span-2 !h-[160px] border border-gray-600'
+                  className='col-span-2 !h-[160px] border'
                   style={{
                     width: '100%',
                     resize: 'none',
@@ -294,6 +304,7 @@ function EditSalesJobApplication({ editId }) {
               </div>
 
               <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
+
                 {/* textarea */}
                 <FormTextArea
                   name='topSalesAchievement'
@@ -301,7 +312,7 @@ function EditSalesJobApplication({ editId }) {
                   f
                   form={form}
                   multiline
-                  className='col-span-2 !h-[160px] border border-gray-600'
+                  className='col-span-2 !h-[160px] border '
                   style={{
                     width: '100%',
                     resize: 'none',

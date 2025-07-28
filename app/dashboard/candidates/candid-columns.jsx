@@ -65,8 +65,10 @@ export const CandidColumns = (
     {
       accessorKey: 'id',
       header: '#ID',
-      cell: ({ row }) => `DEV-${row.original?.id}`
-    },
+      size: 80, 
+      cell: ({ row }) => (
+        <div className='w-[60px] truncate'>{`DEV-${row.original?.id}`}</div>
+      )},
 
     {
       accessorKey: 'name',

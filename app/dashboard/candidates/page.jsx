@@ -1,16 +1,11 @@
 'use client'
+import Papa from 'papaparse'
 import LayoutHeader from '@/components/layoutHeader'
 import DialogBox from '@/components/modal/DialogBox'
 import FormInputField from '@/components/share/form/FormInputField'
 import FormSelectField from '@/components/share/form/FormSelect'
 import { DataTable } from '@/components/Table'
 import { errorMessage, successMessage } from '@/components/ToasterMessage'
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger
-} from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
 import useDocumentTitle from '@/components/utils/useDocumentTitle'
 import Candidate from '@/services/cadidateApis/CandidateApi'
@@ -20,7 +15,9 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { CandidColumns } from './candid-columns'
 import { LengthData } from '@/components/constants/StaticData'
 import AddvanceFilterDeveloper from '@/components/modal/AddvanceFilterDeveloper'
-import { Search } from 'lucide-react'
+import { Import, Search } from 'lucide-react'
+import { SearchValidation } from '@/components/form-validations/SearchValidation'
+import { yupResolver } from '@hookform/resolvers/yup'
 
 const AllCandidates = () => {
   useDocumentTitle('Leads')
@@ -30,20 +27,18 @@ const AllCandidates = () => {
   const [getList, setList] = useState([])
   const [page, setPage] = useState(1)
   const [totalRecord, setTotalRecord] = useState()
-  const [viewFilesOpenModal, setViewFilesOpenModal] = useState(false)
-  const [accordionValue, setAccordionValue] = useState(false)
-
   const [deleteOpenModal, setDeleteOpenModal] = useState(false)
   const [loading, setLoading] = useState(true)
   const [deleteIndex, setDeleteIndex] = useState(null)
   const [length, setLength] = useState(10)
-  const [isAccordionOpen, setIsAccordionOpen] = useState(false)
-  const [searchFilter, setSearchFilter] = useState(null)
   const [searchFormData, setSearchFormData] = useState(null)
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [minSalary, setMinSalary] = useState('');
   const [maxSalary, setMaxSalary] = useState('');
+  const [totalExperience, setTotalExperience] = useState("");
+  const [preferredShift, setPreferredShift] = useState("");
+  const [skill, setSkill] = useState("");
 
   const methods = useForm({
     defaultValues: {
@@ -60,6 +55,9 @@ const AllCandidates = () => {
         endDate,
         minSalary,
         maxSalary,
+        totalExperience,
+        preferredShift,
+        skill
       }
       setLoading(true)
       const res = await Candidate.candidateList(newData)
@@ -132,16 +130,23 @@ const AllCandidates = () => {
   }, [methods, totalRecord])
 
   // filter :--
-
-  const search = methods.watch('search')
+  const form = useForm({
+    resolver: yupResolver(SearchValidation),
+    mode: 'onChange', // or 'onBlur' or 'onChange'
+  });
+  const search = form.watch('search')
 
   const handleClearSearch = () => {
-    methods.setValue('search', '')
+    form.setValue('search', '')
 
     getListLeads()
   }
 
-  const handlePipeLineFilter = async data => {
+  const handleSimpleFilter = async data => {
+
+    const isValid = await form.trigger('search'); // only validate 'search'
+
+    if (!isValid) return;
     try {
       const apiData = await Candidate.candidateListFilters({
         ...data,
@@ -182,13 +187,19 @@ const AllCandidates = () => {
       endDate: data?.dob?.endDate,
       minSalary: data?.salary[0],
       maxSalary: data?.salary[1],
-      search: search
+      search: search,
+      totalExperience: data?.totalExperience,
+      preferredShift: data?.preferredShift,
+      skill: ""
     }
 
     setStartDate(newData.startDate)
     setEndDate(newData.endDate)
     setMinSalary(newData.minSalary)
     setMaxSalary(newData.maxSalary)
+    setTotalExperience(newData.totalExperience)
+    setPreferredShift(newData.preferredShift)
+    setSkill(newData.skill)
     try {
       const response = await Candidate.candidateListAddvanceFilters(newData)
       if (response?.status === 200) {
@@ -202,9 +213,50 @@ const AllCandidates = () => {
       }
     } catch (error) {
       console.log('error', error)
-    
+
     }
   }
+
+  const handleDownloadCSV = async () => {
+    const newData = {
+      startDate,
+      endDate,
+      minSalary,
+      maxSalary,
+      totalExperience,
+      preferredShift,
+      skill
+    }
+
+    try {
+      const response = await Candidate.candidateListAddvanceFilters(newData, {
+        responseType: 'json', // ✅ We're not downloading CSV — just raw JSON
+      })
+
+      const candidates = response?.data?.data?.candidates || []
+
+      if (candidates.length === 0) {
+        alert("No data found to export.")
+        return
+      }
+
+      // ✅ Convert to CSV
+      const csv = Papa.unparse(candidates)
+
+      // ✅ Create downloadable blob
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
+      const url = URL.createObjectURL(blob)
+
+      const a = document.createElement('a')
+      a.href = url
+      a.download = 'filtered_users.csv'
+      a.click()
+      URL.revokeObjectURL(url)
+    } catch (error) {
+      console.error("Download failed", error)
+    }
+  }
+
 
 
   return (
@@ -212,10 +264,12 @@ const AllCandidates = () => {
       <div className=''>
         <LayoutHeader pageTitle='Developers List' />
       </div>
+
+
       {/* Filters */}
 
 
-      <div className='flex justify-between items-center'>
+      <div className='flex justify-between items-center mb-5'>
         <div>
           <FormProvider {...methods}>
             <FormSelectField
@@ -226,37 +280,46 @@ const AllCandidates = () => {
             />
           </FormProvider>
         </div>
-        <div className='flex justify-between items-center gap-4'>
-          <FormProvider {...methods}>
-            {/* Input Field */}
+
+
+
+
+        <p
+          onClick={handleDownloadCSV}
+          className="cursor-pointer text-red-400 hover:text-red-500 text-center flex gap-2 "
+        >
+          <Import />
+           Export CSV
+        </p>
+
+
+        <FormProvider {...form}>
+          <div className="flex justify-between items-center gap-4">
             <div>
               <FormInputField
                 name="search"
                 placeholder="Email/Name/Phone"
-                form={methods}
+                form={form}
                 inputType="text"
                 className="colum-box-bg-change col-span-2"
+                searchError="searchError"
               />
             </div>
             <div>
-              {/* Search Button */}
               <Search
                 type="submit"
                 className="cursor-pointer"
-                onClick={() => handlePipeLineFilter()}
+                onClick={() => handleSimpleFilter()}
               />
             </div>
-
-          </FormProvider>
-          {/* <Button
-            type="submit"
-            className="site-button-small bg-white ml-2"
-            onClick={() => AddvanceOpenModal()}
-          > */}
-            <p onClick={() => AddvanceOpenModal()} className='cursor-pointer text-red-400 hover:text-red-500'>Advance Search</p>
-          {/* </Button> */}
-        </div>
-
+            <p
+              onClick={() => AddvanceOpenModal()}
+              className="cursor-pointer text-red-400 hover:text-red-500"
+            >
+              Advance Search
+            </p>
+          </div>
+        </FormProvider>
       </div>
 
       <DataTable

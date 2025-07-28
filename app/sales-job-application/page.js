@@ -240,7 +240,7 @@ function SalesJobApplicationForm() {
                 label='Reason for leaving your current company?'
                 form={form}
                 multiline
-                className='col-span-2 !h-[160px] border border-gray-600'
+                className='col-span-2 !h-[160px] border '
                 style={{
                   width: '100%',
                   resize: 'none',
@@ -261,7 +261,7 @@ function SalesJobApplicationForm() {
                 f
                 form={form}
                 multiline
-                className='col-span-2 !h-[160px] border border-gray-600'
+                className='col-span-2 !h-[160px] border '
                 style={{
                   width: '100%',
                   resize: 'none',

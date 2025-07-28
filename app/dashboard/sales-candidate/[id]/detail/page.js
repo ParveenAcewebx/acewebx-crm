@@ -3,11 +3,8 @@
 
 import React, { useEffect, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
-
 import { Card, CardContent } from '@/components/ui/card'
-import Candidate from '@/services/cadidateApis/CandidateApi'
 import SalesCandidate from '@/services/cadidateApis/SalesCandidateApi'
-import LayoutHeader from '@/components/layoutHeader'
 import DcsModal from '@/components/modal/dscForm'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { TabsContent } from '@radix-ui/react-tabs'
@@ -21,14 +18,11 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 
 function Page({ params }) {
   const router = useRouter()
-  // useDocumentTitle('View Lead Dashboard')
   const id = params?.id
   const editId = id
   const [dcsModalOpen, setDcsModalOpen] = useState(false) // State for DCS modal
 
   const [candidateData, setCandidateData] = useState({})
-  const [candidateUrl, setCandidateUrl] = React.useState('')
-  const [open, setOpen] = React.useState(false)
   const handleGetApi = async () => {
     try {
       const apiData = await SalesCandidate.viewSalesCandidate(editId)
@@ -43,20 +37,6 @@ function Page({ params }) {
     }
   }, [id, router])
 
-  // document popup:-
-  const handleClickOpen = async () => {
-    try {
-      const apiData = await Candidate.viewCandidate(id)
-      setCandidateUrl(apiData?.data?.data?.meta?._resume)
-    } catch (error) {
-      console.error('API error', error)
-    }
-    setOpen(true)
-  }
-
-  const handleClose = () => {
-    setOpen(false)
-  }
   const percent = Math.round(((candidateData?.expectedSalary - candidateData?.currentSalary) * 100) / candidateData?.currentSalary)
 
   const [candidateBusiness, setCandidateBusiness] = useState([])
@@ -103,8 +83,6 @@ function Page({ params }) {
     e.preventDefault()
     setDcsModalOpen(true)
   }
-
-
 
   const [url, setUrl] = useState('')
   const [loading, setLoading] = useState(false)
@@ -166,10 +144,10 @@ function Page({ params }) {
   const genderCol = genderColor(candidateData?.gender)
 
   // send sales walk-in form:-
-  const handleSendWalkInForm = async row => {
+  const handleSendWalkInForm = async () => {
     try {
       const sendEmailLin = await SalesCandidate.sendSalesWalkInLink(
-        row.original.id
+        id
       )
 
       if (sendEmailLin?.data?.status == true) {
@@ -201,13 +179,13 @@ function Page({ params }) {
           {/* Top Section */}
           <div className={`tittle-bar ${genderCol}`}>
             <div className='user-name flex items-center gap-2 text-base font-medium text-gray-800'>
-              <UserIcon className='w-5 h-5 text-yellow-600' />
+              <UserIcon className='w-5 h-5 text-gray-200' />
               <span>{candidateData?.name} </span>
 
-              <Mail className='w-5 h-5 text-yellow-600 ml-4' />
+              <Mail className='w-5 h-5 text-gray-200 ml-4' />
               <span>{candidateData?.email?.toLowerCase()} </span>
 
-              <Phone className='w-5 h-5 text-yellow-600 ml-4' />
+              <Phone className='w-5 h-5 text-gray-200 ml-4' />
               <span>{candidateData?.phone}</span>
             </div>
 
@@ -218,7 +196,7 @@ function Page({ params }) {
                     onClick={handleSendWalkInForm}
                     size='icon'
                     variant='outline'
-                    className='shrink-0 border-red-400 hover:bg-accent'
+                    className='shrink-0 hover:bg-accent sendIcon'
                   >
                     <svg
                       viewBox='0 0 24 24'

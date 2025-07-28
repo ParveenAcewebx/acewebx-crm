@@ -20,7 +20,8 @@ const FormInputField = ({
   defaultValue,
   max,
   readOnly,
-  inputType
+  inputType,
+  searchError= ""
 }) => {
   return (
     <FormField
@@ -47,7 +48,7 @@ const FormInputField = ({
               step='any'
             />
           </FormControl>
-          <FormMessage />
+          <FormMessage  className={searchError}/>
           {/* <FormDescription /> */}
         </FormItem>
       )}

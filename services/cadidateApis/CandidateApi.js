@@ -5,10 +5,22 @@ const Candidate = {
     return api.post(`candidate/save`, data)
   },
   candidateList: (newData) => {
-    let start= newData?.startDate == undefined ? "": newData?.startDate
-    let end= newData?.endDate == undefined ? "":newData?.endDate
-    return api.get(`candidate/getAllCandidate?page=${newData?.page}&limit=${newData?.length}&minSalary=${newData?.minSalary}&maxSalary=${newData?.maxSalary}&startDate=${start}&endDate=${end}`)
+    let start = newData?.startDate == undefined ? "" : newData?.startDate
+    let end = newData?.endDate == undefined ? "" : newData?.endDate
+    let totalExperience = newData?.totalExperience == undefined ? "" : newData?.totalExperience
+    let preferredShift = newData?.preferredShift == undefined ? "" : newData?.preferredShift
+    let skill = newData?.skill == undefined ? "" : newData?.skill
+    return api.get(`candidate/getAllCandidate?page=${newData?.page}&limit=${newData?.length}&minSalary=${newData?.minSalary}&maxSalary=${newData?.maxSalary}&startDate=${start}&endDate=${end}&totalExperience=${totalExperience}&preferredShift=${preferredShift}&skill=${skill}`)
   },
+  candidateCSVList: (newData) => {
+    let start = newData?.startDate == undefined ? "" : newData?.startDate
+    let end = newData?.endDate == undefined ? "" : newData?.endDate
+    let totalExperience = newData?.totalExperience == undefined ? "" : newData?.totalExperience
+    let preferredShift = newData?.preferredShift == undefined ? "" : newData?.preferredShift
+    let skill = newData?.skill == undefined ? "" : newData?.skill
+    return api.get(`candidate/getAllCandidate?page=${newData?.page}&limit=${newData?.length}&minSalary=${newData?.minSalary}&maxSalary=${newData?.maxSalary}&startDate=${start}&endDate=${end}&totalExperience=${totalExperience}&preferredShift=${preferredShift}&skill=${skill}`)
+  },
+
   candidateGetById: id => {
     return api.get(`candidate/getCandidateById/${id}`)
   },
@@ -28,17 +40,20 @@ const Candidate = {
   },
   candidateListFilters: data => {
     const search = data?.search ?? ''
-    
+
     return api.get(
       `candidate/getAllCandidate?search=${search}`
     )
   },
   candidateListAddvanceFilters: newData => {
-    let start= newData?.startDate == undefined ? "": newData?.startDate
-    let end= newData?.endDate == undefined ? "":newData?.endDate
-    let search = newData?.search==undefined?"":newData?.search
+    let start = newData?.startDate == undefined ? "" : newData?.startDate
+    let end = newData?.endDate == undefined ? "" : newData?.endDate
+    let search = newData?.search == undefined ? "" : newData?.search
+    let totalExperience = newData?.totalExperience == undefined ? "" : newData?.totalExperience
+    let preferredShift = newData?.preferredShift == undefined ? "" : newData?.preferredShift
+    let skill = newData?.skill == undefined ? "" : newData?.skill
     return api.get(
-      `candidate/getAllCandidate?minSalary=${newData?.minSalary}&maxSalary=${newData?.maxSalary}&startDate=${start}&endDate=${end}&search=${search}`
+      `candidate/getAllCandidate?minSalary=${newData?.minSalary}&maxSalary=${newData?.maxSalary}&startDate=${start}&endDate=${end}&search=${search}&totalExperience=${totalExperience}&preferredShift=${preferredShift}&skill=${skill}`
     )
   },
 
@@ -49,7 +64,7 @@ const Candidate = {
   candidateGetByUUID: id => {
     return api.post(`confirm-candidate-token/${id}`)
   },
-  activityDevCandidate:(module ,editId)=>{
+  activityDevCandidate: (module, editId) => {
     return api.get(
       `activity/logs?module=${module}&moduleId=${editId}`
     )

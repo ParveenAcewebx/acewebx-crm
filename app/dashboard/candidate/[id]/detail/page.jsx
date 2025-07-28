@@ -163,44 +163,44 @@ function Page({ params }) {
 
           <CardContent className={`tittle-bar ${genderCol}`}>
             <div className='user-name flex items-center gap-2 text-base font-medium text-gray-800'>
-              <UserIcon className='w-5 h-5 text-yellow-600' />
+              <UserIcon className='w-5 h-5 text-gray-200' />
               <span>{candidateData?.name} </span>
 
-              <Mail className='w-5 h-5 text-yellow-600 ml-4' />
+              <Mail className='w-5 h-5 text-gray-200 ml-4' />
               <span>{candidateData?.email?.toLowerCase()} </span>
 
-              <Phone className='w-5 h-5 text-yellow-600 ml-4' />
+              <Phone className='w-5 h-5 text-gray-200 ml-4' />
               <span>{candidateData?.phone}</span>
             </div>
 
             <div className=' resume-btn'>
               <div>
-              <Tooltip>
-  <TooltipTrigger asChild>
-    <Button
-      onClick={handleSendWalkInForm}
-      size='icon'
-      variant='outline'
-      className='shrink-0 border-red-400 hover:bg-accent'
-    >
-      <svg
-        viewBox='0 0 24 24'
-        fill='none'
-        stroke='#C21E56'
-        strokeWidth='2'
-        strokeLinecap='round'
-        strokeLinejoin='round'
-        className='w-5 h-5'
-      >
-        <path d='M22 2L11 13' />
-        <path d='M22 2L15 22L11 13L2 9L22 2Z' />
-      </svg>
-    </Button>
-  </TooltipTrigger>
-  <TooltipContent className='w-auto rounded-sm bg-[#b82025] text-sm'>
-    Send Walk In Form
-  </TooltipContent>
-</Tooltip>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      onClick={handleSendWalkInForm}
+                      size='icon'
+                      variant='outline'
+                      className='shrink-0  hover:bg-accent sendIcon'
+                    >
+                      <svg
+                        viewBox='0 0 24 24'
+                        fill='none'
+                        stroke='#C21E56'
+                        strokeWidth='2'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        className='w-5 h-5'
+                      >
+                        <path d='M22 2L11 13' />
+                        <path d='M22 2L15 22L11 13L2 9L22 2Z' />
+                      </svg>
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent className='w-auto rounded-sm bg-[#b82025] text-sm'>
+                    Send Walk In Form
+                  </TooltipContent>
+                </Tooltip>
 
 
               </div>
@@ -382,7 +382,7 @@ function Page({ params }) {
                       <p><span className='font-semibold'>Experience:</span> {candidateData?.meta?._reference2Experience}</p>
                     </div>
                     }
-                    {!candidateData?.meta?._reference2Name && !candidateData?.meta?._reference1Name && "No Reference Found!"  }
+                    {!candidateData?.meta?._reference2Name && !candidateData?.meta?._reference1Name && "No Reference Found!"}
 
 
                   </div>

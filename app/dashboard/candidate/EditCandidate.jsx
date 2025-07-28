@@ -25,6 +25,7 @@ import Candidate from '@/services/cadidateApis/CandidateApi'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Loader } from 'lucide-react'
 import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
+import TagInputController from '@/components/share/form/TagInputController'
 
 function EditCandidate({ editId }) {
   const [loader, setLoader] = useState(false)
@@ -44,12 +45,12 @@ function EditCandidate({ editId }) {
       const formData = new FormData()
 
       // Need only those keys which are touched
-const dirtyFields = form.formState.dirtyFields;
+      const dirtyFields = form.formState.dirtyFields;
 
-const updateFieldsValue = Object.keys(dirtyFields);
-if (updateFieldsValue) {
-formData.append('updateField', JSON.stringify(updateFieldsValue))
- }
+      const updateFieldsValue = Object.keys(dirtyFields);
+      if (updateFieldsValue) {
+        formData.append('updateField', JSON.stringify(updateFieldsValue))
+      }
 
 
       const file = data.resume?.[0]
@@ -68,6 +69,8 @@ formData.append('updateField', JSON.stringify(updateFieldsValue))
           formData.append(key, value);
         }
       });
+
+      formData.append("skill",JSON.stringify(data?.skill))
       formData.append('preferredShift', preferred)
 
       const response = await Candidate.updateCandidate(editId, formData)
@@ -98,7 +101,7 @@ formData.append('updateField', JSON.stringify(updateFieldsValue))
     return new File([blob], fileName, { type: contentType })
   }
 
-  const candidateDataGetById = async (editId, form) => {
+  const candidateDataGetById = async (editId) => {
     try {
       const response = await Candidate.candidateGetById(editId)
 
@@ -123,6 +126,7 @@ formData.append('updateField', JSON.stringify(updateFieldsValue))
           noticePeriod: data?.noticePeriod,
           reasonForChange: meta?._reasonForChange,
           preferredShift: JSON?.parse(meta?._preferredShift),
+          skill:meta?._skill ?JSON.parse(meta?._skill) : [],
           reference1Name: meta?._reference1Name,
           reference1ContactNumber: meta?._reference1ContactNumber,
           reference1Designation: meta?._reference1Designation,
@@ -237,10 +241,6 @@ formData.append('updateField', JSON.stringify(updateFieldsValue))
                     outline: 'none'
                   }}
                 />
-
-
-
-
                 <FormTextArea
                   name='permanentAddress'
                   label='Permanent Address (As Per Aadhaar)'
@@ -249,9 +249,8 @@ formData.append('updateField', JSON.stringify(updateFieldsValue))
                   inputType='text'
                   className='col-span-2'
                   style={{ border: '1px solid #e9e9e9', height: '47px', outline: 'none' }}
-
                 />
-
+               
 
               </div>
             </fieldset>
@@ -332,6 +331,7 @@ formData.append('updateField', JSON.stringify(updateFieldsValue))
                   options={preferredShiftOptions}
                   className='colum-box-bg-change !w-[100%]'
                 />
+
               </div>
 
             </fieldset>
@@ -417,12 +417,19 @@ formData.append('updateField', JSON.stringify(updateFieldsValue))
 
 
             <div className='mb-4 grid grid-cols-1 gap-4 md:grid-cols-1 ace-reason'>
+            <TagInputController
+                  name="skill"
+                  form={form}
+                  label="Skills"
+                  placeholder="Enter Your Skills"
+                  className="mt-2"
+                />
               <FormTextArea
                 name='reasonForChange'
                 label='Reason for Change'
                 form={form}
                 multiline
-                className='col-span-2 !h-[160px] border border-gray-600'
+                className='col-span-2 !h-[160px] border '
                 style={{
                   width: '100%',
                   resize: 'none',
