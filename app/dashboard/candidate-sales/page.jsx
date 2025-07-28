@@ -18,9 +18,11 @@ import AddvanceFilterDeveloper from '@/components/modal/AddvanceFilterDeveloper'
 import { Import, Search } from 'lucide-react'
 import { SearchValidation } from '@/components/form-validations/SearchValidation'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import moment from 'moment'
 
 const AllSalesCandidates = () => {
-  useDocumentTitle('Leads')
+  useDocumentTitle('Sales Candidate')
   const [dcsModalOpen, setDcsModalOpen] = useState(false) // State for DCS modal
   const [selectedDcsValue, setSelectedDcsValue] = useState(null) // Store DCS value for modal
   const router = useRouter()
@@ -36,10 +38,10 @@ const AllSalesCandidates = () => {
   const [endDate, setEndDate] = useState('');
   const [minSalary, setMinSalary] = useState('');
   const [maxSalary, setMaxSalary] = useState('');
-  const [totalExperience, setTotalExperience] = useState("");
   const [preferredShift, setPreferredShift] = useState("");
   const [skill, setSkill] = useState("");
-
+  const [minExperience, setMinExperience] = useState('');
+  const [maxExperience, setMaxExperience] = useState('');
 
   const methods = useForm({
     defaultValues: {
@@ -57,7 +59,8 @@ const AllSalesCandidates = () => {
         endDate,
         minSalary,
         maxSalary,
-        totalExperience,
+        minExperience,
+        maxExperience,
         preferredShift,
         skill
       }
@@ -185,21 +188,22 @@ const AllSalesCandidates = () => {
   //Addvance search :-
   const handleAddvanceSearch = async data => {
     const newData = {
-      startDate: data?.dob?.startDate,
-      endDate: data?.dob?.endDate,
+      startDate: moment(data?.dob?.startDate).format('YYYY-MM-DD'),
+      endDate: moment(data?.dob?.endDate).format('YYYY-MM-DD'),
       minSalary: data?.salary[0],
       maxSalary: data?.salary[1],
       search: search,
-      totalExperience: data?.totalExperience,
+      minExperience: data?.totalExperience[0],
+      maxExperience: data?.totalExperience[1],
       preferredShift: data?.preferredShift,
       skill: ""
     }
+    setMinExperience(newData.minExperience)
+    setMaxExperience(newData.maxExperience)
     setStartDate(newData.startDate)
     setEndDate(newData.endDate)
     setMinSalary(newData.minSalary)
     setMaxSalary(newData.maxSalary)
-
-    setTotalExperience(newData.totalExperience)
     setPreferredShift(newData.preferredShift)
     setSkill(newData.skill)
     try {
@@ -225,30 +229,31 @@ const AllSalesCandidates = () => {
       endDate,
       minSalary,
       maxSalary,
-      totalExperience,
+      minExperience,
+      maxExperience,
       preferredShift,
       skill,
     };
-  
+
     try {
       const response = await SalesCandidate.salesCandidateCSVList(newData, {
         responseType: 'blob', // ✅ Correct response type for CSV
       });
-  
+
       const blob = new Blob([response.data], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
-  
+
       const a = document.createElement('a');
       a.href = url;
       a.download = 'filtered_users.csv';
       a.click();
-  
+
       URL.revokeObjectURL(url);
     } catch (error) {
       console.error("Download failed", error);
     }
   };
-  
+
   return (
     <>
       <div className='mb-3 flex items-center justify-between'>
@@ -270,38 +275,51 @@ const AllSalesCandidates = () => {
         </div>
 
 
-        <p
-          onClick={handleDownloadCSV}
-          className="cursor-pointer text-red-400 hover:text-red-500 text-center flex gap-2 "
-        >
-          <Import />
-          Export CSV
-        </p>
+
         <FormProvider {...form}>
           <div className="flex justify-between items-center gap-4">
-            <div>
-              <FormInputField
-                name="search"
-                placeholder="Email/Name/Phone"
-                form={form}
-                inputType="text"
-                className="colum-box-bg-change col-span-2"
-                searchError="searchError"
-              />
+            <div className='filters relative'>
+              <div>
+                <FormInputField
+                  name="search"
+                  placeholder="Email/Name/Phone"
+                  form={form}
+                  inputType="text"
+                  className="colum-box-bg-change col-span-2"
+                  searchError="searchError"
+                />
+                <div className='filttersSearch'>
+                  <Search
+                    type="submit"
+                    className="cursor-pointer "
+                    onClick={() => handleSimpleFilter()}
+                  />
+                </div>
+              </div>
+              <p
+                onClick={() => AddvanceOpenModal()}
+                className="cursor-pointer text-red-400 hover:text-red-500 "
+              >
+                Advance Search
+              </p>
+
             </div>
-            <div>
-              <Search
-                type="submit"
-                className="cursor-pointer"
-                onClick={() => handleSimpleFilter()}
-              />
-            </div>
-            <p
-              onClick={() => AddvanceOpenModal()}
-              className="cursor-pointer text-red-400 hover:text-red-500"
-            >
-              Advance Search
-            </p>
+
+
+
+            <Tooltip>
+              <TooltipTrigger>
+                <p
+                  onClick={handleDownloadCSV}
+                  className="cursor-pointer text-red-400 hover:text-red-500 text-center flex gap-2 "
+                >
+                  <Import />
+                </p>
+                <TooltipContent className='w-auto rounded-sm bg-[#b82025] text-sm'>Download CSV</TooltipContent>
+
+              </TooltipTrigger>
+
+            </Tooltip>
           </div>
         </FormProvider>
 

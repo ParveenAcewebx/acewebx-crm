@@ -53,11 +53,12 @@ function EditCandidateDetails() {
       }
 
       const preferred = JSON.stringify(data?.preferredShift)
-
+      const newSkill = JSON.stringify(data?.skill)
 
 
       Object.entries(data).forEach(([key, value]) => {
         if (key === 'preferredShift') return;
+        if (key === 'skill') return;
 
         if (key === 'dob' || key === 'lastIncrementDate') {
           formData.append(key, moment(value).format('YYYY-MM-DD'));
@@ -65,8 +66,8 @@ function EditCandidateDetails() {
           formData.append(key, value);
         }
       });
-      formData.append('preferredShift', preferred)
-      formData.append("skill",JSON.stringify(data?.skill))
+      formData.append("preferredShift",preferred)
+      formData.append("skill",newSkill)
       const response = await Candidate.updateCandidate(id, formData)
       if (response?.data?.status == true) {
         form.reset()

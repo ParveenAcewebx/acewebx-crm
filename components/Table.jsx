@@ -32,69 +32,87 @@ export function DataTable({
   })
   return (
     <>
-      <div className='rounded-6 border-color-grey custom-tabels border bg-white'>
-        <Table>
-          <TableHeader className='theme-bg-light-rgba'>
-            { table?.getHeaderGroups().map(headerGroup => (
-              <TableRow key={headerGroup?.id}>
-                {headerGroup?.headers.map(header => (
-                  <TableHead
-                    key={header?.id}
-                    className='border-color-grey text-dark-color theme-bg-light-rgba px-3 py-4 text-sm'
-                  >
-                    {header?.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header?.column?.columnDef?.header,
-                          header?.getContext()
-                        )}
-                  </TableHead>
-                ))}
-              </TableRow>
+     <div className='rounded-6 border-color-grey custom-tabels border bg-white'>
+  <Table>
+    <TableHeader className='theme-bg-light-rgba'>
+      {table?.getHeaderGroups()?.length > 0 &&
+        table.getHeaderGroups().map(headerGroup => (
+          <TableRow key={headerGroup.id}>
+            {headerGroup.headers?.map(header => (
+              <TableHead
+                key={header.id}
+                className='border-color-grey text-dark-color theme-bg-light-rgba px-3 py-4 text-sm'
+              >
+                {header.isPlaceholder
+                  ? null
+                  : flexRender(
+                      header.column?.columnDef?.header,
+                      header.getContext()
+                    )}
+              </TableHead>
             ))}
-          </TableHeader>
+          </TableRow>
+        ))}
+    </TableHeader>
 
-          <TableBody>
-            {loading ? (
-              <TableRow>
+    <TableBody>
+      {loading ? (
+        <TableRow>
+          <TableCell
+            colSpan={(columns?.length || 0) + 1}
+            className='h-16 px-2 py-3 text-center'
+          >
+            Loading...
+          </TableCell>
+        </TableRow>
+      ) : !data?.length ? (
+        <TableRow>
+          <TableCell
+            colSpan={(columns?.length || 0) + 1}
+            className='h-24 px-2 py-3 text-center text-gray-500'
+          >
+            No result found
+          </TableCell>
+        </TableRow>
+      ) : table?.getRowModel()?.rows?.length ? (
+        table.getRowModel().rows.map(row => (
+          <TableRow
+            key={row.id}
+            data-state={row.getIsSelected() && 'selected'}
+          >
+            {row.getVisibleCells()?.length > 0 ? (
+              row.getVisibleCells().map(cell => (
                 <TableCell
-                  colSpan={columns?.length + 1}
-                  className='h-16 px-2 py-3 text-center'
+                  key={cell.id}
+                  className='border-color-grey border-b px-2 py-3'
                 >
+                  {flexRender(
+                    cell.column?.columnDef?.cell,
+                    cell.getContext()
+                  )}
                 </TableCell>
-              </TableRow>
-            ) : data?.length === 0 ? (
-              <TableRow>
-                <TableCell
-                  colSpan={columns?.length + 1}
-                  className='h-24 px-2 py-3 text-center text-gray-500'
-                >
-                  No result found
-                </TableCell>
-              </TableRow>
-            ) : (
-              table?.getRowModel()?.rows?.map(row => (
-                <TableRow
-                  key={row?.id}
-                  data-state={row?.getIsSelected() && 'selected'}
-                >
-                  {row?.getVisibleCells()?.map(cell => (
-                    <TableCell
-                      key={cell?.id}
-                      className='border-color-grey border-b px-2 py-3'
-                    >
-                      {flexRender(
-                        cell?.column?.columnDef?.cell,
-                        cell?.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
               ))
+            ) : (
+              <TableCell colSpan={(columns?.length || 0) + 1}>
+                No visible cells
+              </TableCell>
             )}
-          </TableBody>
-        </Table>
-      </div>
+          </TableRow>
+        ))
+      ) : (
+        <TableRow>
+          <TableCell
+            colSpan={(columns?.length || 0) + 1}
+            className='h-24 px-2 py-3 text-center text-gray-500'
+          >
+            No rows to display
+          </TableCell>
+        </TableRow>
+      )}
+    </TableBody>
+  </Table>
+</div>
+
       {totalRecord > 10 ? (
         <TablePagination
           totalRecord={totalRecord}
