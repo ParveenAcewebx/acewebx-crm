@@ -13,7 +13,7 @@ import 'react-date-range/dist/theme/default.css'
 
 export function FormDateRangePicker({
   label,
-  name ,
+  name,
   form
 }) {
   const [open, setOpen] = useState(false)
@@ -25,11 +25,11 @@ export function FormDateRangePicker({
       key: 'selection',
     })
   }
-useEffect(()=>{
-// if(){
+  useEffect(() => {
+    // if(){
 
-// }
-},[])
+    // }
+  }, [])
   return (
     <div className="flex flex-col gap-2">
 
@@ -52,13 +52,22 @@ useEffect(()=>{
               </PopoverTrigger>
 
               <PopoverContent className="p-0 w-auto dark-calendar-popover"
-              onInteractOutside={(e) => e.preventDefault()}
-              onPointerDownOutside={(e) => e.preventDefault()}
+                onInteractOutside={(e) => e.preventDefault()}
+                onPointerDownOutside={(e) => e.preventDefault()}
               >
+                <div className="text-end">
+                  <button
+                    onClick={() => setOpen(false)}
+                    className="text-lg px-3 py-1 rounded-md  text-gray-400"
+                  >
+                    ✕
+                  </button>
+                </div>
+
                 <div className="flex">
                   {/* Presets */}
                   <div className="flex flex-col gap-1 bg-[#b82025] p-4 text-white text-base w-40 !leading-[35px] font-medium">
-                    <button onClick={()=>setOpen(false)}>Close</button>
+
                     <button onClick={() => setRange(new Date(), new Date())}>Today</button>
                     <button onClick={() => setRange(subDays(new Date(), 1), subDays(new Date(), 1))}>Yesterday</button>
                     <button onClick={() => setRange(startOfWeek(new Date()), endOfWeek(new Date()))}>This Week</button>
@@ -70,7 +79,7 @@ useEffect(()=>{
                   {/* Calendar */}
                   <DateRange
                     editableDateInputs={true}
-                    onChange={(item) => onChange(item.selection) }
+                    onChange={(item) => onChange(item.selection)}
                     moveRangeOnFirstSelection={false}
                     ranges={[
                       value || {

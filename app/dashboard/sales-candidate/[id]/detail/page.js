@@ -1,6 +1,5 @@
 
 'use client'
-
 import React, { useEffect, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { Card, CardContent } from '@/components/ui/card'
@@ -20,9 +19,16 @@ function Page({ params }) {
   const router = useRouter()
   const id = params?.id
   const editId = id
+  const [url, setUrl] = useState('')
+  const [loading, setLoading] = useState(false)
   const [dcsModalOpen, setDcsModalOpen] = useState(false) // State for DCS modal
-
   const [candidateData, setCandidateData] = useState({})
+  const [candidateBusiness, setCandidateBusiness] = useState([])
+  const [candidateShifts, setCandidateShifts] = useState([])
+  const [candidatePlatForm, setCandidatePlatForm] = useState([])
+  const [activitiesData, setActivitiesData] = useState()
+
+  // data get by ID 
   const handleGetApi = async () => {
     try {
       const apiData = await SalesCandidate.viewSalesCandidate(editId)
@@ -37,13 +43,12 @@ function Page({ params }) {
     }
   }, [id, router])
 
+  // % for :--
   const percent = Math.round(((candidateData?.expectedSalary - candidateData?.currentSalary) * 100) / candidateData?.currentSalary)
 
-  const [candidateBusiness, setCandidateBusiness] = useState([])
-  const [candidateShifts, setCandidateShifts] = useState([])
-  const [candidatePlatForm, setCandidatePlatForm] = useState([])
 
 
+  // Check for If old data is exist
   useEffect(() => {
     if (candidateData?.businessMethods) {
       try {
@@ -78,15 +83,14 @@ function Page({ params }) {
   ]);
 
 
-
   const dosOpenModal = (e) => {
     e.preventDefault()
     setDcsModalOpen(true)
   }
 
-  const [url, setUrl] = useState('')
-  const [loading, setLoading] = useState(false)
+ 
 
+  // Resume Url get:--
   const candidateDataGetById = async id => {
     try {
       setLoading(true)
@@ -108,8 +112,6 @@ function Page({ params }) {
   }, [id])
 
   // Activity :-
-  const [activitiesData, setActivitiesData] = useState()
-
   const getActivities = async () => {
     try {
       const res = await SalesCandidate.activitySalesCandidate("candidateSales", editId)

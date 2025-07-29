@@ -39,11 +39,9 @@ function EditCandidate({ editId }) {
 
 
   const onSubmit = async data => {
-
     setLoader(true)
     try {
       const formData = new FormData()
-
       // Need only those keys which are touched
       const dirtyFields = form.formState.dirtyFields;
 

@@ -1,12 +1,10 @@
 'use client'
 import LayoutHeader from '@/components/layoutHeader'
 import DialogBox from '@/components/modal/DialogBox'
-import Papa from 'papaparse'
 import FormInputField from '@/components/share/form/FormInputField'
 import FormSelectField from '@/components/share/form/FormSelect'
 import { DataTable } from '@/components/Table'
 import { errorMessage, successMessage } from '@/components/ToasterMessage'
-import { Button } from '@/components/ui/button'
 import useDocumentTitle from '@/components/utils/useDocumentTitle'
 import SalesCandidate from '@/services/cadidateApis/SalesCandidateApi'
 import { useRouter } from 'next/navigation'
@@ -42,6 +40,8 @@ const AllSalesCandidates = () => {
   const [skill, setSkill] = useState("");
   const [minExperience, setMinExperience] = useState('');
   const [maxExperience, setMaxExperience] = useState('');
+  const [connectStartDate, setConnectStartDate] = useState('');
+  const [connectEndDate, setConnectEndDate] = useState('');
 
   const methods = useForm({
     defaultValues: {
@@ -49,7 +49,8 @@ const AllSalesCandidates = () => {
     }
   })
 
-  const getListLeads = async () => {
+  //  get all sales candidates :-
+  const getListSales = async () => {
     try {
 
       const newData = {
@@ -62,6 +63,8 @@ const AllSalesCandidates = () => {
         minExperience,
         maxExperience,
         preferredShift,
+        connectStartDate,
+        connectEndDate,
         skill
       }
       setLoading(true)
@@ -83,7 +86,7 @@ const AllSalesCandidates = () => {
     if (searchFormData) {
       handleClearSearch()
     } else {
-      getListLeads()
+      getListSales()
     }
   }, [page, length])
 
@@ -94,7 +97,7 @@ const AllSalesCandidates = () => {
         const res = await SalesCandidate.romoveSalesCandidate(deleteIndex)
         setDeleteOpenModal(false)
         if (res?.status === 200) {
-          getListLeads()
+          getListSales()
           successMessage({ description: res?.data?.message })
         }
       } catch (error) {
@@ -144,7 +147,7 @@ const AllSalesCandidates = () => {
   const handleClearSearch = () => {
     form.setValue('search', '')
 
-    getListLeads()
+    getListSales()
   }
 
   const handleSimpleFilter = async data => {
@@ -166,6 +169,7 @@ const AllSalesCandidates = () => {
     }
   }
 
+  // send form by email link :-
   const handleSendWalkInForm = async row => {
     try {
       const sendEmailLin = await SalesCandidate.sendSalesWalkInLink(
@@ -196,8 +200,17 @@ const AllSalesCandidates = () => {
       minExperience: data?.totalExperience[0],
       maxExperience: data?.totalExperience[1],
       preferredShift: data?.preferredShift,
+      connectStartDate: data?.lastContected?.startDate
+        ? moment(data.lastContected.startDate).format('YYYY-MM-DD')
+        : "",
+      connectEndDate: data?.lastContected?.endDate
+        ? moment(data.lastContected.endDate).format('YYYY-MM-DD')
+        : "",
+
       skill: ""
     }
+    setConnectStartDate(newData.connectStartDate)
+    setConnectEndDate(newData.connectEndDate)
     setMinExperience(newData.minExperience)
     setMaxExperience(newData.maxExperience)
     setStartDate(newData.startDate)
@@ -232,6 +245,8 @@ const AllSalesCandidates = () => {
       minExperience,
       maxExperience,
       preferredShift,
+      connectStartDate,
+      connectEndDate,
       skill,
     };
 
@@ -297,26 +312,26 @@ const AllSalesCandidates = () => {
                 </div>
               </div>
               <div className='flex advanceSearchOuter'>
-              <p
-                onClick={() => AddvanceOpenModal()}
-                className="cursor-pointer text-red-400 hover:text-red-500 "
-              >
-                Advance Search
-              </p>
-              <Tooltip>
-              <TooltipTrigger>
                 <p
-                  onClick={handleDownloadCSV}
-                  className="cursor-pointer text-red-400 hover:text-red-500 text-center flex gap-2 "
+                  onClick={() => AddvanceOpenModal()}
+                  className="cursor-pointer text-red-400 hover:text-red-500 "
                 >
-                  <Import />
+                  Advance Search
                 </p>
-                <TooltipContent className='w-auto rounded-sm bg-[#b82025] text-sm'>Download CSV</TooltipContent>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <p
+                      onClick={handleDownloadCSV}
+                      className="cursor-pointer text-red-400 hover:text-red-500 text-center flex gap-2 "
+                    >
+                      <Import />
+                    </p>
+                    <TooltipContent className='w-auto rounded-sm bg-[#b82025] text-sm'>Download CSV</TooltipContent>
 
-              </TooltipTrigger>
+                  </TooltipTrigger>
 
-            </Tooltip>
-            </div>
+                </Tooltip>
+              </div>
             </div>
 
 
@@ -349,10 +364,8 @@ const AllSalesCandidates = () => {
         deleteHandleModalClose={deleteHandleModalClose}
       />
       <AddvanceFilterDeveloper
-        getListLeads={getListLeads}
         isOpen={dcsModalOpen}
         onClose={() => setDcsModalOpen(false)}
-        dcsValue={selectedDcsValue}
         handleAddvanceSearch={handleAddvanceSearch}
       />
     </>

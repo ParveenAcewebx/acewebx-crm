@@ -29,11 +29,11 @@ const AddvanceFilterDeveloper = ({ isOpen, onClose, handleAddvanceSearch }) => {
 
       preferredShift: [],
       totalExperience: "",
-      lastContected: {
-        startDate: startOfLastWeek,
-        endDate: endOfLastWeek,
-        key: 'selection'
-      },
+      // lastContected: {
+      //   startDate: startOfLastWeek,
+      //   endDate: endOfLastWeek,
+      //   key: 'selection'
+      // }, 
     }
   })
   const handleDateChnage = (date) => {
@@ -42,17 +42,17 @@ const AddvanceFilterDeveloper = ({ isOpen, onClose, handleAddvanceSearch }) => {
 
   const clearFilter = (e) => {
     e.preventDefault()
-    // form.setValue("dob", "")
     form.setValue("preferredShift", "")
     form.setValue("lastContected", "")
     form.setValue("totalExperience", "")
 
 
   }
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogTrigger />
-      <DialogContent className="!top-4 !translate-y-0 w-full"
+      <DialogContent className="!top-4 !translate-y-0 w-full max-w-[40vw]"
         onInteractOutside={(e) => e.preventDefault()}
         onPointerDownOutside={(e) => e.preventDefault()}
       >
@@ -68,9 +68,8 @@ const AddvanceFilterDeveloper = ({ isOpen, onClose, handleAddvanceSearch }) => {
             >
 
               {/* Daten range */}
-              <div>
-                <Label className='mb-2'>Application Submitted Date</Label>
-
+              <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1 mt-2'>
+                <Label className=''>Application Submitted Date</Label>
                 <FormDateRangePicker
                   name='dob'
                   label='D.O.B '
@@ -85,9 +84,12 @@ const AddvanceFilterDeveloper = ({ isOpen, onClose, handleAddvanceSearch }) => {
 
               <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
                 <SalaryRangInput form={form} name="salary" label="Salary" />
+              </div>
+
+              <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
                 <YearRangInput form={form} name="totalExperience" label="Total Experience" />
               </div>
-              <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
+              <div className='mb-4 grid grid-cols-2 gap-6 md:grid-cols-2'>
                 <FormMultiSelectField
                   name='preferredShift'
                   label='Preferred Shift'
@@ -95,20 +97,21 @@ const AddvanceFilterDeveloper = ({ isOpen, onClose, handleAddvanceSearch }) => {
                   options={preferredShiftOptions}
                   className='colum-box-bg-change !w-[100%]'
                 />
-              </div>
-              <div>
-                {/* Daten lastContected */}
-                <Label>Last Contacted</Label>
-                <FormDateRangePicker
-                  name='lastContected'
-                  label='Last Contected'
-                  onChange={handleDateChnage}
-                  form={form}
-                  inputFormat='YYYY-MM-DD'
-                  className='datepickerouter'
+                <div>
+                  {/* Daten lastContected */}
+                  <Label>Last Contacted</Label>
+                  <FormDateRangePicker
+                    name='lastContected'
+                    label='Last Contected'
+                    onChange={handleDateChnage}
+                    form={form}
+                    inputFormat='YYYY-MM-DD'
+                    className='datepickerouter'
 
-                />
+                  />
+                </div>
               </div>
+
 
               <div className="flex justify-between items-center gap-4 mt-4">
                 <Button className="site-button" variant="outline" onClick={(e) => clearFilter(e)}>

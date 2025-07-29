@@ -11,7 +11,9 @@ const SalesCandidate = {
     let skill = newData?.skill == undefined ? "" : newData?.skill
     let minExperience = newData?.minExperience == undefined ? "" : newData?.minExperience
     let maxExperience = newData?.maxExperience == undefined ? "" : newData?.maxExperience
-    return api.get(`candidateSale/getAllCandidateSale?page=${newData?.page}&limit=${newData?.length}&minSalary=${newData?.minSalary}&maxSalary=${newData?.maxSalary}&startDate=${start}&endDate=${end}&minExperience=${minExperience}&maxExperience=${maxExperience}&preferredShift=${preferredShift}&preferredShift=${preferredShift}&skill=${skill}`)
+    let connectStartDate = newData?.connectStartDate == undefined ? "" : newData?.connectStartDate
+    let connectEndDate = newData?.connectEndDate == undefined ? "" : newData?.connectEndDate
+    return api.get(`candidateSale/getAllCandidateSale?page=${newData?.page}&limit=${newData?.length}&minSalary=${newData?.minSalary}&maxSalary=${newData?.maxSalary}&connectStartDate=${connectStartDate}&connectEndDate=${connectEndDate}&startDate=${start}&endDate=${end}&minExperience=${minExperience}&maxExperience=${maxExperience}&preferredShift=${preferredShift}&preferredShift=${preferredShift}&skill=${skill}`)
   },
   salesCandidateCSVList: (newData) => {
     let start = newData?.startDate == undefined ? "" : newData?.startDate
@@ -20,8 +22,10 @@ const SalesCandidate = {
     let skill = newData?.skill == undefined ? "" : newData?.skill
     let minExperience = newData?.minExperience == undefined ? "" : newData?.minExperience
     let maxExperience = newData?.maxExperience == undefined ? "" : newData?.maxExperience
+    let connectStartDate = newData?.connectStartDate == undefined ? "" : newData?.connectStartDate
+    let connectEndDate = newData?.connectEndDate == undefined ? "" : newData?.connectEndDate
 
-    return api.get(`candidateSale/export-candidates?minSalary=${newData?.minSalary}&maxSalary=${newData?.maxSalary}&startDate=${start}&endDate=${end}&minExperience=${minExperience}&maxExperience=${maxExperience}&preferredShift=${preferredShift}&skill=${skill}`)
+    return api.get(`candidateSale/export-candidates?minSalary=${newData?.minSalary}&maxSalary=${newData?.maxSalary}&startDate=${start}&endDate=${end}&connectStartDate=${connectStartDate}&connectEndDate=${connectEndDate}&minExperience=${minExperience}&maxExperience=${maxExperience}&preferredShift=${preferredShift}&skill=${skill}`)
   },
   salesCandidateGetById: id => {
     return api.get(`candidateSale/getCandidateSaleById/${id}`)
@@ -47,16 +51,18 @@ const SalesCandidate = {
     )
   },
   candidateSaleListAddvanceFilters: newData => {
+    console.log("newData",newData)
     let start = newData?.startDate == undefined ? "" : newData?.startDate
     let end = newData?.endDate == undefined ? "" : newData?.endDate
     let search = newData?.search == undefined ? "" : newData?.search
     let preferredShift = newData?.preferredShift == undefined ? "" : newData?.preferredShift
     let skill = newData?.skill == undefined ? "" : newData?.skill
-
     let minExperience = newData?.minExperience == undefined ? "" : newData?.minExperience
     let maxExperience = newData?.maxExperience == undefined ? "" : newData?.maxExperience
+    let connectStartDate = newData?.connectStartDate == undefined ? "" : newData?.connectStartDate
+    let connectEndDate = newData?.connectEndDate == undefined ? "" : newData?.connectEndDate
     return api.get(
-      `candidateSale/getAllCandidateSale?minSalary=${newData?.minSalary}&maxSalary=${newData?.maxSalary}&startDate=${start}&endDate=${end}&search=${search}&minExperience=${minExperience}&maxExperience=${maxExperience}&preferredShift=${preferredShift}&skill=${skill}`
+      `candidateSale/getAllCandidateSale?minSalary=${newData?.minSalary}&maxSalary=${newData?.maxSalary}&startDate=${start}&endDate=${end}&search=${search}&connectStartDate=${connectStartDate}&connectEndDate=${connectEndDate}&minExperience=${minExperience}&maxExperience=${maxExperience}&preferredShift=${preferredShift}&skill=${skill}`
     )
   },
 
