@@ -11,8 +11,6 @@ import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { FormProvider, useForm } from 'react-hook-form'
-
-// import Loader from '@/components/Loader'
 import PageExpired from '@/app/url-expired/page'
 import { errorMessage } from '@/components/ToasterMessage'
 import { SalesCandidateValidation } from '@/components/form-validations/SalesCandidateValidation'
@@ -71,7 +69,6 @@ function EditSalesJobApplicationForm() {
         form?.setValue('businessMethods', JSON.parse(data?.businessMethods))
         form?.setValue('leadPlatforms', JSON.parse(data?.leadPlatforms))
         form?.setValue('skill', JSON.parse(data?.skill))
-
         const joiningDate = new Date(data.joiningDate + 'T00:00:00')
         form?.setValue('joiningDate', joiningDate)
         // Then load and set the resume file if available
@@ -94,6 +91,9 @@ function EditSalesJobApplicationForm() {
       setIsVerify(error?.status)
     }
   }
+
+
+
   const onSubmit = async data => {
     try {
       const formData = new FormData()
@@ -153,9 +153,6 @@ function EditSalesJobApplicationForm() {
 
 
 
-
-
-
   useEffect(() => {
     if (!id) return
 
@@ -166,7 +163,6 @@ function EditSalesJobApplicationForm() {
 
     {isVerify == false ? (
       <>
-        {/* <span className='text-2xl'></span> */}
         <PageExpired />
       </>
     ) : (

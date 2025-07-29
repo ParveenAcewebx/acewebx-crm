@@ -191,7 +191,7 @@ function EditJobApplicationForm() {
           phone: data?.phone,
           currentLocation: meta?._currentLocation,
           designationApplyingFor: meta?._designationApplyingFor,
-          totalExperience: data?.totalExperience,
+          totalExperience: String(data?.totalExperience),
           currentSalary: data?.currentSalary,
           expectedSalary: data?.expectedSalary,
           currentCompanyName: meta?._currentCompanyName,
