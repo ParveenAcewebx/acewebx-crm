@@ -1,12 +1,10 @@
 'use client'
-import Papa from 'papaparse'
 import LayoutHeader from '@/components/layoutHeader'
 import DialogBox from '@/components/modal/DialogBox'
 import FormInputField from '@/components/share/form/FormInputField'
 import FormSelectField from '@/components/share/form/FormSelect'
 import { DataTable } from '@/components/Table'
 import { errorMessage, successMessage } from '@/components/ToasterMessage'
-import { Button } from '@/components/ui/button'
 import useDocumentTitle from '@/components/utils/useDocumentTitle'
 import Candidate from '@/services/cadidateApis/CandidateApi'
 import { useRouter } from 'next/navigation'
@@ -23,28 +21,27 @@ import moment from 'moment'
 
 const AllCandidates = () => {
   useDocumentTitle('Dev Candidate')
-  const [dcsModalOpen, setDcsModalOpen] = useState(false) // State for DCS modal
-  const [selectedDcsValue, setSelectedDcsValue] = useState(null) // Store DCS value for modal
   const router = useRouter()
-  const [getList, setList] = useState([])
   const [page, setPage] = useState(1)
-  const [totalRecord, setTotalRecord] = useState()
-  const [deleteOpenModal, setDeleteOpenModal] = useState(false)
-  const [loading, setLoading] = useState(true)
-  const [deleteIndex, setDeleteIndex] = useState(null)
-  const [length, setLength] = useState(10)
-  const [searchFormData, setSearchFormData] = useState(null)
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-  const [minSalary, setMinSalary] = useState('');
-  const [maxSalary, setMaxSalary] = useState('');
-
-  const [totalExperience, setTotalExperience] = useState("");
-  const [preferredShift, setPreferredShift] = useState("");
   const [skill, setSkill] = useState("");
-
+  const [getList, setList] = useState([])
+  const [length, setLength] = useState(10)
+  const [endDate, setEndDate] = useState('');
+  const [loading, setLoading] = useState(true)
+  const [maxSalary, setMaxSalary] = useState('');
+  const [minSalary, setMinSalary] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [totalRecord, setTotalRecord] = useState()
+  const [deleteIndex, setDeleteIndex] = useState(null)
   const [minExperience, setMinExperience] = useState('');
   const [maxExperience, setMaxExperience] = useState('');
+  const [dcsModalOpen, setDcsModalOpen] = useState(false) // State for DCS modal
+  const [preferredShift, setPreferredShift] = useState("");
+  const [searchFormData, setSearchFormData] = useState(null)
+  const [deleteOpenModal, setDeleteOpenModal] = useState(false)
+  const [selectedDcsValue, setSelectedDcsValue] = useState(null) // Store DCS value for modal
+  const [connectStartDate, setConnectStartDate] = useState('');
+  const [connectEndDate, setConnectEndDate] = useState('');
 
   const methods = useForm({
     defaultValues: {
@@ -52,7 +49,8 @@ const AllCandidates = () => {
     }
   })
 
-  const getListLeads = async () => {
+  // get all candidate list :-
+  const getListCadidate = async () => {
     try {
       const newData = {
         page,
@@ -61,10 +59,11 @@ const AllCandidates = () => {
         endDate,
         minSalary,
         maxSalary,
-        totalExperience,
         preferredShift,
         minExperience,
         maxExperience,
+        connectStartDate,
+        connectEndDate,
         skill
       }
       setLoading(true)
@@ -86,7 +85,7 @@ const AllCandidates = () => {
     if (searchFormData) {
       handleClearSearch()
     } else {
-      getListLeads()
+      getListCadidate()
     }
   }, [page, length])
 
@@ -97,7 +96,7 @@ const AllCandidates = () => {
         const res = await Candidate.romoveCandidate(deleteIndex)
         setDeleteOpenModal(false)
         if (res?.status === 200) {
-          getListLeads()
+          getListCadidate()
           successMessage({ description: res?.data?.message })
         }
       } catch (error) {
@@ -147,7 +146,7 @@ const AllCandidates = () => {
   const handleClearSearch = () => {
     form.setValue('search', '')
 
-    getListLeads()
+    getListCadidate()
   }
 
   const handleSimpleFilter = async data => {
@@ -198,8 +197,17 @@ const AllCandidates = () => {
       search: search,
       minExperience: data?.totalExperience[0],
       maxExperience: data?.totalExperience[1],
+      connectStartDate: data?.lastContected?.startDate
+        ? moment(data.lastContected.startDate).format('YYYY-MM-DD')
+        : "",
+      connectEndDate: data?.lastContected?.endDate
+        ? moment(data.lastContected.endDate).format('YYYY-MM-DD')
+        : "",
       skill: ""
     }
+
+    setConnectStartDate(newData.connectStartDate)
+    setConnectEndDate(newData.connectEndDate)
     setMinExperience(newData.minExperience)
     setMaxExperience(newData.maxExperience)
     setStartDate(newData.startDate)
@@ -234,6 +242,8 @@ const AllCandidates = () => {
       preferredShift,
       minExperience,
       maxExperience,
+      connectStartDate,
+      connectEndDate,
       skill
     }
 
@@ -263,11 +273,7 @@ const AllCandidates = () => {
       <div className=''>
         <LayoutHeader pageTitle='Developers List' />
       </div>
-
-
       {/* Filters */}
-
-
       <div className='flex justify-between items-center mb-5'>
         <div>
           <FormProvider {...methods}>
@@ -301,31 +307,27 @@ const AllCandidates = () => {
                 </div>
               </div>
               <div className='flex advanceSearchOuter'>
-              <p
-                onClick={() => AddvanceOpenModal()}
-                className="cursor-pointer text-red-400 hover:text-red-500 "
-              >
-                Advance Search
-              </p>
-              <Tooltip>
-              <TooltipTrigger>
                 <p
-                  onClick={handleDownloadCSV}
-                  className="cursor-pointer text-red-400 hover:text-red-500 text-center flex gap-2 "
+                  onClick={() => AddvanceOpenModal()}
+                  className="cursor-pointer text-red-400 hover:text-red-500 "
                 >
-                  <Import />
+                  Advance Search
                 </p>
-                <TooltipContent className='w-auto rounded-sm bg-[#b82025] text-sm'>Download CSV</TooltipContent>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <p
+                      onClick={handleDownloadCSV}
+                      className="cursor-pointer text-red-400 hover:text-red-500 text-center flex gap-2 "
+                    >
+                      <Import />
+                    </p>
+                    <TooltipContent className='w-auto rounded-sm bg-[#b82025] text-sm'>Download CSV</TooltipContent>
 
-              </TooltipTrigger>
+                  </TooltipTrigger>
 
-            </Tooltip>
+                </Tooltip>
+              </div>
             </div>
-            </div>
-
-
-
-
           </div>
         </FormProvider>
       </div>
@@ -352,11 +354,8 @@ const AllCandidates = () => {
         deleteHandleModalClose={deleteHandleModalClose}
       />
       <AddvanceFilterDeveloper
-        getListLeads={getListLeads}
         isOpen={dcsModalOpen}
         onClose={() => setDcsModalOpen(false)}
-        dcsValue={selectedDcsValue}
-        search={search}
         handleAddvanceSearch={handleAddvanceSearch}
       />
     </>

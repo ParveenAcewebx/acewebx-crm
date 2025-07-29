@@ -38,9 +38,7 @@ function EditSalesJobApplication({ editId }) {
     resolver: yupResolver(SalesCandidateValidationEdit)
   })
 
-
-
-
+// url to convert into file object:-----
   const urlToFile = async (url, fileName) => {
     const response = await fetch(url)
     const blob = await response.blob()
@@ -49,6 +47,8 @@ function EditSalesJobApplication({ editId }) {
     return new File([blob], fileName, { type: contentType })
   }
 
+
+  //form data get by id :---- 
   const candidateDataGetById = async () => {
     try {
       const response = await SalesCandidate.salesCandidateGetById(id)
@@ -85,6 +85,7 @@ function EditSalesJobApplication({ editId }) {
     }
   }
 
+  // update handler:--
   const onSubmit = async data => {
     try {
       const formData = new FormData()

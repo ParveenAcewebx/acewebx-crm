@@ -31,7 +31,7 @@ export function YearRangInput({ form, name, label, ...props }) {
   ]
 
   return (
-    <div className="flex flex-col gap-2 w-full max-w-md mt-5">
+    <div className="flex flex-col gap-2 w-full max-w-[41rem] mt-5">
       {label && (
         <div className="flex justify-between text-sm font-medium text-gray-700">
           <label>

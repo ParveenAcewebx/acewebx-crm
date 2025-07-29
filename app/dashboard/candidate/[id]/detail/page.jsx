@@ -2,7 +2,6 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
-
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import Candidate from '@/services/cadidateApis/CandidateApi'
 import DcsModal from '@/components/modal/dscForm'
@@ -20,10 +19,10 @@ function Page({ params }) {
   const router = useRouter()
   const id = params?.id
   const editId = id
-
   const [dcsModalOpen, setDcsModalOpen] = useState(false) // State for DCS modal
-
   const [candidateData, setCandidateData] = useState({})
+  const [url, setUrl] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const handleGetApi = async () => {
     try {
@@ -39,9 +38,6 @@ function Page({ params }) {
       handleGetApi()
     }
   }, [id, router])
-
-
-
 
 
   const percent = Math.round(((candidateData?.expectedSalary - candidateData?.currentSalary) * 100) / candidateData?.currentSalary)
@@ -68,9 +64,6 @@ function Page({ params }) {
   }
 
 
-  const [url, setUrl] = useState('')
-  const [loading, setLoading] = useState(false)
-
   const candidateDataGetById = async id => {
     try {
       setLoading(true)
@@ -93,6 +86,7 @@ function Page({ params }) {
 
   const [activitiesData, setActivitiesData] = useState()
 
+  // Activity function :-
   const getActivities = async () => {
     try {
       const res = await Candidate.activityDevCandidate("candidates", editId)
@@ -109,12 +103,14 @@ function Page({ params }) {
   useEffect(() => {
     getActivities()
   }, [])
+
   const pathname = usePathname()
   const currentTab = pathname?.endsWith('edit') ? 'edit' : 'detail'
   const handleTabChange = (value) => {
     router.replace(value)
   }
 
+  //Function for colour :-
   const genderColor = (val) => {
     if (val === "female") return "!bg-pink-700"
     if (val === "male") return "!bg-blue-500"
@@ -151,7 +147,6 @@ function Page({ params }) {
 
       <Tabs value={currentTab} onValueChange={handleTabChange}>
         <TabsList className='custom-tabs mb-3 w-full justify-start gap-2 rounded-none border-b custom-tabs ' >
-          {/* <TabsList className='inline-flex h-9 items-center p-1 text-muted-foreground custom-tabs mb-3 w-full justify-start gap-2 rounded-none border-b'> */}
           <TabsList>
             <TabsTrigger className='rounded-none px-4 py-1.5 !shadow-none' value="detail">Details</TabsTrigger>
             <TabsTrigger className='rounded-none p-1.5 px-4 !shadow-none' value="edit">Edit</TabsTrigger>
@@ -219,11 +214,8 @@ function Page({ params }) {
           {/* Left Section */}
 
           <div class="flex gap-4">
-
-
             <Card className='box'>
               <CardContent className='flex items-center gap-4'>
-
                 <img src='/images/pages/location.png' alt='trophy image' height={60} className='' />
                 <div>
                   <span className='tittle'>Location</span> <br />
@@ -274,10 +266,6 @@ function Page({ params }) {
               </CardContent>
             </Card>
           </div>
-
-
-
-
 
           {/* working Deve */}
 
@@ -330,13 +318,8 @@ function Page({ params }) {
                 </div>
               </CardContent>
             </Card>
-
-
-
-
             <Card className='box'>
               <CardContent className='flex items-center gap-4'>
-
                 <img src='/images/pages/PreferredShift .png' alt='trophy image' height={60} className='' />
                 <div>
                   <span className='tittle'>Preferred Shift</span> <br />
@@ -347,9 +330,6 @@ function Page({ params }) {
                   ))}                </div>
               </CardContent>
             </Card>
-
-
-
             {/* chat  */}
           </div>
 
@@ -383,10 +363,7 @@ function Page({ params }) {
                     </div>
                     }
                     {!candidateData?.meta?._reference2Name && !candidateData?.meta?._reference1Name && "No Reference Found!"}
-
-
                   </div>
-
                   <DcsModal
                     isOpen={dcsModalOpen}
                     onClose={() => setDcsModalOpen(false)}
@@ -395,8 +372,6 @@ function Page({ params }) {
                     loading={loading}
                   />
                 </CardContent>
-
-
               </Card>
             </div>
           </div>
