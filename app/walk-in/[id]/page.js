@@ -11,7 +11,6 @@ import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { FormProvider, useForm } from 'react-hook-form'
-// import Loader from '@/components/Loader'
 import PageExpired from '@/app/url-expired/page'
 import { errorMessage } from '@/components/ToasterMessage'
 import FormInputField from '@/components/share/form/FormInputField'
@@ -161,11 +160,6 @@ function EditJobApplicationForm() {
   }
 
 
-
-
-
-
-
   const urlToFile = async (url, fileName) => {
     const response = await fetch(url)
     const blob = await response.blob()
@@ -198,7 +192,6 @@ function EditJobApplicationForm() {
           noticePeriod: data?.noticePeriod,
           reasonForChange: meta?._reasonForChange,
           preferredShift: JSON.parse(meta?._preferredShift),
-          // skill:meta?._skill ?JSON.parse(meta?._skill) : [],
           skill: Array.isArray(meta?._skill)
           ? meta._skill
           : meta?._skill
@@ -248,7 +241,6 @@ function EditJobApplicationForm() {
     candidateDataGetById(id, form)
   }, [id])
 
-  console.log("skill", form.watch("skill"))
   return (
     <>
       {isVerify == false ? (

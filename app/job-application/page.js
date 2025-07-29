@@ -11,7 +11,6 @@ import { useState } from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { FormProvider, useForm } from 'react-hook-form'
 import moment from 'moment';
-// import Loader from '@/components/Loader'
 import { errorMessage } from '@/components/ToasterMessage'
 import { CandidateFormValidation } from '@/components/form-validations/CandidateFormValidation'
 import FormInputField from '@/components/share/form/FormInputField'
@@ -31,6 +30,7 @@ function JobApplicationForm() {
   const [recaptcha, setRecaptcha] = useState([])
   const [submitAddValidation, setSubmitAddValidation] = useState(false)
   const router = useRouter()
+
   const form = useForm({
     mode: 'onChange',
     defaultValues: walkInFormDefaultValues,
@@ -83,8 +83,11 @@ function JobApplicationForm() {
     setLoader(false)
     form.unregister('recaptcha', { keepError: false })
   }
+  
   const reValue = form.watch('recaptcha')
 
+
+// add candidate handler:---
   const onSubmit = async data => {
     setSubmitAddValidation(true)
     if (data?.currentSalary == '' || reValue == undefined) {
@@ -128,6 +131,7 @@ function JobApplicationForm() {
       }
     }
   }
+
   return (
     <div
       className='mobile-view relative flex min-h-screen w-full flex-col items-center justify-start bg-white'
