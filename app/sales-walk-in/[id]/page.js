@@ -319,7 +319,8 @@ function EditSalesJobApplicationForm() {
                   />
                 </div>
 
-                <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>  <TagInputController
+                <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'> 
+                   <TagInputController
                     name="skill"
                     form={form}
                     label="Skills"

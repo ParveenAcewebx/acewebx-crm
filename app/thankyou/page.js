@@ -12,12 +12,8 @@ const ThankYouPage = () => {
         margin: 0
       }}
     >
-      {/* Honeycomb Background Pattern */}
       <div className="absolute inset-0 bg-[url('/background-honeycomb.png')] bg-repeat opacity-10" />
-      {/* Left & Right Background Images */}
-      {/* <img src='/backgroud-ace.png' alt='Left Background' className='absolute left-0 bottom-0 h-full  z-0 bg-cover
-bg-no-repeat w-full' /> */}
-      {/* Logo */}
+
       <div className='acewebx-logo z-10 text-center'>
         <img
           src='./acewebxlogo.png'
