@@ -268,6 +268,30 @@ const AllSalesCandidates = () => {
     }
   };
 
+  const [skillsData, setSkillsData] = useState([])
+
+  
+ useEffect(() => {
+
+    // This code runs only on the client side
+    if (typeof window !== "undefined" && window.localStorage) {
+      const storedData = localStorage.getItem("candidates");
+      if (storedData) {
+        const candidateData = JSON.parse(storedData); // Parse if storing JSON
+        const candidateOptions = candidateData?.salesCandidate
+        ?.map((item) => ({
+          label: item,
+          value: item?.toLowerCase(), // assuming you meant to use lowercase
+        }));
+        console.log("candidateData",)
+        setSkillsData(candidateOptions);
+  
+      }
+    }
+  }, []);
+
+
+
   return (
     <>
       <div className='mb-3 flex items-center justify-between'>
@@ -365,6 +389,7 @@ const AllSalesCandidates = () => {
       <AddvanceFilterDeveloper
         isOpen={dcsModalOpen}
         CandidateType="candidateSales"
+        skillsData={skillsData}
         onClose={() => setDcsModalOpen(false)}
         handleAddvanceSearch={handleAddvanceSearch}
       />
