@@ -94,11 +94,11 @@ export const GenderData = [
 
 export const TypeData = [
   { label: 'Candidate', value: 'candidate' },
-  { label: 'Candidate Sales', value: 'candidatesales' },
+  { label: 'Candidate Sales', value: 'candidateSales' },
 ]
 export const StatusData = [
-  { label: 'Active', value: '0' },
-  { label: 'Inactive', value: '1' },
+  { label: 'Active', value: '1' },
+  { label: 'Inactive', value: '0' },
 ]
 export const totalExperienceOptions = [
   { label: 'Fresher', value: '0' },

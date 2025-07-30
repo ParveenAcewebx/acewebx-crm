@@ -25,7 +25,7 @@ import Candidate from '@/services/cadidateApis/CandidateApi'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Loader } from 'lucide-react'
 import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
-import TagInputController from '@/components/share/form/TagInputController'
+import SkillApi from '@/services/cadidateApis/settings/SkillApi'
 
 function EditCandidate({ editId }) {
   const [loader, setLoader] = useState(false)
@@ -71,7 +71,7 @@ function EditCandidate({ editId }) {
         }
       });
 
-      formData.append("skill",newSkill)
+      formData.append("skill", newSkill)
       formData.append('preferredShift', preferred)
 
       const response = await Candidate.updateCandidate(editId, formData)
@@ -128,11 +128,11 @@ function EditCandidate({ editId }) {
           reasonForChange: meta?._reasonForChange,
           preferredShift: JSON?.parse(meta?._preferredShift),
           skill: Array.isArray(meta?._skill)
-          ? meta._skill
-          : meta?._skill
-          ? JSON.parse(meta._skill)
-          : [],         
-           reference1Name: meta?._reference1Name,
+            ? meta._skill
+            : meta?._skill
+              ? JSON.parse(meta._skill)
+              : [],
+          reference1Name: meta?._reference1Name,
           reference1ContactNumber: meta?._reference1ContactNumber,
           reference1Designation: meta?._reference1Designation,
           reference1Experience: meta?._reference1Experience,
@@ -175,6 +175,32 @@ function EditCandidate({ editId }) {
     if (!editId) return
     candidateDataGetById(editId, form)
   }, [editId])
+
+
+
+
+  const [skillsData, setSkillsData] = useState([])
+ 
+
+  useEffect(() => {
+    // This code runs only on the client side
+    if (typeof window !== "undefined" && window.localStorage) {
+      const storedData = localStorage.getItem("candidates");
+      if (storedData) {
+        const candidateData = JSON.parse(storedData); // Parse if storing JSON
+        const candidateOptions = candidateData?.candidate?.map((item) => ({
+          label: item,
+          value: item?.toLowerCase(), // assuming you meant to use lowercase
+        }));
+        setSkillsData(candidateOptions);
+
+      }
+    }
+  }, []);
+
+
+
+
 
   return (
     <>
@@ -255,7 +281,7 @@ function EditCandidate({ editId }) {
                   className='col-span-2'
                   style={{ border: '1px solid #e9e9e9', height: '47px', outline: 'none' }}
                 />
-               
+
 
               </div>
             </fieldset>
@@ -422,13 +448,14 @@ function EditCandidate({ editId }) {
 
 
             <div className='mb-4 grid grid-cols-1 gap-4 md:grid-cols-1 ace-reason'>
-            <TagInputController
-                  name="skill"
-                  form={form}
-                  label="Skills"
-                  placeholder="Enter Your Skills"
-                  className="mt-2"
-                />
+              <FormMultiSelectField
+                name="skill"
+                form={form}
+                label="Skills"
+                options={skillsData}
+                placeholder="Enter Your Skills"
+                className="mt-2"
+              />
               <FormTextArea
                 name='reasonForChange'
                 label='Reason for Change'

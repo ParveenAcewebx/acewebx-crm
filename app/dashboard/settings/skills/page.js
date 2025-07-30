@@ -34,7 +34,7 @@ const Skills = () => {
             const response = await SkillApi.getAllSkill(page, length)
             if (response.status === 200) {
                 setList(response?.data?.data)
-                setTotalRecord(response?.data?.meta?.total)
+                setTotalRecord(response?.data?.total)
             }
         } catch (error) {
             console.log('error', error)

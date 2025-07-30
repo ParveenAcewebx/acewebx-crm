@@ -16,6 +16,13 @@ const SkillApi = {
     deleteSkill: id => {
         return api.delete(`skill/deleteSkill/${id}`)
     },
+    getAllSkillByType: (type) => {
+        return api.get(`skill/getSkillByType/${type}`)
+    },
+
+    globalSkillGetApi: () => {
+        return api.get(`/skill/globalSkill`)
+    }
     // getUSkillByFilter: data => {
     //     return api.get(
     //         `auth/getAllUser?page=${data?.page}&limit=${data?.limit}&name=${data?.name}&email=${data?.email}&currentSalary=${data?.currentSalary}`

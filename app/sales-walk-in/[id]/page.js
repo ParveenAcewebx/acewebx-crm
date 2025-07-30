@@ -25,7 +25,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { Loader } from 'lucide-react'
 import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
 import moment from 'moment'
-import TagInputController from '@/components/share/form/TagInputController'
+import SkillApi from '@/services/cadidateApis/settings/SkillApi'
 
 function EditSalesJobApplicationForm() {
   const { id } = useParams()
@@ -115,7 +115,7 @@ function EditSalesJobApplicationForm() {
       const preferred = JSON.stringify(data?.preferredShift)
       Object.entries(data).forEach(([key, value]) => {
         // Skip these keys entirely
-        if (['preferredShift', 'businessMethods', 'leadPlatforms','skill'].includes(key)) return;
+        if (['preferredShift', 'businessMethods', 'leadPlatforms', 'skill'].includes(key)) return;
 
         // Format 'joiningDate', append everything else as-is
         if (key === 'joiningDate') {
@@ -128,7 +128,7 @@ function EditSalesJobApplicationForm() {
 
       formData.append('businessMethods', JSON.stringify(data?.businessMethods))
       formData.append('leadPlatforms', JSON.stringify(data?.leadPlatforms))
-      formData.append("skill",JSON.stringify(data?.skill))
+      formData.append("skill", JSON.stringify(data?.skill))
       formData.append('preferredShift', preferred)
 
       const response = await SalesCandidate.updateSalesWalkInCandidate(
@@ -158,6 +158,47 @@ function EditSalesJobApplicationForm() {
 
     candidateDataGetById()
   }, [id])
+
+
+
+  const [skillsData, setSkillsData] = useState([])
+  // fetch skill list
+  // const fetchAllSkill = async () => {
+  //   try {
+  //     const response = await SkillApi.getAllSkillByType("candidateSales")
+  //     if (response.status === 200) {
+  //       const candidateOptions = response?.data?.data?.map((item) => ({
+  //           label: item.title,
+  //           value: item.title.toLowerCase(), // assuming you meant to use lowercase
+  //         }));
+  
+  //       setSkillsData(candidateOptions);
+  //     }
+  //   } catch (error) {
+  //     console.log('error', error);
+  //   } 
+  // };
+
+  // useEffect(() => {
+  //   fetchAllSkill()
+  // }, [])
+  useEffect(() => {
+    // This code runs only on the client side
+    if (typeof window !== "undefined" && window.localStorage) {
+      const storedData = localStorage.getItem("candidates");
+      if (storedData) {
+        const candidateData = JSON.parse(storedData); // Parse if storing JSON
+        const candidateOptions = candidateData?.salesCandidate
+        ?.map((item) => ({
+          label: item,
+          value: item?.toLowerCase(), // assuming you meant to use lowercase
+        }));
+        setSkillsData(candidateOptions);
+  
+      }
+    }
+  }, []);
+
   return (<>
 
 
@@ -319,14 +360,17 @@ function EditSalesJobApplicationForm() {
                   />
                 </div>
 
-                <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'> 
-                   <TagInputController
+                <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
+                  <FormMultiSelectField
                     name="skill"
                     form={form}
                     label="Skills"
+                    options={skillsData}
                     placeholder="Enter Your Skills"
                     className="mt-2"
-                  /></div>
+                  />
+
+                </div>
                 <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
                   <FormTextArea
                     name='reasonForLeaving'
@@ -347,7 +391,7 @@ function EditSalesJobApplicationForm() {
                 </div>
 
                 <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
-                
+
                   {/* textarea */}
                   <FormTextArea
                     name='topSalesAchievement'

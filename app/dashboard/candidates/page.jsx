@@ -203,7 +203,8 @@ const AllCandidates = () => {
       connectEndDate: data?.lastContected?.endDate
         ? moment(data.lastContected.endDate).format('YYYY-MM-DD')
         : "",
-      skill: ""
+      skill: data?.skill,
+      preferredShift : data?.preferredShift
     }
 
     setConnectStartDate(newData.connectStartDate)
@@ -355,6 +356,7 @@ const AllCandidates = () => {
       />
       <AddvanceFilterDeveloper
         isOpen={dcsModalOpen}
+        CandidateType="candidate"
         onClose={() => setDcsModalOpen(false)}
         handleAddvanceSearch={handleAddvanceSearch}
       />

@@ -25,7 +25,7 @@ import { Loader } from 'lucide-react'
 import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
 import { CandidateFormValidationEditClient } from '@/components/form-validations/CandidateFormValidationEditClient'
 import moment from 'moment';
-import TagInputController from '@/components/share/form/TagInputController'
+import SkillApi from '@/services/cadidateApis/settings/SkillApi'
 function EditJobApplicationForm() {
   const { id } = useParams()
   const [step, setStep] = useState(2)
@@ -128,9 +128,11 @@ function EditJobApplicationForm() {
       }
 
       const preferred = JSON.stringify(data?.preferredShift)
-
+const skill =  JSON.stringify(data?.skill)
       Object.entries(data).forEach(([key, value]) => {
         if (key === 'preferredShift') return;
+        if (key === 'skill') return;
+
 
         if (key === 'dob' || key === 'lastIncrementDate') {
           formData.append(key, moment(value).format('YYYY-MM-DD'));
@@ -138,7 +140,7 @@ function EditJobApplicationForm() {
           formData.append(key, value);
         }
       });
-      formData.append("skill",JSON.stringify(data?.skill))
+      formData.append("skill", skill)
       formData.append('preferredShift', preferred)
 
       const response = await Candidate.updateWalkinCandidate(candiId, formData)
@@ -193,10 +195,10 @@ function EditJobApplicationForm() {
           reasonForChange: meta?._reasonForChange,
           preferredShift: JSON.parse(meta?._preferredShift),
           skill: Array.isArray(meta?._skill)
-          ? meta._skill
-          : meta?._skill
-          ? JSON.parse(meta._skill)
-          : [], 
+            ? meta._skill
+            : meta?._skill
+              ? JSON.parse(meta._skill)
+              : [],
           reference1Name: meta?._reference1Name,
           reference1ContactNumber: meta?._reference1ContactNumber,
           reference1Designation: meta?._reference1Designation,
@@ -240,6 +242,44 @@ function EditJobApplicationForm() {
     if (!id) return
     candidateDataGetById(id, form)
   }, [id])
+
+  const [skillsData , setSkillsData]= useState([])
+    // fetch skill list
+  //   const fetchAllSkill = async () => {
+  //     try {
+  //       const response = await SkillApi.getAllSkillByType("candidate")
+  //       if (response.status === 200) {
+  //         const candidateOptions = response?.data?.data?.map((item) => ({
+  //             label: item.title,
+  //             value: item.title.toLowerCase(), // assuming you meant to use lowercase
+  //           }));
+    
+  //         setSkillsData(candidateOptions);
+  //       }
+  //     } catch (error) {
+  //       console.log('error', error);
+  //     } 
+  //   };
+    
+  // useEffect(() => {
+  //     fetchAllSkill()
+  // }, [])
+  useEffect(() => {
+    // This code runs only on the client side
+    if (typeof window !== "undefined" && window.localStorage) {
+      const storedData = localStorage.getItem("candidates");
+      if (storedData) {
+        const candidateData = JSON.parse(storedData); // Parse if storing JSON
+        const candidateOptions = candidateData?.candidate
+        ?.map((item) => ({
+          label: item,
+          value: item?.toLowerCase(), // assuming you meant to use lowercase
+        }));
+        setSkillsData(candidateOptions);
+  
+      }
+    }
+  }, []);
 
   return (
     <>
@@ -526,17 +566,20 @@ function EditJobApplicationForm() {
                           options={sourceOption}
                           className='colum-box-bg-change !w-[100%]'
                         />
-                          <TagInputController
+                      
+
+                        <FormMultiSelectField
                           name="skill"
                           form={form}
                           label="Skills"
+                          options={skillsData}
                           placeholder="Enter Your Skills"
                           className="mt-2"
                         />
                       </div>
                       <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-2'>
 
-                      
+
 
                         <FormTextArea
                           name='currentAddress'

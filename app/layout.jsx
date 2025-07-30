@@ -9,6 +9,7 @@ import { inter } from '@/lib/fonts'
 import { cn } from '@/lib/utils'
 import { getServerSession } from 'next-auth'
 import './globals.css'
+import GlobelLocalStoreData from '@/components/GlobelLocalStoreData'
 
 export const metadata = {
   title: {
@@ -40,26 +41,16 @@ export default async function AdminRootLayout({ children }) {
           enableSystem
           disableTransitionOnChange
         >
-          {/* <GlobalLoader/> */}
+          <GlobelLocalStoreData/>
           <QueryProvider>
             <AuthProvider session={session}>
               <Toaster />
-              {/* <Navbar /> */}
-              {/* <header className='flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12'> */}
-              {/* <div className='container m-auto'> */}
-              {/* <div className='flex items-center gap-2 pt-12'> */}
-              {/* <Separator orientation='vertical' className='mr-2 h-4' /> */}
-
-              {/* </div> */}
-              {/* </div> */}
-              {/* </header> */}
               <main className='min-h-screen'>
                 <Toaster />
                 <LoaderProvider>
                   <GlobalLoader />
                   {children}
                 </LoaderProvider>
-                {/* <LayoutHeader pageTitle='qwertyu'/> */}
               </main>
             </AuthProvider>
           </QueryProvider>
