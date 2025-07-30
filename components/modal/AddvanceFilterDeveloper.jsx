@@ -14,8 +14,10 @@ import { preferredShiftOptions } from '../constants/StaticData'
 import { Label } from '../ui/label'
 import { startOfWeek, endOfWeek, subDays } from 'date-fns'
 import { YearRangInput } from '../share/form/YearRangInput'
+import SkillApi from '@/services/cadidateApis/settings/SkillApi'
+import { useEffect, useState } from 'react'
 
-const AddvanceFilterDeveloper = ({ isOpen, onClose, handleAddvanceSearch }) => {
+const AddvanceFilterDeveloper = ({ isOpen, onClose, handleAddvanceSearch, CandidateType }) => {
   const today = new Date()
   const startOfLastWeek = subDays(startOfWeek(today), 7)
   const endOfLastWeek = subDays(endOfWeek(today), 7)
@@ -28,6 +30,7 @@ const AddvanceFilterDeveloper = ({ isOpen, onClose, handleAddvanceSearch }) => {
       },
 
       preferredShift: [],
+      skill: [],
       totalExperience: "",
       // lastContected: {
       //   startDate: startOfLastWeek,
@@ -45,10 +48,54 @@ const AddvanceFilterDeveloper = ({ isOpen, onClose, handleAddvanceSearch }) => {
     form.setValue("preferredShift", "")
     form.setValue("lastContected", "")
     form.setValue("totalExperience", "")
-
+    form.setValue("skill", "")
 
   }
 
+
+
+  const [skillsData, setSkillsData] = useState([])
+  // fetch skill list
+  const fetchAllSkill = async () => {
+    try {
+      const response = await SkillApi.getAllSkillByType(CandidateType)
+      if (response.status === 200) {
+        const candidateOptions = response?.data?.data?.map((item) => ({
+          label: item.title,
+          value: item.title.toLowerCase(), // assuming you meant to use lowercase
+        }));
+
+        setSkillsData(candidateOptions);
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAllSkill()
+  }, [])
+
+  // useEffect(() => {
+
+  //   // This code runs only on the client side
+  //   if (typeof window !== "undefined" && window.localStorage) {
+  //     const storedData = localStorage.getItem("candidates");
+  //     if (storedData) {
+  //       let checkValue = CandidateType
+
+  //       const candidateData = JSON.parse(storedData); // Parse if storing JSON
+  //       const candidateOptions = candidateData?.checkValue
+  //       ?.map((item) => ({
+  //         label: item,
+  //         value: item?.toLowerCase(), // assuming you meant to use lowercase
+  //       }));
+  //       console.log("candidateData",)
+  //       setSkillsData(candidateOptions);
+  
+  //     }
+  //   }
+  // }, []);
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogTrigger />
@@ -78,6 +125,16 @@ const AddvanceFilterDeveloper = ({ isOpen, onClose, handleAddvanceSearch }) => {
                   inputFormat='YYYY-MM-DD'
                   className='datepickerouter'
 
+                />
+
+
+                <FormMultiSelectField
+                  name="skill"
+                  form={form}
+                  label="Skills"
+                  options={skillsData}
+                  placeholder="Enter Your Skills"
+                  className="mt-2"
                 />
               </div>
               {/* salary range */}

@@ -23,7 +23,7 @@ import { Loader } from 'lucide-react'
 import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
 import { SalesCandidateValidationEdit } from '@/components/form-validations/SalesCandidateValidationEdit'
 import moment from 'moment'
-import TagInputController from '@/components/share/form/TagInputController'
+import SkillApi from '@/services/cadidateApis/settings/SkillApi'
 
 function EditSalesJobApplication({ editId }) {
   const id = editId
@@ -145,6 +145,47 @@ function EditSalesJobApplication({ editId }) {
 
     candidateDataGetById()
   }, [id])
+
+
+  const [skillsData , setSkillsData]= useState([])
+  // fetch skill list
+//   const fetchAllSkill = async () => {
+//     try {
+//       const response = await SkillApi.getAllSkillByType("candidateSales")
+//       if (response.status === 200) {
+//         const candidateOptions = response?.data?.data?.map((item) => ({
+//             label: item.title,
+//             value: item.title.toLowerCase(), // assuming you meant to use lowercase
+//           }));
+  
+//         setSkillsData(candidateOptions);
+//       }
+//     } catch (error) {
+//       console.log('error', error);
+//     } 
+//   };
+  
+// useEffect(() => {
+//     fetchAllSkill()
+// }, [])
+
+useEffect(() => {
+  // This code runs only on the client side
+  if (typeof window !== "undefined" && window.localStorage) {
+    const storedData = localStorage.getItem("candidates");
+    if (storedData) {
+      const candidateData = JSON.parse(storedData); // Parse if storing JSON
+      const candidateOptions = candidateData?.salesCandidate
+      ?.map((item) => ({
+        label: item,
+        value: item?.toLowerCase(), // assuming you meant to use lowercase
+      }));
+      setSkillsData(candidateOptions);
+
+    }
+  }
+}, []);
+
   return (
     <div className='mobile-view items-right relative flex min-h-screen w-full flex-col justify-start '>
       <div className=''>
@@ -278,13 +319,15 @@ function EditSalesJobApplication({ editId }) {
                 </div>
               </fieldset>
 
-              <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>  <TagInputController
-                name="skill"
-                form={form}
-                label="Skills"
-                placeholder="Enter Your Skills"
-                className=""
-              /></div>     
+              <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'> 
+              <FormMultiSelectField
+                          name="skill"
+                          form={form}
+                          label="Skills"
+                          options={skillsData}
+                          placeholder="Enter Your Skills"
+                          className="mt-2"
+                        /></div>     
                 <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
                 <FormTextArea
                   name='reasonForLeaving'
