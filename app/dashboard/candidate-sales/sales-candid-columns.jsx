@@ -67,7 +67,7 @@ export const SalesCandidColumns = (
     header: '#ID',
     size: 80, 
     cell: ({ row }) => (
-      <div className="max-w-[60px] overflow-hidden text-ellipsis whitespace-nowrap">
+      <div className="max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
         {`#DEV-${row.original?.id}`}
       </div>
     )},
