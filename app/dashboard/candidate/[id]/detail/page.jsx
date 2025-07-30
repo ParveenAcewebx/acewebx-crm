@@ -14,6 +14,7 @@ import { Mail, Phone, UserIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { errorMessage, successMessage } from '@/components/ToasterMessage'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { ChartForHike } from '@/components/Chart'
 
 function Page({ params }) {
   const router = useRouter()
@@ -296,6 +297,7 @@ function Page({ params }) {
             </Card>
 
             {/* Hike Card */}
+            {/* <ChartForHike percent={percent}/> */}
             <Card className='box border   rounded-[10px]'>
               <CardContent className='flex items-center gap-4 '>
                 <img src='/images/pages/hike.png' alt='trophy image' height={60} className='' />
