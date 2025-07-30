@@ -21,7 +21,6 @@ import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 interface NavMainProps {
-  
   items: {
     title: string
     url: string
@@ -41,16 +40,13 @@ export default function NavMain({  items }: NavMainProps) {
   const pathname = usePathname()
   const [openSection, setOpenSection] = useState<string | null>(null)
 
-  // const isActiveUrl = (url: string) => {
-  //   if (url === '/dashboard') return pathname === url
-  //   return pathname.startsWith(url)
-  // }
+
   const isActiveUrl = (url: string) => {
-    // Highlight "Developers" when on any /dashboard route except /dashboard/candidate-sales
     if (
       url === '/dashboard/candidates' &&
       pathname.startsWith('/dashboard') &&
-      !pathname.startsWith('/dashboard/candidate-sales')
+      pathname.endsWith('/dashboard')&&
+      !pathname.includes('/dashboard/candidate-sales')
     ) {
       return true
     }
