@@ -9,10 +9,12 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import SkillForm from '@/components/skills/SkillForm'
 import SkillSettingModal from '@/components/modal/SkillSettingModal'
-import { SkillColumn } from './skill-column'
 import SkillApi from '@/services/cadidateApis/settings/SkillApi'
+import EventApi from '@/services/cadidateApis/events/EventApi'
+import { EventColumn } from './event-column'
+import { useRouter } from 'next/navigation'
 
-const Skills = () => {
+const EventList = () => {
     const [getList, setList] = useState([])
     const [loading, setLoading] = useState(true)
     const [page, setPage] = useState(1)
@@ -28,12 +30,14 @@ const Skills = () => {
         }
     })
 
+    const router = useRouter()
     // fetch group tag list
     const fetchTagList = async () => {
         try {
-            const response = await SkillApi.getAllSkill(page, length)
+            const response = await EventApi.getAllEvent(page, length)
+            console.log("response",response)
             if (response.status === 200) {
-                setList(response?.data?.data?.skills)
+                setList(response?.data?.data?.events)
                 setTotalRecord(response?.data?.data?.pagination?.total)
             }
         } catch (error) {
@@ -50,7 +54,7 @@ const Skills = () => {
     const onDelete = async () => {
         if (deleteIndex !== null) {
             try {
-                const res = await SkillApi.deleteSkill(deleteIndex)
+                const res = await EventApi.deleteEvent(deleteIndex)
                 setDeleteOpenModal(false)
                 if (res?.status === 200) {
                     fetchTagList()
@@ -70,18 +74,7 @@ const Skills = () => {
     }
     const handleEditTaskTag = async (row) => {
         if (row?.original?.id) {
-            try {
-                const response = await SkillApi.getByIdSkill(row?.original?.id)
-                if (response.status === 200) {
-                    setEditData(response.data.data)
-                    fetchTagList()
-                    successMessage({ description: response?.data?.message })
-                }
-            } catch (error) {
-                console.log('error', error)
-            }
-
-            setSubmitOpenModal(true)
+            router.push(`events/edit/${row?.original?.id}`)
         }
     }
     const deleteHandleModalClose = () => {
@@ -99,8 +92,9 @@ const Skills = () => {
         return () => subscription.unsubscribe()
     }, [methods, totalRecord])
     const handleOpenTagModal = () => {
-        setSubmitOpenModal(true)
-        setEditData(null)
+        router.push('/dashboard/events/add')
+        // setSubmitOpenModal(true)
+        // setEditData(null)
     }
     const submitHandleModalClose = () => {
         setSubmitOpenModal(false)
@@ -108,16 +102,16 @@ const Skills = () => {
     return (
         <>
             <div>
-                <LayoutHeader pageTitle='Skills' />
+                <LayoutHeader pageTitle='Events' />
                 <div className='mb-3 w-full flex justify-end items-center'>
                     <Button className='site-button' onClick={handleOpenTagModal}>
                         <Plus />
-                        Add Skills
+                        Add Event
                     </Button>
                 </div>
 
                 <DataTable
-                    columns={SkillColumn(handleDeleteTaskTag, handleEditTaskTag)}
+                    columns={EventColumn(handleDeleteTaskTag, handleEditTaskTag)}
                     data={getList}
                     totalRecord={totalRecord}
                     page={page}
@@ -155,4 +149,4 @@ const Skills = () => {
     )
 }
 
-export default Skills
+export default EventList

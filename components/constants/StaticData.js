@@ -16,28 +16,28 @@ export const walkInFormDefaultValues = {
   resume: ''
 }
 
-export const salesCandidateDefaultValue ={
+export const salesCandidateDefaultValue = {
 
-    name: '',
-    email: '',
-    phone: '',
-    joiningDate: null, // use `null` for DatePicker
-    currentSalary: '',
-    expectedSalary: '',
-    totalExperience: '',
-    monthlySalesTarget: '',
-    preferredShift: '',
-    preferredRegions: '',
-    freshBusinessTarget: '',
-    achievedTarget: '',
-    businessMethods: '',
-    leadPlatforms: '',
-    reasonForLeaving: '',
-    topSalesAchievement: '',
-    resume: null, // File input should be null initially
-    recaptcha: undefined, // This is for validation of ReCAPTCHA
-  }
-  
+  name: '',
+  email: '',
+  phone: '',
+  joiningDate: null, // use `null` for DatePicker
+  currentSalary: '',
+  expectedSalary: '',
+  totalExperience: '',
+  monthlySalesTarget: '',
+  preferredShift: '',
+  preferredRegions: '',
+  freshBusinessTarget: '',
+  achievedTarget: '',
+  businessMethods: '',
+  leadPlatforms: '',
+  reasonForLeaving: '',
+  topSalesAchievement: '',
+  resume: null, // File input should be null initially
+  recaptcha: undefined, // This is for validation of ReCAPTCHA
+}
+
 
 
 
@@ -71,6 +71,52 @@ export const editWalkInForm = {
   lastIncrementDate: '',
   lastIncrementAmount: ''
 }
+
+
+
+export const formDefaultValues = {
+  // Personal Info
+  name: '',
+  personalEmail: '',
+  phone: '',
+  alternatePhone: '',
+  dobDocument: '',
+  dobCelebration: '',
+  currentAddress: '',
+  permanentAddress: '',
+
+  // Professional Info
+  companyEmail: '',
+  designation: '',
+  dateOfJoining: '',
+
+  // Documents
+  aadharCard: '',
+  panCard: '',
+
+  // Banking Details
+  bankName: '',
+  bankAccountNumber: '',
+  bankIFSC: '',
+
+  // Emergency Details
+  bloodGroup: '',
+  emergencyContactName: '',
+  emergencyContactNumber: '',
+  emergencyContactRelation: ''
+}
+
+
+
+
+
+
+
+
+
+
+
+
 export const experienceOptions = [
   { label: 'Fresher', value: '0' },
   { label: '6 Months', value: '0.6' },
@@ -91,6 +137,19 @@ export const GenderData = [
   { label: 'Female', value: 'female' },
   { label: 'Others', value: 'others' }
 ]
+
+export const RelationData = [
+  { label: 'Father', value: 'father' },
+  { label: 'Mother', value: 'mother' },
+  { label: 'Spouse (Husband/Wife)', value: 'spouse' },
+  { label: 'Brother', value: 'brother' },
+  { label: 'Sister', value: 'sister' },
+  { label: 'Grandfather', value: 'grandfather' },
+  { label: 'Grandmother', value: 'grandmother' },
+  { label: 'Others', value: 'others' }
+]
+
+
 
 export const TypeData = [
   { label: 'Candidate', value: 'candidate' },
@@ -159,6 +218,11 @@ export const onlinePlatforms = [
   { label: 'PPH', value: 'pph' },
   { label: 'Other', value: 'other' },
   { label: 'Fiverr', value: 'fiverr' }
+]
+
+export const isHoliday = [
+  { label: 'Yes', value: 'yes' },
+  { label: 'No', value: 'no' },
 ]
 
 export const businessGenerate = [

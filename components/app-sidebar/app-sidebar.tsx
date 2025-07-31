@@ -10,7 +10,7 @@ import { DocumentTextIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import NavMain from './nav-main'
 import { NavUser } from './nav-user'
-import { SettingsIcon } from 'lucide-react'
+import { CalendarDays, SettingsIcon, SquareUser } from 'lucide-react'
 
 const data = {
   navMain: [
@@ -41,6 +41,40 @@ const data = {
         {
           title: 'Skills',
           url: '/dashboard/settings/skills'
+        }
+      ]
+    },
+    {
+      title: 'Events',
+      url: '/dashboard',
+      icon: CalendarDays,
+      isActive: true,
+      items: [
+
+        {
+          title: 'Add Event',
+          url: '/dashboard/events/add'
+        },
+        {
+          title: 'All Events',
+          url: '/dashboard/events'
+        }
+      ]
+    },
+    {
+      title: 'Employees',
+      url: '/dashboard',
+      icon: SquareUser,
+      isActive: true,
+      items: [
+
+        {
+          title: 'Add Employee',
+          url: '/dashboard/employees/add'
+        },
+        {
+          title: 'All Employees',
+          url: '/dashboard/employees'
         }
       ]
     }

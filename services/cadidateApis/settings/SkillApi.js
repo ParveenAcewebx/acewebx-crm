@@ -10,8 +10,8 @@ const SkillApi = {
     getByIdSkill: id => {
         return api.get(`skill/getSkillById/${id}`)
     },
-    getAllSkill: () => {
-        return api.get(`skill/getAllSkill`)
+    getAllSkill: (page, length) => {
+        return api.get(`skill/getAllSkill?page=${page}&limit=${length}`)
     },
     deleteSkill: id => {
         return api.delete(`skill/deleteSkill/${id}`)

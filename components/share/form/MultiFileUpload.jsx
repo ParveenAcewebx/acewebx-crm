@@ -1,13 +1,16 @@
 'use client'
 
-import { successMessage } from '@/components/ToasterMessage'
-import api from '@/lib/api'
 import { Upload } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 
-const MultiImageUploader = ({ setImageUpload, updateImage }) => {
-  const [files, setFiles] = useState([])
+const MultiImageUploader = ({
+  setImageUpload,
+  updateImage,
+  setDeletedOldImages,
+  setFiles,
+  files
+}) => {
   const [finalUpdatedImg, setFinalUpdatedImg] = useState(updateImage)
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -34,29 +37,27 @@ const MultiImageUploader = ({ setImageUpload, updateImage }) => {
       return updatedFiles
     })
   }, [])
-  // const imagedeleteHandler = (e, id) => {
-  //   e.preventDefault()
-  //   setFinalUpdatedImg(prev => prev.filter(img => img.id !== id))
-  //   successMessage({ description: 'Image removed from view (not deleted from server).' })
-  // }
-  
-  const imagedeleteHandler = async (e, id) => {
-    e.preventDefault()
-    try {
-      const { data } = await api.delete(`workOrder/deleteImage?imageId=${id}`)
-      if (data?.status) {
-        setFinalUpdatedImg(data.data.getAllImages)
-        successMessage({ description: 'Image has been deleted successfully.' })
+
+  const removeOldFileByUrl = useCallback(url => {
+    setFinalUpdatedImg(prev => {
+      const filtered = prev.filter(file => file.url !== url)
+      const removed = prev.find(file => file.url === url)
+
+      if (removed) {
+        setDeletedOldImages(prevDeleted => {
+          const alreadyExists = prevDeleted.some(img => img.url === removed.url)
+          return alreadyExists ? prevDeleted : [...prevDeleted, removed]
+        })
       }
-    } catch (error) {
-      console.error('Error deleting image:', error)
-    }
-  }
+
+      return filtered
+    })
+  }, [])
 
   useEffect(() => {
     setFinalUpdatedImg(updateImage)
     return () => {
-      files.forEach(file => URL.revokeObjectURL(file.preview))
+      files?.forEach(file => URL.revokeObjectURL(file.preview))
     }
   }, [updateImage])
 
@@ -73,9 +74,11 @@ const MultiImageUploader = ({ setImageUpload, updateImage }) => {
       </div>
 
       <div className='mt-4 space-y-2'>
-        {files.length > 0 && <span className='w-full font-semibold'>New Images</span>}
+        {files?.length > 0 && (
+          <span className='w-full font-semibold'>New Images</span>
+        )}
         <div className='!mb-4 grid grid-cols-4 gap-4'>
-          {files.map(file => (
+          {files?.map(file => (
             <div
               key={file.name}
               className='relative flex w-full items-center justify-between rounded-md border bg-white p-2'
@@ -106,32 +109,40 @@ const MultiImageUploader = ({ setImageUpload, updateImage }) => {
           ))}
         </div>
 
-        {finalUpdatedImg?.length > 0 && <span className='w-full font-semibold'>Old Images</span>}
+        {finalUpdatedImg?.length > 0 && (
+          <span className='w-full font-semibold'>Old Images</span>
+        )}
         <div className='grid grid-cols-4 gap-4'>
-          {finalUpdatedImg?.map(file => (
-            <div
-              key={file.id}
-              className='relative flex w-full items-center justify-between rounded-md border bg-white p-2'
-            >
-              <img
-                src={file.image}
-                alt='Old Image'
-                className='h-10 w-10 rounded object-cover'
-              />
-              <div className='ml-2 flex-1'>
-                <p className='!m-0 !line-clamp-1 !w-fit !border-0 !p-0 text-sm font-medium'>
-                  {file.image?.split('/').pop()?.slice(-18)}
-                </p>
-              </div>
-              <button
-                type='button'
-                className='close-icon absolute w-5 rounded-full bg-red-500 text-sm font-medium text-white'
-                onClick={e => imagedeleteHandler(e, String(file.id))}
+          {finalUpdatedImg?.map(file => {
+            console.log('file', file)
+            return (
+              <div
+                key={file.id}
+                className='relative flex w-full items-center justify-between rounded-md border bg-white p-2'
               >
-                ×
-              </button>
-            </div>
-          ))}
+                <img
+                  src={file.url}
+                  alt={file.name}
+                  className='h-10 w-10 rounded object-cover'
+                />
+                <div className='ml-2 flex-1'>
+                  <p className='!m-0 !line-clamp-1 !w-fit !border-0 !p-0 text-sm font-medium'>
+                    {file.name}
+                  </p>
+                  {/* <p className='text-xs text-gray-500'>
+                  {(file.size / 1024 / 1024).toFixed(2)} MB
+                </p> */}
+                </div>
+                <button
+                  type='button'
+                  className='close-icon absolute w-5 rounded-full bg-red-500 text-sm font-medium text-white'
+                  onClick={() => removeOldFileByUrl(file.url)}
+                >
+                  ×
+                </button>
+              </div>
+            )
+          })}
         </div>
       </div>
     </div>

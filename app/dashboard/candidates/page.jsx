@@ -275,7 +275,7 @@ const AllCandidates = () => {
 
     // This code runs only on the client side
     if (typeof window !== "undefined" && window.localStorage) {
-      const storedData = localStorage.getItem("candidates");
+      const storedData = localStorage.getItem("skills");
       if (storedData) {
         const candidateData = JSON.parse(storedData); // Parse if storing JSON
         const candidateOptions = candidateData?.candidate
