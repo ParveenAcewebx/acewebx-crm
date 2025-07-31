@@ -11,8 +11,11 @@ import SkillForm from '@/components/skills/SkillForm'
 import SkillSettingModal from '@/components/modal/SkillSettingModal'
 import { SkillColumn } from './skill-column'
 import SkillApi from '@/services/cadidateApis/settings/SkillApi'
+import EventApi from '@/services/cadidateApis/events/EventApi'
+import { useRouter } from 'next/navigation'
+import EmployeesApi from '@/services/cadidateApis/employees/EmployeesApi'
 
-const Skills = () => {
+const EventList = () => {
     const [getList, setList] = useState([])
     const [loading, setLoading] = useState(true)
     const [page, setPage] = useState(1)
@@ -31,9 +34,10 @@ const Skills = () => {
     // fetch group tag list
     const fetchTagList = async () => {
         try {
-            const response = await SkillApi.getAllSkill(page, length)
+            const response = await EmployeesApi.getAllEmployees(page, length)
+            console.log("response", response)
             if (response.status === 200) {
-                setList(response?.data?.data?.skills)
+                setList(response?.data?.data?.employees)
                 setTotalRecord(response?.data?.data?.pagination?.total)
             }
         } catch (error) {
@@ -50,7 +54,7 @@ const Skills = () => {
     const onDelete = async () => {
         if (deleteIndex !== null) {
             try {
-                const res = await SkillApi.deleteSkill(deleteIndex)
+                const res = await EmployeesApi.deleteEmployees(deleteIndex)
                 setDeleteOpenModal(false)
                 if (res?.status === 200) {
                     fetchTagList()
@@ -70,24 +74,14 @@ const Skills = () => {
     }
     const handleEditTaskTag = async (row) => {
         if (row?.original?.id) {
-            try {
-                const response = await SkillApi.getByIdSkill(row?.original?.id)
-                if (response.status === 200) {
-                    setEditData(response.data.data)
-                    fetchTagList()
-                    successMessage({ description: response?.data?.message })
-                }
-            } catch (error) {
-                console.log('error', error)
-            }
+            router.push(`/dashboard/employees/edit/${row?.original?.id}`)
 
-            setSubmitOpenModal(true)
         }
     }
     const deleteHandleModalClose = () => {
         setDeleteOpenModal(false)
     }
-
+    const router = useRouter()
     useEffect(() => {
         const subscription = methods.watch((value, { name }) => {
             if (name === 'length') {
@@ -99,8 +93,9 @@ const Skills = () => {
         return () => subscription.unsubscribe()
     }, [methods, totalRecord])
     const handleOpenTagModal = () => {
-        setSubmitOpenModal(true)
-        setEditData(null)
+        router.push('/dashboard/employees/add')
+        // setSubmitOpenModal(true)
+        // setEditData(null)
     }
     const submitHandleModalClose = () => {
         setSubmitOpenModal(false)
@@ -108,11 +103,11 @@ const Skills = () => {
     return (
         <>
             <div>
-                <LayoutHeader pageTitle='Skills' />
+                <LayoutHeader pageTitle='Employees' />
                 <div className='mb-3 w-full flex justify-end items-center'>
                     <Button className='site-button' onClick={handleOpenTagModal}>
                         <Plus />
-                        Add Skills
+                        Add Employees
                     </Button>
                 </div>
 
@@ -155,4 +150,4 @@ const Skills = () => {
     )
 }
 
-export default Skills
+export default EventList
