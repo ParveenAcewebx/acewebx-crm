@@ -32,15 +32,19 @@ const data = {
       ]
     },
     {
-      title: 'Settings',
-      url: '/dashboard/settings/skills',
-      icon: SettingsIcon,
+      title: 'Employees',
+      url: '/dashboard',
+      icon: SquareUser,
       isActive: true,
       items: [
 
         {
-          title: 'Skills',
-          url: '/dashboard/settings/skills'
+          title: 'Add Employee',
+          url: '/dashboard/employees/add'
+        },
+        {
+          title: 'All Employees',
+          url: '/dashboard/employee'
         }
       ]
     },
@@ -61,23 +65,21 @@ const data = {
         }
       ]
     },
+
+
     {
-      title: 'Employees',
-      url: '/dashboard',
-      icon: SquareUser,
+      title: 'Settings',
+      url: '/dashboard/settings/skills',
+      icon: SettingsIcon,
       isActive: true,
       items: [
 
         {
-          title: 'Add Employee',
-          url: '/dashboard/employees/add'
-        },
-        {
-          title: 'All Employees',
-          url: '/dashboard/employee'
+          title: 'Skills',
+          url: '/dashboard/settings/skills'
         }
       ]
-    }
+    },
   ]
 }
 

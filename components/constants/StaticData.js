@@ -221,6 +221,12 @@ export const preferredShiftOptions = [
   { value: 'any', label: 'Any Shift' }
 ]
 
+
+export const currentShiftOptions = [
+  { value: 'day', label: 'Day Shift' },
+  { value: 'night', label: 'Night Shift' },
+  { value: 'staggered', label: 'Staggered Shift' },
+]
 export const onlinePlatforms = [
   { label: 'LinkedIn', value: 'linkedin' },
   { label: 'Upwork', value: 'upwork' },

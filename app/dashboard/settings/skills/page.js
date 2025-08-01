@@ -4,13 +4,18 @@ import LayoutHeader from '@/components/layoutHeader'
 import { DataTable } from '@/components/Table'
 import { errorMessage, successMessage } from '@/components/ToasterMessage'
 import { Button } from '@/components/ui/button'
-import { Plus } from 'lucide-react'
+import { Plus, Search } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
 import SkillForm from '@/components/skills/SkillForm'
 import SkillSettingModal from '@/components/modal/SkillSettingModal'
 import { SkillColumn } from './skill-column'
 import SkillApi from '@/services/cadidateApis/settings/SkillApi'
+import FormInputField from '@/components/share/form/FormInputField'
+import FormSelectField from '@/components/share/form/FormSelect'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { SearchValidation } from '@/components/form-validations/SearchValidation'
+import { LengthData } from '@/components/constants/StaticData'
 
 const Skills = () => {
     const [getList, setList] = useState([])
@@ -105,15 +110,89 @@ const Skills = () => {
     const submitHandleModalClose = () => {
         setSubmitOpenModal(false)
     }
+
+
+
+       // filter :--
+       const form = useForm({
+        resolver: yupResolver(SearchValidation),
+        mode: 'onChange', // or 'onBlur' or 'onChange'
+    });
+    const search = form.watch('search')
+
+    const handleClearSearch = () => {
+        form.setValue('search', '')
+
+        getListCadidate()
+    }
+
+    const handleSimpleFilter = async data => {
+
+        const isValid = await form.trigger('search'); // only validate 'search'
+
+        if (!isValid) return;
+        try {
+            const apiData = await SkillApi.skillListFilters({
+                ...data,
+                search,
+            })
+
+            const candidates = apiData?.data?.data?.skills || []
+            const paginationInfo = apiData?.data?.data?.pagination
+
+            setList(candidates)
+            setTotalRecord(paginationInfo?.total || 0)
+        } catch (error) {
+            console.error('Fetch error:', error)
+        }
+    }
+
     return (
         <>
             <div>
                 <LayoutHeader pageTitle='Skills' />
-                <div className='mb-3 w-full flex justify-end items-center'>
+                <div className='mb-5 w-full flex justify-end items-center'>
                     <Button className='site-button' onClick={handleOpenTagModal}>
                         <Plus />
                         Add Skills
                     </Button>
+                </div>
+                <div className='flex justify-between items-center mb-5'>
+                    <div>
+                        <FormProvider {...methods}>
+                            <FormSelectField
+                                name='length'
+                                className='h-10 w-28'
+                                form={methods}
+                                options={LengthData}
+                            />
+                        </FormProvider>
+                    </div>
+
+                    <FormProvider {...form}>
+                        <div className="flex justify-between items-center gap-4">
+                            <div className='filters relative'>
+                                <div>
+                                    <FormInputField
+                                        name="search"
+                                        placeholder="Search...."
+                                        form={form}
+                                        inputType="text"
+                                        className="colum-box-bg-change col-span-2"
+                                        searchError="searchError"
+                                    />
+                                    <div className='filttersSearch'>
+                                        <Search
+                                            type="submit"
+                                            className="cursor-pointer "
+                                            onClick={() => handleSimpleFilter()}
+                                        />
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </FormProvider>
                 </div>
 
                 <DataTable

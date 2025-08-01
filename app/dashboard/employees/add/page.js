@@ -1,6 +1,7 @@
 'use client'
 import {
   bloodGrupeType,
+  currentShiftOptions,
   designationOptions,
   editWalkInForm,
   formDefaultValues,
@@ -49,10 +50,10 @@ function AddEmployees() {
     setLoader(true)
     try {
       const formData = new FormData()
-   
+
       Object.entries(data).forEach(([key, value]) => {
 
-        if (key === 'dobDocument' || key === 'dateOfJoining' || key === 'dobCelebration') {
+        if (key === 'dobDocument' || key === 'dateOfJoining' || key === 'dobCelebration' || key === "lastIncrementDate") {
           formData.append(key, moment(value).format('YYYY-MM-DD'));
         } else {
           formData.append(key, value);
@@ -60,7 +61,7 @@ function AddEmployees() {
       });
 
       const response = await EmployeesApi.addEmployees(formData)
-      console.log("response",response)
+      console.log("response", response)
       if (response?.data?.status == true) {
         form.reset()
         setLoader(false)
@@ -79,7 +80,7 @@ function AddEmployees() {
   }
 
 
- 
+
 
 
 
@@ -102,7 +103,7 @@ function AddEmployees() {
               onSubmit={form.handleSubmit(onSubmit)}
             >
               {/* Personal Info */}
-              <fieldset className='custom-raduis   bg-white font-semibold'>
+              <fieldset className='custom-raduis   bg-white font-semibold mb-9'>
                 <legend className="text-lg font-bold  ml-[25px]">Personal Information</legend>
                 <div className="multipart-field-one">
                   <FormInputField
@@ -149,6 +150,13 @@ function AddEmployees() {
                     className='datepickerouter'
                     defaultMonth={new Date('1995-01-02')}
                   />
+                  <FormSelectField
+                    name='gender'
+                    label='Gender'
+                    form={form}
+                    options={GenderData}
+                    className='colum-box-bg-change'
+                  />
 
                   <FormTextArea
                     name='currentAddress'
@@ -166,8 +174,8 @@ function AddEmployees() {
               </fieldset>
 
               {/* Professional Info */}
-              <fieldset className='custom-raduis bg-white font-semibold'>
-                <legend className="text-lg font-bold pt-[65px] ml-[25px]">Professional Information</legend>
+              <fieldset className='custom-raduis bg-white font-semibold mb-9'>
+              <legend className="text-lg font-bold  ml-[25px]">Professional Information</legend>
                 <div className="multipart-field-two">
                   <FormInputField
                     name='companyEmail'
@@ -183,6 +191,13 @@ function AddEmployees() {
                     inputType='text'
                     className='colum-box-bg-change'
                   />
+                  <FormInputField
+                    name='currentSalary'
+                    label='Current Salary (Monthly)'
+                    form={form}
+                    inputType='number'
+                    className='colum-box-bg-change'
+                  />
                   <FormDatePicker
                     name='dateOfJoining'
                     label='Date of Joining'
@@ -191,12 +206,34 @@ function AddEmployees() {
                     className='datepickerouter'
                     defaultMonth={new Date()}
                   />
+                  <FormDatePicker
+                    name='lastIncrementDate'
+                    label='Last Increment Date'
+                    form={form}
+                    inputFormat='YYYY-MM-DD'
+                    className='datepickerouter'
+                    defaultMonth={new Date()}
+                  />
+                  <FormInputField
+                    name='lastIncrementAmount'
+                    label='Last Increment Amount'
+                    form={form}
+                    inputType='number'
+                    className='colum-box-bg-change'
+                  />
+                  <FormSelectField
+                    name='currentShift'
+                    label='Current Shift'
+                    form={form}
+                    options={currentShiftOptions}
+                    className='colum-box-bg-change'
+                  />
                 </div>
               </fieldset>
 
               {/* Documents */}
-              <fieldset className='custom-raduis bg-white font-semibold'>
-                <legend className="text-lg font-bold pt-[65px] ml-[25px]">Documents</legend>
+              <fieldset className='custom-raduis bg-white font-semibold mb-9'>
+              <legend className="text-lg font-bold  ml-[25px]">Documents</legend>
                 <div className="multipart-field-one ">
                   <FormInputField
                     name='adharCard'
@@ -212,12 +249,19 @@ function AddEmployees() {
                     inputType='text'
                     className='colum-box-bg-change'
                   />
+                  <FormInputField
+                    name='otherDocumentLink'
+                    label='Other Document Link'
+                    form={form}
+                    inputType='text'
+                    className='colum-box-bg-change'
+                  />
                 </div>
               </fieldset>
 
               {/* Banking Details */}
-              <fieldset className='custom-raduis bg-white font-semibold'>
-                <legend className="text-lg font-bold pt-[65px] ml-[25px]">Banking Details</legend>
+              <fieldset className='custom-raduis bg-white font-semibold mb-9'>
+              <legend className="text-lg font-bold  ml-[25px]">Banking Details</legend>
                 <div className="multipart-field-two">
                   <FormInputField
                     name='bankName'
@@ -244,8 +288,8 @@ function AddEmployees() {
               </fieldset>
 
               {/* Emergency Details */}
-              <fieldset className='custom-raduis bg-white font-semibold'>
-                <legend className="text-lg font-bold pt-[65px] ml-[25px]">Emergency Contact Details</legend>
+              <fieldset className='custom-raduis bg-white font-semibold mb-9'>
+              <legend className="text-lg font-bold  ml-[25px]">Emergency Contact Details</legend>
                 <div className="multipart-field-one">
                   <FormSelectField
                     name='bloodGroup'

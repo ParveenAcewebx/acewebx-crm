@@ -22,12 +22,36 @@ const EmployeesApi = {
 
     globalEmployeesGetApi: () => {
         return api.get(`/skill/globalSkill`)
-    }
-    // getUSkillByFilter: data => {
-    //     return api.get(
-    //         `auth/getAllUser?page=${data?.page}&limit=${data?.limit}&name=${data?.name}&email=${data?.email}&currentSalary=${data?.currentSalary}`
-    //     )
-    // }
+    },
+    activityDevEmployees: (module, editId) => {
+        return api.get(
+          `activity/logs?module=${module}&moduleId=${editId}`
+        )
+      },
+      employeesListFilters: data => {
+        const search = data?.search ?? ''
+        return api.get(
+          `employee/getAllEmployee?search=${search}`
+        )
+      },
+
+    //   chat apis
+      addMessageEmployee: data => {
+        return api.post(`employeeChat/sendMessage`,data )
+      },
+      editMessageEmployee: (id, data) => {
+        return api.put(`employeeChat/updateMessage/${id}`, { message: data })
+      },
+      getByIdMessageEmployee: id => {
+        return api.get(`employeeChat/getMessagesById?chatId=${id}`)
+      },
+      getAllMessagesEmployee: (id) => {
+        console.log("ididid",id)
+        return api.get(`employeeChat/getMessagesByEmployeeId?employeeId=${id}`)
+      },
+      deleteMessageEmployee: (id, data) => {
+        return api.delete(`employeeChat/deleteMessage/${id}`)
+      }
 }
 
 export default EmployeesApi

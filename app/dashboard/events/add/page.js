@@ -104,7 +104,7 @@ function AddEvent() {
 
 
 
-  
+
 
 
     return (
@@ -121,8 +121,7 @@ function AddEvent() {
                         encType='multipart/form-data'
                         onSubmit={form.handleSubmit(onSubmit)}
                     >
-
-                        <div className='mb-4 mt-6 grid grid-cols-2 gap-6 md:grid-cols-2'>
+                        <div className='mb-4 mt-6 grid grid-cols-1 gap-6 md:grid-cols-1'>
                             <FormInputField
                                 name='title'
                                 label='Title'
@@ -130,6 +129,21 @@ function AddEvent() {
                                 inputType='text'
                                 className='colum-box-bg-change'
                             />
+                        </div>
+
+                        <div className='mb-8 grid grid-cols-1 gap-6 md:grid-cols-1'>
+                            <TextEditor
+                                name='description'
+                                label='Description'
+                                form={form}
+                                multiline
+                                className='col-span-2   !bg-white '
+                              
+                            />
+                        </div>
+
+
+                        <div className='mb-4 mt-6 grid grid-cols-2 gap-6 md:grid-cols-2'>
                             <FormDatePicker
                                 name='fromDate'
                                 label='From Date'
@@ -149,8 +163,10 @@ function AddEvent() {
                                 disabled={{ before: new Date('2024-12-31') }}
                                 defaultM
                                 onth={new Date()}
-                            />
+                            /> 
+                        </div>
 
+                        <div className='mb-4 mt-6 grid grid-cols-2 gap-6 md:grid-cols-2'>
                             <FormSelectField
                                 name='isHoliday'
                                 label='Is Holiday?'
@@ -164,25 +180,6 @@ function AddEvent() {
                                 form={form}
                                 options={isHoliday}
                                 className='colum-box-bg-change'
-                            />
-                        </div>
-
-                        <div className='mb-8 grid grid-cols-1 gap-6 md:grid-cols-1'>
-                            <TextEditor
-                                name='description'
-                                label='Description'
-                                form={form}
-                                multiline
-                                className='col-span-2 !h-[160px] border !bg-white '
-                                style={{
-                                    width: '100%',
-                                    resize: 'none',
-                                    marginTop: '25px',
-                                    overflow: 'auto',
-                                    padding: '15px',
-                                    borderColor: '#ccc',
-                                    borderRadius: '4px'
-                                }}
                             />
                         </div>
 

@@ -22,7 +22,13 @@ const EventApi = {
 
     globalEventGetApi: () => {
         return api.get(`/event/globalSkill`)
-    }
+    },
+    eventListFilters: data => {
+        const search = data?.search ?? ''
+        return api.get(
+          `event/getAllEvent?search=${search}`
+        )
+      },
     // getUSkillByFilter: data => {
     //     return api.get(
     //         `auth/getAllUser?page=${data?.page}&limit=${data?.limit}&name=${data?.name}&email=${data?.email}&currentSalary=${data?.currentSalary}`

@@ -1,10 +1,12 @@
 'use client'
 import {
     bloodGrupeType,
+    currentShiftOptions,
     formDefaultValues,
+    GenderData,
     RelationData
 } from '@/components/constants/StaticData'
-import {useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import moment from 'moment';
@@ -35,9 +37,17 @@ function EditEmployees({ editId }) {
         try {
             const formData = new FormData()
 
+            // Need only those keys which are touched
+            const dirtyFields = form.formState.dirtyFields;
+
+            const updateFieldsValue = Object.keys(dirtyFields);
+            if (updateFieldsValue) {
+                formData.append('updateField', JSON.stringify(updateFieldsValue))
+            }
+
             Object.entries(data).forEach(([key, value]) => {
 
-                if (key === 'dobDocument' || key === 'dateOfJoining' || key === 'dobCelebration') {
+                if (key === 'dobDocument' || key === 'dateOfJoining' || key === 'dobCelebration' || key === "lastIncrementDate") {
                     formData.append(key, moment(value).format('YYYY-MM-DD'));
                 } else {
                     formData.append(key, value);
@@ -49,7 +59,7 @@ function EditEmployees({ editId }) {
                 form.reset()
                 setLoader(false)
                 successMessage({ description: 'Updated SuccessFully!' })
-                router.push('/dashboard/employee')
+                router.push('detail')
             }
         } catch (error) {
             setLoader(false)
@@ -71,28 +81,27 @@ function EditEmployees({ editId }) {
             if (response?.data?.status === true) {
                 const data = response?.data?.data;
                 const meta = data?.meta || {};
-
-                // Correctly map fields from API
+                // const joiningDate = new Date(data.dob + 'T00:00:00')
                 const dataForSet = {
                     // Personal Info
                     name: data?.name || '',
                     personalEmail: data?.personalEmail || '',
                     phone: data?.phone || '',
                     alternatePhone: data?.alternatePhone || '',
-                    dobDocument: data?.dobDocument || '',
-                    dobCelebration: data?.dobCelebration || '',
+                    dobDocument: new Date(data?.dobDocument + 'T00:00:00') || '',
+                    dobCelebration: new Date(data?.dobCelebration + 'T00:00:00') || '',
                     currentAddress: data?.currentAddress || '',
                     permanentAddress: data?.permanentAddress || '',
 
                     // Professional Info
                     companyEmail: data?.companyEmail || '',
                     designation: data?.designation || '',
-                    dateOfJoining: data?.dateOfJoining || '',
+                    dateOfJoining: new Date(data?.dateOfJoining + 'T00:00:00') || '',
 
-                    // Documents (note: key `_adharCard` has a typo in your form as `_aadharCard`)
-                    adharCard: meta?._adharCard || '', // Make sure your field name matches this key
-                    panCard: meta?._panCard || '',     // There is no `.filePath` in the response
-
+                    // Documents
+                    adharCard: meta?._adharCard || '',
+                    panCard: meta?._panCard || '',
+                    otherDocumentLink:meta?._otherDocumentLink || '',
                     // Banking Details
                     bankName: meta?._bankName || '',
                     bankAccountNumber: meta?._bankAccountNumber || '',
@@ -104,6 +113,13 @@ function EditEmployees({ editId }) {
                     emergencyContactNumber: meta?._emergencyContactNumber || '',
                     emergencyContactRelationship: meta?._emergencyContactRelationship || '',
                     emergencyContactRelationshipOther: meta?._emergencyContactRelationshipOther || '',
+
+                    // Additional Fields
+                    gender: meta?._gender || '',
+                    currentSalary: meta?._currentSalary || '',
+                    currentShift: meta?._currentShift || '',
+                    lastIncrementAmount: meta?._lastIncrementAmount || '',
+                    lastIncrementDate: new Date(meta?._lastIncrementDate + 'T00:00:00') || '',
                 };
 
                 form.reset(dataForSet);
@@ -142,7 +158,7 @@ function EditEmployees({ editId }) {
                             onSubmit={form.handleSubmit(onSubmit)}
                         >
                             {/* Personal Info */}
-                            <fieldset className='custom-raduis   bg-white font-semibold'>
+                            <fieldset className='custom-raduis   bg-white font-semibold mb-9'>
                                 <legend className="text-lg font-bold  ml-[25px]">Personal Information</legend>
                                 <div className="multipart-field-one">
                                     <FormInputField
@@ -189,6 +205,13 @@ function EditEmployees({ editId }) {
                                         className='datepickerouter'
                                         defaultMonth={new Date('1995-01-02')}
                                     />
+                                    <FormSelectField
+                                        name='gender'
+                                        label='Gender'
+                                        form={form}
+                                        options={GenderData}
+                                        className='colum-box-bg-change'
+                                    />
 
                                     <FormTextArea
                                         name='currentAddress'
@@ -206,7 +229,7 @@ function EditEmployees({ editId }) {
                             </fieldset>
 
                             {/* Professional Info */}
-                            <fieldset className='custom-raduis bg-white font-semibold'>
+                            <fieldset className='custom-raduis bg-white font-semibold mb-9'>
                                 <legend className="text-lg font-bold  ml-[25px]">Professional Information</legend>
                                 <div className="multipart-field-two">
                                     <FormInputField
@@ -223,6 +246,13 @@ function EditEmployees({ editId }) {
                                         inputType='text'
                                         className='colum-box-bg-change'
                                     />
+                                    <FormInputField
+                                        name='currentSalary'
+                                        label='Current Salary (Monthly)'
+                                        form={form}
+                                        inputType='number'
+                                        className='colum-box-bg-change'
+                                    />
                                     <FormDatePicker
                                         name='dateOfJoining'
                                         label='Date of Joining'
@@ -231,11 +261,33 @@ function EditEmployees({ editId }) {
                                         className='datepickerouter'
                                         defaultMonth={new Date()}
                                     />
+                                    <FormDatePicker
+                                        name='lastIncrementDate'
+                                        label='Last Increment Date'
+                                        form={form}
+                                        inputFormat='YYYY-MM-DD'
+                                        className='datepickerouter'
+                                        defaultMonth={new Date()}
+                                    />
+                                    <FormInputField
+                                        name='lastIncrementAmount'
+                                        label='Last Increment Amount'
+                                        form={form}
+                                        inputType='number'
+                                        className='colum-box-bg-change'
+                                    />
+                                    <FormSelectField
+                                        name='currentShift'
+                                        label='Current Shift'
+                                        form={form}
+                                        options={currentShiftOptions}
+                                        className='colum-box-bg-change'
+                                    />
                                 </div>
                             </fieldset>
 
                             {/* Documents */}
-                            <fieldset className='custom-raduis bg-white font-semibold'>
+                            <fieldset className='custom-raduis bg-white font-semibold mb-9'>
                                 <legend className="text-lg font-bold  ml-[25px]">Documents</legend>
                                 <div className="multipart-field-one ">
                                     <FormInputField
@@ -252,11 +304,18 @@ function EditEmployees({ editId }) {
                                         inputType='text'
                                         className='colum-box-bg-change'
                                     />
+                                    <FormInputField
+                                        name='otherDocumentLink'
+                                        label='Other Document Link'
+                                        form={form}
+                                        inputType='text'
+                                        className='colum-box-bg-change'
+                                    />
                                 </div>
                             </fieldset>
 
                             {/* Banking Details */}
-                            <fieldset className='custom-raduis bg-white font-semibold'>
+                            <fieldset className='custom-raduis bg-white font-semibold mb-9'>
                                 <legend className="text-lg font-bold  ml-[25px]">Banking Details</legend>
                                 <div className="multipart-field-two">
                                     <FormInputField
@@ -284,7 +343,7 @@ function EditEmployees({ editId }) {
                             </fieldset>
 
                             {/* Emergency Details */}
-                            <fieldset className='custom-raduis bg-white font-semibold'>
+                            <fieldset className='custom-raduis bg-white font-semibold mb-9'>
                                 <legend className="text-lg font-bold  ml-[25px]">Emergency Contact Details</legend>
                                 <div className="multipart-field-one">
                                     <FormSelectField
