@@ -15,7 +15,7 @@ import { EmployeeColumn } from './employee-column'
 import FormInputField from '@/components/share/form/FormInputField'
 import FormSelectField from '@/components/share/form/FormSelect'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { SearchValidation } from '@/components/form-validations/SearchValidation'
+import { SearchEmployee, SearchValidation } from '@/components/form-validations/SearchValidation'
 import { LengthData } from '@/components/constants/StaticData'
 
 const EventList = () => {
@@ -108,7 +108,7 @@ const EventList = () => {
 
     // filter :--
     const form = useForm({
-        resolver: yupResolver(SearchValidation),
+        resolver: yupResolver(SearchEmployee),
         mode: 'onChange', // or 'onBlur' or 'onChange'
     });
     const search = form.watch('search')

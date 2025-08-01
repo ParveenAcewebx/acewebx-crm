@@ -83,14 +83,14 @@ export const EmployeeColumn = (handleDeleteTaskTag, handleEditTaskTag) => [
     cell: ({ row }) =>
       new Date(row.original.dateOfJoining).toLocaleDateString(),
   },
-  {
-    accessorKey: 'meta',
-    header: 'PAN Card',
-    cell: ({ row }) => {
-      const pan = row.original.meta.find((m) => m.metaKey === '_panCard');
-      return pan?.metaValue || '-';
-    },
-  },
+  // {
+  //   accessorKey: 'meta',
+  //   header: 'PAN Card',
+  //   cell: ({ row }) => {
+  //     const pan = row.original.meta.find((m) => m.metaKey === '_panCard');
+  //     return pan?.metaValue || '-';
+  //   },
+  // },
   {
     accessorKey: 'meta_bloodGroup',
     header: 'Blood Group',

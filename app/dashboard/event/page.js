@@ -17,7 +17,7 @@ import FormInputField from '@/components/share/form/FormInputField'
 import FormSelectField from '@/components/share/form/FormSelect'
 import { LengthData } from '@/components/constants/StaticData'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { SearchValidation } from '@/components/form-validations/SearchValidation'
+import { SearchEvent, SearchValidation } from '@/components/form-validations/SearchValidation'
 
 const EventList = () => {
     const [getList, setList] = useState([])
@@ -110,7 +110,7 @@ const EventList = () => {
 
   // filter :--
   const form = useForm({
-    resolver: yupResolver(SearchValidation),
+    resolver: yupResolver(SearchEvent),
     mode: 'onChange', // or 'onBlur' or 'onChange'
   });
   const search = form.watch('search')
@@ -147,12 +147,7 @@ const EventList = () => {
         <>
             <div>
                 <LayoutHeader pageTitle='Events' />
-                {/* <div className='mb-3 w-full flex justify-end items-center'>
-                    <Button className='site-button' onClick={handleOpenTagModal}>
-                        <Plus />
-                        Add Event
-                    </Button>
-                </div> */}
+              
   <div className='flex justify-between items-center mb-5'>
         <div>
           <FormProvider {...methods}>
@@ -171,7 +166,7 @@ const EventList = () => {
               <div>
                 <FormInputField
                   name="search"
-                  placeholder="Search by Title...."
+                  placeholder="Search by Title/Description"
                   form={form}
                   inputType="text"
                   className="colum-box-bg-change col-span-2"

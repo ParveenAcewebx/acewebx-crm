@@ -7,7 +7,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Edit, EllipsisVertical, Eye, Trash2 } from 'lucide-react'
 
 export const SkillColumn = (handleDeleteTaskTag, handleEditTaskTag) => [
@@ -47,16 +46,16 @@ export const SkillColumn = (handleDeleteTaskTag, handleEditTaskTag) => [
       )
     }
   },
-  {
-    accessorKey: 'id',
-    header: '#ID',
-    size: 80,
-    cell: ({ row }) => (
-      <div className="max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
-        {`#SKILL-${row.original.id}`}
-      </div>
-    ),
-  },
+  // {
+  //   accessorKey: 'id',
+  //   header: '#ID',
+  //   size: 80,
+  //   cell: ({ row }) => (
+  //     <div className="max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
+  //       {`#SKILL-${row.original.id}`}
+  //     </div>
+  //   ),
+  // },
   {
     accessorKey: 'title',
     header: 'Title',
@@ -68,11 +67,15 @@ export const SkillColumn = (handleDeleteTaskTag, handleEditTaskTag) => [
     cell: ({ row }) =>
       row?.original?.type
   },
-  // {
-  //   accessorKey: 'status',
-  //   header: 'Status',
-  //   cell: ({ row }) =>
-  //     row?.original?.status
-  // },
-
+  {
+    accessorKey: 'status',
+    header: 'Status',
+    size: 80,
+    cell: ({ row }) => (
+      <div className="max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
+        { row?.original?.status == "0" ? "Inactive" : "Active"}
+      </div>
+    ),
+  },
+  
 ]
