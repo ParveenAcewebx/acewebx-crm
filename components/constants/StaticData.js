@@ -91,19 +91,19 @@ export const formDefaultValues = {
   dateOfJoining: '',
 
   // Documents
-  aadharCard: '',
+  adharCard: '',
   panCard: '',
 
   // Banking Details
   bankName: '',
   bankAccountNumber: '',
-  bankIFSC: '',
+  bankIfscCode: '',
 
   // Emergency Details
   bloodGroup: '',
   emergencyContactName: '',
   emergencyContactNumber: '',
-  emergencyContactRelation: ''
+  emergencyContactRelationship: ''
 }
 
 
@@ -150,6 +150,16 @@ export const RelationData = [
 ]
 
 
+export const bloodGrupeType = [
+  { label: 'A+', value: 'a+' },
+  { label: 'A-', value: 'a-' },
+  { label: 'B+', value: 'b+' },
+  { label: 'B-', value: 'b-' },
+  { label: 'AB+', value: 'ab+' },
+  { label: 'AB-', value: 'ab-' },
+  { label: 'O+', value: 'o+' },
+  { label: 'O-', value: 'o-' },
+];
 
 export const TypeData = [
   { label: 'Candidate', value: 'candidate' },

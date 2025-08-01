@@ -21,7 +21,7 @@ export const EmployeeValidation = Yup.object().shape({
   dateOfJoining: Yup.date().required('Date of Joining is required'),
 
   // Documents
-  aadharCard: Yup.string()
+  adharCard: Yup.string()
     .required('Aadhar Card is required')
    ,
   panCard: Yup.string()
@@ -33,17 +33,16 @@ export const EmployeeValidation = Yup.object().shape({
   bankAccountNumber: Yup.string()
     .required('Bank Account Number is required')
     .matches(/^[0-9]{9,18}$/, 'Bank Account must be 9 to 18 digits'),
-  bankIFSC: Yup.string()
+    bankIfscCode: Yup.string()
     .required('IFSC Code is required')
     .matches(/^[A-Z]{4}0[A-Z0-9]{6}$/, 'Invalid IFSC Code'),
 
   // Emergency Details
   bloodGroup: Yup.string()
-    .required('Blood Group is required')
-    .matches(/^(A|B|AB|O)[+-]$/, 'Invalid blood group format'),
+    .required('Blood Group is required'),
   emergencyContactName: Yup.string().required('Emergency Contact Name is required'),
   emergencyContactNumber: Yup.string()
     .required('Emergency Contact Number is required')
     .matches(/^[0-9]{10}$/, 'Contact number must be 10 digits'),
-  emergencyContactRelation: Yup.string().required('Emergency Contact Relationship is required'),
+    emergencyContactRelationship: Yup.string().required('Emergency Contact Relationship is required'),
 })

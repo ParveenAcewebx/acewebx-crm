@@ -93,7 +93,7 @@ function AddEvent() {
             if (response?.data?.status == true) {
                 // form.reset()
                 setLoader(false)
-                router.push('/dashboard/events')
+                router.push('/dashboard/event')
             }
         } catch (error) {
             setLoader(false)

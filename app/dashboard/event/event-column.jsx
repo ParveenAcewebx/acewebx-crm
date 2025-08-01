@@ -1,14 +1,9 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
+
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { Edit, EllipsisVertical, Trash2 } from 'lucide-react'
+import { Edit, Trash2 } from 'lucide-react'
 
 export const EventColumn = (handleDeleteTaskTag, handleEditTaskTag) => [
 

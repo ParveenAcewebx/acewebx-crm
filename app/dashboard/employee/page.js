@@ -10,8 +10,6 @@ import { useForm } from 'react-hook-form'
 import SkillForm from '@/components/skills/SkillForm'
 import SkillSettingModal from '@/components/modal/SkillSettingModal'
 import { SkillColumn } from './skill-column'
-import SkillApi from '@/services/cadidateApis/settings/SkillApi'
-import EventApi from '@/services/cadidateApis/events/EventApi'
 import { useRouter } from 'next/navigation'
 import EmployeesApi from '@/services/cadidateApis/employees/EmployeesApi'
 
@@ -74,7 +72,7 @@ const EventList = () => {
     }
     const handleEditTaskTag = async (row) => {
         if (row?.original?.id) {
-            router.push(`/dashboard/employees/edit/${row?.original?.id}`)
+            router.push(`/dashboard/employees/${row?.original?.id}/detail`)
 
         }
     }

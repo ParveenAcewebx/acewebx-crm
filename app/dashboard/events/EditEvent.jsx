@@ -20,8 +20,8 @@ import EventApi from '@/services/cadidateApis/events/EventApi'
 import FormSelectField from '@/components/share/form/FormSelect'
 import { EventValidation } from '@/components/form-validations/EventValidation'
 
-function EditEvent() {
-    const { id } = useParams()
+function EditEvent({id}) {
+    // const { id } = useParams()
 
     const [loader, setLoader] = useState(false)
 
@@ -75,7 +75,7 @@ function EditEvent() {
             const response = await EventApi.editEvent(id, formData)
             if (response?.data?.status == true) {
                 setLoader(false)
-                router.push('/dashboard/events')
+                router.push('/dashboard/event')
             }
         } catch (error) {
             setLoader(false)
@@ -137,7 +137,7 @@ function EditEvent() {
         <div className='mobile-view items-right relative flex min-h-screen w-full flex-col justify-start'>
 
             <div className='flex justify-between'>
-                <CommonLayout pageTitle={`Events`} />
+                <CommonLayout pageTitle={`Event Edit`} />
             </div>
 
             <div className='mt-5'>{/* <Separator /> */}</div>
