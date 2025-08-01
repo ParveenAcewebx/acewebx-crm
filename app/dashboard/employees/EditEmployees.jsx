@@ -59,7 +59,7 @@ function EditEmployees({ editId }) {
                 form.reset()
                 setLoader(false)
                 successMessage({ description: 'Updated SuccessFully!' })
-                router.push('/dashboard/employee')
+                router.push('detail')
             }
         } catch (error) {
             setLoader(false)
