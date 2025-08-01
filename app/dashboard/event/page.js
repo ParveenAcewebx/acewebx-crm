@@ -74,7 +74,9 @@ const EventList = () => {
     }
     const handleEditTaskTag = async (row) => {
         if (row?.original?.id) {
-            router.push(`events/edit/${row?.original?.id}`)
+            // router.push(`events/edit/${row?.original?.id}`)
+            router.push(`/dashboard/events/${row?.original?.id}/detail`)
+
         }
     }
     const deleteHandleModalClose = () => {

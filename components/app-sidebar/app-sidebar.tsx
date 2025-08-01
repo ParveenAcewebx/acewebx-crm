@@ -57,7 +57,7 @@ const data = {
         },
         {
           title: 'All Events',
-          url: '/dashboard/events'
+          url: '/dashboard/event'
         }
       ]
     },
@@ -74,7 +74,7 @@ const data = {
         },
         {
           title: 'All Employees',
-          url: '/dashboard/employees'
+          url: '/dashboard/employee'
         }
       ]
     }

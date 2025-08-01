@@ -1,5 +1,6 @@
 'use client'
 import {
+  bloodGrupeType,
   designationOptions,
   editWalkInForm,
   formDefaultValues,
@@ -64,7 +65,7 @@ function AddEmployees() {
         form.reset()
         setLoader(false)
         successMessage({ description: 'Added SuccessFully!' })
-        router.push('/dashboard/employees')
+        router.push('/dashboard/employee')
       }
     } catch (error) {
       setLoader(false)
@@ -84,7 +85,7 @@ function AddEmployees() {
 
 
 
-  const isOther = form.watch("emergencyContactRelation")
+  const isOther = form.watch("emergencyContactRelationship")
 
   return (
     <>
@@ -198,7 +199,7 @@ function AddEmployees() {
                 <legend className="text-lg font-bold pt-[65px] ml-[25px]">Documents</legend>
                 <div className="multipart-field-one ">
                   <FormInputField
-                    name='aadharCard'
+                    name='adharCard'
                     label='Aadhar Card Link'
                     form={form}
                     inputType='text'
@@ -233,7 +234,7 @@ function AddEmployees() {
                     className='colum-box-bg-change'
                   />
                   <FormInputField
-                    name='bankIFSC'
+                    name='bankIfscCode'
                     label='Bank IFSC Code'
                     form={form}
                     inputType='text'
@@ -246,11 +247,12 @@ function AddEmployees() {
               <fieldset className='custom-raduis bg-white font-semibold'>
                 <legend className="text-lg font-bold pt-[65px] ml-[25px]">Emergency Contact Details</legend>
                 <div className="multipart-field-one">
-                  <FormInputField
+                  <FormSelectField
                     name='bloodGroup'
                     label='Blood Group'
                     form={form}
-                    inputType='text'
+                    // inputType='text'
+                    options={bloodGrupeType}
                     className='colum-box-bg-change'
                   />
                   <FormInputField
@@ -268,14 +270,14 @@ function AddEmployees() {
                     className='colum-box-bg-change'
                   />
                   <FormSelectField
-                    name='emergencyContactRelation'
+                    name='emergencyContactRelationship'
                     label='Emergency Contact Relationship'
                     form={form}
                     options={RelationData}
                     className='colum-box-bg-change'
                   />
                   {isOther == "others" ? (<FormInputField
-                    name='other'
+                    name='emergencyContactRelationshipOther'
                     label='Other Emergency Contact Relationship'
                     form={form}
                     inputType='text'
