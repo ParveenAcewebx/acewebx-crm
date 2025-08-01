@@ -2,19 +2,15 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import Candidate from '@/services/cadidateApis/CandidateApi'
-import DcsModal from '@/components/modal/dscForm'
+import { Card, CardContent } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import CommonLayout from '@/components/CommonLayouyt'
 import ActivitiesList from '@/components/ActivitiesList'
-// import EditCandidate from '../../EditCandidate'
 import { Mail, Phone, UserIcon } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { errorMessage, successMessage } from '@/components/ToasterMessage'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import { ChartForHike } from '@/components/Chart'
-import ChatCompo from '@/app/dashboard/candidate/chat/Chat'
+import { errorMessage } from '@/components/ToasterMessage'
+import EmployeesApi from '@/services/cadidateApis/employees/EmployeesApi'
+import Link from 'next/link'
+import EmployeeChatCompo from '../../chat/Chat'
 
 function Page({ params }) {
   const router = useRouter()
@@ -27,7 +23,7 @@ function Page({ params }) {
 
   const handleGetApi = async () => {
     try {
-      const apiData = await Candidate.viewCandidate(editId)
+      const apiData = await EmployeesApi.getByIdEmployees(editId)
       setCandidateData(apiData?.data?.data)
     } catch (error) {
       console.error('API error', error)
@@ -44,53 +40,12 @@ function Page({ params }) {
   const percent = Math.round(((candidateData?.expectedSalary - candidateData?.currentSalary) * 100) / candidateData?.currentSalary)
   const [candidateShifts, setCandidateShifts] = useState([])
 
-  useEffect(() => {
-    if (candidateData?.meta?._preferredShift) {
-      try {
-        const candidateShift = JSON?.parse(candidateData?.meta?._preferredShift)
-        setCandidateShifts(candidateShift)
-
-      } catch (error) {
-        setCandidateShifts([])
-
-      }
-
-
-    }
-  }, [candidateData?.meta?._preferredShift])
-
-  const dosOpenModal = (e) => {
-    e.preventDefault()
-    setDcsModalOpen(true)
-  }
-
-
-  const candidateDataGetById = async id => {
-    try {
-      setLoading(true)
-      const response = await Candidate.candidateGetById(id)
-      if (response?.data?.status === true) {
-        const resumePath = response?.data?.data?.resume?.filePath
-        setUrl(resumePath)
-      }
-    } catch (error) {
-      console.error('Submission Error:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  useEffect(() => {
-    if (!id) return
-    candidateDataGetById(id)
-  }, [id])
-
   const [activitiesData, setActivitiesData] = useState()
 
   // Activity function :-
   const getActivities = async () => {
     try {
-      const res = await Candidate.activityDevCandidate("candidates", editId)
+      const res = await EmployeesApi.activityDevEmployees("employees", editId)
       if (res?.data?.status === true) {
         setActivitiesData(res?.data?.data)
       }
@@ -123,25 +78,6 @@ function Page({ params }) {
   const genderCol = genderColor(candidateData?.meta?._gender)
 
 
-  // send walk-in form
-  const handleSendWalkInForm = async row => {
-    try {
-      const sendEmailLin = await Candidate.sendWalkInLink(id)
-
-      if (sendEmailLin?.data?.status == true) {
-        successMessage({
-          description: 'Link sent successfully to the mail.'
-        })
-      }
-    } catch (error) {
-      console.log('error', error)
-      errorMessage({
-        description: 'Something Went Wrong!'
-      })
-    }
-  }
-
-
   return (
     <>
       <CommonLayout pageTitle='Employee Detail' />
@@ -163,67 +99,19 @@ function Page({ params }) {
               <span>{candidateData?.name} </span>
 
               <Mail className='w-5 h-5 text-gray-200 ml-4' />
-              <span>{candidateData?.email?.toLowerCase()} </span>
+              <span>{candidateData?.personalEmail?.toLowerCase()} </span>
 
               <Phone className='w-5 h-5 text-gray-200 ml-4' />
               <span>{candidateData?.phone}</span>
             </div>
 
-            <div className=' resume-btn'>
-              <div>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      onClick={handleSendWalkInForm}
-                      size='icon'
-                      variant='outline'
-                      className='shrink-0  hover:bg-accent sendIcon'
-                    >
-                      <svg
-                        viewBox='0 0 24 24'
-                        fill='none'
-                        stroke='#C21E56'
-                        strokeWidth='2'
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                        className='w-5 h-5'
-                      >
-                        <path d='M22 2L11 13' />
-                        <path d='M22 2L15 22L11 13L2 9L22 2Z' />
-                      </svg>
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent className='w-auto rounded-sm bg-[#b82025] text-sm'>
-                    Send Walk In Form
-                  </TooltipContent>
-                </Tooltip>
-
-
-              </div>
-              <div className='resume' onClick={(e) => dosOpenModal(e)}>
-                <a href="">
-                  <div className='resmume-text'>
-                    <span variant='h2'>View Resume</span>
-                  </div>
-                  <img src='/images/pages/eye.png' alt='trophy image' height={11} />
-                </a>
-              </div>
-            </div>
           </CardContent>
 
 
           {/* Left Section */}
 
           <div class="flex gap-4">
-            <Card className='box'>
-              <CardContent className='flex items-center gap-4'>
-                <img src='/images/pages/location.png' alt='trophy image' height={60} className='' />
-                <div>
-                  <span className='tittle'>Location</span> <br />
-                  <span className='subtittle' variant='h4'>{candidateData?.meta?._currentLocation}</span>
-                </div>
-              </CardContent>
-            </Card>
+
 
             <Card className='box'>
               <CardContent className='flex items-center gap-4'>
@@ -231,41 +119,32 @@ function Page({ params }) {
                 <img src='/images/pages/applying.png' alt='trophy image' height={60} className='' />
                 <div>
                   <span className='tittle'>Designation</span> <br />
-                  <span className='subtittle' variant='h4'>{candidateData?.meta?._designationApplyingFor}</span>
+                  <span className='subtittle' variant='h4'>{candidateData?.designation}</span>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className='box'>
-              <CardContent className='flex items-center gap-4'>
-
-                <img src='/images/pages/experience.png' alt='trophy image' height={60} className='' />
-                <div>
-                  <span className='tittle'>Experience</span> <br />
-                  <span className='subtittle' variant='h4'>{candidateData?.totalExperience}</span>
-                </div>
-              </CardContent>
-            </Card>
             <Card className='box'>
               <CardContent className='flex items-center gap-4'>
 
                 <img src='/images/pages/company.png' alt='trophy image' height={60} className='' />
                 <div>
-                  <span className='tittle'>Company</span> <br />
-                  <span className='subtittle' variant='h4'>{candidateData?.meta?._currentCompanyName}</span>
+                  <span className='tittle'>Bank Name</span> <br />
+                  <span className='subtittle' variant='h4'>{candidateData?.meta?._bankName}</span>
                 </div>
               </CardContent>
             </Card>
+
             <Card className='box'>
               <CardContent className='flex items-center gap-4'>
-
-                <img src='/images/pages/Notice Period.png' alt='trophy image' height={60} className='' />
+                <img src='/images/pages/PreferredShift .png' alt='trophy image' height={60} className='' />
                 <div>
-                  <span className='tittle'>Notice Period  </span> <br />
-                  <span className='subtittle' variant='h4'>{candidateData?.noticePeriod} Days</span>
-                </div>
+                  <span className='tittle'>Current Shift</span> <br />
+                  {candidateData?.meta?._currentShift
+                  }                </div>
               </CardContent>
             </Card>
+
           </div>
 
           {/* working Deve */}
@@ -281,105 +160,63 @@ function Page({ params }) {
                     <img src="/images/pages/rs.png" alt="trophy image" />
                     <div className="salery-inner">
                       <span className="tittle">Current Salary</span><br />
-                      <span className="subtittle">{candidateData?.currentSalary}</span>
+                      <span className="subtittle">{candidateData?.meta?._currentSalary}</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Expected Salary */}
-                <div className="salery-outer">
-                  <div className="salery-inner">
-                    <span className="tittle">Expected Salary</span><br />
-                    <span className="subtittle">{candidateData?.expectedSalary}</span>
-                  </div>
-                </div>
               </CardContent>
             </Card>
 
             {/* Hike Card */}
-            {/* <ChartForHike percent={percent}/> */}
             <Card className='box border   rounded-[10px]'>
               <CardContent className='flex items-center gap-4 '>
                 <img src='/images/pages/hike.png' alt='trophy image' height={60} className='' />
                 <div>
+                  {/* ₹ */}
                   <span className='tittle'>Hike</span> <br />
-                  <span className="subtittle">{percent}%</span>
+                  <span className="subtittle">
+                    {candidateData?.meta?._lastIncrementAmount} ({candidateData?.meta?._lastIncrementDate})
+                  </span>
                 </div>
               </CardContent>
             </Card>
 
-
-
-            <Card className='box'>
+         <Card className='box'>
+            <Link target='_blank' href={candidateData?.meta?._adharCard||''}>
               <CardContent className='flex items-center gap-4'>
 
                 <img src='/images/pages/vacancy.png' alt='trophy image' height={60} className='' />
                 <div>
-                  <span className='tittle'>Source</span> <br />
-                  <span className='subtittle' variant='h4'>{candidateData?.meta?._source}</span>
+                  <span className='tittle'>Aadhar Card</span> <br />
+                  <span className='subtittle' variant='h4'></span>
                 </div>
               </CardContent>
+            </Link>
             </Card>
-            <Card className='box'>
+
+            <Card className='box'><Link target='_blank' href={candidateData?.meta?._panCard ||''}>
               <CardContent className='flex items-center gap-4'>
                 <img src='/images/pages/PreferredShift .png' alt='trophy image' height={60} className='' />
                 <div>
-                  <span className='tittle'>Preferred Shift</span> <br />
-                  {candidateShifts?.map((v, i) => (
-                    <span key={i} className='subtittle gap-3' variant='h4'>
-                      {v}{i < candidateShifts.length - 1 ? ', ' : ''}
-                    </span>
-                  ))}                </div>
+                  <span className='tittle'>Pan Card</span> <br />
+                  <span className='subtittle' variant='h4'></span>
+
+                </div>
               </CardContent>
+              </Link>
             </Card>
+
             {/* chat  */}
           </div>
 
           <div className="flex gap-4 py-4">
-            <ChatCompo id={editId} />
+            <EmployeeChatCompo id={editId} />
             <ActivitiesList activitiesData={activitiesData} />
-            <div className="Reference mt-0 rounded-xl bg-card text-card-foreground w-full mb-5 ">
-              <Card>
-                <CardHeader className='theme-bg-white-rgba border-color-grey min-h-14 border-b p-3'>
-                  <CardTitle className='flex justify-between'>
-                    <div className='!text-lg '>Reference</div>
 
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div>
-                    {candidateData?.meta?._reference1Name && <div className='mb-4'>
-                      <p className='font-semibold mb-1'>Reference 1</p>
-                      <p><span className='font-semibold'>Name:</span> {candidateData?.meta?._reference1Name}</p>
-                      <p><span className='font-semibold'>Phone:</span> {candidateData?.meta?._reference1ContactNumber}</p>
-                      <p><span className='font-semibold'>Skill:</span> {candidateData?.meta?._reference1Designation}</p>
-                      <p><span className='font-semibold'>Experience:</span> {candidateData?.meta?._reference1Experience}</p>
-                    </div>}
-
-                    {candidateData?.meta?._reference2Name && <div>
-                      <p className='font-semibold mb-1'>Reference 2</p>
-                      <p><span className='font-semibold'>Name:</span> {candidateData?.meta?._reference2Name}</p>
-                      <p><span className='font-semibold'>Phone:</span> {candidateData?.meta?._reference2ContactNumber}</p>
-                      <p><span className='font-semibold'>Skill:</span> {candidateData?.meta?._reference2Designation}</p>
-                      <p><span className='font-semibold'>Experience:</span> {candidateData?.meta?._reference2Experience}</p>
-                    </div>
-                    }
-                    {!candidateData?.meta?._reference2Name && !candidateData?.meta?._reference1Name && "No Reference Found!"}
-                  </div>
-                  <DcsModal
-                    isOpen={dcsModalOpen}
-                    onClose={() => setDcsModalOpen(false)}
-                    dcsValue={''}
-                    url={url}
-                    loading={loading}
-                  />
-                </CardContent>
-              </Card>
-            </div>
           </div>
         </TabsContent>
         <TabsContent value='edit'>
-          {/* <EditCandidate editId={editId} /> */}
         </TabsContent>
       </Tabs>
 

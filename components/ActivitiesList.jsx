@@ -10,7 +10,7 @@ const ActivitiesList = ({ activitiesData }) => {
       <Card className='w-full  border rounded-lg shadow-sm '>
       <CardHeader className='theme-bg-white-rgba border-color-grey min-h-14 border-b p-3'>
                   <CardTitle className='flex justify-between'>
-                    <div className='!text-lg '>Candidate Activities</div>
+                    <div className='!text-lg '>Activities</div>
 
                   </CardTitle>
                 </CardHeader> 

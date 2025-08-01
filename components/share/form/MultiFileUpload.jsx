@@ -62,7 +62,7 @@ const MultiImageUploader = ({
   }, [updateImage])
 
   return (
-    <div className='theme-bg-light-rgba mx-auto w-full rounded-sm border-2 border-dashed p-8'>
+    <div className='bg-white mx-auto w-full rounded-sm border-2 border-dashed p-8'>
       <div {...getRootProps({ className: 'text-center cursor-pointer' })}>
         <input {...getInputProps()} />
         <>

@@ -22,7 +22,13 @@ const SkillApi = {
 
     globalSkillGetApi: () => {
         return api.get(`/skill/globalSkill`)
-    }
+    },
+    skillListFilters: data => {
+        const search = data?.search ?? ''
+        return api.get(
+          `skill/getAllSkill?search=${search}`
+        )
+      },
     // getUSkillByFilter: data => {
     //     return api.get(
     //         `auth/getAllUser?page=${data?.page}&limit=${data?.limit}&name=${data?.name}&email=${data?.email}&currentSalary=${data?.currentSalary}`

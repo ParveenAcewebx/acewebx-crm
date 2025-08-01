@@ -21,6 +21,9 @@
 body {
   overflow-x: hidden;
 }
+ button, input, optgroup, select, textarea {
+  font-weight:  300;
+ }
 @layer base {
   :root {
     --background: 0 0% 100%;
