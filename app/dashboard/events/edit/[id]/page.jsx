@@ -74,7 +74,8 @@ function EditEvent() {
             const response = await EventApi.editEvent(id, formData)
             if (response?.data?.status == true) {
                 setLoader(false)
-                router.push('/dashboard/event')
+                // router.push('/dashboard/event')
+                router.back()
             }
         } catch (error) {
             setLoader(false)
@@ -141,12 +142,11 @@ function EditEvent() {
 
             <div className='mt-5'>{/* <Separator /> */}</div>
             <div className=''>
-                <FormProvider {...form}>
+            <FormProvider {...form}>
                     <form
                         encType='multipart/form-data'
                         onSubmit={form.handleSubmit(onSubmit)}
                     >
-
                         <div className='mb-4 mt-6 grid grid-cols-1 gap-6 md:grid-cols-1'>
                             <FormInputField
                                 name='title'
@@ -155,7 +155,6 @@ function EditEvent() {
                                 inputType='text'
                                 className='colum-box-bg-change'
                             />
-                            
                         </div>
 
                         <div className='mb-8 grid grid-cols-1 gap-6 md:grid-cols-1'>
@@ -164,16 +163,8 @@ function EditEvent() {
                                 label='Description'
                                 form={form}
                                 multiline
-                                className='col-span-2 !h-[160px] border !bg-white '
-                                style={{
-                                    width: '100%',
-                                    resize: 'none',
-                                    marginTop: '25px',
-                                    overflow: 'auto',
-                                    padding: '15px',
-                                    borderColor: '#ccc',
-                                    borderRadius: '4px'
-                                }}
+                                className='col-span-2   !bg-white '
+                              
                             />
                         </div>
 

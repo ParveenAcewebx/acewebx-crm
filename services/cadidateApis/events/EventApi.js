@@ -29,6 +29,12 @@ const EventApi = {
           `event/getAllEvent?search=${search}`
         )
       },
+
+      upComingEventList: () => {
+        return api.get(
+          `dashboard/upcoming-events`
+        )
+      },
     // getUSkillByFilter: data => {
     //     return api.get(
     //         `auth/getAllUser?page=${data?.page}&limit=${data?.limit}&name=${data?.name}&email=${data?.email}&currentSalary=${data?.currentSalary}`
