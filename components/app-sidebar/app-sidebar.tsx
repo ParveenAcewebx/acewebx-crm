@@ -1,4 +1,5 @@
 'use client'
+
 import {
   Sidebar,
   SidebarContent,
@@ -7,12 +8,18 @@ import {
   useSidebar
 } from '@/components/ui/sidebar'
 import { DocumentTextIcon } from '@heroicons/react/24/outline'
+import { CalendarDays, HomeIcon, LayoutDashboard, SettingsIcon, SquareUser } from 'lucide-react'
 import Link from 'next/link'
 import NavMain from './nav-main'
 import { NavUser } from './nav-user'
-import { CalendarDays, SettingsIcon, SquareUser } from 'lucide-react'
 
 const data = {
+  home: {
+    title: 'Dashboard',
+    url: '/dashboard',
+    icon: LayoutDashboard,
+    isActive: true
+  },
   navMain: [
     {
       title: 'Candidates',
@@ -83,6 +90,7 @@ const data = {
   ]
 }
 
+
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { state } = useSidebar()
   return (
@@ -92,8 +100,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <Link href='/dashboard' className='flex-shrink-0'>
             <img src='/acewebxlogo.png' className='w-44' />{' '}
           </Link>
+          {/* <p className={cn(
+              'font-semibold transition-all',
+              state === 'collapsed'
+                ? 'w-0 overflow-hidden opacity-0'
+                : 'w-auto opacity-100'
+            )}
+          >
+          </p> */}
         </div>
-        <NavMain items={data.navMain} />
+        <NavMain homeItem={data?.home} items={data.navMain} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser />

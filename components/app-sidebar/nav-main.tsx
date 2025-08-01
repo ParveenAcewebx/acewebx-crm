@@ -21,6 +21,11 @@ import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 interface NavMainProps {
+  homeItem: {
+    title: string
+    url: string
+    icon: LucideIcon
+  }
   items: {
     title: string
     url: string
@@ -36,25 +41,14 @@ interface NavMainProps {
   }[]
 }
 
-export default function NavMain({  items }: NavMainProps) {
+export default function NavMain({ homeItem, items }: NavMainProps) {
   const pathname = usePathname()
   const [openSection, setOpenSection] = useState<string | null>(null)
 
-
   const isActiveUrl = (url: string) => {
-    if (
-      url === '/dashboard/candidates' &&
-      pathname.startsWith('/dashboard') &&
-      pathname.endsWith('/dashboard')&&
-      !pathname.includes('/dashboard/candidate-sales')
-    ) {
-      return true
-    }
-    return pathname === url || pathname.startsWith(`${url}/`)
+    if (url === '/dashboard') return pathname === url
+    return pathname.startsWith(url)
   }
-  
-
-  const isPathInclud = pathname.includes("")
 
   const isParentActive = (title: string, url: string) =>
     openSection === title || pathname.startsWith(url)
@@ -72,11 +66,33 @@ export default function NavMain({  items }: NavMainProps) {
     })
   }
 
-  
-
   return (
     <SidebarGroup>
       <SidebarMenu>
+        {/* Home Link */}
+        <SidebarMenuItem className='m-1 rounded'>
+          <SidebarMenuButton
+            asChild
+            tooltip={homeItem.title}
+            className={cn(
+              'main-menu-item theme-text-color !rounded px-1 py-5 font-normal active:bg-sidebar-primary/5 active:text-sidebar-primary',
+              isActiveUrl(homeItem.url) && ''
+            )}
+          >
+            <Link href={homeItem.url}>
+              <span
+                className={cn(
+                  'menu-icon flex !h-7 !w-7 items-center justify-center rounded p-1',
+                  isActiveUrl(homeItem.url) && 'theme-text-color'
+                )}
+              >
+                {homeItem.icon && <homeItem.icon />}
+              </span>
+              <span>{homeItem.title}</span>
+            </Link>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+
         {/* Sidebar Sections */}
         {items.map(item => {
           const isOpen = openSection === item.title
