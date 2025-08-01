@@ -246,7 +246,7 @@ function AllEventsDates() {
 
         {
             accessorKey: 'incrementDate',
-            header: 'Days Left',
+            header: 'Increment Date',
             id: 'incrementDate',
             cell: ({ row }) => {
                 const meta = row.original.meta || [];
