@@ -18,7 +18,7 @@ import { useRouter } from 'next/navigation'
 function AllEventsDates() {
     const [upcomingEvents, setUpcomingEvents] = useState([])
     const [upcomingBirthdays, setUpcomingBirthdays] = useState([]);
-    const [upcomingIncrements, setUpcomingIncrements] = useState([
+    const [upcomingIncrements, setUpcomingIncrements] = useState([  
     ])
 
     const router = useRouter()
@@ -223,11 +223,31 @@ function AllEventsDates() {
             id: 'incrementDate',
             cell: ({ row }) => {
                 const meta = row.original.meta || [];
+
+                
                 const incrementDateStr = meta.find(m => m.metaKey === '_lastIncrementDate')?.metaValue;
+            
+                if (!incrementDateStr) return <span>—</span>; // Gracefully handle missing date
+            
+                const originalDate = new Date(incrementDateStr);
+                if (isNaN(originalDate.getTime())) return <span>Invalid Date</span>; // Handle invalid date string
+            
+                function getNextIncrementDate(startDate, cycleInYears = 1) {
+                  const today = new Date();
+                  let nextDate = new Date(startDate);
+            
+                  while (nextDate <= today) {
+                    nextDate.setFullYear(nextDate.getFullYear() + cycleInYears);
+                  }
+            
+                  return nextDate.toISOString().split('T')[0];
+                }
+            
+                const finalDate = getNextIncrementDate(originalDate);
 
                 if (!incrementDateStr) return <span className="">N/A</span>;
 
-                const incrementDate = new Date(incrementDateStr + 'T00:00:00');
+                const incrementDate = new Date(finalDate + 'T00:00:00');
                 const today = new Date();
 
                 incrementDate.setHours(0, 0, 0, 0);
@@ -249,17 +269,31 @@ function AllEventsDates() {
             header: 'Increment Date',
             id: 'incrementDate',
             cell: ({ row }) => {
-                const meta = row.original.meta || [];
-                const incrementDateStr = meta.find(m => m.metaKey === '_lastIncrementDate')?.metaValue;
-
-
-                return (
-                    <span>
-                        {incrementDateStr}
-                    </span>
-                );
+              const meta = row.original?.meta ?? [];
+              const incrementDateStr = meta.find(m => m.metaKey === '_lastIncrementDate')?.metaValue;
+          
+              if (!incrementDateStr) return <span>—</span>; // Gracefully handle missing date
+          
+              const originalDate = new Date(incrementDateStr);
+              if (isNaN(originalDate.getTime())) return <span>Invalid Date</span>; // Handle invalid date string
+          
+              function getNextIncrementDate(startDate, cycleInYears = 1) {
+                const today = new Date();
+                let nextDate = new Date(startDate);
+          
+                while (nextDate <= today) {
+                  nextDate.setFullYear(nextDate.getFullYear() + cycleInYears);
+                }
+          
+                return nextDate.toISOString().split('T')[0];
+              }
+          
+              const finalDate = getNextIncrementDate(originalDate);
+          
+              return <span>{finalDate}</span>;
             }
-        },
+          },
+          
         {
             accessorKey: 'action',
             header: 'Action',
