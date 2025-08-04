@@ -19,7 +19,6 @@ function IncrementApplicationForm() {
     const [step, setStep] = useState(0)
     const [loader, setLoader] = useState(false)
     const [recaptcha, setRecaptcha] = useState(null)
-    const [submitAddValidation, setSubmitAddValidation] = useState(false)
     const router = useRouter()
 
     const form = useForm({
@@ -38,18 +37,18 @@ function IncrementApplicationForm() {
             'participatedInClientCalls',
             'convertedClientsViaTestJobs',
             'newSkillsAcquiredLastYear',
-            'currentSalary',
+            'experienceWithAceWebX',
+            'areasOfImprovement',
         ],
         [
+            'currentSalary',
             'expectedSalaryRaise',
-            'areasOfImprovement',
             'raiseJustification',
             'shortTermGoals',
             'teamOrCultureSuggestions',
             'weaknesses',
             'longTermGoals',
             'keyAchievements',
-            'experienceWithAceWebX',
         ],
     ]
 
@@ -65,20 +64,16 @@ function IncrementApplicationForm() {
 
     const prevStep = () => {
         setStep(prev => Math.max(prev - 1, 0))
-        setSubmitAddValidation(false)
         setLoader(false)
     }
 
     const onSubmit = async data => {
         if (step == 0) return
-        console.log("ggggggggggggggggggggggg")
-        setSubmitAddValidation(true)
-        if (!data.currentSalary || !form.watch('recaptcha')) return
 
         // Simulate submit action
         console.log('Submitting form:', data)
         setLoader(false)
-        form.reset()
+        // form.reset()
         router.push('/thankyou')
     }
 
@@ -110,38 +105,64 @@ function IncrementApplicationForm() {
                     <form encType='multipart/form-data' onSubmit={form.handleSubmit(onSubmit)}>
                         {step === 0 && (
                             <>
-                                <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
-                                    <FormInputField name='name' label='Name' inputType='text' form={form} />
-                                    <FormInputField name='tenureWithAceWebX' label='Tenure with AceWebX (in years)' inputType='number' form={form} />
-                                    <FormInputField name='overallExperienceYears' label='Overall Years of Experience' inputType='number' form={form} />
-                                    <FormInputField name='projectFeedbackRating' label='Rating on Completed Projects (e.g. 4.5/5)' inputType='text' form={form} />
-                                    <FormSelectField name='participatedInClientCalls' label='Did You Participate in Any Client Calls?' form={form} options={YesNoOptions} />
-                                    <FormSelectField name='convertedClientsViaTestJobs' label='Clients Converted via Test Jobs' form={form} options={YesNoOptions} />
-                                    <FormInputField name='newSkillsAcquiredLastYear' label='New Skills Acquired in the Last Year' inputType='text' form={form} />
-                                    <FormInputField name='currentSalary' label='Current Salary (Monthly)' inputType='number' form={form} />
+                                <div className=' mb-3 grid grid-cols-1 gap-6 md:grid-cols-1'>
+                                    <FormInputField name='name' className="!h-[3.8rem]" label='Name' inputType='text' form={form} /></div>
+                                <div className='mb-3  grid grid-cols-1 gap-6 md:grid-cols-2'>
+
+                                    <FormInputField name='tenureWithAceWebX' className="!h-[3.8rem]" label='Tenure with AceWebX (in years).' inputType='number' form={form} />
+                                    <FormInputField name='overallExperienceYears' className="!h-[3.8rem]" label='Overall Years of Experience.' inputType='number' form={form} />
                                 </div>
-                                <div className='grid grid-cols-1 gap-6'>
-                                    <FormInputField name='projectsCompletedLastYear' label='Number of Projects Completed in the Last Year' inputType='number' form={form} />
+
+                                <div className='mb-3  grid grid-cols-1 gap-6'>
+                                    <FormTextArea name='experienceWithAceWebX' label='Describe Your Working Experience So Far with AceWebX.' form={form} className='col-span-2' />
                                 </div>
+
+                                <div className='mb-3  grid grid-cols-2 gap-6'>
+                                    <FormInputField name='projectsCompletedLastYear' className="!h-[3.8rem]" label='Projects Completed Last Year.' inputType='number' form={form} />
+                                    <FormInputField name='projectFeedbackRating' className="!h-[3.8rem]" label='Rating on Completed Projects (e.g. 4.5/5).' inputType='number' form={form} />
+                                </div>
+
+                                <div className='mb-3  grid grid-cols-1 gap-6 md:grid-cols-2'>
+                                    <FormSelectField name='participatedInClientCalls' className="!h-[3.8rem]" label='Did You Participate in Any Client Calls?' form={form} options={YesNoOptions} />
+                                    <FormSelectField name='convertedClientsViaTestJobs' className="!h-[3.8rem]" label='Clients Converted via Test Jobs.' form={form} options={YesNoOptions} />
+                                </div>
+
+                                <div className='mb-3  grid grid-cols-2 gap-6 md:grid-cols-2'>
+                                    <FormInputField name='newSkillsAcquiredLastYear' className="!h-[3.8rem]" label='New Skills Acquired in the Last Year.' inputType='text' form={form} />
+                                    <FormTextArea name='areasOfImprovement' label='Areas Needing Improvement' form={form} className='col-span-2' />
+
+                                </div>
+
                             </>
                         )}
 
                         {step === 1 && (
                             <>
-                                <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
+                                <div className='mb-3  grid grid-cols-2 gap-6 md:grid-cols-2'>
+                                    <FormInputField name='currentSalary' label='Current Salary (Monthly).' className="!h-[3.8rem]" inputType='number' form={form} />
                                     <FormInputField name='expectedSalaryRaise' label='Expected Raise (%) or ₹' className="!h-[3.8rem]" inputType='number' form={form} />
-                                    <FormTextArea name='areasOfImprovement' label='Areas Needing Improvement' form={form} className='col-span-2' />
-                                    <FormTextArea name='raiseJustification' label='Raise Justification' form={form} className='col-span-2' />
-                                    <FormTextArea name='shortTermGoals' label='Your Short-Term Goals' form={form} className='col-span-2' />
-                                    <FormTextArea name='teamOrCultureSuggestions' label='Suggestions for Team/Culture' form={form} className='col-span-2' />
-                                    <FormTextArea name='weaknesses' label='Your Weaknesses' form={form} className='col-span-2' />
-                                    <FormTextArea name='longTermGoals' label='Your Long-Term Goals' form={form} className='col-span-2' />
-                                    <FormTextArea name='keyAchievements' label='Key Achievements This Cycle' form={form} className='col-span-2' />
+                                </div>
+
+                                <div className='mb-3  grid grid-cols-1 gap-6 md:grid-cols-1'>
+                                    <FormTextArea name='raiseJustification' label='Why Do You Feel the Expected Raise Is Justified?' form={form} className='col-span-2' />
+                                </div>
+
+                                <div className='mb-3  grid grid-cols-2 gap-6 md:grid-cols-2'>
+
+                                    <FormTextArea name='shortTermGoals' label='Your Short-Term Goals.' form={form} className='col-span-2' />
+                                    <FormTextArea name='longTermGoals' label='Your Long-Term Goals.' form={form} className='col-span-2' />
+                                </div>
+                                <div className='mb-3  grid grid-cols-2 gap-6 md:grid-cols-2'>
+
+                                    <FormTextArea name='weaknesses' label='Your Weaknesses.' form={form} className='col-span-2' />
+                                    <FormTextArea name='keyAchievements' label='Key Achievements This Cycle.' form={form} className='col-span-2' />
 
                                 </div>
-                                <div className='grid grid-cols-1 gap-6'>
-                                    <FormTextArea name='experienceWithAceWebX' label='Experience at AceWebX' form={form} className='col-span-2' />
-                                </div></>
+                                <div className='mb-3  grid grid-cols-1 gap-6 md:grid-cols-1'>
+
+                                    <FormTextArea name='teamOrCultureSuggestions' label='Suggestions for Improving Team Processes or Company Culture.' form={form} className='col-span-2' />
+                                </div>
+                            </>
 
                         )}
 
