@@ -112,26 +112,25 @@ export const formDefaultValues = {
 
 export const IncrementFormDefaultValues = {
   name: '',
-  tenureWithAceWebX: '',
-  overallExperienceYears: '',
-  projectsCompletedLastYear: '',
-  projectFeedbackRating: '',
-  participatedInClientCalls: '',
-
-  convertedClientsViaTestJobs: '',
-  newSkillsAcquiredLastYear: '',
+  acewebxTenure: '',
+  totalExperience: '',
+  totalProjects: '',
+  ratingOnProjects: '',
+  clientCalls: '',
+  clientConverted: '',
+  newSkills: '',
+  experienceWithAcewebx: '',
+  improvementAreas: '',
   currentSalary: '',
-  expectedSalaryRaise: '',
-  areasOfImprovement: '',
-  raiseJustification: '',
-
-  shortTermGoals: '',
-  teamOrCultureSuggestions: '',
+  expectedSalary: '',
+  raiseJustified: '',
+  ShortTermGoals: '',
+  Suggestions: '',
   weaknesses: '',
   longTermGoals: '',
   keyAchievements: '',
-  experienceWithAceWebX: '',
 }
+
 
 
 

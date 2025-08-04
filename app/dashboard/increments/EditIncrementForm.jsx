@@ -1,133 +1,93 @@
 'use client'
-
 import {
     IncrementFormDefaultValues,
-    YesNoOptions,
+    YesNoOptions
 } from '@/components/constants/StaticData'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { Loader } from 'lucide-react'
-import { IncrementFormValidation } from '@/components/form-validations/IncrementFormValidation'
+import { errorMessage, successMessage } from '@/components/ToasterMessage'
 import FormInputField from '@/components/share/form/FormInputField'
 import FormSelectField from '@/components/share/form/FormSelect'
 import FormTextArea from '@/components/share/form/TextArea'
 import { Button } from '@/components/ui/button'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { Loader } from 'lucide-react'
+import CommonLayout from '@/components/CommonLayouyt'
 import IncrementAPi from '@/services/cadidateApis/increment/IncrementAPi'
-import { errorMessage } from '@/components/ToasterMessage'
+import { IncrementFormValidation } from '@/components/form-validations/IncrementFormValidation'
 
-function IncrementApplicationForm() {
-    const [step, setStep] = useState(0)
+function EditIncrementForm({ editId }) {
     const [loader, setLoader] = useState(false)
-    const [recaptcha, setRecaptcha] = useState(null)
     const router = useRouter()
-
     const form = useForm({
         mode: 'onChange',
         defaultValues: IncrementFormDefaultValues,
         resolver: yupResolver(IncrementFormValidation),
     })
 
-    const appraisalFields = [
-        [
-            'name',
-            'acewebxTenure',
-            'totalExperience',
-            'totalProjects',
-            'ratingOnProjects',
-            'clientCalls',
-            'clientConverted',
-            'newSkills',
-            'experienceWithAcewebx',
-            'improvementAreas',
-        ],
-        [
-            'currentSalary',
-            'expectedSalary',
-            'raiseJustified',
-            'ShortTermGoals',
-            'Suggestions',
-            'weaknesses',
-            'longTermGoals',
-            'keyAchievements',
-        ],
-    ]
-
-    const nextStep = async (e) => {
-        setLoader(true)
-        const isStepValid = await form.trigger(appraisalFields[step])
-        e.preventDefault()
-        if (isStepValid) {
-            setStep(prev => prev + 1)
-        }
-        setLoader(false)
-    }
-
-    const prevStep = () => {
-        setStep(prev => Math.max(prev - 1, 0))
-        setLoader(false)
-    }
-
-  
-
 
     const onSubmit = async data => {
-        console.log("dataa", data)
+        setLoader(true)
         try {
-            // const formData = new FormData()
-
-            // Object.entries(data).forEach(([key, value]) => {
-            //     formData.append(key, value);
-
-            // });
-
-
-
-            const response = await IncrementAPi.addIncrementAPi(data)
+            const response = await IncrementAPi.editIncrementAPi(editId, data)
             if (response?.data?.status == true) {
-                // form.reset()
+                form.reset()
                 setLoader(false)
-                // router.push('/dashboard/event')
-                router.push('/thankyou')
+                successMessage({ description: 'Updated SuccessFully!' })
+                router.push('detail')
             }
         } catch (error) {
-            // setLoader(false)
-            console.error('Submission Error:', error?.message)
-            errorMessage({ description: error?.message })
+            setLoader(false)
+            console.log("error:---------> for error formate check", error)
+            setLoader(false)
+            errorMessage(
+                error?.message || 'Something went wrong while submitting the form.'
+            )
+
         }
     }
+
+
+
+    const candidateDataGetById = async (editId) => {
+        try {
+            const response = await IncrementAPi.getByIdIncrementAPi(editId);
+            if (response?.data?.status === true) {
+                const data = response?.data?.data;
+
+                form.reset(data);
+            }
+        } catch (error) {
+            console.error('Submission Error:', error);
+            errorMessage(
+                error?.message || 'Something went wrong while submitting the form.'
+            );
+        }
+    };
+
+
+
+    useEffect(() => {
+        if (!editId) return
+        candidateDataGetById(editId)
+    }, [editId])
 
 
 
 
     return (
-        <div
-            className='mobile-view relative flex min-h-screen w-full flex-col items-center justify-start bg-white'
-            style={{
-                backgroundImage: "url('/images/backgroud-ace.png')",
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                margin: 0,
-                backgroundAttachment: 'fixed',
-            }}
-        >
-            <div className='w-2xs acewebx-logo z-10 text-center'>
-                <img src='./acewebxlogo.png' alt='Acewebx Logo' className='h-25 w-40' />
-            </div>
+        <>
+            <div className='mobile-view items-right relative flex min-h-screen w-full flex-col justify-start'>
 
-            <div className='z-10 w-full max-w-3xl rounded-xl border border-red-100 bg-gradient-to-br from-red-100 via-white to-red-100 p-10 shadow-md '>
-                <h2 className='walking mb-6 text-2xl font-semibold text-gray-800'>
-                    Increment Application
-                </h2>
-                <h4 className='mb-8'>
-                    Please fill out this form to apply for a salary increment based on your performance, achievements, and contributions. Your responses will help management evaluate your eligibility for the expected raise.
-                </h4>
-                <p className='mb-4 text-sm text-gray-500'>Step {step + 1} of 2</p>
+                <div className='flex justify-between'>
+                    <CommonLayout pageTitle={`Edit Increment`} />
+                </div>
 
-                <FormProvider {...form}>
-                    <form encType='multipart/form-data' onSubmit={form.handleSubmit(onSubmit)}>
-                        {step === 0 && (
+                <div className=''>
+                    <FormProvider {...form}>
+                        <form encType='multipart/form-data' onSubmit={form.handleSubmit(onSubmit)}>
+
                             <>
                                 <div className=' mb-3 grid grid-cols-1 gap-6 md:grid-cols-1'>
                                     <FormInputField name='name' className="!h-[3.8rem]" label='Name' inputType='text' form={form} /></div>
@@ -158,9 +118,9 @@ function IncrementApplicationForm() {
                                 </div>
 
                             </>
-                        )}
 
-                        {step === 1 && (
+
+
                             <>
                                 <div className='mb-3  grid grid-cols-2 gap-6 md:grid-cols-2'>
                                     <FormInputField name='currentSalary' label='Current Salary (Monthly).' className="!h-[3.8rem]" inputType='number' form={form} />
@@ -188,29 +148,22 @@ function IncrementApplicationForm() {
                                 </div>
                             </>
 
-                        )}
 
-                        <div className={`mt-10 flex ${step === 0 ? 'justify-end' : 'justify-between'}`}>
-                            {step > 0 && (
-                                <Button variant='outlined' onClick={prevStep} className='border border-red-500 text-[#B82025] hover:bg-white hover:text-[#B82025]'>
-                                    Back
-                                </Button>
-                            )}
-                            {step < 1 ? (
-                                <Button variant='contained' onClick={(e) => nextStep(e)} className='bg-[#B82025] !text-white'>
-                                    Next
-                                </Button>
-                            ) : (
+
+                            <div className={`mt-10 flex justify-end`}>
+
                                 <Button type='submit' variant='contained' className='bg-[#B82025] !text-white'>
                                     {loader ? <Loader /> : 'Submit'}
                                 </Button>
-                            )}
-                        </div>
-                    </form>
-                </FormProvider>
+
+                            </div>
+                        </form>
+                    </FormProvider>
+
+                </div>
             </div>
-        </div>
+        </>
     )
 }
 
-export default IncrementApplicationForm
+export default EditIncrementForm
