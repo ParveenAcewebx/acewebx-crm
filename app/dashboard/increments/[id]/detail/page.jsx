@@ -1,0 +1,293 @@
+
+'use client'
+import React, { useEffect, useState } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
+import { Card, CardContent } from '@/components/ui/card'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import CommonLayout from '@/components/CommonLayouyt'
+import ActivitiesList from '@/components/ActivitiesList'
+import { Mail, Phone, UserIcon } from 'lucide-react'
+import { errorMessage } from '@/components/ToasterMessage'
+import EmployeesApi from '@/services/cadidateApis/employees/EmployeesApi'
+import Link from 'next/link'
+import EmployeeChatCompo from '@/app/dashboard/employees/chat/Chat'
+import IncrementAPi from '@/services/cadidateApis/increment/IncrementAPi'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { Button } from '@/components/ui/button'
+
+function Page({ params }) {
+  const router = useRouter()
+  const id = params?.id
+  const editId = id
+  const [candidateData, setCandidateData] = useState({})
+
+  const handleGetApi = async () => {
+    try {
+      const apiData = await IncrementAPi.getByIdIncrementAPi(editId)
+      setCandidateData(apiData?.data?.data)
+    } catch (error) {
+      console.error('API error', error)
+    }
+  }
+
+  useEffect(() => {
+    if (id) {
+      handleGetApi()
+    }
+  }, [id, router])
+
+
+  const [activitiesData, setActivitiesData] = useState()
+
+  // Activity function :-
+  const getActivities = async () => {
+    try {
+      const res = await EmployeesApi.activityDevEmployees("employees", editId)
+      if (res?.data?.status === true) {
+        setActivitiesData(res?.data?.data)
+      }
+    } catch (error) {
+      errorMessage({
+        description: error?.response?.data?.message
+      })
+    }
+  }
+
+  useEffect(() => {
+    getActivities()
+  }, [])
+
+  const pathname = usePathname()
+  const currentTab = pathname?.endsWith('edit') ? 'edit' : 'detail'
+  const handleTabChange = (value) => {
+    router.replace(value)
+  }
+
+  //Function for colour :-
+  const genderColor = (val) => {
+    if (val === "female") return "!bg-pink-700"
+    if (val === "male") return "!bg-blue-500"
+    if (val === "others") return "w-full h-16 bg-[linear-gradient(to_right,_red,_orange,_yellow,_green,_blue,_indigo,_violet)]"
+    return "!bg-gray-400"
+  }
+
+
+  const genderCol = genderColor(candidateData?.meta?._gender)
+
+
+
+   // send walk-in form
+   const handleSendWalkInForm = async row => {
+    try {
+      const sendEmailLin = await IncrementAPi.activityDevIncrementAPi(id)
+
+      if (sendEmailLin?.data?.status == true) {
+        successMessage({
+          description: 'Link sent successfully to the mail.'
+        })
+      }
+    } catch (error) {
+      console.log('error', error)
+      errorMessage({
+        description: 'Something Went Wrong!'
+      })
+    }
+  }
+
+  return (
+    <>
+      <CommonLayout pageTitle='increment Detail' />
+
+      <Tabs value={currentTab} onValueChange={handleTabChange}>
+        <TabsList className='custom-tabs mb-3 w-full justify-start gap-2 rounded-none border-b custom-tabs ' >
+          <TabsList>
+            <TabsTrigger className='rounded-none px-4 py-1.5 !shadow-none' value="detail">Details</TabsTrigger>
+            <TabsTrigger className='rounded-none p-1.5 px-4 !shadow-none' value="edit">Edit</TabsTrigger>
+          </TabsList>
+        </TabsList>
+
+
+        <TabsContent value="detail">
+
+          <CardContent className={`tittle-bar ${genderCol}`}>
+            <div className='user-name flex items-center gap-2 text-base font-medium text-gray-800'>
+              <UserIcon className='w-5 h-5 text-gray-200' />
+              <span>{candidateData?.name} </span>
+
+              {/* <Mail className='w-5 h-5 text-gray-200 ml-4' />
+              <span>{candidateData?.personalEmail?.toLowerCase()} </span>
+
+              <Phone className='w-5 h-5 text-gray-200 ml-4' />
+              <span>{candidateData?.phone}</span> */}
+            </div>
+            <div className=' resume-btn'>
+              <div>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      onClick={handleSendWalkInForm}
+                      size='icon'
+                      variant='outline'
+                      className='shrink-0  hover:bg-accent sendIcon'
+                    >
+                      <svg
+                        viewBox='0 0 24 24'
+                        fill='none'
+                        stroke='#C21E56'
+                        strokeWidth='2'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        className='w-5 h-5'
+                      >
+                        <path d='M22 2L11 13' />
+                        <path d='M22 2L15 22L11 13L2 9L22 2Z' />
+                      </svg>
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent className='w-auto rounded-sm bg-[#b82025] text-sm'>
+                    Send Increment Form
+                  </TooltipContent>
+                </Tooltip>
+
+
+              </div>
+              {/* <div className='resume' onClick={(e) => dosOpenModal(e)}>
+                <a href="">
+                  <div className='resmume-text'>
+                    <span variant='h2'>View Resume</span>
+                  </div>
+                  <img src='/images/pages/eye.png' alt='trophy image' height={11} />
+                </a>
+              </div> */}
+            </div>
+          </CardContent>
+
+
+          {/* Left Section */}
+
+          <div class="flex gap-4">
+
+
+            <Card className='box'>
+              <CardContent className='flex items-center gap-4'>
+
+                <img src='/images/pages/applying.png' alt='trophy image' height={60} className='' />
+                <div>
+                  <span className='tittle'>Designation</span> <br />
+                  <span className='subtittle' variant='h4'>{candidateData?.designation}</span>
+                </div>
+              </CardContent>
+            </Card>
+            <Card className='box'>
+              <CardContent className='flex items-center gap-4'>
+
+              <img src='/images/pages/PreferredShift .png' alt='trophy image' height={60} className='' />
+              <div>
+                  <span className='tittle'>D.O.B</span> <br />
+                  <span className='subtittle' variant='h4'>{candidateData?.dobDocument}</span>
+                </div>
+              </CardContent>
+            </Card>
+            <Card className='box'>
+              <CardContent className='flex items-center gap-4'>
+
+                <img src='/images/pages/company.png' alt='trophy image' height={60} className='' />
+                <div>
+                  <span className='tittle'>Tenure</span> <br />
+                  <span className='subtittle' variant='h4'>{candidateData?.acewebxTenure}</span>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className='box'>
+              <CardContent className='flex items-center gap-4'>
+                <img src='/images/pages/PreferredShift .png' alt='trophy image' height={60} className='' />
+                <div>
+                  <span className='tittle'>Current Shift</span> <br />
+                  {candidateData?.meta?._currentShift
+                  }                </div>
+              </CardContent>
+            </Card>
+
+          </div>
+
+          {/* working Deve */}
+
+
+          {/* Current & Expected Salary Card */}
+          <div class=" flex gap-4  ">
+            <Card className="">
+              <CardContent className='flex justify-between items-center'>
+                {/* Current Salary */}
+                <div className="salery-outer ">
+                  <div className="salery-content flex justify-between gap-4 items-center">
+                    <img src="/images/pages/rs.png" alt="trophy image" />
+                    <div className="salery-inner">
+                      <span className="tittle">Current Salary</span><br />
+                      <span className="subtittle">{candidateData?.currentSalary}</span>
+                    </div>
+                  </div>
+                </div>
+
+              </CardContent>
+            </Card>
+
+            {/* Hike Card */}
+            <Card className='box border   rounded-[10px]'>
+              <CardContent className='flex items-center gap-4 '>
+                <img src='/images/pages/hike.png' alt='trophy image' height={60} className='' />
+                <div>
+                  {/* ₹ */}
+                  <span className='tittle'>Hike</span> <br />
+                  <span className="subtittle">
+                    {candidateData?.expectedSalary} 
+                  </span>
+               
+                </div>
+              </CardContent>
+            </Card>
+
+         <Card className='box'>
+            <Link target='_blank' href={candidateData?.meta?._adharCard||''}>
+              <CardContent className='flex items-center gap-4'>
+
+                <img src='/images/pages/vacancy.png' alt='trophy image' height={60} className='' />
+                <div>
+                  <span className='tittle'>Aadhar Card</span> <br />
+                  <span className='subtittle' variant='h4'></span>
+                </div>
+              </CardContent>
+            </Link>
+            </Card>
+
+            <Card className='box'><Link target='_blank' href={candidateData?.meta?._panCard ||''}>
+              <CardContent className='flex items-center gap-4'>
+                <img src='/images/pages/PreferredShift .png' alt='trophy image' height={60} className='' />
+                <div>
+                  <span className='tittle'>Pan Card</span> <br />
+                  <span className='subtittle' variant='h4'></span>
+
+                </div>
+              </CardContent>
+              </Link>
+            </Card>
+
+            {/* chat  */}
+          </div>
+
+          <div className="flex gap-4 py-4">
+            <EmployeeChatCompo id={editId} />
+            <ActivitiesList activitiesData={activitiesData} />
+
+          </div>
+        </TabsContent>
+        <TabsContent value='edit'>
+        </TabsContent>
+      </Tabs>
+
+
+    </>
+  )
+}
+
+export default Page

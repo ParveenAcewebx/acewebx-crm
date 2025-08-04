@@ -72,8 +72,20 @@ const data = {
         }
       ]
     },
+    // increment
 
-
+    {
+      title: 'Increment',
+      url: '/dashboard',
+      icon: SquareUser,
+      isActive: true,
+      items: [
+        {
+          title: 'Increments',
+          url: '/dashboard/increment'
+        }
+      ]
+    },
     {
       title: 'Settings',
       url: '/dashboard/settings/skills',
