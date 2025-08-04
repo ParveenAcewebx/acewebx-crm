@@ -30,7 +30,7 @@ const IncrementAPi = {
         return api.post(`employee/send-increment-in-application/${id}`)
       },
       getByIdVerifyIncrementAPi: id => {
-        return api.get(`confirm-employee-token/${id}`)
+        return api.post(`confirm-employee-token/${id}`)
     },
  
     activityDevIncrementAPi: (module, editId) => {
