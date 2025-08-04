@@ -15,7 +15,7 @@ import FormSelectField from '@/components/share/form/FormSelect'
 import FormTextArea from '@/components/share/form/TextArea'
 import { Button } from '@/components/ui/button'
 import IncrementAPi from '@/services/cadidateApis/increment/IncrementAPi'
-import { errorMessage } from '@/components/ToasterMessage'
+import { errorMessage, successMessage } from '@/components/ToasterMessage'
 import PageExpired from '@/app/url-expired/page'
 
 function EditIncrementApplicationForm() {
@@ -27,6 +27,8 @@ function EditIncrementApplicationForm() {
   const [loader, setLoader] = useState(false)
   const router = useRouter()
   const [isVerify, setIsVerify] = useState(true)
+  const [isEplId, setIsEplId] = useState(true)
+
 
   const form = useForm({
     mode: 'onChange',
@@ -79,10 +81,10 @@ function EditIncrementApplicationForm() {
 
   const onSubmit = async data => {
     setLoader(true)
+    const newData = {...data , empId : isEplId}
     try {
-      const response = await IncrementAPi.editIncrementAPi(editId, data)
+      const response = await IncrementAPi.addIncrementAPi(newData)
       if (response?.data?.status == true) {
-        form.reset()
         setLoader(false)
         successMessage({ description: 'Updated SuccessFully!' })
         router.push('/thankyou')
@@ -103,16 +105,17 @@ function EditIncrementApplicationForm() {
   const candidateDataGetById = async () => {
     try {
       const response = await IncrementAPi.getByIdVerifyIncrementAPi(editId);
+      console.log("response",response)
       if (response?.data?.status === true) {
-        const data = response?.data?.data;
-        form.reset(data);
+        const empId = response?.data?.data.id;
+        setIsEplId(empId)
       }
     } catch (error) {
       console.error('Submission Error:', error);
       setIsVerify(error?.status)
-      errorMessage(
-        error?.message || 'Something went wrong while submitting the form.'
-      );
+      // errorMessage(
+      //   error?.message || 'Something went wrong while submitting the form.'
+      // );
     }
   };
 
@@ -144,7 +147,7 @@ function EditIncrementApplicationForm() {
       }}
     >
       <div className='w-2xs acewebx-logo z-10 text-center'>
-        <img src='./acewebxlogo.png' alt='Acewebx Logo' className='h-25 w-40' />
+        <img src='../acewebxlogo.png' alt='Acewebx Logo' className='h-25 w-40' />
       </div>
 
       <div className='z-10 w-full max-w-3xl rounded-xl border border-red-100 bg-gradient-to-br from-red-100 via-white to-red-100 p-10 shadow-md '>
