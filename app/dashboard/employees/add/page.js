@@ -44,40 +44,42 @@ function AddEmployees() {
   })
 
 
-
-  const onSubmit = async data => {
-
-    setLoader(true)
+  const onSubmit = async (data) => {
+    console.log("datadata",data)
+    setLoader(true);
     try {
-      const formData = new FormData()
-
+      const formData = new FormData();
+  
       Object.entries(data).forEach(([key, value]) => {
-
-        if (key === 'dobDocument' || key === 'dateOfJoining' || key === 'dobCelebration' || key === "lastIncrementDate") {
+        const isDateField =
+          key === 'dobDocument' ||
+          key === 'dateOfJoining' ||
+          key === 'dobCelebration' ||
+          key === 'lastIncrementDate';
+  
+        if (isDateField && value !== undefined) {
           formData.append(key, moment(value).format('YYYY-MM-DD'));
         } else {
           formData.append(key, value);
         }
       });
-
-      const response = await EmployeesApi.addEmployees(formData)
-      console.log("response", response)
-      if (response?.data?.status == true) {
-        form.reset()
-        setLoader(false)
-        successMessage({ description: 'Added SuccessFully!' })
-        router.push('/dashboard/employee')
+  
+      const response = await EmployeesApi.addEmployees(formData);
+      if (response?.data?.status === true) {
+        form.reset();
+        setLoader(false);
+        successMessage({ description: 'Added Successfully!' });
+        router.push('/dashboard/employee');
       }
     } catch (error) {
-      setLoader(false)
-
-      setLoader(false)
+      console.log("error",error)
+      setLoader(false);
       errorMessage(
         error?.message || 'Something went wrong while submitting the form.'
-      )
-
+      );
     }
-  }
+  };
+  
 
 
 

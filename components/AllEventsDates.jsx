@@ -4,14 +4,8 @@ import React, { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import CommonLayout from '@/components/CommonLayouyt'
 import EventApi from '@/services/cadidateApis/events/EventApi'
-import { Button } from '@/components/ui/button'
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
-import { Edit, EllipsisVertical, Eye, Trash2 } from 'lucide-react'
+
+import { Eye } from 'lucide-react'
 import { DataTable } from './Table'
 import { useRouter } from 'next/navigation'
 
@@ -200,17 +194,6 @@ function AllEventsDates() {
         }
     }
     const columnForupcomingIncrements = [
-        // {
-        //   accessorKey: 'id',
-        //   header: '#ID',
-        //   id: 'id',
-        //   size: 80,
-        //   cell: ({ row }) => (
-        //     <div className="max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
-        //       {`#${row.original.id}`}
-        //     </div>
-        //   )
-        // },
         {
             accessorKey: 'name',
             header: 'Name',
@@ -225,8 +208,8 @@ function AllEventsDates() {
                 const meta = row.original.meta || [];
 
                 
-                const incrementDateStr = meta.find(m => m.metaKey === '_lastIncrementDate')?.metaValue;
-            
+                const incrementDateStr = meta.find(m => m.metaKey === '_lastIncrementDate')?.metaValue || row?.original?.dateOfJoining
+              
                 if (!incrementDateStr) return <span>—</span>; // Gracefully handle missing date
             
                 const originalDate = new Date(incrementDateStr);
@@ -375,6 +358,28 @@ function AllEventsDates() {
                             />
                         ) : (
                             <div className=''>No upcoming increments</div>
+                        )}
+                    </CardContent>
+                </Card>
+
+
+                {/* Anniversaries */}
+                <Card className='box'>
+                    <CardHeader className='theme-bg-white-rgba border-color-grey min-h-14 border-b p-3'>
+                        <CardTitle className='flex justify-between'>
+                            <div className='!text-lg '>Upcoming Anniversaries</div>
+
+                        </CardTitle>
+                    </CardHeader>
+
+                    <CardContent className='p-4'>
+                        {upcomingIncrements.length > 0 ? (
+                            <DataTable
+                                columns={columnForupcomingIncrements}
+                                data={upcomingIncrements}
+                            />
+                        ) : (
+                            <div className=''>No upcoming Anniversaries</div>
                         )}
                     </CardContent>
                 </Card>
