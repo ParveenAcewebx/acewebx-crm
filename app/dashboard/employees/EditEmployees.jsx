@@ -46,13 +46,18 @@ function EditEmployees({ editId }) {
             }
 
             Object.entries(data).forEach(([key, value]) => {
-
-                if (key === 'dobDocument' || key === 'dateOfJoining' || key === 'dobCelebration' || key === "lastIncrementDate") {
-                    formData.append(key, moment(value).format('YYYY-MM-DD'));
+                const isDateField =
+                  key === 'dobDocument' ||
+                  key === 'dateOfJoining' ||
+                  key === 'dobCelebration' ||
+                  key === 'lastIncrementDate';
+          
+                if (isDateField && value !== undefined) {
+                  formData.append(key, moment(value).format('YYYY-MM-DD'));
                 } else {
-                    formData.append(key, value);
+                  formData.append(key, value);
                 }
-            });
+              });
 
             const response = await EmployeesApi.editEmployees(editId, formData)
             if (response?.data?.status == true) {

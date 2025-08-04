@@ -110,6 +110,28 @@ export const formDefaultValues = {
 
 
 
+export const IncrementFormDefaultValues = {
+  name: '',
+  tenureWithAceWebX: '',
+  overallExperienceYears: '',
+  projectsCompletedLastYear: '',
+  projectFeedbackRating: '',
+  participatedInClientCalls: '',
+
+  convertedClientsViaTestJobs: '',
+  newSkillsAcquiredLastYear: '',
+  currentSalary: '',
+  expectedSalaryRaise: '',
+  areasOfImprovement: '',
+  raiseJustification: '',
+
+  shortTermGoals: '',
+  teamOrCultureSuggestions: '',
+  weaknesses: '',
+  longTermGoals: '',
+  keyAchievements: '',
+  experienceWithAceWebX: '',
+}
 
 
 
@@ -237,6 +259,11 @@ export const onlinePlatforms = [
 ]
 
 export const isHoliday = [
+  { label: 'Yes', value: 'yes' },
+  { label: 'No', value: 'no' },
+]
+
+export const YesNoOptions = [
   { label: 'Yes', value: 'yes' },
   { label: 'No', value: 'no' },
 ]
