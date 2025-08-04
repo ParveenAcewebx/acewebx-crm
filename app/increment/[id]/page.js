@@ -105,13 +105,11 @@ function EditIncrementApplicationForm() {
       const response = await IncrementAPi.getByIdVerifyIncrementAPi(editId);
       if (response?.data?.status === true) {
         const data = response?.data?.data;
-
         form.reset(data);
       }
     } catch (error) {
       console.error('Submission Error:', error);
       setIsVerify(error?.status)
-
       errorMessage(
         error?.message || 'Something went wrong while submitting the form.'
       );

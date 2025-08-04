@@ -7,10 +7,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import CommonLayout from '@/components/CommonLayouyt'
 import ActivitiesList from '@/components/ActivitiesList'
 import { Mail, Phone, UserIcon } from 'lucide-react'
-import { errorMessage } from '@/components/ToasterMessage'
+import { errorMessage, successMessage } from '@/components/ToasterMessage'
 import EmployeesApi from '@/services/cadidateApis/employees/EmployeesApi'
 import Link from 'next/link'
 import EmployeeChatCompo from '../../chat/Chat'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { Button } from '@/components/ui/button'
+import IncrementAPi from '@/services/cadidateApis/increment/IncrementAPi'
 
 function Page({ params }) {
   const router = useRouter()
@@ -72,6 +75,25 @@ function Page({ params }) {
   const genderCol = genderColor(candidateData?.meta?._gender)
 
 
+  
+   // send walk-in form
+   const handleSendWalkInForm = async () => {
+    try {
+      const sendEmailLin = await IncrementAPi.sendIncrementInLink(id)
+
+      if (sendEmailLin?.data?.status == true) {
+        successMessage({
+          description: 'Link sent successfully to the mail.'
+        })
+      }
+    } catch (error) {
+      console.log('error', error)
+      errorMessage({
+        description: 'Something Went Wrong!'
+      })
+    }
+  }
+
   return (
     <>
       <CommonLayout pageTitle='Employee Detail' />
@@ -98,7 +120,46 @@ function Page({ params }) {
               <Phone className='w-5 h-5 text-gray-200 ml-4' />
               <span>{candidateData?.phone}</span>
             </div>
+            <div className=' resume-btn'>
+              <div>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      onClick={handleSendWalkInForm}
+                      size='icon'
+                      variant='outline'
+                      className='shrink-0  hover:bg-accent sendIcon'
+                    >
+                      <svg
+                        viewBox='0 0 24 24'
+                        fill='none'
+                        stroke='#C21E56'
+                        strokeWidth='2'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        className='w-5 h-5'
+                      >
+                        <path d='M22 2L11 13' />
+                        <path d='M22 2L15 22L11 13L2 9L22 2Z' />
+                      </svg>
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent className='w-auto rounded-sm bg-[#b82025] text-sm'>
+                    Send Increment Form
+                  </TooltipContent>
+                </Tooltip>
 
+
+              </div>
+              {/* <div className='resume' onClick={(e) => dosOpenModal(e)}>
+                <a href="">
+                  <div className='resmume-text'>
+                    <span variant='h2'>View Resume</span>
+                  </div>
+                  <img src='/images/pages/eye.png' alt='trophy image' height={11} />
+                </a>
+              </div> */}
+            </div>
           </CardContent>
 
 
