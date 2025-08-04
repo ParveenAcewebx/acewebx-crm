@@ -1,148 +1,85 @@
 'use client'
+
 import {
-    designationOptions,
-    GenderData,
     IncrementFormDefaultValues,
-    preferredShiftOptions,
-    totalExperienceOptions,
-    walkInFormDefaultValues,
-    YesNoOptions
+    YesNoOptions,
 } from '@/components/constants/StaticData'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import ReCAPTCHA from 'react-google-recaptcha'
 import { FormProvider, useForm } from 'react-hook-form'
-import moment from 'moment';
-import { errorMessage } from '@/components/ToasterMessage'
-import { CandidateFormValidation } from '@/components/form-validations/CandidateFormValidation'
-import FormInputField from '@/components/share/form/FormInputField'
-import FormSelectField from '@/components/share/form/FormSelect'
-import FormInputFileUploaderSingle from '@/components/share/form/SingleFileUpload'
-import FormTextArea from '@/components/share/form/TextArea'
-import FormDatePicker from '@/components/share/form/datePicker'
-import { Button } from '@/components/ui/button'
-import Candidate from '@/services/cadidateApis/CandidateApi'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Loader } from 'lucide-react'
 import { IncrementFormValidation } from '@/components/form-validations/IncrementFormValidation'
+import FormInputField from '@/components/share/form/FormInputField'
+import FormSelectField from '@/components/share/form/FormSelect'
+import FormTextArea from '@/components/share/form/TextArea'
+import { Button } from '@/components/ui/button'
 
 function IncrementApplicationForm() {
     const [step, setStep] = useState(0)
     const [loader, setLoader] = useState(false)
-    const [recaptcha, setRecaptcha] = useState([])
+    const [recaptcha, setRecaptcha] = useState(null)
     const [submitAddValidation, setSubmitAddValidation] = useState(false)
     const router = useRouter()
 
     const form = useForm({
         mode: 'onChange',
         defaultValues: IncrementFormDefaultValues,
-        resolver:yupResolver(IncrementFormValidation)
+        resolver: yupResolver(IncrementFormValidation),
     })
 
-
-
     const appraisalFields = [
-            [
-              'name',
-              'tenureWithAceWebX',
-              'overallExperienceYears',
-              'projectsCompletedLastYear',
-              'projectFeedbackRating',
-              'participatedInClientCalls',
-            ],
-            [
-              'convertedClientsViaTestJobs',
-              'newSkillsAcquiredLastYear',
-              'areasOfImprovement',
-              'currentSalary',
-              'expectedSalaryRaise',
-              'raiseJustification',
-            ],
-            [
-              'shortTermGoals',
-              'teamOrCultureSuggestions',
-              'weaknesses',
-              'keyAchievements',
-              'longTermGoals',
-              'experienceWithAceWebX', // <- move here!
-            ]
-          ]
-          
+        [
+            'name',
+            'tenureWithAceWebX',
+            'overallExperienceYears',
+            'projectsCompletedLastYear',
+            'projectFeedbackRating',
+            'participatedInClientCalls',
+            'convertedClientsViaTestJobs',
+            'newSkillsAcquiredLastYear',
+            'currentSalary',
+        ],
+        [
+            'expectedSalaryRaise',
+            'areasOfImprovement',
+            'raiseJustification',
+            'shortTermGoals',
+            'teamOrCultureSuggestions',
+            'weaknesses',
+            'longTermGoals',
+            'keyAchievements',
+            'experienceWithAceWebX',
+        ],
+    ]
 
-
-
-    function onReCAPTCHAChange(value) {
-        setRecaptcha(value)
-        form.setValue('recaptcha', value)
+    const nextStep = async (e) => {
+        setLoader(true)
+        const isStepValid = await form.trigger(appraisalFields[step])
+        e.preventDefault()
+        if (isStepValid) {
+            setStep(prev => prev + 1)
+        }
+        setLoader(false)
     }
 
-    const nextStep = async () => {
-        const currentField = appraisalFields[step]
-        const isStepValid = await form.trigger(currentField)
-      
-        if (!isStepValid) {
-          console.log('Validation failed for:', currentField)
-          return
-        }
-      
-        setStep(prev => prev + 1)
+    const prevStep = () => {
+        setStep(prev => Math.max(prev - 1, 0))
+        setSubmitAddValidation(false)
         setLoader(false)
-        form.unregister('recaptcha', { keepError: false })
-      }
-      
+    }
 
-  const prevStep = () => {
-    setStep(prev => Math.max(prev - 1, 0))
-    setSubmitAddValidation(false)
-    setLoader(false)
-    form.unregister('recaptcha', { keepError: false })
-  }
-    const reValue = form.watch('recaptcha')
-
-
-    // add candidate handler:---
     const onSubmit = async data => {
+        if (step == 0) return
+        console.log("ggggggggggggggggggggggg")
         setSubmitAddValidation(true)
-        if (data?.currentSalary == '' || reValue == undefined) {
-            return
-        }
+        if (!data.currentSalary || !form.watch('recaptcha')) return
 
-        // try {
-        //     const formData = new FormData()
-
-        //     formData.append('g-recaptcha-response', recaptcha)
-        //     const file = data.resume?.[0]
-        //     if (file) {
-        //         formData.append('resume', file)
-        //     }
-
-        //     const preferred = JSON.stringify(data?.preferredShift)
-
-        //     Object.entries(data).forEach(([key, value]) => {
-        //         if (key === 'preferredShift') return;
-        //         if (key === 'dob' || key === 'lastIncrementDate') {
-        //             formData.append(key, moment(value).format('YYYY-MM-DD'));
-        //         } else {
-        //             formData.append(key, value);
-        //         }
-        //     });
-        //     formData.append('preferredShift', preferred)
-
-        //     const response = await Candidate.addCandidate(formData)
-        //     if (response?.data?.status == true) {
-        //         form.reset()
-        //         setLoader(false)
-        //         router.push('/thankyou')
-        //     }
-        // } catch (error) {
-        //     setLoader(false)
-
-        //     console.error('Submission Error:', error?.message)
-        //     errorMessage({ description: error?.message })
-        //     if (error?.message == 'reCaptcha verification failed.') {
-        //         form.unregister('recaptcha', { keepError: false })
-        //     }
-        // }
+        // Simulate submit action
+        console.log('Submitting form:', data)
+        setLoader(false)
+        form.reset()
+        router.push('/thankyou')
     }
 
     return (
@@ -153,7 +90,7 @@ function IncrementApplicationForm() {
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 margin: 0,
-                backgroundAttachment: "fixed"
+                backgroundAttachment: 'fixed',
             }}
         >
             <div className='w-2xs acewebx-logo z-10 text-center'>
@@ -165,190 +102,61 @@ function IncrementApplicationForm() {
                     Increment Application
                 </h2>
                 <h4 className='mb-8'>
-                    Please fill out this form to apply for a salary increment based on your performance, achievements, and contributions.
-                    Your responses will help management evaluate your eligibility for the expected raise.
+                    Please fill out this form to apply for a salary increment based on your performance, achievements, and contributions. Your responses will help management evaluate your eligibility for the expected raise.
                 </h4>
-                <p className='mb-4 text-sm text-gray-500'>Step {step + 1} of 3</p>
+                <p className='mb-4 text-sm text-gray-500'>Step {step + 1} of 2</p>
+
                 <FormProvider {...form}>
-                    <form
-                        encType='multipart/form-data'
-                        onSubmit={form.handleSubmit(onSubmit)}
-                    >
-                        {/* Step 0: Personal Info */}
+                    <form encType='multipart/form-data' onSubmit={form.handleSubmit(onSubmit)}>
                         {step === 0 && (
-                            <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
-                                <FormInputField
-                                    name='name'
-                                    label='Name'
-                                    form={form}
-                                    inputType='text'
-                                    className='colum-box-bg-change'
-                                />
-                                <FormInputField
-                                    name='tenureWithAceWebX'
-                                    label='Tenure with AceWebX (in years)'
-                                    form={form}
-                                    inputType='number'
-                                    className='colum-box-bg-change'
-                                />
-                                <FormInputField
-                                    name='overallExperienceYears'
-                                    label='Overall Years of Experience'
-                                    form={form}
-                                    inputType='number'
-                                    className='colum-box-bg-change'
-                                />
-
-                                <FormInputField
-                                    name='projectsCompletedLastYear'
-                                    label='Number of Projects Completed in the Last Year'
-                                    form={form}
-                                    inputType='number'
-                                    className='colum-box-bg-change'
-                                />
-                                <FormInputField
-                                    name='projectFeedbackRating'
-                                    label='Rating on Completed Projects (e.g. 4.5/5)'
-                                    form={form}
-                                    inputType='text'
-                                    className='colum-box-bg-change'
-                                />
-                                <FormSelectField
-                                    name='participatedInClientCalls'
-                                    label='Did You Participate in Any Client Calls?'
-                                    form={form}
-                                    options={YesNoOptions}
-                                    className='colum-box-bg-change'
-                                />
-                            </div>
-                        )}
-
-                        {/* Step 1: increm Details */}
-                        {step === 1 && (
                             <>
-                                <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-2'>
-                                    <FormSelectField
-                                        name='convertedClientsViaTestJobs'
-                                        label='Clients Converted via Test Jobs'
-                                        form={form}
-                                        options={YesNoOptions}
-                                        className='colum-box-bg-change'
-                                    />
-                                    <FormInputField
-                                        name='newSkillsAcquiredLastYear'
-                                        label='New Skills Acquired in the Last Year'
-                                        form={form}
-                                        inputType='text'
-                                        className='colum-box-bg-change'
-                                    />
-
-                                    <FormInputField
-                                        name='currentSalary'
-                                        label='Current Salary (Monthly)'
-                                        form={form}
-                                        inputType='number'
-                                        className='colum-box-bg-change'
-                                    />
-                                    <FormInputField
-                                        name='expectedSalaryRaise'
-                                        label='Expected Raise (%) or Amount'
-                                        form={form}
-                                        inputType='number'
-                                        className='colum-box-bg-change'
-                                    />
-                                    <FormTextArea
-                                        name='areasOfImprovement'
-                                        label='What Areas Do You Believe Need Improvement?'
-                                        form={form}
-                                        className='col-span-2'
-                                    />
-
-                                    <FormTextArea
-                                        name='raiseJustification'
-                                        label='Why Do You Feel the Expected Raise Is Justified?'
-                                        form={form}
-                                        className='col-span-2'
-                                    />
+                                <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
+                                    <FormInputField name='name' label='Name' inputType='text' form={form} />
+                                    <FormInputField name='tenureWithAceWebX' label='Tenure with AceWebX (in years)' inputType='number' form={form} />
+                                    <FormInputField name='overallExperienceYears' label='Overall Years of Experience' inputType='number' form={form} />
+                                    <FormInputField name='projectFeedbackRating' label='Rating on Completed Projects (e.g. 4.5/5)' inputType='text' form={form} />
+                                    <FormSelectField name='participatedInClientCalls' label='Did You Participate in Any Client Calls?' form={form} options={YesNoOptions} />
+                                    <FormSelectField name='convertedClientsViaTestJobs' label='Clients Converted via Test Jobs' form={form} options={YesNoOptions} />
+                                    <FormInputField name='newSkillsAcquiredLastYear' label='New Skills Acquired in the Last Year' inputType='text' form={form} />
+                                    <FormInputField name='currentSalary' label='Current Salary (Monthly)' inputType='number' form={form} />
                                 </div>
-
-
-
+                                <div className='grid grid-cols-1 gap-6'>
+                                    <FormInputField name='projectsCompletedLastYear' label='Number of Projects Completed in the Last Year' inputType='number' form={form} />
+                                </div>
                             </>
                         )}
 
-                        {/* step 2: increment  */}
+                        {step === 1 && (
+                            <>
+                                <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
+                                    <FormInputField name='expectedSalaryRaise' label='Expected Raise (%) or ₹' className="!h-[3.8rem]" inputType='number' form={form} />
+                                    <FormTextArea name='areasOfImprovement' label='Areas Needing Improvement' form={form} className='col-span-2' />
+                                    <FormTextArea name='raiseJustification' label='Raise Justification' form={form} className='col-span-2' />
+                                    <FormTextArea name='shortTermGoals' label='Your Short-Term Goals' form={form} className='col-span-2' />
+                                    <FormTextArea name='teamOrCultureSuggestions' label='Suggestions for Team/Culture' form={form} className='col-span-2' />
+                                    <FormTextArea name='weaknesses' label='Your Weaknesses' form={form} className='col-span-2' />
+                                    <FormTextArea name='longTermGoals' label='Your Long-Term Goals' form={form} className='col-span-2' />
+                                    <FormTextArea name='keyAchievements' label='Key Achievements This Cycle' form={form} className='col-span-2' />
 
-                        {step === 2 && (
-                            <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
+                                </div>
+                                <div className='grid grid-cols-1 gap-6'>
+                                    <FormTextArea name='experienceWithAceWebX' label='Experience at AceWebX' form={form} className='col-span-2' />
+                                </div></>
 
-
-                                <FormTextArea
-                                    name='shortTermGoals'
-                                    label='What Are Your Short-Term Goals?'
-                                    form={form}
-                                    className='col-span-2'
-                                />
-                                <FormTextArea
-                                    name='teamOrCultureSuggestions'
-                                    label='Suggestions for Team or Culture Improvement'
-                                    form={form}
-                                    className='col-span-2'
-                                />
-                                <FormTextArea
-                                    name='weaknesses'
-                                    label='What Are Your Weaknesses?'
-                                    form={form}
-                                    className='col-span-2'
-                                />
-                                <FormTextArea
-                                    name='longTermGoals'
-                                    label='What Are Your Long-Term Goals?'
-                                    form={form}
-                                    className='col-span-2'
-                                />
-                                <FormTextArea
-                                    name='keyAchievements'
-                                    label='What Are Your Key Achievements in the Current Appraisal Cycle?'
-                                    form={form}
-                                    className='col-span-2'
-                                />
-
-                                <FormTextArea
-                                    name='experienceWithAceWebX'
-                                    label='Describe Your Working Experience So Far with AceWebX'
-                                    form={form}
-                                    className='col-span-2'
-                                />
-                            </div>
                         )}
-                        {/* Navigation */}
-                        <div
-                            className={`mt-10 flex ${step === 0 ? 'justify-end' : 'justify-between'}`}
-                        >
+
+                        <div className={`mt-10 flex ${step === 0 ? 'justify-end' : 'justify-between'}`}>
                             {step > 0 && (
-                                <Button
-                                    variant='outlined'
-                                    onClick={prevStep}
-                                    className='border border-red-500 text-[#B82025] hover:bg-white hover:text-[#B82025]'
-                                >
+                                <Button variant='outlined' onClick={prevStep} className='border border-red-500 text-[#B82025] hover:bg-white hover:text-[#B82025]'>
                                     Back
                                 </Button>
                             )}
-
-                            {step < 2 ? (
-                                <Button
-                                    variant='contained'
-                                    onClick={nextStep}
-                                    className='bg-[#B82025] !text-white'
-                                >
+                            {step < 1 ? (
+                                <Button variant='contained' onClick={(e) => nextStep(e)} className='bg-[#B82025] !text-white'>
                                     Next
                                 </Button>
                             ) : (
-                                <Button
-                                    type='submit'
-                                    variant='contained'
-                                    className='bg-[#B82025] !text-white'
-                                >
+                                <Button type='submit' variant='contained' className='bg-[#B82025] !text-white'>
                                     {loader ? <Loader /> : 'Submit'}
                                 </Button>
                             )}
