@@ -22,7 +22,6 @@ import { EventValidation } from '@/components/form-validations/EventValidation'
 
 function EditEvent() {
     const { id } = useParams()
-
     const [loader, setLoader] = useState(false)
 
     // image :
@@ -31,6 +30,7 @@ function EditEvent() {
     const [deletedOldImages, setDeletedOldImages] = useState([])
     const [files, setFiles] = useState([])
 
+ 
     const router = useRouter()
     const form = useForm({
         mode: 'onChange',
@@ -49,40 +49,53 @@ function EditEvent() {
 
 
     const onSubmit = async data => {
-        console.log("dataa", data)
         try {
-            const formData = new FormData()
-
-            if (Array.isArray(imageUpload)) {
-                imageUpload.forEach((file, index) => {
-                    if (file instanceof File) {
-                        formData.append(`banners${index}`, file)
-                    }
-                })
+          const formData = new FormData()
+      
+          const existingImageFiles = await Promise.all(
+            updateImage.map(async (img, index) => {
+              const response = await fetch(img.url)
+              const blob = await response.blob()
+              const fileName = img.url.split('/').pop() || `image_${index}.jpg`
+              return new File([blob], fileName, { type: blob.type })
+            })
+          )
+      
+          // Combine old and new image files
+          const allImageFiles = [
+            ...existingImageFiles,
+            ...(Array.isArray(imageUpload)
+              ? imageUpload.filter(file => file instanceof File)
+              : [])
+          ]
+      
+          // Append them to formData
+          allImageFiles.forEach((file, index) => {
+            formData.append(`banners${index}`, file)
+          })
+      
+          // Append the rest of the form fields
+          Object.entries(data).forEach(([key, value]) => {
+            if (key === 'from' || key === 'to') {
+              formData.append(key, moment(value).format('YYYY-MM-DD'))
+            } else {
+              formData.append(key, value)
             }
-
-          
-
-            Object.entries(data).forEach(([key, value]) => {             
-                if (key === 'fromDate' || key === 'toDate') {
-                    formData.append(key, moment(value).format('YYYY-MM-DD'));
-                } else {
-                    formData.append(key, value);
-                }
-            });
-
-            const response = await EventApi.editEvent(id, formData)
-            if (response?.data?.status == true) {
-                setLoader(false)
-                // router.push('/dashboard/event')
-                router.back()
-            }
-        } catch (error) {
+          })
+      
+          const response = await EventApi.editEvent(id, formData)
+          if (response?.data?.status === true) {
             setLoader(false)
-            console.error('Submission Error:', error?.message)
-            errorMessage({ description: error?.message })
+            router.back()
+          }
+        } catch (error) {
+          setLoader(false)
+          console.error('Submission Error:', error?.message)
+          errorMessage({ description: error?.message })
         }
-    }
+      }
+      
+      
 
 
 
@@ -106,9 +119,7 @@ function EditEvent() {
                     toDate: toDate
 
                 }
-                // const mappedImages = data.banners?.map(file => console.log(
-                //     `${process.env.NEXT_PUBLIC_API_URL}/auth/v1${file.filePath}`
-                // ))
+           
                 const mappedImages = data.banners?.map(file => ({ 
                     url: `${process.env.NEXT_PUBLIC_API_URL}${file.filePath}`
                 }))

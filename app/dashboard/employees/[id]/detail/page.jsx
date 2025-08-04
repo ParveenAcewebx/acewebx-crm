@@ -16,10 +16,7 @@ function Page({ params }) {
   const router = useRouter()
   const id = params?.id
   const editId = id
-  const [dcsModalOpen, setDcsModalOpen] = useState(false) // State for DCS modal
   const [candidateData, setCandidateData] = useState({})
-  const [url, setUrl] = useState('')
-  const [loading, setLoading] = useState(false)
 
   const handleGetApi = async () => {
     try {
@@ -36,9 +33,6 @@ function Page({ params }) {
     }
   }, [id, router])
 
-
-  const percent = Math.round(((candidateData?.expectedSalary - candidateData?.currentSalary) * 100) / candidateData?.currentSalary)
-  const [candidateShifts, setCandidateShifts] = useState([])
 
   const [activitiesData, setActivitiesData] = useState()
 
@@ -123,7 +117,16 @@ function Page({ params }) {
                 </div>
               </CardContent>
             </Card>
+            <Card className='box'>
+              <CardContent className='flex items-center gap-4'>
 
+              <img src='/images/pages/PreferredShift .png' alt='trophy image' height={60} className='' />
+              <div>
+                  <span className='tittle'>D.O.B</span> <br />
+                  <span className='subtittle' variant='h4'>{candidateData?.dobDocument}</span>
+                </div>
+              </CardContent>
+            </Card>
             <Card className='box'>
               <CardContent className='flex items-center gap-4'>
 
