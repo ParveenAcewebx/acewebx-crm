@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import SkillForm from '@/components/skills/SkillForm'
 import SkillSettingModal from '@/components/modal/SkillSettingModal'
-import EventApi from '@/services/cadidateApis/events/EventApi'
 import { EventColumn } from './increment-column'
 import { useRouter } from 'next/navigation'
 import FormInputField from '@/components/share/form/FormInputField'
@@ -18,7 +17,7 @@ import { incrementSearchEvent, SearchEvent, SearchValidation } from '@/component
 import { Search } from 'lucide-react'
 import IncrementAPi from '@/services/cadidateApis/increment/IncrementAPi'
 
-const EventList = () => {
+const IncrementList = () => {
   const [getList, setList] = useState([])
   const [loading, setLoading] = useState(true)
   const [page, setPage] = useState(1)
@@ -219,4 +218,4 @@ const EventList = () => {
   )
 }
 
-export default EventList
+export default IncrementList

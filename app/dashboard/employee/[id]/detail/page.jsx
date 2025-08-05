@@ -58,10 +58,19 @@ function Page({ params }) {
   }, [])
 
   const pathname = usePathname()
-  const currentTab = pathname?.endsWith('edit') ? 'edit' : 'detail'
-  const handleTabChange = (value) => {
-    router.replace(value)
-  }
+  // const currentTab = pathname?.endsWith('edit') ? 'edit' : 'detail'
+  // const handleTabChange = (value) => {
+  //   router.replace(value)
+  // }
+
+    // Get last part of the path
+    const currentTab = pathname?.split('/').pop() || 'detail'
+
+    const handleTabChange = (value) => {
+      // Replace current route with new tab route (assuming same base path)
+      const basePath = pathname?.split('/').slice(0, -1).join('/')
+      router.replace(`${basePath}/${value}`)
+    }
 
   //Function for colour :-
   const genderColor = (val) => {
@@ -71,16 +80,12 @@ function Page({ params }) {
     return "!bg-gray-400"
   }
 
-
   const genderCol = genderColor(candidateData?.meta?._gender)
 
-
-  
    // send walk-in form
    const handleSendWalkInForm = async () => {
     try {
       const sendEmailLin = await IncrementAPi.sendIncrementInLink(id)
-
       if (sendEmailLin?.data?.status == true) {
         successMessage({
           description: 'Link sent successfully to the mail.'
@@ -97,12 +102,15 @@ function Page({ params }) {
   return (
     <>
       <CommonLayout pageTitle='Employee Detail' />
-
       <Tabs value={currentTab} onValueChange={handleTabChange}>
         <TabsList className='custom-tabs mb-3 w-full justify-start gap-2 rounded-none border-b custom-tabs ' >
           <TabsList>
             <TabsTrigger className='rounded-none px-4 py-1.5 !shadow-none' value="detail">Details</TabsTrigger>
             <TabsTrigger className='rounded-none p-1.5 px-4 !shadow-none' value="edit">Edit</TabsTrigger>
+            <TabsTrigger className='rounded-none px-4 py-1.5 !shadow-none' value="birthdays">Birthdays</TabsTrigger>
+            <TabsTrigger className='rounded-none p-1.5 px-4 !shadow-none' value="anniversaries">Anniversaries</TabsTrigger>
+            <TabsTrigger className='rounded-none p-1.5 px-4 !shadow-none' value="increments">Increments</TabsTrigger>
+
           </TabsList>
         </TabsList>
 
@@ -115,7 +123,7 @@ function Page({ params }) {
               <span>{candidateData?.name} </span>
 
               <Mail className='w-5 h-5 text-gray-200 ml-4' />
-              <span>{candidateData?.personalEmail?.toLowerCase()} </span>
+              <span>{candidateData?.companyEmail?.toLowerCase()} </span>
 
               <Phone className='w-5 h-5 text-gray-200 ml-4' />
               <span>{candidateData?.phone}</span>
@@ -151,14 +159,6 @@ function Page({ params }) {
 
 
               </div>
-              {/* <div className='resume' onClick={(e) => dosOpenModal(e)}>
-                <a href="">
-                  <div className='resmume-text'>
-                    <span variant='h2'>View Resume</span>
-                  </div>
-                  <img src='/images/pages/eye.png' alt='trophy image' height={11} />
-                </a>
-              </div> */}
             </div>
           </CardContent>
 
@@ -281,6 +281,12 @@ function Page({ params }) {
           </div>
         </TabsContent>
         <TabsContent value='edit'>
+        </TabsContent>
+        <TabsContent value='birthdays'>
+        </TabsContent>
+        <TabsContent value='anniversaries'>
+        </TabsContent>
+        <TabsContent value='increments'>
         </TabsContent>
       </Tabs>
 

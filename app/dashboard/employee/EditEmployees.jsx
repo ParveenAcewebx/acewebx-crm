@@ -153,7 +153,7 @@ function EditEmployees({ editId }) {
             <div className='mobile-view items-right relative flex min-h-screen w-full flex-col justify-start'>
 
                 <div className='flex justify-between'>
-                    <CommonLayout pageTitle={`Edit Employee`} />
+                    <CommonLayout pageTitle={`Employee Edit`} />
                 </div>
 
                 <div className=''>

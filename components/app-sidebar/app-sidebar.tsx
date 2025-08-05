@@ -47,11 +47,11 @@ const data = {
 
         {
           title: 'Add Employee',
-          url: '/dashboard/employees/add'
+          url: '/dashboard/employee/add'
         },
         {
           title: 'All Employees',
-          url: '/dashboard/employee'
+          url: '/dashboard/employees'
         }
       ]
     },
@@ -72,20 +72,7 @@ const data = {
         }
       ]
     },
-    // increment
-
-    {
-      title: 'Increment',
-      url: '/dashboard',
-      icon: SquareUser,
-      isActive: true,
-      items: [
-        {
-          title: 'Increments',
-          url: '/dashboard/increment'
-        }
-      ]
-    },
+  
     {
       title: 'Settings',
       url: '/dashboard/settings/skills',
