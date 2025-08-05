@@ -27,10 +27,10 @@ const IncrementAPi = {
       },
 
       sendIncrementInLink: id => {
-        return api.post(`employee/send-increment-in-application/${id}`)
+        return api.post(`employee/send-increment-link/${id}`)
       },
       getByIdVerifyIncrementAPi: id => {
-        return api.post(`confirm-employee-token/${id}`)
+        return api.post(`employee/confirm-increment-token/${id}`)
     },
  
     activityDevIncrementAPi: (module, editId) => {
