@@ -62,16 +62,12 @@ export const EmployeeColumn = (handleDeleteTaskTag, handleEditTaskTag) => [
     cell: ({ row }) => (
       <div className="space-y-1">
         <div className="font-medium">{row.original.name}</div>
-        <div className="text-sm text-gray-500">{row.original.personalEmail}</div>
+        <div className="text-sm text-gray-500">{row.original.companyEmail}</div>
         <div className="text-sm text-gray-500">{row.original.phone}</div>
       </div>
     ),
   },
-  {
-    accessorKey: 'companyEmail',
-    header: 'Company Email',
-    cell: ({ row }) => row.original.companyEmail,
-  },
+ 
   {
     accessorKey: 'designation',
     header: 'Designation',

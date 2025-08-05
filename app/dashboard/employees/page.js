@@ -77,7 +77,7 @@ const EventList = () => {
     }
     const handleEditTaskTag = async (row) => {
         if (row?.original?.id) {
-            router.push(`/dashboard/employees/${row?.original?.id}/detail`)
+            router.push(`/dashboard/employee/${row?.original?.id}/detail`)
 
         }
     }
@@ -96,7 +96,7 @@ const EventList = () => {
         return () => subscription.unsubscribe()
     }, [methods, totalRecord])
     const handleOpenTagModal = () => {
-        router.push('/dashboard/employees/add')
+        router.push('/dashboard/employee/add')
         // setSubmitOpenModal(true)
         // setEditData(null)
     }
