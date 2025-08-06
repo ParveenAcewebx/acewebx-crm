@@ -11,12 +11,12 @@ const BirthdaysApi = {
     getAllNewBirthdays: (page, length) => {
         return api.get(`employee/getAllEmployee?page=${page}&limit=${length}`)
     },
-    // editEmployees: (id, data) => {
-    //     return api.put(`employee/updateEmployee/${id}`, data)
-    // },
-    // getByIdEmployees: id => {
-    //     return api.get(`employee/getEmployeeById/${id}`)
-    // },
+    editBirthdays: (id ,eventId, data) => {
+        return api.put(`/employee/${id}/updateEmployeeEvent/${eventId}`, data)
+    },
+    getByIdBirthdays: (id,empId) => {
+        return api.get(`employee/${id}/getEmployeeEventById/${empId}`)
+    },
     // getAllEmployees: (page, length) => {
     //     return api.get(`employee/getAllEmployee?page=${page}&limit=${length}`)
     // },

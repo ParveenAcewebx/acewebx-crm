@@ -1,34 +1,42 @@
-"use client"
+"use client";
 import SkillApi from '@/services/cadidateApis/settings/SkillApi';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 
 function GlobelLocalStoreData() {
     const [data, setData] = useState(null);
 
+    // Save data to localStorage when it changes
     useEffect(() => {
-        // This effect runs whenever 'data' changes and stores it
-        if (typeof window !== "undefined" && window.localStorage && data !== null) {
-            localStorage.setItem("skills", JSON.stringify(data)); // Stringify for JSON
+        if (typeof window !== "undefined" && data !== null) {
+            localStorage.setItem("skills", JSON.stringify(data));
         }
-    }, [data]); // Dependency array includes 'data'
+    }, [data]);
 
     const handleSaveData = async () => {
         try {
-            const response = await SkillApi.globalSkillGetApi()
+            const response = await SkillApi.globalSkillGetApi();
             if (response.status === 200) {
-                setData(response?.data?.data?.skills);
+                const skills = response?.data?.data?.skills || [];
+                setData(skills);
+                localStorage.setItem("skills", JSON.stringify(skills));
             }
         } catch (error) {
-            console.log('error', error);
+            console.error('Error fetching skills:', error);
         }
     };
-    useEffect(() => {
-        handleSaveData()
-    }, [])
 
-    return (
-        <div></div>
-    )
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const localSkills = localStorage.getItem("skills");
+            if (localSkills) {
+                setData(JSON.parse(localSkills));
+            } else {
+                handleSaveData();
+            }
+        }
+    }, []);
+
+    return <div></div>;
 }
 
-export default GlobelLocalStoreData
+export default GlobelLocalStoreData;

@@ -110,7 +110,6 @@ function Page({ params }) {
             <TabsTrigger className='rounded-none px-4 py-1.5 !shadow-none' value="birthdays">Birthdays</TabsTrigger>
             <TabsTrigger className='rounded-none p-1.5 px-4 !shadow-none' value="anniversaries">Anniversaries</TabsTrigger>
             <TabsTrigger className='rounded-none p-1.5 px-4 !shadow-none' value="increments">Increments</TabsTrigger>
-
           </TabsList>
         </TabsList>
 
