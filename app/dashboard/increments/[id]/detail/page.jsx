@@ -6,14 +6,14 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import CommonLayout from '@/components/CommonLayouyt'
 import ActivitiesList from '@/components/ActivitiesList'
-import { Mail, Phone, UserIcon } from 'lucide-react'
+import { UserIcon } from 'lucide-react'
 import { errorMessage } from '@/components/ToasterMessage'
 import EmployeesApi from '@/services/cadidateApis/employees/EmployeesApi'
 import Link from 'next/link'
-import EmployeeChatCompo from '@/app/dashboard/employees/chat/Chat'
 import IncrementAPi from '@/services/cadidateApis/increment/IncrementAPi'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { Button } from '@/components/ui/button'
+import EmployeeChatCompo from '@/app/dashboard/employee/chat/Chat'
 
 function Page({ params }) {
   const router = useRouter()
@@ -71,10 +71,7 @@ function Page({ params }) {
     return "!bg-gray-400"
   }
 
-
   const genderCol = genderColor(candidateData?.meta?._gender)
-
-
 
    // send walk-in form
    const handleSendWalkInForm = async row => {
@@ -108,17 +105,10 @@ function Page({ params }) {
 
 
         <TabsContent value="detail">
-
           <CardContent className={`tittle-bar ${genderCol}`}>
             <div className='user-name flex items-center gap-2 text-base font-medium text-gray-800'>
               <UserIcon className='w-5 h-5 text-gray-200' />
               <span>{candidateData?.name} </span>
-
-              {/* <Mail className='w-5 h-5 text-gray-200 ml-4' />
-              <span>{candidateData?.personalEmail?.toLowerCase()} </span>
-
-              <Phone className='w-5 h-5 text-gray-200 ml-4' />
-              <span>{candidateData?.phone}</span> */}
             </div>
             <div className=' resume-btn'>
               <div>
@@ -148,17 +138,7 @@ function Page({ params }) {
                     Send Increment Form
                   </TooltipContent>
                 </Tooltip>
-
-
               </div>
-              {/* <div className='resume' onClick={(e) => dosOpenModal(e)}>
-                <a href="">
-                  <div className='resmume-text'>
-                    <span variant='h2'>View Resume</span>
-                  </div>
-                  <img src='/images/pages/eye.png' alt='trophy image' height={11} />
-                </a>
-              </div> */}
             </div>
           </CardContent>
 
@@ -166,8 +146,6 @@ function Page({ params }) {
           {/* Left Section */}
 
           <div class="flex gap-4">
-
-
             <Card className='box'>
               <CardContent className='flex items-center gap-4'>
 
@@ -198,7 +176,6 @@ function Page({ params }) {
                 </div>
               </CardContent>
             </Card>
-
             <Card className='box'>
               <CardContent className='flex items-center gap-4'>
                 <img src='/images/pages/PreferredShift .png' alt='trophy image' height={60} className='' />
@@ -208,15 +185,10 @@ function Page({ params }) {
                   }                </div>
               </CardContent>
             </Card>
-
           </div>
-
-          {/* working Deve */}
-
-
           {/* Current & Expected Salary Card */}
           <div class=" flex gap-4  ">
-            <Card className="">
+          <Card className="">
               <CardContent className='flex justify-between items-center'>
                 {/* Current Salary */}
                 <div className="salery-outer ">
@@ -230,10 +202,9 @@ function Page({ params }) {
                 </div>
 
               </CardContent>
-            </Card>
-
+          </Card>
             {/* Hike Card */}
-            <Card className='box border   rounded-[10px]'>
+          <Card className='box border   rounded-[10px]'>
               <CardContent className='flex items-center gap-4 '>
                 <img src='/images/pages/hike.png' alt='trophy image' height={60} className='' />
                 <div>
@@ -245,9 +216,8 @@ function Page({ params }) {
                
                 </div>
               </CardContent>
-            </Card>
-
-         <Card className='box'>
+          </Card>
+          <Card className='box'>
             <Link target='_blank' href={candidateData?.meta?._adharCard||''}>
               <CardContent className='flex items-center gap-4'>
 
@@ -258,9 +228,8 @@ function Page({ params }) {
                 </div>
               </CardContent>
             </Link>
-            </Card>
-
-            <Card className='box'><Link target='_blank' href={candidateData?.meta?._panCard ||''}>
+          </Card>
+        <Card className='box'><Link target='_blank' href={candidateData?.meta?._panCard ||''}>
               <CardContent className='flex items-center gap-4'>
                 <img src='/images/pages/PreferredShift .png' alt='trophy image' height={60} className='' />
                 <div>
@@ -270,15 +239,12 @@ function Page({ params }) {
                 </div>
               </CardContent>
               </Link>
-            </Card>
-
+        </Card>
             {/* chat  */}
           </div>
-
           <div className="flex gap-4 py-4">
             <EmployeeChatCompo id={editId} />
             <ActivitiesList activitiesData={activitiesData} />
-
           </div>
         </TabsContent>
         <TabsContent value='edit'>
