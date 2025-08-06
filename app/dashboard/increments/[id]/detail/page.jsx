@@ -1,19 +1,19 @@
 
 'use client'
+import Link from 'next/link'
+import { UserIcon } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import React, { useEffect, useState } from 'react'
+import CommonLayout from '@/components/CommonLayouyt'
 import { usePathname, useRouter } from 'next/navigation'
 import { Card, CardContent } from '@/components/ui/card'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import CommonLayout from '@/components/CommonLayouyt'
 import ActivitiesList from '@/components/ActivitiesList'
-import { UserIcon } from 'lucide-react'
 import { errorMessage } from '@/components/ToasterMessage'
-import EmployeesApi from '@/services/cadidateApis/employees/EmployeesApi'
-import Link from 'next/link'
-import IncrementAPi from '@/services/cadidateApis/increment/IncrementAPi'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import { Button } from '@/components/ui/button'
 import EmployeeChatCompo from '@/app/dashboard/employee/chat/Chat'
+import EmployeesApi from '@/services/cadidateApis/employees/EmployeesApi'
+import IncrementAPi from '@/services/cadidateApis/increment/IncrementAPi'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 
 function Page({ params }) {
   const router = useRouter()
@@ -94,7 +94,6 @@ function Page({ params }) {
   return (
     <>
       <CommonLayout pageTitle='increment Detail' />
-
       <Tabs value={currentTab} onValueChange={handleTabChange}>
         <TabsList className='custom-tabs mb-3 w-full justify-start gap-2 rounded-none border-b custom-tabs ' >
           <TabsList>
@@ -141,10 +140,7 @@ function Page({ params }) {
               </div>
             </div>
           </CardContent>
-
-
           {/* Left Section */}
-
           <div class="flex gap-4">
             <Card className='box'>
               <CardContent className='flex items-center gap-4'>
@@ -250,8 +246,6 @@ function Page({ params }) {
         <TabsContent value='edit'>
         </TabsContent>
       </Tabs>
-
-
     </>
   )
 }

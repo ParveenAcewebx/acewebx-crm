@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { Edit, EllipsisVertical, Eye, Trash2 } from 'lucide-react'
+import { Edit, EllipsisVertical, Trash2 } from 'lucide-react'
 
 export const EventColumn = (handleDeleteTaskTag, handleEditTaskTag) => [
   {
@@ -39,16 +39,6 @@ export const EventColumn = (handleDeleteTaskTag, handleEditTaskTag) => [
       )
     }
   },
-  // {
-  //   accessorKey: 'id',
-  //   header: '#ID',
-  //   size: 80, 
-  //   cell: ({ row }) => (
-  //     <div className="max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
-  //       {`#EVN-${row.original?.id}`}
-  //     </div>
-  //   )
-  //   },
   {
     accessorKey: 'name',
     header: 'Name',
@@ -77,7 +67,6 @@ export const EventColumn = (handleDeleteTaskTag, handleEditTaskTag) => [
     cell: ({ row }) =>
       row?.original?.clientCalls
   },
-
   {
     accessorKey: 'longTermGoals',
     header: 'ShortTermGoals/ longTermGoals',
@@ -89,5 +78,4 @@ export const EventColumn = (handleDeleteTaskTag, handleEditTaskTag) => [
       </>
     )
   },
-  
 ]

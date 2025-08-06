@@ -2,98 +2,59 @@
 import React, { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import CommonLayout from '@/components/CommonLayouyt'
-import { useRouter } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { DataTable } from '@/components/Table'
 import IncrementAPi from '@/services/cadidateApis/increment/IncrementAPi'
+import { Edit, Eye } from 'lucide-react'
+import AnniversariesApi from '@/services/cadidateApis/employees/AnniversariesApi'
 
 function IncrementsDetail() {
-    const [loading, setLoading] = useState(true)
-    const [upcomingEvents, setUpcomingEvents] = useState([])
-    const [upcomingBirthdays, setUpcomingBirthdays] = useState([]);
-    const [upcomingIncrements, setUpcomingIncrements] = useState([])
+    const { id } = useParams()
+    let eventId = id
+
+    const [upcomingIncrement, setUpcomingIncrement] = useState([])
+    const [pastIncrement, setPastIncrement] = useState([]);
+
 
     const router = useRouter()
 
-    // const handleGetApi = async () => {
-    //     try {
-    //         const res = await EventApi.upComingEventList()
-    //         const data = res?.data?.data || {}
-
-    //         setUpcomingEvents(data.upcomingEvents || [])
-    //         setUpcomingBirthdays(data.upcomingBirthdays || [])
-    //         setUpcomingIncrements(data.upcomingIncrements || [])
-    //     } catch (error) {
-    //         console.error('API error', error)
-    //     }
-    // }
-
-    // useEffect(() => {
-    //     handleGetApi()
-    // }, [])
-
-
-
-    const fetchTagList = async () => {
+    const handleGetApi = async () => {
         try {
-          const response = await IncrementAPi.getAllIncrementAPi()
-          if (response.status === 200) {
-            setUpcomingIncrements(response?.data?.data?.increments)
-            // setTotalRecord(response?.data?.data?.pagination?.total)
-          }
+            const res = await AnniversariesApi.getAllPastAnniversaries(eventId)
+            const data = res?.data?.data || {}
+            setUpcomingIncrement(data?.upcomingIncrement || [])
+            setPastIncrement(data?.pastBirthday || [])
         } catch (error) {
-          console.log('error', error)
-        } finally {
-          setLoading(false)
+            console.error('API error', error)
         }
-      }
+    }
+
+    useEffect(() => {
+        handleGetApi()
+    }, [])
 
 
 
-      useEffect(() => {
-        fetchTagList()
-      }, [])
-  
+
+
 
     // upcomingIncrements :-
 
-    // const handleForupcomingIncrements = (row) => {
-    //     if (row?.original?.id) {
-    //         router.push(`/dashboard/employees/${row?.original?.id}/detail`)
+    const handleForupcomingIncrements = (row) => {
+        if (row?.original?.id) {
+            router.push(`/dashboard/employee/${eventId}/increments/${row?.original?.id}`)
 
-    //     }
-    // }
-
+        }
+    }
     const columnForupcomingIncrements = [
+
         {
-            accessorKey: 'name',
-            header: 'Name',
-            cell: ({ row }) => row.original.name
-          },
-          {
-            accessorKey: 'currentSalary',
-            header: 'Current Salary',
-            cell: ({ row }) =>
-              row?.original?.currentSalary
-          },
-          {
-            accessorKey: 'expectedSalary',
-            header: 'Expected Salary',
-            cell: ({ row }) =>
-              row?.original?.expectedSalary
-          },
-          {
-            accessorKey: 'incrementDate',
+            accessorKey: 'eventDate',
             header: 'Days Left',
-            id: 'incrementDate',
+            id: 'eventDate',
             cell: ({ row }) => {
-                const meta = row.original.meta || [];
 
-
-                const incrementDateStr = meta.find(m => m.metaKey === '_lastIncrementDate')?.metaValue || row?.original?.dateOfJoining
-
-                if (!incrementDateStr) return <span>—</span>; // Gracefully handle missing date
-
-                const originalDate = new Date(incrementDateStr);
+                const originalDate = new Date(row.original.eventDate);
                 if (isNaN(originalDate.getTime())) return <span>Invalid Date</span>; // Handle invalid date string
 
                 function getNextIncrementDate(startDate, cycleInYears = 1) {
@@ -109,7 +70,7 @@ function IncrementsDetail() {
 
                 const finalDate = getNextIncrementDate(originalDate);
 
-                if (!incrementDateStr) return <span className="">N/A</span>;
+                // if (!incrementDateStr) return <span className="">N/A</span>;
 
                 const incrementDate = new Date(finalDate + 'T00:00:00');
                 const today = new Date();
@@ -128,84 +89,91 @@ function IncrementsDetail() {
             }
         },
         {
-            accessorKey: 'incrementDate',
+            accessorKey: 'eventDate',
             header: 'Increment Date',
-            id: 'incrementDate',
+            id: 'eventDate',
             cell: ({ row }) => {
-                const meta = row.original?.meta ?? [];
-                const incrementDateStr = meta.find(m => m.metaKey === '_lastIncrementDate')?.metaValue;
+                //   const meta = row.original?.meta ?? [];
+                //   const incrementDateStr = meta.find(m => m.metaKey === '_lastIncrementDate')?.metaValue;
 
-                if (!incrementDateStr) return <span>—</span>; // Gracefully handle missing date
+                //   if (!incrementDateStr) return <span>—</span>; // Gracefully handle missing date
 
-                const originalDate = new Date(incrementDateStr);
-                if (isNaN(originalDate.getTime())) return <span>Invalid Date</span>; // Handle invalid date string
+                //   const originalDate = new Date(row.original?.eventDate);
+                //   if (isNaN(originalDate.getTime())) return <span>Invalid Date</span>; // Handle invalid date string
 
-                function getNextIncrementDate(startDate, cycleInYears = 1) {
-                    const today = new Date();
-                    let nextDate = new Date(startDate);
-
-                    while (nextDate <= today) {
-                        nextDate.setFullYear(nextDate.getFullYear() + cycleInYears);
-                    }
-
-                    return nextDate.toISOString().split('T')[0];
-                }
-
-                const finalDate = getNextIncrementDate(originalDate);
-
-                return <span>{finalDate}</span>;
-            }
-        },
-    ];
-
-    const columnForOldIncrements = [
-        {
-            accessorKey: 'name',
-            header: 'Name',
-            cell: ({ row }) => row.original.name
-          },
-         
-          {
-            accessorKey: 'currentSalary',
-            header: 'Current Salary',
-            cell: ({ row }) =>
-              row?.original?.currentSalary
-          },
-          {
-            accessorKey: 'expectedSalary',
-            header: 'Expected Salary',
-            cell: ({ row }) =>
-              row?.original?.expectedSalary
-          },
-        {
-            accessorKey: 'incrementDate',
-            header: 'Increment Date',
-            id: 'incrementDate',
-            cell: ({ row }) => {
-                const meta = row.original?.meta ?? [];
-                const incrementDateStr = meta.find(m => m.metaKey === '_lastIncrementDate')?.metaValue;
-
-                // if (!incrementDateStr) return <span>—</span>; // Gracefully handle missing date
-
-                // const originalDate = new Date(incrementDateStr);
-                // if (isNaN(originalDate.getTime())) return <span>Invalid Date</span>; // Handle invalid date string
-
-                // function getNextIncrementDate(startDate, cycleInYears = 1) {
+                //   function getNextIncrementDate(startDate, cycleInYears = 1) {
                 //     const today = new Date();
                 //     let nextDate = new Date(startDate);
 
                 //     while (nextDate <= today) {
-                //         nextDate.setFullYear(nextDate.getFullYear() + cycleInYears);
+                //       nextDate.setFullYear(nextDate.getFullYear() + cycleInYears);
                 //     }
 
                 //     return nextDate.toISOString().split('T')[0];
-                // }
+                //   }
 
-                // const finalDate = getNextIncrementDate(originalDate);
+                //   const finalDate = getNextIncrementDate(originalDate);
 
-                return <span>{incrementDateStr}</span>;
+                return <span>{row.original?.eventDate}</span>;
             }
         },
+
+
+
+
+        {
+            accessorKey: 'status',
+            header: 'Status',
+            id: 'status',
+            cell: ({ row }) => row.original.status
+        },
+        {
+            accessorKey: 'action',
+            header: 'Action',
+            id: 'action',
+            size: 50,
+            cell: ({ row }) => (
+                <div className="w-full flex justify-left">
+                    <Edit
+                        className="text-blue-500 h-4 w-4 cursor-pointer"
+                        onClick={() => handleForupcomingIncrements(row)} // You may want to use handleForupcomingIncrements
+                    />
+                </div>
+            )
+        }
+    ];
+
+
+
+    const columnForOldIncrements = [
+
+        {
+            accessorKey: 'eventDate',
+            header: 'Increment Date',
+            id: 'eventDate',
+            cell: ({ row }) => row.original.eventDate
+        },
+
+        {
+            accessorKey: 'status',
+            header: 'Status',
+            id: 'status',
+            cell: ({ row }) => row.original.status
+        },
+        {
+            accessorKey: 'action',
+            header: 'Action',
+            id: 'action',
+            size: 50,
+            cell: ({ row }) => (
+                <div className="w-full flex justify-left">
+                    <Edit
+                        className="text-blue-500 h-4 w-4 cursor-pointer"
+                        onClick={() => handleForupcomingIncrements(row)} // You may want to use handleForupcomingIncrements
+                    />
+                </div>
+            )
+        }
     ];
 
     return (
@@ -221,10 +189,10 @@ function IncrementsDetail() {
                     </CardHeader>
 
                     <CardContent className='p-4'>
-                        {upcomingIncrements?.length > 0 ? (
+                        {upcomingIncrement?.length > 0 ? (
                             <DataTable
                                 columns={columnForupcomingIncrements}
-                                data={upcomingIncrements}
+                                data={upcomingIncrement}
                             />
                         ) : (
                             <div className=''>No Upcoming Increments</div>
@@ -245,10 +213,10 @@ function IncrementsDetail() {
                         </CardTitle>
                     </CardHeader>
                     <CardContent className='p-4'>
-                        {upcomingIncrements?.length > 0 ? (
+                        {pastIncrement?.length > 0 ? (
                             <DataTable
                                 columns={columnForOldIncrements}
-                                data={upcomingIncrements}
+                                data={pastIncrement}
                             />
                         ) : (
                             <div className=''>No Past Increments</div>

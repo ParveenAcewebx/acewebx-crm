@@ -5,11 +5,17 @@ const AnniversariesApi = {
         return api.post(`anniversary/save`, data)
     },
 
-    getAllPastAnniversaries : (page, length) => {
-        return api.get(`anniversary/getAllEmployee?page=${page}&limit=${length}`)
+    getAllPastAnniversaries : (eventId) => {
+        return api.get(`employee/${eventId}/events`)
     },
     getAllNewAnniversaries: (page, length) => {
         return api.get(`anniversary/getAllEmployee?page=${page}&limit=${length}`)
+    },
+    editAnniversaries: (id ,eventId, data) => {
+        return api.put(`/employee/${id}/updateEmployeeEvent/${eventId}`, data)
+    },
+    getByIdAnniversaries: (id,empId) => {
+        return api.get(`employee/${id}/getEmployeeEventById/${empId}`)
     },
     // editEmployees: (id, data) => {
     //     return api.put(`employee/updateEmployee/${id}`, data)
