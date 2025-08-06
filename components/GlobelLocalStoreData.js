@@ -26,14 +26,14 @@ function GlobelLocalStoreData() {
     };
 
     useEffect(() => {
-        if (typeof window !== "undefined") {
-            const localSkills = localStorage.getItem("skills");
-            if (localSkills) {
-                setData(JSON.parse(localSkills));
-            } else {
-                handleSaveData();
-            }
-        }
+        // if (typeof window !== "undefined") {
+        //     const localSkills = localStorage.getItem("skills");
+        //     if (localSkills) {
+        //         setData(JSON.parse(localSkills));
+        //     } else {
+        handleSaveData();
+        // }
+        // }
     }, []);
 
     return <div></div>;

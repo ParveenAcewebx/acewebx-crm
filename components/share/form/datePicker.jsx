@@ -51,7 +51,7 @@ const FormDatePicker = ({
                   } ${className}`}
                 >
                   {field.value && !isNaN(new Date(field.value).getTime())
-                    ? format(new Date(field.value), 'MM/dd/yy')
+                    ? format(new Date(field.value), 'MM/dd/yyy')
                     : placeholder || 'Select date'}
                   <ChevronDownIcon className='ml-auto h-4 w-4 opacity-50' />
                 </Button>

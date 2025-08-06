@@ -353,8 +353,9 @@ const AllCandidates = () => {
           </div>
         </FormProvider>
       </div>
-
+      {/* <div className="w-full overflow-x-auto"> */}
       <DataTable
+    
         data={getList?.candidates}
         loading={loading}
         columns={CandidColumns(
@@ -368,6 +369,7 @@ const AllCandidates = () => {
         setPage={setPage}
         length={length}
       />
+      {/* </div> */}
 
       <DialogBox
         onDelete={onDelete}

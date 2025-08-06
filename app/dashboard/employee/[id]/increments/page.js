@@ -21,6 +21,7 @@ function Page({ params }) {
    router.replace(`${basePath}/${value}`)
  }
 
+ 
   return (
     <>
       {/* <CommonLayout pageTitle='Event Detail' /> */}

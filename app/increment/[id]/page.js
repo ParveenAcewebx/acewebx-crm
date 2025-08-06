@@ -1,5 +1,5 @@
 'use client'
-import {IncrementFormDefaultValues,YesNoOptions} from '@/components/constants/StaticData'
+import { IncrementFormDefaultValues, YesNoOptions } from '@/components/constants/StaticData'
 import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -21,7 +21,7 @@ function EditIncrementApplicationForm() {
   const [loader, setLoader] = useState(false)
   const router = useRouter()
   const [isVerify, setIsVerify] = useState(true)
-
+  const [eventID, setEventID] = useState("")
 
   const form = useForm({
     mode: 'onChange',
@@ -74,7 +74,7 @@ function EditIncrementApplicationForm() {
 
   const onSubmit = async data => {
     setLoader(true)
-    const newData = { ...data, verifyToken: editId }
+    const newData = { ...data, verifyToken: editId}
     try {
       const response = await IncrementAPi.addIncrementAPi(newData)
       if (response?.data?.status == true) {
@@ -100,7 +100,8 @@ function EditIncrementApplicationForm() {
       const response = await IncrementAPi.getByIdVerifyIncrementAPi(editId);
       console.log("response", response)
       if (response?.data?.status === true) {
-        const empId = response?.data?.data.id;
+        const empId = response?.data?.data?.id;
+        setEventID(empId)
         // setIsEplId(empId)
       }
     } catch (error) {
