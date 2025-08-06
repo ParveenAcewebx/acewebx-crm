@@ -21,7 +21,7 @@ const SkillApi = {
     },
 
     globalSkillGetApi: () => {
-        return api.get(`/skill/globalSkill`)
+        return api.get(`/globalSettings`)
     },
     skillListFilters: data => {
         const search = data?.search ?? ''

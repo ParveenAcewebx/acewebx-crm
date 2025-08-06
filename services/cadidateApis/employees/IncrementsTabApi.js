@@ -11,8 +11,11 @@ const IncrementsTabApi = {
     getAllNewIncrements: (page, length) => {
         return api.get(`increments/getAllEmployee?page=${page}&limit=${length}`)
     },
-    editIncrements: (id ,eventId, data) => {
-        return api.put(`/employee/${id}/updateEmployeeEvent/${eventId}`, data)
+    // editIncrements: (id ,eventId, data) => {
+    //     return api.put(`/employee/${id}/updateEmployeeEvent/${eventId}`, data)
+    // },
+    saveEmployeeMetaData: (data) => {
+        return api.post(`employee/saveEmployeeMetaData`, data)
     },
     getByIdIncrements: (id,empId) => {
         return api.get(`employee/${id}/getEmployeeEventById/${empId}`)

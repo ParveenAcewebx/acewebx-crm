@@ -270,8 +270,8 @@ const AllSalesCandidates = () => {
 
   const [skillsData, setSkillsData] = useState([])
 
-  
- useEffect(() => {
+
+  useEffect(() => {
 
     // This code runs only on the client side
     if (typeof window !== "undefined" && window.localStorage) {
@@ -279,13 +279,13 @@ const AllSalesCandidates = () => {
       if (storedData) {
         const candidateData = JSON.parse(storedData); // Parse if storing JSON
         const candidateOptions = candidateData?.salesCandidate
-        ?.map((item) => ({
-          label: item,
-          value: item?.toLowerCase(), // assuming you meant to use lowercase
-        }));
+          ?.map((item) => ({
+            label: item,
+            value: item?.toLowerCase(), // assuming you meant to use lowercase
+          }));
         console.log("candidateData",)
         setSkillsData(candidateOptions);
-  
+
       }
     }
   }, []);
@@ -294,7 +294,7 @@ const AllSalesCandidates = () => {
 
   return (
     <>
-      <div className='mb-3 flex items-center justify-between'>
+      <div className=''>
         <LayoutHeader pageTitle='Sales Candidate List' />
       </div>
 
@@ -362,23 +362,23 @@ const AllSalesCandidates = () => {
 
           </div>
         </FormProvider>
-
-
       </div>
-      <DataTable
-        data={getList?.candidates}
-        loading={loading}
-        columns={SalesCandidColumns(
-          handleDeleteCand,
-          handleEditCand,
-          handlePreviewCand,
-          handleSendWalkInForm
-        )}
-        totalRecord={totalRecord}
-        page={page}
-        setPage={setPage}
-        length={length}
-      />
+
+      <div className='overflowX-auto'>
+        <DataTable
+          data={getList?.candidates}
+          loading={loading}
+          columns={SalesCandidColumns(
+            handleDeleteCand,
+            handleEditCand,
+            handlePreviewCand,
+            handleSendWalkInForm
+          )}
+          totalRecord={totalRecord}
+          page={page}
+          setPage={setPage}
+          length={length}
+        /></div>
 
       <DialogBox
         onDelete={onDelete}

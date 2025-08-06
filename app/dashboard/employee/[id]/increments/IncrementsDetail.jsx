@@ -4,9 +4,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import CommonLayout from '@/components/CommonLayouyt'
 import { useParams, useRouter } from 'next/navigation'
 import { DataTable } from '@/components/Table'
-import IncrementAPi from '@/services/cadidateApis/increment/IncrementAPi'
-import { Edit, Eye } from 'lucide-react'
+import { Edit } from 'lucide-react'
 import AnniversariesApi from '@/services/cadidateApis/employees/AnniversariesApi'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { Button } from '@/components/ui/button'
+import IncrementAPi from '@/services/cadidateApis/increment/IncrementAPi'
+import { errorMessage, successMessage } from '@/components/ToasterMessage'
 
 function IncrementsDetail() {
     const { id } = useParams()
@@ -33,12 +36,26 @@ function IncrementsDetail() {
         handleGetApi()
     }, [])
 
-
-
-
-
-
     // upcomingIncrements :-
+
+    const handleSendWalkInForm = async (eventID) => {
+        try {
+            const sendEmailLin = await IncrementAPi.sendIncrementInLink(id, eventID)
+            console.log("sendEmailLin", sendEmailLin)
+            if (sendEmailLin?.data?.status == true) {
+                successMessage({
+                    description: 'Link sent successfully to the mail.'
+                })
+            }
+        } catch (error) {
+            console.log('error', error)
+            errorMessage({
+                description: 'Something Went Wrong!'
+            })
+        }
+    }
+
+
 
     const handleForupcomingIncrements = (row) => {
         if (row?.original?.id) {
@@ -47,7 +64,6 @@ function IncrementsDetail() {
         }
     }
     const columnForupcomingIncrements = [
-
         {
             accessorKey: 'eventDate',
             header: 'Days Left',
@@ -117,10 +133,6 @@ function IncrementsDetail() {
                 return <span>{row.original?.eventDate}</span>;
             }
         },
-
-
-
-
         {
             accessorKey: 'status',
             header: 'Status',
@@ -128,32 +140,102 @@ function IncrementsDetail() {
             cell: ({ row }) => row.original.status
         },
         {
-            accessorKey: 'action',
+            accessorKey: 'eventDate',
             header: 'Action',
             id: 'action',
             size: 50,
-            cell: ({ row }) => (
-                <div className="w-full flex justify-left">
-                    <Edit
-                        className="text-blue-500 h-4 w-4 cursor-pointer"
-                        onClick={() => handleForupcomingIncrements(row)} // You may want to use handleForupcomingIncrements
-                    />
-                </div>
-            )
+            cell: ({ row }) => {
+
+
+                const originalDate = new Date(row?.original?.eventDate);
+                if (isNaN(originalDate.getTime())) return <span>Invalid Date</span>; // Handle invalid date string
+
+                function getNextIncrementDate(startDate, cycleInYears = 1) {
+                    const today = new Date();
+                    let nextDate = new Date(startDate);
+
+                    while (nextDate <= today) {
+                        nextDate.setFullYear(nextDate.getFullYear() + cycleInYears);
+                    }
+
+                    return nextDate.toISOString().split('T')[0];
+                }
+
+                const finalDate = getNextIncrementDate(originalDate);
+
+                // if (!incrementDateStr) return <span className="">N/A</span>;
+
+                const incrementDate = new Date(finalDate + 'T00:00:00');
+                const today = new Date();
+
+                incrementDate.setHours(0, 0, 0, 0);
+                today.setHours(0, 0, 0, 0);
+
+                const diffTime = incrementDate.getTime() - today.getTime();
+                const dayLeft = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                console.log("dayLeftdayLeft", dayLeft)
+
+                return (
+                    <div className="w-full flex justify-left">
+
+
+                        <div className=' resume-btn'>
+                            <Edit
+                                className="text-blue-500 h-4 w-4 cursor-pointer"
+                                onClick={() => handleForupcomingIncrements(row)} // You may want to use handleForupcomingIncrements
+                            />
+                            {dayLeft <= 20 ? (
+                                <div>
+                                    <Tooltip>
+                                        <TooltipTrigger asChild>
+                                            <Button
+                                                onClick={() => handleSendWalkInForm(row?.original?.id)}
+                                                size='icon'
+                                                variant='outline'
+                                                className='shrink-0  hover:bg-accent sendIcon'
+                                            >
+                                                <svg
+                                                    viewBox='0 0 24 24'
+                                                    fill='none'
+                                                    stroke='#C21E56'
+                                                    strokeWidth='2'
+                                                    strokeLinecap='round'
+                                                    strokeLinejoin='round'
+                                                    className='w-5 h-5'
+                                                >
+                                                    <path d='M22 2L11 13' />
+                                                    <path d='M22 2L15 22L11 13L2 9L22 2Z' />
+                                                </svg>
+                                            </Button>
+                                        </TooltipTrigger>
+                                        <TooltipContent className='w-auto rounded-sm bg-[#b82025] text-sm'>
+                                            Send Increment Form
+                                        </TooltipContent>
+                                    </Tooltip>
+
+
+                                </div>
+                            ) : ''}
+
+                        </div>
+                    </div>
+                )
+            }
+
+
         }
     ];
 
 
 
     const columnForOldIncrements = [
-
         {
             accessorKey: 'eventDate',
             header: 'Increment Date',
             id: 'eventDate',
             cell: ({ row }) => row.original.eventDate
         },
-
         {
             accessorKey: 'status',
             header: 'Status',
