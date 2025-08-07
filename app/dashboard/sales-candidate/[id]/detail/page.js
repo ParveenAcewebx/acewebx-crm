@@ -88,7 +88,7 @@ function Page({ params }) {
     setDcsModalOpen(true)
   }
 
- 
+
 
   // Resume Url get:--
   const candidateDataGetById = async id => {
@@ -271,8 +271,11 @@ function Page({ params }) {
 
                 <div>
                   <span className='tittle'>Preferred Regions</span> <br />
-                  <span className='subtittle' variant='h4'>{candidateData?.preferredRegions}</span>
-                </div>
+                  <span className='subtittle' variant='h4'>
+                    {candidateData?.preferredRegions?.length > 20
+                      ? `${candidateData?.preferredRegions.slice(0, 20)}...`
+                      : candidateData?.preferredRegions}
+                  </span>                </div>
               </CardContent>
             </Card>
           </div>
