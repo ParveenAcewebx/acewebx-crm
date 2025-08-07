@@ -17,8 +17,8 @@ const IncrementsTabApi = {
     saveEmployeeMetaData: (data) => {
         return api.post(`employee/saveEmployeeMetaData`, data)
     },
-    getByIdIncrements: (id,empId) => {
-        return api.get(`employee/${id}/getEmployeeEventById/${empId}`)
+    getByIdIncrements: (eventId) => {
+        return api.get(`employee/getEmployeeMetaData?eventId=${eventId}`)
     },
     // editEmployees: (id, data) => {
     //     return api.put(`employee/updateEmployee/${id}`, data)

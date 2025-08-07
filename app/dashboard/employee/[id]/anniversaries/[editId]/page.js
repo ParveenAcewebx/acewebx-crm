@@ -4,15 +4,13 @@ import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { FormProvider, useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
-import { Loader } from 'lucide-react'
+import { ArrowLeft, Loader } from 'lucide-react'
 import CommonLayout from '@/components/CommonLayouyt'
 import FormDatePicker from '@/components/share/form/datePicker'
 import { errorMessage } from '@/components/ToasterMessage'
-import AnniversariesApi from '@/services/cadidateApis/employees/AnniversariesApi'
 import IncrementsTabApi from '@/services/cadidateApis/employees/IncrementsTabApi'
 import FormSelectField from '@/components/share/form/FormSelect'
 import { isHoliday } from '@/components/constants/StaticData'
-import FormTextArea from '@/components/share/form/TextArea'
 import FormInputField from '@/components/share/form/FormInputField'
 // import { yupResolver } from '@hookform/resolvers/yup'  // Uncomment if using validation
 // import { EventValidation } from '@/validations/EventValidation' // Add your schema if needed
@@ -28,49 +26,78 @@ function EditAnniversary() {
     mode: 'onChange',
     defaultValues: {
       eventDate: '',
+      isBannerCreated: 'no',       // default 'no' or empty
+      bannerUrl: '',               // initially blank
+      isSocialMediaPost: 'no',
+      isGiftVoucherCreated: 'no',
+      // Add more defaults if needed
     },
     // resolver: yupResolver(EventValidation), // Uncomment if you add Yup schema
   })
 
   const onSubmit = async (data) => {
     setLoader(true)
-    const newData = { ...data, empEventId: editId , type : "anniversary" }
+  
+    // Clone data to avoid mutation
+    const sanitizedData = { ...data }
+  
+    // ✅ Remove unwanted fields based on conditions
+    if (sanitizedData.isBannerCreated === 'no') {
+      delete sanitizedData.bannerUrl
+    }
+  
+    if (sanitizedData.isSocialMediaPost === 'no') {
+      delete sanitizedData.socialMediaDescription // if this exists
+    }
+  
+    if (sanitizedData.isGiftVoucherCreated === 'no') {
+      delete sanitizedData.giftVoucherAmount // if this exists
+    }
+  
+    const newData = {
+      ...sanitizedData,
+      empEventId: editId,
+      eventType: 'anniversary',
+    }
+  
     try {
       const response = await IncrementsTabApi.saveEmployeeMetaData(newData)
       if (response?.data?.status === true) {
-        setLoader(false)
         router.back()
       } else {
-        setLoader(false)
         errorMessage({ description: 'Failed to update event.' })
       }
     } catch (error) {
-      setLoader(false)
       console.error('Submission Error:', error?.message)
       errorMessage({ description: error?.message || 'Something went wrong.' })
+    } finally {
+      setLoader(false)
     }
   }
+  
+  
 
   const candidateDataGetById = async () => {
     try {
-      const response = await IncrementsTabApi.getByIdIncrements(id, eventId)
-      if (response?.data?.status === true) {
-        const data = response?.data?.data
-        if (data?.eventDate) {
-          let eventDate = new Date(data?.eventDate + 'T00:00:00')
-          form.reset({
-            eventDate: eventDate, // Ensure correct key
-          })
-        }
+      const response = await IncrementsTabApi.getByIdIncrements(Number(eventId));
+  
+     
+      if (response?.data?.data) {
+        const eventData = response?.data?.data?.anniversary;
+
+        const newData = {...eventData ,eventDate : new Date(eventData?.eventDate + 'T00:00:00')}
+        form.reset(newData);
+
+    
       }
     } catch (error) {
-      console.error('Fetch Error:', error)
+      console.error("Fetch Error:", error);
       errorMessage({
-        description:
-          error?.message || 'Something went wrong while fetching event data.',
-      })
+        description: error?.message || "Something went wrong while fetching event data.",
+      });
     }
-  }
+  };
+  
 
   useEffect(() => {
     if (id && eventId) {
@@ -81,15 +108,26 @@ function EditAnniversary() {
 
   const isBannerCreated = form.watch("isBannerCreated")
 
+useEffect(()=>{
+if(isBannerCreated == "no"){
+form.setValue("bannerUrl", "")
+}
+},[isBannerCreated])
 
   return (
     <div className='mobile-view items-right relative flex min-h-screen w-full flex-col justify-start'>
       <div className='flex justify-between'>
         <CommonLayout pageTitle='Edit Anniversary' />
       </div>
-
-      <div className='mt-5'></div>
       <div>
+        
+      <Button onClick={() => router.push(`/dashboard/employee/${id}/anniversaries`)} >
+      <ArrowLeft/> Back To The Anniversaries
+      </Button></div>
+      <div className='mt-5'>
+      </div>
+      <div>
+
         <FormProvider {...form}>
           <form
             encType='multipart/form-data'
@@ -113,15 +151,7 @@ function EditAnniversary() {
               />)}
 
 
-              <FormDatePicker
-                name='eventDate'
-                label='Event Date'
-                form={form}
-                inputFormat='YYYY-MM-DD'
-                className='Date'
-                disabled={{ before: new Date('2024-12-31') }}
-                defaultMonth={new Date()}
-              />
+             
 
               <FormSelectField
                 name='isSocialMediaPost'
@@ -136,6 +166,15 @@ function EditAnniversary() {
                 form={form}
                 options={isHoliday}
                 className='colum-box-bg-change'
+              />
+               <FormDatePicker
+                name='eventDate'
+                label='Event Date'
+                form={form}
+                inputFormat='YYYY-MM-DD'
+                className='Date'
+                disabled={{ before: new Date('2024-12-31') }}
+                defaultMonth={new Date()}
               />
 
               {/* text area */}

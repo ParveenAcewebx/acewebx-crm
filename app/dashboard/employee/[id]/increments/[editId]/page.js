@@ -1,20 +1,18 @@
 'use client'
-
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { FormProvider, useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
-import { Loader } from 'lucide-react'
+import { ArrowLeft, Loader } from 'lucide-react'
 import CommonLayout from '@/components/CommonLayouyt'
 import FormDatePicker from '@/components/share/form/datePicker'
 import { errorMessage } from '@/components/ToasterMessage'
-import AnniversariesApi from '@/services/cadidateApis/employees/AnniversariesApi'
 import IncrementsTabApi from '@/services/cadidateApis/employees/IncrementsTabApi'
 import FormSelectField from '@/components/share/form/FormSelect'
 import { isHoliday } from '@/components/constants/StaticData'
 import FormTextArea from '@/components/share/form/TextArea'
-// import { yupResolver } from '@hookform/resolvers/yup'  // Uncomment if using validation
-// import { EventValidation } from '@/validations/EventValidation' // Add your schema if needed
+import IncrementChatCompo from '../chat/Chat'
+
 
 function EditIncrement() {
   const { id, editId } = useParams()
@@ -33,7 +31,7 @@ function EditIncrement() {
 
   const onSubmit = async (data) => {
     setLoader(true)
-    const newData = { ...data, empEventId: editId, type: "increment" }
+    const newData = { ...data, empEventId: editId, eventType: "increment" }
     try {
       const response = await IncrementsTabApi.saveEmployeeMetaData(newData)
       if (response?.data?.status === true) {
@@ -52,24 +50,28 @@ function EditIncrement() {
 
   const candidateDataGetById = async () => {
     try {
-      const response = await IncrementsTabApi.getByIdIncrements(id, eventId)
-      if (response?.data?.status === true) {
-        const data = response?.data?.data
-        if (data?.eventDate) {
-          let eventDate = new Date(data?.eventDate + 'T00:00:00')
-          form.reset({
-            eventDate: eventDate, // Ensure correct key
-          })
-        }
+      const response = await IncrementsTabApi.getByIdIncrements(Number(eventId));
+      console.log("Full API Response:", response);
+
+      if (response?.data?.data) {
+        const eventData = response?.data?.data?.increment;
+
+        const newData = { ...eventData, eventDate: new Date(eventData?.eventDate + 'T00:00:00') }
+        form.reset(newData);
+
+
+
+
       }
     } catch (error) {
-      console.error('Fetch Error:', error)
+      console.error("Fetch Error:", error);
       errorMessage({
-        description:
-          error?.message || 'Something went wrong while fetching event data.',
-      })
+        description: error?.message || "Something went wrong while fetching event data.",
+      });
     }
-  }
+  };
+
+
 
   useEffect(() => {
     if (id && eventId) {
@@ -82,15 +84,28 @@ function EditIncrement() {
   const isoneToOneMeeting = form.watch("oneToOneMeeting")
   const isfinalDiscussion = form.watch("finalDiscussion")
 
-
+  useEffect(() => {
+    if (isReviewedByHod == "no") {
+      form.setValue("hodReviewRemark", "")
+    }
+    if (isoneToOneMeeting == "no") {
+      form.setValue("oneToOneMeetingRemark", "")
+    }
+    if (isfinalDiscussion == "no") {
+      form.setValue("finalDiscussionRemark", "")
+    }
+  }, [isReviewedByHod, isoneToOneMeeting, isfinalDiscussion])
   return (
     <div className='mobile-view items-right relative flex min-h-screen w-full flex-col justify-start'>
       <div className='flex justify-between'>
         <CommonLayout pageTitle='Edit Increment' />
       </div>
-
-      <div className='mt-5'></div>
       <div>
+        <Button onClick={() => router.push(`/dashboard/employee/${id}/increments`)} >
+          <ArrowLeft />  Back To The Increments
+        </Button></div>
+      <div className='w-[100%] mb-4 mt-6 grid grid-cols-2 gap-6 md:grid-cols-2'>
+        {/* <div className='w-[50%] '> */}
         <FormProvider {...form}>
           <form
             encType='multipart/form-data'
@@ -105,15 +120,7 @@ function EditIncrement() {
                 options={isHoliday}
                 className='colum-box-bg-change'
               />
-              <FormDatePicker
-                name='eventDate'
-                label='Event Date'
-                form={form}
-                inputFormat='YYYY-MM-DD'
-                className='Date'
-                disabled={{ before: new Date('2024-12-31') }}
-                defaultMonth={new Date()}
-              />
+
               <FormSelectField
                 name='employeeSubmittedIncrementForm'
                 label='Employee submitted Increment Application?'
@@ -180,13 +187,7 @@ function EditIncrement() {
 
 
               {/* ------------ */}
-              <FormSelectField
-                name='hrMeeting'
-                label='HR Meeting'
-                form={form}
-                options={isHoliday}
-                className='colum-box-bg-change'
-              />
+
               <FormSelectField
                 name='finalDiscussion'
                 label=' Final Discussion'
@@ -217,6 +218,23 @@ function EditIncrement() {
 
                 )
               }
+              <FormSelectField
+                name='hrMeeting'
+                label='HR Meeting'
+                form={form}
+                options={isHoliday}
+                className='colum-box-bg-change'
+              />
+
+              <FormDatePicker
+                name='eventDate'
+                label='Event Date'
+                form={form}
+                inputFormat='YYYY-MM-DD'
+                className='Date'
+                disabled={{ before: new Date('2024-12-31') }}
+                defaultMonth={new Date()}
+              />
             </div>
 
 
@@ -233,7 +251,14 @@ function EditIncrement() {
             </div>
           </form>
         </FormProvider>
+        {/* </div> */}
+
+        {/* <div className='w-[30%] '> */}
+        <IncrementChatCompo id={editId} />
+
+        {/* </div> */}
       </div>
+
     </div>
   )
 }

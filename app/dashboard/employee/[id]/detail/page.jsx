@@ -63,14 +63,14 @@ function Page({ params }) {
   //   router.replace(value)
   // }
 
-    // Get last part of the path
-    const currentTab = pathname?.split('/').pop() || 'detail'
+  // Get last part of the path
+  const currentTab = pathname?.split('/').pop() || 'detail'
 
-    const handleTabChange = (value) => {
-      // Replace current route with new tab route (assuming same base path)
-      const basePath = pathname?.split('/').slice(0, -1).join('/')
-      router.replace(`${basePath}/${value}`)
-    }
+  const handleTabChange = (value) => {
+    // Replace current route with new tab route (assuming same base path)
+    const basePath = pathname?.split('/').slice(0, -1).join('/')
+    router.replace(`${basePath}/${value}`)
+  }
 
   //Function for colour :-
   const genderColor = (val) => {
@@ -82,7 +82,7 @@ function Page({ params }) {
 
   const genderCol = genderColor(candidateData?.meta?._gender)
 
-   // send walk-in form
+  // send walk-in form
 
 
   return (
@@ -113,7 +113,7 @@ function Page({ params }) {
               <Phone className='w-5 h-5 text-gray-200 ml-4' />
               <span>{candidateData?.phone}</span>
             </div>
-          
+
           </CardContent>
 
 
@@ -135,8 +135,8 @@ function Page({ params }) {
             <Card className='box'>
               <CardContent className='flex items-center gap-4'>
 
-              <img src='/images/pages/PreferredShift .png' alt='trophy image' height={60} className='' />
-              <div>
+                <img src='/images/pages/PreferredShift .png' alt='trophy image' height={60} className='' />
+                <div>
                   <span className='tittle'>D.O.B</span> <br />
                   <span className='subtittle' variant='h4'>{candidateData?.dobDocument}</span>
                 </div>
@@ -192,7 +192,7 @@ function Page({ params }) {
                 <img src='/images/pages/hike.png' alt='trophy image' height={60} className='' />
                 <div>
                   {/* ₹ */}
-                  <span className='tittle'>Hike</span> <br />
+                  <span className='tittle'>Last Hike</span> <br />
                   <span className="subtittle">
                     {candidateData?.meta?._lastIncrementAmount} ({candidateData?.meta?._lastIncrementDate})
                   </span>
@@ -200,20 +200,20 @@ function Page({ params }) {
               </CardContent>
             </Card>
 
-         <Card className='box'>
-            <Link target='_blank' href={candidateData?.meta?._adharCard||''}>
-              <CardContent className='flex items-center gap-4'>
+            <Card className='box'>
+              <Link target='_blank' href={candidateData?.meta?._adharCard || ''}>
+                <CardContent className='flex items-center gap-4'>
 
-                <img src='/images/pages/vacancy.png' alt='trophy image' height={60} className='' />
-                <div>
-                  <span className='tittle'>Aadhar Card</span> <br />
-                  <span className='subtittle' variant='h4'></span>
-                </div>
-              </CardContent>
-            </Link>
+                  <img src='/images/pages/vacancy.png' alt='trophy image' height={60} className='' />
+                  <div>
+                    <span className='tittle'>Aadhar Card</span> <br />
+                    <span className='subtittle' variant='h4'></span>
+                  </div>
+                </CardContent>
+              </Link>
             </Card>
 
-            <Card className='box'><Link target='_blank' href={candidateData?.meta?._panCard ||''}>
+            <Card className='box'><Link target='_blank' href={candidateData?.meta?._panCard || ''}>
               <CardContent className='flex items-center gap-4'>
                 <img src='/images/pages/PreferredShift .png' alt='trophy image' height={60} className='' />
                 <div>
@@ -222,7 +222,7 @@ function Page({ params }) {
 
                 </div>
               </CardContent>
-              </Link>
+            </Link>
             </Card>
 
             {/* chat  */}

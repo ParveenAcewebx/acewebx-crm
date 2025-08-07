@@ -47,21 +47,21 @@ const IncrementAPi = {
 
 
   //   chat apis
-  addMessageEmployee: data => {
-    return api.post(`employeeChat/sendMessage`, data)
+  addMessageIncrement: data => {
+    return api.post(`employeeEventNote/sendMessage`,data )
   },
-  editMessageEmployee: (id, data) => {
-    return api.put(`employeeChat/updateMessage/${id}`, { message: data })
+  editMessageIncrement: (id, data) => {
+    return api.put(`employeeEventNote/updateMessage/${id}`, { message: data })
   },
-  getByIdMessageEmployee: id => {
-    return api.get(`employeeChat/getMessagesById?chatId=${id}`)
+  getByIdMessageIncrement: id => {
+    return api.get(`employeeEventNote/getMessagesById?chatId=${id}`)
   },
-  getAllMessagesEmployee: (id) => {
-    console.log("ididid", id)
-    return api.get(`employeeChat/getMessagesByEmployeeId?employeeId=${id}`)
+  getAllMessagesIncrement: (id) => {
+    console.log("ididid",id)
+    return api.get(`employeeEventNote/getMessages?empEventId=${id}`)
   },
-  deleteMessageEmployee: (id, data) => {
-    return api.delete(`employeeChat/deleteMessage/${id}`)
+  deleteMessageIncrement: (id, data) => {
+    return api.delete(`employeeEventNote/deleteMessage/${id}`)
   }
 }
 
