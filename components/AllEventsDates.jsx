@@ -171,12 +171,108 @@ function AllEventsDates() {
     }
   ]
 
+
+  const handleForupcomingEvents = (row) => {
+    router.push(`/dashboard/events/edit/${row?.original?.id}`)}
+
+  const columnForupcomingEvents = [
+
+    // {
+    //     accessorKey: 'id',
+    //     header: '#ID',
+    //     id: 'id', // ✅ optional but clear
+    //     size: 80,
+    //     cell: ({ row }) => (
+    //         <div className="max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
+    //             {#${row.original.id}}
+    //         </div>
+    //     )
+    // },
+    {
+        accessorKey: 'title',
+        header: 'Title',
+        id: 'title',
+        cell: ({ row }) => row?.original?.title
+    },
+    // {
+    //     accessorKey: 'fromDate',
+    //     header: 'Days Left',
+    //     id: 'fromDate',
+    //     cell: ({ row }) => {
+    //         const fromDate = new Date(row.original?.fromDate + 'T00:00:00') || ''
+    //         const today = new Date();
+
+    //         // Clear time part for accurate day difference
+    //         fromDate.setHours(0, 0, 0, 0);
+    //         today.setHours(0, 0, 0, 0);
+
+    //         const diffTime = fromDate - today;
+    //         const dayLeftFromToday = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    //         return (
+    //             <span>
+    //                 {dayLeftFromToday > 0
+    //                     ? ${dayLeftFromToday}
+    //                     : dayLeftFromToday === 0
+    //                         ? 'Today'
+    //                         : ${Math.abs(dayLeftFromToday)}}
+    //             </span>
+    //         );
+    //     }
+    // },
+    {
+        accessorKey: 'fromDate',
+        header: 'Event Date',
+        id: 'fromDate',
+        cell: ({ row }) => {
+
+            return (
+                <span>
+                    {row?.original?.fromDate}
+                </span>
+            );
+        }
+    },
+    {
+        accessorKey: 'action',
+        header: 'Action',
+        id: 'action',
+        size: 50,
+        cell: ({ row }) => {
+            return (
+                <div className='grid grid-cols-3 w-2 text-center'>
+                    <Eye className='text-blue-500 h-4 w-4' onClick={() => handleForupcomingEvents(row)} />
+                </div>
+            );
+        }
+    },
+
+
+]
   return (
     <>
       <CommonLayout pageTitle="Dashboard" />
+ {/* Anniversaries */}
+ <div className="grid grid-cols-2 gap-6 mt-6">
+        <Card className="box">
+          <CardHeader className="theme-bg-white-rgba border-color-grey min-h-14 border-b p-3">
+            <CardTitle className="flex justify-between">
+              <div className="!text-lg">Upcoming Events</div>
+            </CardTitle>
+          </CardHeader>
 
-      {/* Birthdays */}
-      <div className="grid grid-cols-2 gap-6 mt-7">
+          <CardContent className="p-4">
+            {upcomingEvents?.length > 0 ? (
+              <DataTable
+                columns={columnForupcomingAnniversaries}
+                data={upcomingEvents}
+              />
+            ) : (
+              <div className="">No upcoming Events</div>
+            )}
+          </CardContent>
+        </Card>
+
         <Card className="box">
           <CardHeader className="theme-bg-white-rgba border-color-grey min-h-14 border-b p-3">
             <CardTitle className="flex justify-between">
@@ -191,6 +287,27 @@ function AllEventsDates() {
               />
             ) : (
               <div className="">No upcoming birthdays</div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+      {/* Birthdays */}
+      <div className="grid grid-cols-2 gap-6 mt-7">
+      <Card className="box">
+          <CardHeader className="theme-bg-white-rgba border-color-grey min-h-14 border-b p-3">
+            <CardTitle className="flex justify-between">
+              <div className="!text-lg">Upcoming Anniversaries</div>
+            </CardTitle>
+          </CardHeader>
+
+          <CardContent className="p-4">
+            {upcomingAnniversaries.length > 0 ? (
+              <DataTable
+                columns={columnForupcomingAnniversaries}
+                data={upcomingAnniversaries}
+              />
+            ) : (
+              <div className="">No upcoming anniversaries</div>
             )}
           </CardContent>
         </Card>
@@ -216,27 +333,7 @@ function AllEventsDates() {
         </Card>
       </div>
 
-      {/* Anniversaries */}
-      <div className="grid grid-cols-1 gap-6 mt-6">
-        <Card className="box">
-          <CardHeader className="theme-bg-white-rgba border-color-grey min-h-14 border-b p-3">
-            <CardTitle className="flex justify-between">
-              <div className="!text-lg">Upcoming Anniversaries</div>
-            </CardTitle>
-          </CardHeader>
-
-          <CardContent className="p-4">
-            {upcomingAnniversaries.length > 0 ? (
-              <DataTable
-                columns={columnForupcomingAnniversaries}
-                data={upcomingAnniversaries}
-              />
-            ) : (
-              <div className="">No upcoming anniversaries</div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
+     
     </>
   )
 }
