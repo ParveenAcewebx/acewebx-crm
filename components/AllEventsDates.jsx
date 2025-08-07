@@ -11,8 +11,10 @@ import { useRouter } from 'next/navigation'
 
 function AllEventsDates() {
     const [upcomingEvents, setUpcomingEvents] = useState([])
+    const [upcomingAnniversaries, setUpcomingAnniversaries] = useState([])
+
     const [upcomingBirthdays, setUpcomingBirthdays] = useState([]);
-    const [upcomingIncrements, setUpcomingIncrements] = useState([  
+    const [upcomingIncrements, setUpcomingIncrements] = useState([
     ])
 
     const router = useRouter()
@@ -25,6 +27,7 @@ function AllEventsDates() {
             setUpcomingEvents(data.upcomingEvents || [])
             setUpcomingBirthdays(data.upcomingBirthdays || [])
             setUpcomingIncrements(data.upcomingIncrements || [])
+            setUpcomingAnniversaries(data.upcomingAnniversary || [])
         } catch (error) {
             console.error('API error', error)
         }
@@ -207,25 +210,25 @@ function AllEventsDates() {
             cell: ({ row }) => {
                 const meta = row.original.meta || [];
 
-                
+
                 const incrementDateStr = meta.find(m => m.metaKey === '_lastIncrementDate')?.metaValue || row?.original?.dateOfJoining
-              
+
                 if (!incrementDateStr) return <span>—</span>; // Gracefully handle missing date
-            
+
                 const originalDate = new Date(incrementDateStr);
                 if (isNaN(originalDate.getTime())) return <span>Invalid Date</span>; // Handle invalid date string
-            
+
                 function getNextIncrementDate(startDate, cycleInYears = 1) {
-                  const today = new Date();
-                  let nextDate = new Date(startDate);
-            
-                  while (nextDate <= today) {
-                    nextDate.setFullYear(nextDate.getFullYear() + cycleInYears);
-                  }
-            
-                  return nextDate.toISOString().split('T')[0];
+                    const today = new Date();
+                    let nextDate = new Date(startDate);
+
+                    while (nextDate <= today) {
+                        nextDate.setFullYear(nextDate.getFullYear() + cycleInYears);
+                    }
+
+                    return nextDate.toISOString().split('T')[0];
                 }
-            
+
                 const finalDate = getNextIncrementDate(originalDate);
 
                 if (!incrementDateStr) return <span className="">N/A</span>;
@@ -252,31 +255,125 @@ function AllEventsDates() {
             header: 'Increment Date',
             id: 'incrementDate',
             cell: ({ row }) => {
-              const meta = row.original?.meta ?? [];
-              const incrementDateStr = meta.find(m => m.metaKey === '_lastIncrementDate')?.metaValue;
-          
-              if (!incrementDateStr) return <span>—</span>; // Gracefully handle missing date
-          
-              const originalDate = new Date(incrementDateStr);
-              if (isNaN(originalDate.getTime())) return <span>Invalid Date</span>; // Handle invalid date string
-          
-              function getNextIncrementDate(startDate, cycleInYears = 1) {
-                const today = new Date();
-                let nextDate = new Date(startDate);
-          
-                while (nextDate <= today) {
-                  nextDate.setFullYear(nextDate.getFullYear() + cycleInYears);
+                const meta = row.original?.meta ?? [];
+                const incrementDateStr = meta.find(m => m.metaKey === '_lastIncrementDate')?.metaValue;
+
+                if (!incrementDateStr) return <span>—</span>; // Gracefully handle missing date
+
+                const originalDate = new Date(incrementDateStr);
+                if (isNaN(originalDate.getTime())) return <span>Invalid Date</span>; // Handle invalid date string
+
+                function getNextIncrementDate(startDate, cycleInYears = 1) {
+                    const today = new Date();
+                    let nextDate = new Date(startDate);
+
+                    while (nextDate <= today) {
+                        nextDate.setFullYear(nextDate.getFullYear() + cycleInYears);
+                    }
+
+                    return nextDate.toISOString().split('T')[0];
                 }
-          
-                return nextDate.toISOString().split('T')[0];
-              }
-          
-              const finalDate = getNextIncrementDate(originalDate);
-          
-              return <span>{finalDate}</span>;
+
+                const finalDate = getNextIncrementDate(originalDate);
+
+                return <span>{finalDate}</span>;
             }
-          },
-          
+        },
+
+        {
+            accessorKey: 'action',
+            header: 'Action',
+            id: 'action',
+            size: 50,
+            cell: ({ row }) => (
+                <div className="w-full flex justify-center">
+                    <Eye
+                        className="text-blue-500 h-4 w-4 cursor-pointer"
+                        onClick={() => handleForupcomingIncrements(row)} // You may want to use handleForupcomingIncrements
+                    />
+                </div>
+            )
+        }
+    ];
+
+
+    const columnForupcomingAnniversaries = [
+        {
+            accessorKey: 'name',
+            header: 'Name',
+            id: 'name',
+            cell: ({ row }) => row.original.name
+        },
+        {
+            accessorKey: 'dateOfJoining',
+            header: 'Days Left',
+            id: 'dateOfJoining',
+            cell: ({ row }) => {
+                // const meta = row.original.dateOfJoining || [];
+
+
+
+
+                const originalDate = new Date(row.original.dateOfJoining);
+                if (isNaN(originalDate.getTime())) return <span>Invalid Date</span>; // Handle invalid date string
+
+                function getNextIncrementDate(startDate, cycleInYears = 1) {
+                    const today = new Date();
+                    let nextDate = new Date(startDate);
+
+                    while (nextDate <= today) {
+                        nextDate.setFullYear(nextDate.getFullYear() + cycleInYears);
+                    }
+
+                    return nextDate.toISOString().split('T')[0];
+                }
+
+                const finalDate = getNextIncrementDate(originalDate);
+
+
+                const incrementDate = new Date(finalDate + 'T00:00:00');
+                const today = new Date();
+
+                incrementDate.setHours(0, 0, 0, 0);
+                today.setHours(0, 0, 0, 0);
+
+                const diffTime = incrementDate.getTime() - today.getTime();
+                const dayLeft = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                return (
+                    <span>
+                        {dayLeft > 0 ? `${dayLeft}` : dayLeft === 0 ? 'Today' : `${Math.abs(dayLeft)}`}
+                    </span>
+                );
+            }
+        },
+
+        {
+            accessorKey: 'dateOfJoining',
+            header: 'Anniversary Date',
+            id: 'dateOfJoining',
+            cell: ({ row }) => {
+               
+                const originalDate = new Date(row.original?.dateOfJoining);
+                if (isNaN(originalDate.getTime())) return <span>Invalid Date</span>; // Handle invalid date string
+
+                function getNextIncrementDate(startDate, cycleInYears = 1) {
+                    const today = new Date();
+                    let nextDate = new Date(startDate);
+
+                    while (nextDate <= today) {
+                        nextDate.setFullYear(nextDate.getFullYear() + cycleInYears);
+                    }
+
+                    return nextDate.toISOString().split('T')[0];
+                }
+
+                const finalDate = getNextIncrementDate(originalDate);
+
+                return <span>{finalDate}</span>;
+            }
+        },
+
         {
             accessorKey: 'action',
             header: 'Action',
@@ -373,10 +470,10 @@ function AllEventsDates() {
                     </CardHeader>
 
                     <CardContent className='p-4'>
-                        {upcomingIncrements.length > 0 ? (
+                        {upcomingAnniversaries?.length > 0 ? (
                             <DataTable
-                                columns={columnForupcomingIncrements}
-                                data={upcomingIncrements}
+                                columns={columnForupcomingAnniversaries}
+                                data={upcomingAnniversaries}
                             />
                         ) : (
                             <div className=''>No upcoming Anniversaries</div>

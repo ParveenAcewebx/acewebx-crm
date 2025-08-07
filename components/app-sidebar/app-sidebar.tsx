@@ -23,7 +23,7 @@ const data = {
   navMain: [
     {
       title: 'Candidates',
-      url: '/dashboard/',
+      url: '/dashboard/candidates',
       icon: DocumentTextIcon,
       isActive: true,
       items: [

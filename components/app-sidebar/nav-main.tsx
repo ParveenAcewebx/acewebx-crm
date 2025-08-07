@@ -76,14 +76,14 @@ export default function NavMain({ homeItem, items }: NavMainProps) {
             tooltip={homeItem.title}
             className={cn(
               'main-menu-item theme-text-color !rounded px-1 py-5 font-normal active:bg-sidebar-primary/5 active:text-sidebar-primary',
-              isActiveUrl(homeItem.url) && ''
+              isActiveUrl(homeItem.url) && 'text-sidebar-primary bg-sidebar-primary/5'
             )}
           >
             <Link href={homeItem.url}>
               <span
                 className={cn(
                   'menu-icon flex !h-7 !w-7 items-center justify-center rounded p-1',
-                  isActiveUrl(homeItem.url) && 'theme-text-color'
+                  isActiveUrl(homeItem.url) && 'text-sidebar-primary'
                 )}
               >
                 {homeItem.icon && <homeItem.icon />}
