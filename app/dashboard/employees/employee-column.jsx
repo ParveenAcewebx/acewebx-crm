@@ -1,0 +1,113 @@
+'use client'
+
+import { Button } from '@/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import { Edit, EllipsisVertical, Eye, Send, Trash2 } from 'lucide-react'
+
+export const EmployeeColumn = (handleDeleteTaskTag, handleEditTaskTag) => [
+  {
+    accessorKey: 'action',
+    header: '',
+    cell: ({ row }) => {
+      return (
+        <div className='grid grid-cols-3 w-5'>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant='ghost' className='h-8 w-8 p-0'>
+                <EllipsisVertical className='h-5 w-5' />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align='end'>
+              <DropdownMenuItem
+                onClick={() => handleEditTaskTag(row)}
+                className='cursor-pointer text-blue-400'
+              >
+                <Eye className='mr-2 h-4 w-4' />
+                View
+              </DropdownMenuItem>
+
+              <DropdownMenuItem
+                onClick={() => handleDeleteTaskTag(row)}
+                className='cursor-pointer text-red-600'
+              >
+                <Trash2 className='mr-2 h-4 w-4' />
+                Delete
+              </DropdownMenuItem>
+
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      )
+    }
+  },
+  {
+    accessorKey: 'id',
+    header: '#ID',
+    size: 80,
+    cell: ({ row }) => (
+      <div className="max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
+        {`#EMP-${row.original.id}`}
+      </div>
+    ),
+  },
+  {
+    accessorKey: 'name',
+    header: 'Contact Info',
+    cell: ({ row }) => (
+      <div className="space-y-1">
+        <div className="font-medium">{row.original.name}</div>
+        <div className="text-sm text-gray-500">{row.original.companyEmail}</div>
+        <div className="text-sm text-gray-500">{row.original.phone}</div>
+      </div>
+    ),
+  },
+ 
+  {
+    accessorKey: 'designation',
+    header: 'Designation',
+    cell: ({ row }) => row.original.designation,
+  },
+  {
+    accessorKey: 'dateOfJoining',
+    header: 'Joining Date',
+    cell: ({ row }) =>
+      new Date(row.original.dateOfJoining).toLocaleDateString(),
+  },
+  // {
+  //   accessorKey: 'meta',
+  //   header: 'PAN Card',
+  //   cell: ({ row }) => {
+  //     const pan = row.original.meta.find((m) => m.metaKey === '_panCard');
+  //     return pan?.metaValue || '-';
+  //   },
+  // },
+  {
+    accessorKey: 'meta_bloodGroup',
+    header: 'Blood Group',
+    cell: ({ row }) => {
+      const blood = row.original.meta.find((m) => m.metaKey === '_bloodGroup');
+      return blood?.metaValue || '-';
+    },
+  },
+  {
+    accessorKey: 'meta_emergencyContact',
+    header: 'Emergency Contact',
+    cell: ({ row }) => {
+      const name = row.original.meta.find((m) => m.metaKey === '_emergencyContactName');
+      const phone = row.original.meta.find((m) => m.metaKey === '_emergencyContactNumber');
+      return (
+        <div className="space-y-1">
+          <div>{name?.metaValue || '-'}</div>
+          <div className="text-sm text-gray-500">{phone?.metaValue || '-'}</div>
+        </div>
+      );
+    },
+  },
+
+]

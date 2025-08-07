@@ -1,0 +1,266 @@
+'use client'
+import { useEffect, useState } from 'react'
+import { useParams, useRouter } from 'next/navigation'
+import { FormProvider, useForm } from 'react-hook-form'
+import { Button } from '@/components/ui/button'
+import { ArrowLeft, Loader } from 'lucide-react'
+import CommonLayout from '@/components/CommonLayouyt'
+import FormDatePicker from '@/components/share/form/datePicker'
+import { errorMessage } from '@/components/ToasterMessage'
+import IncrementsTabApi from '@/services/cadidateApis/employees/IncrementsTabApi'
+import FormSelectField from '@/components/share/form/FormSelect'
+import { isHoliday } from '@/components/constants/StaticData'
+import FormTextArea from '@/components/share/form/TextArea'
+import IncrementChatCompo from '../chat/Chat'
+
+
+function EditIncrement() {
+  const { id, editId } = useParams()
+  const eventId = editId
+  const router = useRouter()
+
+  const [loader, setLoader] = useState(false)
+
+  const form = useForm({
+    mode: 'onChange',
+    defaultValues: {
+      eventDate: '',
+    },
+    // resolver: yupResolver(EventValidation), // Uncomment if you add Yup schema
+  })
+
+  const onSubmit = async (data) => {
+    setLoader(true)
+    const newData = { ...data, empEventId: editId, eventType: "increment" }
+    try {
+      const response = await IncrementsTabApi.saveEmployeeMetaData(newData)
+      if (response?.data?.status === true) {
+        setLoader(false)
+        router.back()
+      } else {
+        setLoader(false)
+        errorMessage({ description: 'Failed to update event.' })
+      }
+    } catch (error) {
+      setLoader(false)
+      console.error('Submission Error:', error?.message)
+      errorMessage({ description: error?.message || 'Something went wrong.' })
+    }
+  }
+
+  const candidateDataGetById = async () => {
+    try {
+      const response = await IncrementsTabApi.getByIdIncrements(Number(eventId));
+      console.log("Full API Response:", response);
+
+      if (response?.data?.data) {
+        const eventData = response?.data?.data?.increment;
+
+        const newData = { ...eventData, eventDate: new Date(eventData?.eventDate + 'T00:00:00') }
+        form.reset(newData);
+
+
+
+
+      }
+    } catch (error) {
+      console.error("Fetch Error:", error);
+      errorMessage({
+        description: error?.message || "Something went wrong while fetching event data.",
+      });
+    }
+  };
+
+
+
+  useEffect(() => {
+    if (id && eventId) {
+      candidateDataGetById()
+    }
+  }, [id, eventId])
+
+
+  const isReviewedByHod = form.watch("reviewedByHod")
+  const isoneToOneMeeting = form.watch("oneToOneMeeting")
+  const isfinalDiscussion = form.watch("finalDiscussion")
+
+  useEffect(() => {
+    if (isReviewedByHod == "no") {
+      form.setValue("hodReviewRemark", "")
+    }
+    if (isoneToOneMeeting == "no") {
+      form.setValue("oneToOneMeetingRemark", "")
+    }
+    if (isfinalDiscussion == "no") {
+      form.setValue("finalDiscussionRemark", "")
+    }
+  }, [isReviewedByHod, isoneToOneMeeting, isfinalDiscussion])
+  return (
+    <div className='mobile-view items-right relative flex min-h-screen w-full flex-col justify-start'>
+      <div className='flex justify-between'>
+        <CommonLayout pageTitle='Edit Increment' />
+      </div>
+      <div>
+        <Button onClick={() => router.push(`/dashboard/employee/${id}/increments`)} >
+          <ArrowLeft />  Back To The Increments
+        </Button></div>
+      <div className='w-[100%] mb-4 mt-6 grid grid-cols-2 gap-6 md:grid-cols-2'>
+        {/* <div className='w-[50%] '> */}
+        <FormProvider {...form}>
+          <form
+            encType='multipart/form-data'
+            onSubmit={form.handleSubmit(onSubmit)}
+          >
+
+            <div className='mb-4 mt-6 grid grid-cols-2 gap-6 md:grid-cols-2'>
+              <FormSelectField
+                name='incrementFormSent'
+                label='Send Increment Application?'
+                form={form}
+                options={isHoliday}
+                className='colum-box-bg-change'
+              />
+
+              <FormSelectField
+                name='employeeSubmittedIncrementForm'
+                label='Employee submitted Increment Application?'
+                form={form}
+                options={isHoliday}
+                className='colum-box-bg-change'
+              />
+              <FormSelectField
+                name='reviewedByHod'
+                label='Reviewed By HOD?'
+                form={form}
+                options={isHoliday}
+                className='colum-box-bg-change'
+              />
+
+              {/* text area */}
+              {
+                isReviewedByHod == "yes" && (
+                  <FormTextArea
+                    name='hodReviewRemark'
+                    label='Reviewed By HOD Remark'
+                    form={form}
+                    multiline
+                    inputType='text'
+                    className='col-span-2'
+                    style={{
+                      border: '1px solid #e9e9e9',
+                      height: '47px',
+                      outline: 'none'
+                    }}
+                  />
+
+                )
+              }
+
+              <FormSelectField
+                name='oneToOneMeeting'
+                label='HOD One-to-One Meeting?'
+                form={form}
+                options={isHoliday}
+                className='colum-box-bg-change'
+              />
+
+              {/* text area */}
+              {
+                isoneToOneMeeting == "yes" && (
+                  <FormTextArea
+                    name='oneToOneMeetingRemark'
+                    label='HOD One-to-One Meeting Remark'
+                    form={form}
+                    multiline
+                    inputType='text'
+                    className='col-span-2'
+                    style={{
+                      border: '1px solid #e9e9e9',
+                      height: '47px',
+                      outline: 'none'
+                    }}
+                  />
+
+                )
+              }
+
+
+
+              {/* ------------ */}
+
+              <FormSelectField
+                name='finalDiscussion'
+                label=' Final Discussion'
+                form={form}
+                options={isHoliday}
+                className='colum-box-bg-change'
+              />
+
+
+
+
+              {/* text area */}
+              {
+                isfinalDiscussion == "yes" && (
+                  <FormTextArea
+                    name='finalDiscussionRemark'
+                    label='Final Discussion Remark'
+                    form={form}
+                    multiline
+                    inputType='text'
+                    className='col-span-2'
+                    style={{
+                      border: '1px solid #e9e9e9',
+                      height: '47px',
+                      outline: 'none'
+                    }}
+                  />
+
+                )
+              }
+              <FormSelectField
+                name='hrMeeting'
+                label='HR Meeting'
+                form={form}
+                options={isHoliday}
+                className='colum-box-bg-change'
+              />
+
+              <FormDatePicker
+                name='eventDate'
+                label='Event Date'
+                form={form}
+                inputFormat='YYYY-MM-DD'
+                className='Date'
+                disabled={{ before: new Date('2024-12-31') }}
+                defaultMonth={new Date()}
+              />
+            </div>
+
+
+            {/* Submit Button */}
+            <div className='mt-10 flex justify-end'>
+              <Button
+                type='submit'
+                variant='contained'
+                className='bg-[#B82025] text-white'
+                disabled={loader}
+              >
+                {loader ? <Loader className='animate-spin' /> : 'Submit'}
+              </Button>
+            </div>
+          </form>
+        </FormProvider>
+        {/* </div> */}
+
+        {/* <div className='w-[30%] '> */}
+        <IncrementChatCompo id={editId} />
+
+        {/* </div> */}
+      </div>
+
+    </div>
+  )
+}
+
+export default EditIncrement

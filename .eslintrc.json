@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json.schemastore.org/eslintrc",
+  "extends": [
+    "next/core-web-vitals",
+    "next/typescript",
+    "plugin:@tanstack/query/recommended",
+    "prettier"
+  ],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "off",
+    "@typescript-eslint/no-explicit-any": "off"
+  }
+}
