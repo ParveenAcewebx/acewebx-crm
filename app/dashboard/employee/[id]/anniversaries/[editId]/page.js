@@ -112,7 +112,7 @@ useEffect(()=>{
 if(isBannerCreated == "no"){
 form.setValue("bannerUrl", "")
 }
-},[isBannerCreated])
+},[form, isBannerCreated])
 
   return (
     <div className='mobile-view items-right relative flex min-h-screen w-full flex-col justify-start'>

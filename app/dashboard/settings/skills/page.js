@@ -59,6 +59,8 @@ const Skills = () => {
                 setDeleteOpenModal(false)
                 if (res?.status === 200) {
                     fetchTagList()
+                    localStorage.removeItem("skills");
+
                     successMessage({ description: res?.data?.message })
                 }
             } catch (error) {
@@ -79,7 +81,9 @@ const Skills = () => {
                 const response = await SkillApi.getByIdSkill(row?.original?.id)
                 if (response.status === 200) {
                     setEditData(response.data.data)
+                    localStorage.removeItem("skills");
                     fetchTagList()
+
                     successMessage({ description: response?.data?.message })
                 }
             } catch (error) {
