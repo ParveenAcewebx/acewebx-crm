@@ -290,8 +290,6 @@ const AllSalesCandidates = () => {
     }
   }, []);
 
-
-
   return (
     <>
       <div className=''>
@@ -300,7 +298,7 @@ const AllSalesCandidates = () => {
 
       {/* Filters */}
 
-      <div className='flex justify-between items-center mb-5'>
+      <div className='flex justify-between items-center mb-2'>
         <div>
           <FormProvider {...methods}>
             <FormSelectField

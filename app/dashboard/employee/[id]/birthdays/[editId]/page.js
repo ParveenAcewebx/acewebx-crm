@@ -81,7 +81,7 @@ function EditBirthdays() {
     if(isBannerCreated == "no"){
     form.setValue("bannerUrl", "")
     }
-    },[isBannerCreated])
+    },[form, isBannerCreated])
     
 
   return (

@@ -14,15 +14,15 @@ export const CandidateFormValidationEditClient = Yup.object().shape({
 
   // email: Yup.string().email('Please enter a valid email').required('Email is required'),
   email: Yup.string()
-  .required('Email is required')
-  .test('is-valid-email', 'Invalid email format', function (value) {
-    if (!value) return true; // Let 'required' handle empty case
-    return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/.test(value);
-  }),
+    .required('Email is required')
+    .test('is-valid-email', 'Invalid email format', function (value) {
+      if (!value) return true; // Let 'required' handle empty case
+      return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/.test(value);
+    }),
   gender: Yup.string().required('Gender is required'),
-  noticePeriod: Yup.number()
+  noticePeriod: Yup.string()
     .min(0, 'Minimum 0 day allowed')
-    .max(90, 'Maximum 90 day allowed'),
+    .max(90, 'Maximum 90 day allowed').required('Notice Period is required'),
   phone: Yup.string()
     .transform(
       value => value?.replace(/\+91\s?|\s+/g, '') // remove +91 and all spaces
@@ -83,9 +83,18 @@ export const CandidateFormValidationEditClient = Yup.object().shape({
   permanentAddress: Yup.string().max(500),
   // preferredShift: Yup.string().required('Preferred Shift is required'),
   preferredShift: Yup.array()
-  .of(Yup.string().oneOf(["day", "night", "staggered", "any"]))
-  .min(1, "Select at least one shift")
-  .required('Preferred Shift is required'),
+    .transform((value, originalValue) => {
+      // Convert "" to undefined so Yup doesn't treat it as invalid array
+      return typeof originalValue === 'string' && originalValue.trim() === ''
+        ? undefined
+        : value;
+    })
+    .of(Yup.string().oneOf(["day", "night", "staggered", "any"]))
+    .min(1, "Select at least one shift")
+    .required("Preferred Shift is required"),
+
+
+
   resume: Yup.mixed()
     .required('Resume is required')
     .test('fileExists', 'Resume is required', value => {
