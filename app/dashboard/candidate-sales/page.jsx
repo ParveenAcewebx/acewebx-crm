@@ -321,6 +321,7 @@ const AllSalesCandidates = () => {
                 placeholder="Email/Name/Phone"
                 form={form}
                 inputType="text"
+                searchError="searchError"
                 className="colum-box-bg-change"
               />
               <Search

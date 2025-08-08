@@ -221,7 +221,7 @@ function AnniversariesDetail() {
                         </CardTitle>
                     </CardHeader>
 
-                    <CardContent className='p-4'>
+                    <CardContent className='p-4 events-table'>
                         {upcomingAnniversaries?.length > 0 ? (
                             <DataTable
                                 columns={columnForupcomingAnniversaries}
@@ -245,7 +245,7 @@ function AnniversariesDetail() {
 
                         </CardTitle>
                     </CardHeader>
-                    <CardContent className='p-4'>
+                    <CardContent className='p-4 events-table'>
                         {upPastAnniversaries?.length > 0 ? (
                             <DataTable
                                 columns={columnForPastAnniversaries}

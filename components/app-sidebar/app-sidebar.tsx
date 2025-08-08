@@ -40,7 +40,7 @@ const data = {
     },
     {
       title: 'Employees',
-      url: '/dashboard',
+      url: '/dashboard/employee',
       icon: SquareUser,
       isActive: true,
       items: [

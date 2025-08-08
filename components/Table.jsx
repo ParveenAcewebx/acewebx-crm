@@ -33,7 +33,7 @@ export function DataTable({
   return (
     <>
     <div className="w-full overflow-x-auto"> 
-  <div className="min-w-[900px] rounded-6 border-color-grey custom-tabels border bg-white">
+  <div className="rounded-6 border-color-grey custom-tabels border bg-white">
   <Table>
     <TableHeader className='theme-bg-light-rgba'>
       {table?.getHeaderGroups()?.length > 0 &&

@@ -460,7 +460,7 @@ function IncrementsDetail() {
                         </CardTitle>
                     </CardHeader>
 
-                    <CardContent className='p-4'>
+                    <CardContent className='p-4 events-table'>
                         {upcomingIncrement?.length > 0 ? (
                             <DataTable
                                 columns={columnForupcomingIncrements}
@@ -484,7 +484,7 @@ function IncrementsDetail() {
 
                         </CardTitle>
                     </CardHeader>
-                    <CardContent className='p-4'>
+                    <CardContent className='p-4 events-table'>
                         {pastIncrement?.length > 0 ? (
                             <DataTable
                                 columns={columnForOldIncrements}

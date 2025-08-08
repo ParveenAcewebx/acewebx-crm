@@ -85,6 +85,9 @@ export const formDefaultValues = {
   currentAddress: '',
   permanentAddress: '',
 
+  // new fields:-
+  referenceNumber: '',
+  employeeCode: '',
   // Professional Info
   companyEmail: '',
   designation: '',

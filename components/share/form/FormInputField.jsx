@@ -35,7 +35,7 @@ const FormInputField = ({
               {...field}
               onClick={onClick}
               disabled={disable}
-              value={value ?? field.value}
+              value={value ?? field.value ?? ''}
               readOnly={readOnly && readOnly}
               defaultValue={defaultValue && defaultValue}
               className={`custom-radius border-color-grey h-12 !rounded bg-white !shadow-none ${
