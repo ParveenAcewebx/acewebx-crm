@@ -23,7 +23,7 @@ const data = {
   navMain: [
     {
       title: 'Candidates',
-      url: '/dashboard/',
+      url: '/dashboard/candidates',
       icon: DocumentTextIcon,
       isActive: true,
       items: [
@@ -40,7 +40,7 @@ const data = {
     },
     {
       title: 'Employees',
-      url: '/dashboard',
+      url: '/dashboard/employee',
       icon: SquareUser,
       isActive: true,
       items: [

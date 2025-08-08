@@ -8,13 +8,14 @@ import { Edit, Eye } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { DataTable } from '@/components/Table'
 import AnniversariesApi from '@/services/cadidateApis/employees/AnniversariesApi'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 
 function AnniversariesDetail() {
     const { id } = useParams()
-let eventId = id
+    let eventId = id
     const [upcomingAnniversaries, setUpcomingAnniversaries] = useState([])
     const [upPastAnniversaries, setPastAnniversaries] = useState([]);
-  
+
 
     const router = useRouter()
 
@@ -22,8 +23,8 @@ let eventId = id
         try {
             const res = await AnniversariesApi.getAllPastAnniversaries(eventId)
             const data = res?.data?.data || {}
-            setUpcomingAnniversaries(data?.upcomingAnniversary || [])
-            setPastAnniversaries(data?.pastAnniversary || [])
+            setUpcomingAnniversaries(data?.anniversary?.upcoming || [])
+            setPastAnniversaries(data?.anniversary?.past || [])
         } catch (error) {
             console.error('API error', error)
         }
@@ -41,32 +42,31 @@ let eventId = id
         }
     }
 
- 
+
 
     // upcomingIncrements :-
 
     const columnForupcomingAnniversaries = [
-       
         {
             accessorKey: 'eventDate',
             header: 'Days Left',
             id: 'eventDate',
             cell: ({ row }) => {
-             
+
                 const originalDate = new Date(row.original.eventDate);
                 if (isNaN(originalDate.getTime())) return <span>Invalid Date</span>; // Handle invalid date string
-            
+
                 function getNextIncrementDate(startDate, cycleInYears = 1) {
-                  const today = new Date();
-                  let nextDate = new Date(startDate);
-            
-                  while (nextDate <= today) {
-                    nextDate.setFullYear(nextDate.getFullYear() + cycleInYears);
-                  }
-            
-                  return nextDate.toISOString().split('T')[0];
+                    const today = new Date();
+                    let nextDate = new Date(startDate);
+
+                    while (nextDate <= today) {
+                        nextDate.setFullYear(nextDate.getFullYear() + cycleInYears);
+                    }
+
+                    return nextDate.toISOString().split('T')[0];
                 }
-            
+
                 const finalDate = getNextIncrementDate(originalDate);
 
                 // if (!incrementDateStr) return <span className="">N/A</span>;
@@ -87,38 +87,6 @@ let eventId = id
                 );
             }
         },
-
-        // {
-        //     accessorKey: 'incrementDate',
-        //     header: 'Increment Date',
-        //     id: 'incrementDate',
-        //     cell: ({ row }) => {
-        //       const meta = row.original?.meta ?? [];
-        //       const incrementDateStr = meta.find(m => m.metaKey === '_lastIncrementDate')?.metaValue;
-          
-        //       if (!incrementDateStr) return <span>—</span>; // Gracefully handle missing date
-          
-        //       const originalDate = new Date(incrementDateStr);
-        //       if (isNaN(originalDate.getTime())) return <span>Invalid Date</span>; // Handle invalid date string
-          
-        //       function getNextIncrementDate(startDate, cycleInYears = 1) {
-        //         const today = new Date();
-        //         let nextDate = new Date(startDate);
-          
-        //         while (nextDate <= today) {
-        //           nextDate.setFullYear(nextDate.getFullYear() + cycleInYears);
-        //         }
-          
-        //         return nextDate.toISOString().split('T')[0];
-        //       }
-          
-        //       const finalDate = getNextIncrementDate(originalDate);
-          
-        //       return <span>{finalDate}</span>;
-        //     }
-        //   },
-          
-
         {
             accessorKey: 'eventDate',
             header: 'Anniversary Date',
@@ -127,11 +95,40 @@ let eventId = id
         },
 
         {
-            accessorKey: 'status',
-            header: 'Status',
-            id: 'status',
-            cell: ({ row }) => row.original.status
+            accessorKey: 'meta',
+            header: 'Banner',
+            id: 'meta',
+            cell: ({ row }) => row.original?.meta?.isBannerCreated
         },
+        {
+            accessorKey: 'meta',
+            header: () => (
+                <>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <span>S. M. Post</span>
+                        </TooltipTrigger>
+                        <TooltipContent className='w-auto rounded-sm bg-[#b82025] text-sm'>
+                            Social Media Post
+                        </TooltipContent>
+                    </Tooltip>
+
+                </>
+            ),
+            id: 'meta',
+            cell: ({ row }) => row?.original?.meta?.isSocialMediaPost
+        }, {
+            accessorKey: 'meta',
+            header: 'Gift Voucher',
+            id: 'meta',
+            cell: ({ row }) => row?.original?.meta?.isGiftVoucherCreated
+        },
+        // {
+        //     accessorKey: 'status',
+        //     header: 'Status',
+        //     id: 'status',
+        //     cell: ({ row }) => row.original.status
+        // },
         {
             accessorKey: 'action',
             header: 'Action',
@@ -151,7 +148,7 @@ let eventId = id
 
 
     const columnForPastAnniversaries = [
-       
+
 
         {
             accessorKey: 'eventDate',
@@ -161,11 +158,40 @@ let eventId = id
         },
 
         {
-            accessorKey: 'status',
-            header: 'Status',
-            id: 'status',
-            cell: ({ row }) => row.original.status
+            accessorKey: 'meta',
+            header: 'Banner',
+            id: 'meta',
+            cell: ({ row }) => row.original?.meta?.isBannerCreated
         },
+        {
+            accessorKey: 'meta',
+            header: () => (
+                <>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <span>S. M. Post</span>
+                        </TooltipTrigger>
+                        <TooltipContent className='w-auto rounded-sm bg-[#b82025] text-sm'>
+                            Social Media Post
+                        </TooltipContent>
+                    </Tooltip>
+
+                </>
+            ),
+            id: 'meta',
+            cell: ({ row }) => row?.original?.meta?.isSocialMediaPost
+        }, {
+            accessorKey: 'meta',
+            header: 'Gift Voucher',
+            id: 'meta',
+            cell: ({ row }) => row?.original?.meta?.isGiftVoucherCreated
+        },
+        // {
+        //     accessorKey: 'status',
+        //     header: 'Status',
+        //     id: 'status',
+        //     cell: ({ row }) => row.original.status
+        // },
         {
             accessorKey: 'action',
             header: 'Action',
@@ -185,8 +211,8 @@ let eventId = id
     return (
         <>
             <CommonLayout pageTitle='Employee Anniversaries' />
-  {/* Up Birthdays */}
-  <div className='grid grid-cols-1 gap-6 mt-6'>
+            {/* Up Birthdays */}
+            <div className='grid grid-cols-1 gap-6 mt-6'>
                 <Card className='box'>
                     <CardHeader className='theme-bg-white-rgba border-color-grey min-h-14 border-b p-3'>
                         <CardTitle className='flex justify-between'>
@@ -195,7 +221,7 @@ let eventId = id
                         </CardTitle>
                     </CardHeader>
 
-                    <CardContent className='p-4'>
+                    <CardContent className='p-4 events-table'>
                         {upcomingAnniversaries?.length > 0 ? (
                             <DataTable
                                 columns={columnForupcomingAnniversaries}
@@ -208,7 +234,7 @@ let eventId = id
                 </Card>
 
 
-      
+
             </div>
             {/* Old Birthdays */}
             <div className='grid grid-cols-1 gap-6 mt-7'>
@@ -219,7 +245,7 @@ let eventId = id
 
                         </CardTitle>
                     </CardHeader>
-                    <CardContent className='p-4'>
+                    <CardContent className='p-4 events-table'>
                         {upPastAnniversaries?.length > 0 ? (
                             <DataTable
                                 columns={columnForPastAnniversaries}
@@ -231,10 +257,10 @@ let eventId = id
                     </CardContent>
                 </Card>
 
-        
+
             </div>
 
-          
+
         </>
     )
 }

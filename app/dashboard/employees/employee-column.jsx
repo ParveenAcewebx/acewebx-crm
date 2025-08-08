@@ -58,27 +58,26 @@ export const EmployeeColumn = (handleDeleteTaskTag, handleEditTaskTag) => [
   },
   {
     accessorKey: 'name',
-    header: 'Contact Info',
+    header: 'Contact Information',
     cell: ({ row }) => (
       <div className="space-y-1">
-        <div className="font-medium">{row.original.name}</div>
-        <div className="text-sm text-gray-500">{row.original.companyEmail}</div>
-        <div className="text-sm text-gray-500">{row.original.phone}</div>
+        <span className="">{row.original.name}-{row.original.companyEmail}-{row.original.phone}</span>
+
       </div>
     ),
   },
- 
+
   {
     accessorKey: 'designation',
     header: 'Designation',
     cell: ({ row }) => row.original.designation,
   },
-  {
-    accessorKey: 'dateOfJoining',
-    header: 'Joining Date',
-    cell: ({ row }) =>
-      new Date(row.original.dateOfJoining).toLocaleDateString(),
-  },
+  // {
+  //   accessorKey: 'dateOfJoining',
+  //   header: 'Joining Date',
+  //   cell: ({ row }) =>
+  //     new Date(row.original.dateOfJoining).toLocaleDateString(),
+  // },
   // {
   //   accessorKey: 'meta',
   //   header: 'PAN Card',
@@ -99,12 +98,10 @@ export const EmployeeColumn = (handleDeleteTaskTag, handleEditTaskTag) => [
     accessorKey: 'meta_emergencyContact',
     header: 'Emergency Contact',
     cell: ({ row }) => {
-      const name = row.original.meta.find((m) => m.metaKey === '_emergencyContactName');
       const phone = row.original.meta.find((m) => m.metaKey === '_emergencyContactNumber');
       return (
         <div className="space-y-1">
-          <div>{name?.metaValue || '-'}</div>
-          <div className="text-sm text-gray-500">{phone?.metaValue || '-'}</div>
+          <div className="">{phone?.metaValue || '-'}</div>
         </div>
       );
     },

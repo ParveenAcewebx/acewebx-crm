@@ -10,7 +10,7 @@ export const walkInFormDefaultValues = {
   currentSalary: '',
   expectedSalary: '',
   currentCompanyName: '',
-  noticePeriod: 0,
+  noticePeriod: null,
   reasonForChange: '',
   preferredShift: '',
   resume: ''
@@ -53,7 +53,7 @@ export const editWalkInForm = {
   currentSalary: '',
   expectedSalary: '',
   currentCompanyName: '',
-  noticePeriod: 0,
+  noticePeriod: null,
   reasonForChange: '',
   preferredShift: [],
   resume: '',
@@ -85,6 +85,9 @@ export const formDefaultValues = {
   currentAddress: '',
   permanentAddress: '',
 
+  // new fields:-
+  referenceNumber: '',
+  employeeCode: '',
   // Professional Info
   companyEmail: '',
   designation: '',

@@ -7,6 +7,7 @@ import CommonLayout from '@/components/CommonLayouyt'
 import EventApi from '@/services/cadidateApis/events/EventApi'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import AnniversariesApi from '@/services/cadidateApis/employees/AnniversariesApi'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 
 function BirthdaysDetails() {
     const { id } = useParams()
@@ -14,7 +15,7 @@ function BirthdaysDetails() {
 
     const [upcomingBirthdays, setUpBirthdayss] = useState([])
     const [PastBirthdays, setPastBirthdays] = useState([]);
-  
+
 
     const router = useRouter()
 
@@ -22,8 +23,8 @@ function BirthdaysDetails() {
         try {
             const res = await AnniversariesApi.getAllPastAnniversaries(eventId)
             const data = res?.data?.data || {}
-            setUpBirthdayss(data?.upcomingBirthday || [])
-            setPastBirthdays(data?.pastBirthday || [])
+            setUpBirthdayss(data?.birthday?.upcoming || [])
+            setPastBirthdays(data?.birthday?.past || [])
         } catch (error) {
             console.error('API error', error)
         }
@@ -36,7 +37,7 @@ function BirthdaysDetails() {
 
 
 
- 
+
 
     // upcomingIncrements :-
 
@@ -47,27 +48,27 @@ function BirthdaysDetails() {
         }
     }
     const columnForupcomingBirthdays = [
-        
+
         {
             accessorKey: 'eventDate',
             header: 'Days Left',
             id: 'eventDate',
             cell: ({ row }) => {
-             
+
                 const originalDate = new Date(row.original.eventDate);
                 if (isNaN(originalDate.getTime())) return <span>Invalid Date</span>; // Handle invalid date string
-            
+
                 function getNextIncrementDate(startDate, cycleInYears = 1) {
-                  const today = new Date();
-                  let nextDate = new Date(startDate);
-            
-                  while (nextDate <= today) {
-                    nextDate.setFullYear(nextDate.getFullYear() + cycleInYears);
-                  }
-            
-                  return nextDate.toISOString().split('T')[0];
+                    const today = new Date();
+                    let nextDate = new Date(startDate);
+
+                    while (nextDate <= today) {
+                        nextDate.setFullYear(nextDate.getFullYear() + cycleInYears);
+                    }
+
+                    return nextDate.toISOString().split('T')[0];
                 }
-            
+
                 const finalDate = getNextIncrementDate(originalDate);
 
                 // if (!incrementDateStr) return <span className="">N/A</span>;
@@ -88,7 +89,7 @@ function BirthdaysDetails() {
                 );
             }
         },
-      
+
 
         {
             accessorKey: 'eventDate',
@@ -96,13 +97,43 @@ function BirthdaysDetails() {
             id: 'eventDate',
             cell: ({ row }) => row.original.eventDate
         },
-
+        // ----------------------------
         {
-            accessorKey: 'status',
-            header: 'Status',
-            id: 'status',
-            cell: ({ row }) => row.original.status
+            accessorKey: 'meta',
+            header: 'Banner',
+            id: 'meta',
+            cell: ({ row }) => row.original?.meta?.isBannerCreated
         },
+        {
+            accessorKey: 'meta',
+            header: () => (
+                <>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <span>S. M. Post</span>
+                        </TooltipTrigger>
+                        <TooltipContent className='w-auto rounded-sm bg-[#b82025] text-sm'>
+                            Social Media Post
+                        </TooltipContent>
+                    </Tooltip>
+
+                </>
+            ),
+            id: 'meta',
+            cell: ({ row }) => row?.original?.meta?.isSocialMediaPost
+        }, {
+            accessorKey: 'meta',
+            header: 'Gift Voucher',
+            id: 'meta',
+            cell: ({ row }) => row?.original?.meta?.isGiftVoucherCreated
+        },
+        // ------------------------
+        // {
+        //     accessorKey: 'status',
+        //     header: 'Status',
+        //     id: 'status',
+        //     cell: ({ row }) => row.original.status
+        // },
         {
             accessorKey: 'action',
             header: 'Action',
@@ -122,7 +153,7 @@ function BirthdaysDetails() {
 
 
     const columnForPastBirthdays = [
-       
+
 
         {
             accessorKey: 'eventDate',
@@ -132,11 +163,41 @@ function BirthdaysDetails() {
         },
 
         {
-            accessorKey: 'status',
-            header: 'Status',
-            id: 'status',
-            cell: ({ row }) => row.original.status
+            accessorKey: 'meta',
+            header: 'Banner',
+            id: 'meta',
+            cell: ({ row }) => row.original?.meta?.isBannerCreated
         },
+        {
+            accessorKey: 'meta',
+            header: () => (
+                <>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <span>S. M. Post</span>
+                        </TooltipTrigger>
+                        <TooltipContent className='w-auto rounded-sm bg-[#b82025] text-sm'>
+                            Social Media Post
+                        </TooltipContent>
+                    </Tooltip>
+
+                </>
+            ),
+            id: 'meta',
+            cell: ({ row }) => row?.original?.meta?.isSocialMediaPost
+        }, {
+            accessorKey: 'meta',
+            header: 'Gift Voucher',
+            id: 'meta',
+            cell: ({ row }) => row?.original?.meta?.isGiftVoucherCreated
+        },
+
+        // {
+        //     accessorKey: 'status',
+        //     header: 'Status',
+        //     id: 'status',
+        //     cell: ({ row }) => row.original.status
+        // },
         {
             accessorKey: 'action',
             header: 'Action',
@@ -166,7 +227,7 @@ function BirthdaysDetails() {
                         </CardTitle>
                     </CardHeader>
 
-                    <CardContent className='p-4'>
+                    <CardContent className='p-4 events-table'>
                         {upcomingBirthdays?.length > 0 ? (
                             <DataTable
                                 columns={columnForupcomingBirthdays}
@@ -179,7 +240,7 @@ function BirthdaysDetails() {
                 </Card>
 
 
-      
+
             </div>
             {/* Old Birthdays */}
             <div className='grid grid-cols-1 gap-6 mt-7'>
@@ -190,7 +251,7 @@ function BirthdaysDetails() {
 
                         </CardTitle>
                     </CardHeader>
-                    <CardContent className='p-4'>
+                    <CardContent className='p-4 events-table'>
                         {PastBirthdays?.length > 0 ? (
                             <DataTable
                                 columns={columnForPastBirthdays}
@@ -202,10 +263,10 @@ function BirthdaysDetails() {
                     </CardContent>
                 </Card>
 
-        
+
             </div>
 
-          
+
         </>
     )
 }

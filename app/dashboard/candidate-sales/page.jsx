@@ -290,8 +290,6 @@ const AllSalesCandidates = () => {
     }
   }, []);
 
-
-
   return (
     <>
       <div className=''>
@@ -299,71 +297,67 @@ const AllSalesCandidates = () => {
       </div>
 
       {/* Filters */}
-
-      <div className='flex justify-between items-center mb-5'>
+      {/* Toolbar Section */}
+      <div className="flex justify-between items-center mb-4">
+        {/* Left: Length Selector */}
         <div>
           <FormProvider {...methods}>
             <FormSelectField
-              name='length'
-              className='h-10 w-28'
+              name="length"
+              className="h-10 w-28"
               form={methods}
               options={LengthData}
             />
           </FormProvider>
         </div>
 
-
-
+        {/* Right: Search + Advance Search + Export */}
         <FormProvider {...form}>
-          <div className="flex justify-between items-center gap-4">
-            <div className='filters relative'>
-              <div>
-                <FormInputField
-                  name="search"
-                  placeholder="Email/Name/Phone"
-                  form={form}
-                  inputType="text"
-                  className="colum-box-bg-change col-span-2"
-                  searchError="searchError"
-                />
-                <div className='filttersSearch'>
-                  <Search
-                    type="submit"
-                    className="cursor-pointer "
-                    onClick={() => handleSimpleFilter()}
-                  />
-                </div>
-              </div>
-              <div className='flex advanceSearchOuter'>
-                <p
-                  onClick={() => AddvanceOpenModal()}
-                  className="cursor-pointer text-red-400 hover:text-red-500 "
-                >
-                  Advance Search
-                </p>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <p
-                      onClick={handleDownloadCSV}
-                      className="cursor-pointer text-red-400 hover:text-red-500 text-center flex gap-2 "
-                    >
-                      <Import />
-                    </p>
-                    <TooltipContent className='w-auto rounded-sm bg-[#b82025] text-sm'>Download CSV</TooltipContent>
-
-                  </TooltipTrigger>
-
-                </Tooltip>
-              </div>
+          <div className="flex items-center gap-4">
+            {/* Search Bar */}
+            <div className="relative">
+              <FormInputField
+                name="search"
+                placeholder="Email/Name/Phone"
+                form={form}
+                inputType="text"
+                searchError="searchError"
+                className="colum-box-bg-change"
+              />
+              <Search
+                type="submit"
+                className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
+                onClick={handleSimpleFilter}
+              />
             </div>
 
+            {/* Advance Search */}
+            <p
+              onClick={() => AddvanceOpenModal()}
+              className="cursor-pointer text-red-400 hover:text-red-500"
+            >
+              Advance Search
+            </p>
 
-
-
+            {/* Export Button */}
+            <Tooltip>
+              <TooltipTrigger>
+                <p
+                  onClick={handleDownloadCSV}
+                  className="cursor-pointer text-red-400 hover:text-red-500 flex gap-2"
+                >
+                  <Import />
+                </p>
+              </TooltipTrigger>
+              <TooltipContent className="w-auto rounded-sm bg-[#b82025] text-sm">
+                Download CSV
+              </TooltipContent>
+            </Tooltip>
           </div>
         </FormProvider>
       </div>
 
+      {/* Table Section - starts clearly below */}
       <div className='overflowX-auto'>
         <DataTable
           data={getList?.candidates}
@@ -378,7 +372,11 @@ const AllSalesCandidates = () => {
           page={page}
           setPage={setPage}
           length={length}
-        /></div>
+        />
+      </div>
+
+
+
 
       <DialogBox
         onDelete={onDelete}

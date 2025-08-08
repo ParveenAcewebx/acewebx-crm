@@ -47,17 +47,17 @@ function EditEmployees({ editId }) {
 
             Object.entries(data).forEach(([key, value]) => {
                 const isDateField =
-                  key === 'dobDocument' ||
-                  key === 'dateOfJoining' ||
-                  key === 'dobCelebration' ||
-                  key === 'lastIncrementDate';
-          
+                    key === 'dobDocument' ||
+                    key === 'dateOfJoining' ||
+                    key === 'dobCelebration' ||
+                    key === 'lastIncrementDate';
+
                 if (isDateField && value !== undefined) {
-                  formData.append(key, moment(value).format('YYYY-MM-DD'));
+                    formData.append(key, moment(value).format('YYYY-MM-DD'));
                 } else {
-                  formData.append(key, value);
+                    formData.append(key, value);
                 }
-              });
+            });
 
             const response = await EmployeesApi.editEmployees(editId, formData)
             if (response?.data?.status == true) {
@@ -97,7 +97,9 @@ function EditEmployees({ editId }) {
                     dobCelebration: new Date(data?.dobCelebration + 'T00:00:00') || '',
                     currentAddress: data?.currentAddress || '',
                     permanentAddress: data?.permanentAddress || '',
-
+                    // New Fields added :--
+                    referenceNumber: data.referenceNumber || '',
+                    employeeCode: data.employeeCode || '',
                     // Professional Info
                     companyEmail: data?.companyEmail || '',
                     designation: data?.designation || '',
@@ -106,7 +108,7 @@ function EditEmployees({ editId }) {
                     // Documents
                     adharCard: meta?._adharCard || '',
                     panCard: meta?._panCard || '',
-                    otherDocumentLink:meta?._otherDocumentLink || '',
+                    otherDocumentLink: meta?._otherDocumentLink || '',
                     // Banking Details
                     bankName: meta?._bankName || '',
                     bankAccountNumber: meta?._bankAccountNumber || '',
@@ -200,7 +202,7 @@ function EditEmployees({ editId }) {
                                         form={form}
                                         inputFormat='YYYY-MM-DD'
                                         className='datepickerouter'
-                                        defaultMonth={new Date('1995-01-01')}
+                                        defaultMonth={new Date('2006-01-01')}
                                     />
                                     <FormDatePicker
                                         name='dobCelebration'
@@ -208,7 +210,7 @@ function EditEmployees({ editId }) {
                                         form={form}
                                         inputFormat='YYYY-MM-DD'
                                         className='datepickerouter'
-                                        defaultMonth={new Date('1995-01-02')}
+                                        defaultMonth={new Date('2006-01-02')}
                                     />
                                     <FormSelectField
                                         name='gender'
@@ -286,6 +288,19 @@ function EditEmployees({ editId }) {
                                         label='Current Shift'
                                         form={form}
                                         options={currentShiftOptions}
+                                        className='colum-box-bg-change'
+                                    />
+                                    <FormInputField
+                                        name='referenceNumber'
+                                        label='Reference Number'
+                                        form={form}
+                                        inputType='number'
+                                        className='colum-box-bg-change'
+                                    /> <FormInputField
+                                        name='employeeCode'
+                                        label='Employee Code'
+                                        form={form}
+                                        inputType='text'
                                         className='colum-box-bg-change'
                                     />
                                 </div>

@@ -32,7 +32,8 @@ export function DataTable({
   })
   return (
     <>
-     <div className='rounded-6 border-color-grey custom-tabels border bg-white'>
+    <div className="w-full overflow-x-auto"> 
+  <div className="rounded-6 border-color-grey custom-tabels border bg-white">
   <Table>
     <TableHeader className='theme-bg-light-rgba'>
       {table?.getHeaderGroups()?.length > 0 &&
@@ -41,7 +42,7 @@ export function DataTable({
             {headerGroup.headers?.map(header => (
               <TableHead
                 key={header.id}
-                className='border-color-grey text-dark-color theme-bg-light-rgba px-3 py-4 text-sm'
+                className='border-color-grey text-dark-color theme-bg-light-rgba px-2 py-2 text-xs'
               >
                 {header.isPlaceholder
                   ? null
@@ -60,7 +61,7 @@ export function DataTable({
         <TableRow>
           <TableCell
             colSpan={(columns?.length || 0) + 1}
-            className='h-16 px-2 py-3 text-center'
+            className='h-16 px-2 text-center'
           >
             Loading...
           </TableCell>
@@ -69,7 +70,7 @@ export function DataTable({
         <TableRow>
           <TableCell
             colSpan={(columns?.length || 0) + 1}
-            className='h-24 px-2 py-3 text-center text-gray-500'
+            className='h-24 px-2 text-center text-gray-500'
           >
             No result found
           </TableCell>
@@ -84,7 +85,7 @@ export function DataTable({
               row.getVisibleCells().map(cell => (
                 <TableCell
                   key={cell.id}
-                  className='border-color-grey border-b px-2 py-3'
+                  className='border-color-grey border-b px-2'
                 >
                   {flexRender(
                     cell.column?.columnDef?.cell,
@@ -111,6 +112,7 @@ export function DataTable({
       )}
     </TableBody>
   </Table>
+</div>
 </div>
 
       {totalRecord > 10 ? (

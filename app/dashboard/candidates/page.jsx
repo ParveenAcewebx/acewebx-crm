@@ -110,10 +110,9 @@ const AllCandidates = () => {
     setDeleteOpenModal(true)
     setDeleteIndex(row?.original?.id)
   }
+  
   // edit table row
-  const handleEditCand = row => {
-    router.push(`/dashboard/walk-in/${row.original.id}`)
-  }
+  
   const deleteHandleModalClose = () => {
     setDeleteOpenModal(false)
   }
@@ -296,79 +295,83 @@ const AllCandidates = () => {
         <LayoutHeader pageTitle='Developers List' />
       </div>
       {/* Filters */}
-      <div className='flex justify-between items-center mb-5'>
-        <div>
-          <FormProvider {...methods}>
-            <FormSelectField
-              name='length'
-              className='h-10 w-28'
-              form={methods}
-              options={LengthData}
-            />
-          </FormProvider>
-        </div>
+      <div className="flex justify-between items-center mb-4">
+  {/* Left: Length Selector */}
+  <FormProvider {...methods}>
+    <FormSelectField
+      name="length"
+      className="h-10 w-28"
+      form={methods}
+      options={LengthData}
+    />
+  </FormProvider>
 
-        <FormProvider {...form}>
-          <div className="flex justify-between items-center gap-4">
-            <div className='filters relative'>
-              <div>
-                <FormInputField
-                  name="search"
-                  placeholder="Email/Name/Phone"
-                  form={form}
-                  inputType="text"
-                  className="colum-box-bg-change col-span-2"
-                  searchError="searchError"
-                />
-                <div className='filttersSearch'>
-                  <Search
-                    type="submit"
-                    className="cursor-pointer "
-                    onClick={() => handleSimpleFilter()}
-                  />
-                </div>
-              </div>
-              <div className='flex advanceSearchOuter'>
-                <p
-                  onClick={() => AddvanceOpenModal()}
-                  className="cursor-pointer text-red-400 hover:text-red-500 "
-                >
-                  Advance Search
-                </p>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <p
-                      onClick={handleDownloadCSV}
-                      className="cursor-pointer text-red-400 hover:text-red-500 text-center flex gap-2 "
-                    >
-                      <Import />
-                    </p>
-                    <TooltipContent className='w-auto rounded-sm bg-[#b82025] text-sm'>Download CSV</TooltipContent>
-
-                  </TooltipTrigger>
-
-                </Tooltip>
-              </div>
-            </div>
-          </div>
-        </FormProvider>
+  {/* Right: Search + Buttons */}
+  <FormProvider {...form}>
+    <div className="flex items-center gap-4">
+      {/* Search Bar */}
+      <div className="relative">
+        <FormInputField
+          name="search"
+          placeholder="Email/Name/Phone"
+          form={form}
+          inputType="text"
+          className="colum-box-bg-change"
+          searchError="searchError"
+        />
+        <Search
+          type="submit"
+          className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
+          onClick={handleSimpleFilter}
+        />
       </div>
-      {/* <div className="w-full overflow-x-auto"> */}
-      <DataTable
+
+      {/* Advance Search */}
+      <p
+        onClick={AddvanceOpenModal}
+        className="cursor-pointer text-red-400 hover:text-red-500"
+      >
+        Advance Search
+      </p>
+
+      {/* Export */}
+      <Tooltip>
+        <TooltipTrigger>
+          <p
+            onClick={handleDownloadCSV}
+            className="cursor-pointer text-red-400 hover:text-red-500 flex gap-2"
+          >
+            <Import />
+          </p>
+        </TooltipTrigger>
+        <TooltipContent className="w-auto rounded-sm bg-[#b82025] text-sm">
+          Download CSV
+        </TooltipContent>
+      </Tooltip>
+    </div>
+  </FormProvider>
+</div>
+
+{/* Table Starts Below */}
+<div className="mt-2">
+<DataTable
     
-        data={getList?.candidates}
-        loading={loading}
-        columns={CandidColumns(
-          handleDeleteCand,
-          handleEditCand,
-          handlePreviewCand,
-          handleSendWalkInForm
-        )}
-        totalRecord={totalRecord}
-        page={page}
-        setPage={setPage}
-        length={length}
-      />
+    data={getList?.candidates}
+    loading={loading}
+    columns={CandidColumns(
+      handleDeleteCand,
+      handlePreviewCand,
+      handleSendWalkInForm
+    )}
+    totalRecord={totalRecord}
+    page={page}
+    setPage={setPage}
+    length={length}
+  />
+</div>
+
+      {/* <div className="w-full overflow-x-auto"> */}
+    
       {/* </div> */}
 
       <DialogBox

@@ -25,8 +25,8 @@ function IncrementsDetail() {
         try {
             const res = await AnniversariesApi.getAllPastAnniversaries(eventId)
             const data = res?.data?.data || {}
-            setUpcomingIncrement(data?.upcomingIncrement || [])
-            setPastIncrement(data?.pastBirthday || [])
+            setUpcomingIncrement(data?.increment?.upcoming || [])
+            setPastIncrement(data?.increment?.past || [])
         } catch (error) {
             console.error('API error', error)
         }
@@ -133,12 +133,109 @@ function IncrementsDetail() {
                 return <span>{row.original?.eventDate}</span>;
             }
         },
+
+
+
+        // meta---------------------------------------start
         {
-            accessorKey: 'status',
-            header: 'Status',
-            id: 'status',
-            cell: ({ row }) => row.original.status
+            accessorKey: 'meta',
+            header: () => (
+                <>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <span>I.F.S.</span>
+                        </TooltipTrigger>
+                        <TooltipContent className='w-auto rounded-sm bg-[#b82025] text-sm'>
+                            Increment Form Sent
+                        </TooltipContent>
+                    </Tooltip>
+
+                </>
+            ),
+            id: 'meta',
+            cell: ({ row }) => row.original?.meta?.incrementFormSent
         },
+        {
+            accessorKey: 'meta',
+            header: () => (
+                <>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <span>E.S.I.F.</span>
+                        </TooltipTrigger>
+                        <TooltipContent className='w-auto rounded-sm bg-[#b82025] text-sm'>
+                            Employee Submitted Increment Form
+                        </TooltipContent>
+                    </Tooltip>
+
+                </>
+            ),
+            id: 'meta',
+            cell: ({ row }) => row?.original?.meta?.employeeSubmittedIncrementForm
+        }, {
+            accessorKey: 'meta',
+            header: '',
+            header: () => (
+                <>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <span>R.B.H</span>
+                        </TooltipTrigger>
+                        <TooltipContent className='w-auto rounded-sm bg-[#b82025] text-sm'>
+                            Reviewed By Hod
+                        </TooltipContent>
+                    </Tooltip>
+
+                </>
+            ),
+            id: 'meta',
+            cell: ({ row }) => row?.original?.meta?.reviewedByHod
+        },
+
+        {
+            accessorKey: 'meta',
+            header: 'One To One Meeting',
+            header: () => (
+                <>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <span>O.T.O.M</span>
+                        </TooltipTrigger>
+                        <TooltipContent className='w-auto rounded-sm bg-[#b82025] text-sm'>
+                            One To One Meeting
+                        </TooltipContent>
+                    </Tooltip>
+
+                </>
+            ),
+            id: 'meta',
+            cell: ({ row }) => row?.original?.meta?.oneToOneMeeting
+        },
+
+        {
+            accessorKey: 'meta',
+            header: 'HR Meeting',
+            id: 'meta',
+            cell: ({ row }) => row?.original?.meta?.hrMeeting
+        },
+
+        {
+            accessorKey: 'meta',
+            header: 'Final Discussion',
+            id: 'meta',
+            cell: ({ row }) => row?.original?.meta?.finalDiscussion
+        },
+
+        // meta---------------------------------------end
+
+
+
+        // {
+        //     accessorKey: 'status',
+        //     header: 'Status',
+        //     id: 'status',
+        //     cell: ({ row }) => row.original.status
+        // },
         {
             accessorKey: 'eventDate',
             header: 'Action',
@@ -236,12 +333,105 @@ function IncrementsDetail() {
             id: 'eventDate',
             cell: ({ row }) => row.original.eventDate
         },
+
+        // meta---------------------------------------start
         {
-            accessorKey: 'status',
-            header: 'Status',
-            id: 'status',
-            cell: ({ row }) => row.original.status
+            accessorKey: 'meta',
+            header: () => (
+                <>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <span>I.F.S.</span>
+                        </TooltipTrigger>
+                        <TooltipContent className='w-auto rounded-sm bg-[#b82025] text-sm'>
+                            Increment Form Sent
+                        </TooltipContent>
+                    </Tooltip>
+
+                </>
+            ),
+            id: 'meta',
+            cell: ({ row }) => row.original?.meta?.incrementFormSent
         },
+        {
+            accessorKey: 'meta',
+            header: () => (
+                <>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <span>E.S.I.F.</span>
+                        </TooltipTrigger>
+                        <TooltipContent className='w-auto rounded-sm bg-[#b82025] text-sm'>
+                            Employee Submitted Increment Form
+                        </TooltipContent>
+                    </Tooltip>
+
+                </>
+            ),
+            id: 'meta',
+            cell: ({ row }) => row?.original?.meta?.employeeSubmittedIncrementForm
+        }, {
+            accessorKey: 'meta',
+            header: '',
+            header: () => (
+                <>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <span>R.B.H</span>
+                        </TooltipTrigger>
+                        <TooltipContent className='w-auto rounded-sm bg-[#b82025] text-sm'>
+                            Reviewed By Hod
+                        </TooltipContent>
+                    </Tooltip>
+
+                </>
+            ),
+            id: 'meta',
+            cell: ({ row }) => row?.original?.meta?.reviewedByHod
+        },
+
+        {
+            accessorKey: 'meta',
+            header: 'One To One Meeting',
+            header: () => (
+                <>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <span>O.T.O.M</span>
+                        </TooltipTrigger>
+                        <TooltipContent className='w-auto rounded-sm bg-[#b82025] text-sm'>
+                            One To One Meeting
+                        </TooltipContent>
+                    </Tooltip>
+
+                </>
+            ),
+            id: 'meta',
+            cell: ({ row }) => row?.original?.meta?.oneToOneMeeting
+        },
+
+        {
+            accessorKey: 'meta',
+            header: 'HR Meeting',
+            id: 'meta',
+            cell: ({ row }) => row?.original?.meta?.hrMeeting
+        },
+
+        {
+            accessorKey: 'meta',
+            header: 'Final Discussion',
+            id: 'meta',
+            cell: ({ row }) => row?.original?.meta?.finalDiscussion
+        },
+
+        // meta---------------------------------------end
+
+        // {
+        //     accessorKey: 'status',
+        //     header: 'Status',
+        //     id: 'status',
+        //     cell: ({ row }) => row.original.status
+        // },
         {
             accessorKey: 'action',
             header: 'Action',
@@ -270,7 +460,7 @@ function IncrementsDetail() {
                         </CardTitle>
                     </CardHeader>
 
-                    <CardContent className='p-4'>
+                    <CardContent className='p-4 events-table'>
                         {upcomingIncrement?.length > 0 ? (
                             <DataTable
                                 columns={columnForupcomingIncrements}
@@ -294,7 +484,7 @@ function IncrementsDetail() {
 
                         </CardTitle>
                     </CardHeader>
-                    <CardContent className='p-4'>
+                    <CardContent className='p-4 events-table'>
                         {pastIncrement?.length > 0 ? (
                             <DataTable
                                 columns={columnForOldIncrements}

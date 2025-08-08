@@ -53,10 +53,19 @@ export default function NavMain({ homeItem, items }: NavMainProps) {
   const isParentActive = (title: string, url: string) =>
     openSection === title || pathname.startsWith(url)
 
+  
+
   useEffect(() => {
-    const storedSection = localStorage.getItem('openSection')
-    if (storedSection) setOpenSection(storedSection)
-  }, [])
+    if (pathname === '/dashboard') {
+      setOpenSection(null);
+      localStorage.removeItem('openSection');
+    } else {
+      const stored = localStorage.getItem('openSection');
+      if (stored) setOpenSection(stored);
+    }
+  }, [pathname]);
+
+
 
   const toggleSection = (title: string) => {
     setOpenSection(prev => {
@@ -76,19 +85,19 @@ export default function NavMain({ homeItem, items }: NavMainProps) {
             tooltip={homeItem.title}
             className={cn(
               'main-menu-item theme-text-color !rounded px-1 py-5 font-normal active:bg-sidebar-primary/5 active:text-sidebar-primary',
-              isActiveUrl(homeItem.url) && ''
+              isActiveUrl(homeItem.url) && 'text-sidebar-primary bg-sidebar-primary/5 !bg-[#b82025]'
             )}
           >
             <Link href={homeItem.url}>
               <span
                 className={cn(
-                  'menu-icon flex !h-7 !w-7 items-center justify-center rounded p-1',
-                  isActiveUrl(homeItem.url) && 'theme-text-color'
+                  'menu-icon flex !h-7 !w-7 items-center justify-center rounded p-1 ',
+                  isActiveUrl(homeItem.url) && 'text-sidebar-primary'
                 )}
               >
-                {homeItem.icon && <homeItem.icon />}
+                {homeItem.icon && <homeItem.icon className='!text-white' />}
               </span>
-              <span>{homeItem.title}</span>
+              <span className='!text-white'>{homeItem.title}</span>
             </Link>
           </SidebarMenuButton>
         </SidebarMenuItem>
@@ -163,7 +172,7 @@ export default function NavMain({ homeItem, items }: NavMainProps) {
                                         className={cn(
                                           'theme-text-color !rounded font-normal hover:text-sidebar-primary active:text-sidebar-primary cursor-pointer',
                                           isActiveUrl(thirdItem.url) &&
-                                            'font-normal text-sidebar-primary'
+                                          'font-normal text-sidebar-primary'
                                         )}
                                       >
                                         <Link href={thirdItem.url}>
@@ -182,7 +191,7 @@ export default function NavMain({ homeItem, items }: NavMainProps) {
                             className={cn(
                               'theme-text-color !rounded font-normal hover:text-sidebar-primary active:text-sidebar-primary cursor-pointer',
                               isActiveUrl(subItem.url) &&
-                                'font-normal text-sidebar-primary'
+                              'font-normal text-sidebar-primary'
                             )}
                           >
                             <Link href={subItem.url}>

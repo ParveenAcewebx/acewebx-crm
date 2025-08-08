@@ -7,11 +7,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import { Edit, EllipsisVertical, Eye, Send, Trash2 } from 'lucide-react'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { EllipsisVertical, Eye, Send, Trash2 } from 'lucide-react'
 
 export const CandidColumns = (
   handleDeleteCand,
-  handleEditCand,
   handlePreviewCand,
   handleSendWalkInForm
 ) => [
@@ -35,13 +35,7 @@ export const CandidColumns = (
                   <Eye className='mr-2 h-4 w-4' />
                   View
                 </DropdownMenuItem>
-                {/* <DropdownMenuItem
-                onClick={() => handleEditCand(row)}
-                className='cursor-pointer text-green-600'
-              >
-                <Edit className='mr-2 h-4 w-4' />
-                Edit
-              </DropdownMenuItem> */}
+               
                 <DropdownMenuItem
                   onClick={() => handleDeleteCand(row)}
                   className='cursor-pointer text-red-600'
@@ -65,13 +59,13 @@ export const CandidColumns = (
     {
       accessorKey: 'id',
       header: '#ID',
-      size: 80, 
+      size: 80,
       cell: ({ row }) => (
         <div className="max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
           {`#DEV-${row.original?.id}`}
         </div>
       )
-      },
+    },
 
     {
       accessorKey: 'name',
@@ -91,44 +85,64 @@ export const CandidColumns = (
 
     {
       accessorKey: 'noticePeriod',
-      header: 'Notice Period',
+      header: () => (
+        <>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span>N.P.</span>
+            </TooltipTrigger>
+            <TooltipContent className='w-auto rounded-sm bg-[#b82025] text-sm'>
+              Notice Period
+            </TooltipContent>
+          </Tooltip>
+
+        </>
+      ),
       cell: ({ row }) => row.original?.noticePeriod
     },
     {
       accessorKey: 'totalExperience',
-      header: 'Experience',
+      header: () => (
+        <>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span>Exp.</span>
+            </TooltipTrigger>
+            <TooltipContent className='w-auto rounded-sm bg-[#b82025] text-sm'>
+              Total Experience
+            </TooltipContent>
+          </Tooltip>
+
+        </>
+      ),
       cell: ({ row }) => row.original?.totalExperience
     },
     {
       accessorKey: 'currentSalary',
       header: () => (
         <>
-          Current / Expected 
+          Current / Expected
         </>
       ),
       cell: ({ row }) => (
         <>
           <span>{row.original?.currentSalary}</span>
-   -
+          -
           <span>{row.original?.expectedSalary}</span>
 
         </>
       )
     },
 
-    {
-      accessorKey: '_currentLocation',
-      header: 'Current Location',
-      cell: ({ row }) => row.original?.meta?._currentLocation
-    },
+
     {
       accessorKey: '_designationApplyingFor',
       header: 'Skill',
       cell: ({ row }) => row.original?.meta?._designationApplyingFor
     },
     {
-      accessorKey: '_preferredShift',
-      header: 'Preferred Shift',
+      accessorKey: 'Shift',
+      header: 'Shift',
       cell: ({ row }) => {
         const data = row.original?.meta?._preferredShift?.replace(/[\[\]"]/g, '')
         return (
