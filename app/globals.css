@@ -2047,7 +2047,7 @@ width: 99%;
   position: absolute;
   padding: 0px;
   margin: 1px;
-  top : -25px
+  /* top : -25px */
 }
 .filttersSearch {
   position: absolute;
@@ -2061,4 +2061,14 @@ width: 99%;
 .flex.advanceSearchOuter {
   justify-content: space-between;
   margin: 7px 0;
+}
+
+
+.events-table td {
+  padding: 9px;
+  font-size: 14px;
+}
+.events-table th {
+  padding: 9px;
+  font-size: 15px;
 }

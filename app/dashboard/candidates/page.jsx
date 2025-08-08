@@ -110,10 +110,9 @@ const AllCandidates = () => {
     setDeleteOpenModal(true)
     setDeleteIndex(row?.original?.id)
   }
+  
   // edit table row
-  const handleEditCand = row => {
-    router.push(`/dashboard/walk-in/${row.original.id}`)
-  }
+  
   const deleteHandleModalClose = () => {
     setDeleteOpenModal(false)
   }
@@ -318,6 +317,7 @@ const AllCandidates = () => {
           form={form}
           inputType="text"
           className="colum-box-bg-change"
+          searchError="searchError"
         />
         <Search
           type="submit"
@@ -360,7 +360,6 @@ const AllCandidates = () => {
     loading={loading}
     columns={CandidColumns(
       handleDeleteCand,
-      handleEditCand,
       handlePreviewCand,
       handleSendWalkInForm
     )}

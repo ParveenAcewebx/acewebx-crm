@@ -86,13 +86,15 @@ function AllEventsDates() {
             accessorKey: 'eventDate',
             header: 'Birthday Date',
             id: 'eventDate',
-            cell: ({ row }) => <span>{row.original.eventDate}</span>
+           cell: ({ row }) => row.original.eventDate ?? ''
+
         },
         {
             accessorKey: 'daysLeft',
             header: 'Days Left',
             id: 'daysLeft',
-            cell: ({ row }) => <span>{getDaysLeft(row.original.eventDate)}</span>
+            cell: ({ row }) => getDaysLeft(row.original.eventDate) ?? ''
+
         },
         {
             accessorKey: 'actions',
@@ -184,12 +186,14 @@ function AllEventsDates() {
             header: 'Title',
             id: 'title',
             cell: ({ row }) => row?.original?.title
+
         },
         {
             accessorKey: 'daysLeft',
             header: 'Days Left',
             id: 'daysLeft',
-            cell: ({ row }) => <span>{getDaysLeft(row.original.fromDate)}</span>
+            cell: ({ row }) => getDaysLeft(row.original.fromDate) ?? ''
+
         },
         {
             accessorKey: 'fromDate',
@@ -211,7 +215,7 @@ function AllEventsDates() {
             size: 50,
             cell: ({ row }) => {
                 return (
-                    <div className='grid grid-cols-3 w-2 text-center'>
+                    <div className='grid grid-cols-3 w-2 text-center '>
                         <Eye className='text-blue-500 h-4 w-4' onClick={() => handleForupcomingEvents(row)} />
                     </div>
                 );
@@ -232,7 +236,7 @@ function AllEventsDates() {
                         </CardTitle>
                     </CardHeader>
 
-                    <CardContent className="p-4">
+                    <CardContent className="p-4 events-table">
                         {upcomingEvents?.length > 0 ? (
                             <DataTable
                                 columns={columnForupcomingEvents}
@@ -250,7 +254,7 @@ function AllEventsDates() {
                             <div className="!text-lg">Upcoming Birthdays</div>
                         </CardTitle>
                     </CardHeader>
-                    <CardContent className="p-4">
+                    <CardContent className="p-4 events-table">
                         {upcomingBirthdays.length > 0 ? (
                             <DataTable
                                 columns={columnForupcomingBirthdays}
@@ -271,7 +275,7 @@ function AllEventsDates() {
                         </CardTitle>
                     </CardHeader>
 
-                    <CardContent className="p-4">
+                    <CardContent className="p-4 events-table">
                         {upcomingAnniversaries.length > 0 ? (
                             <DataTable
                                 columns={columnForupcomingAnniversaries}
@@ -291,7 +295,7 @@ function AllEventsDates() {
                         </CardTitle>
                     </CardHeader>
 
-                    <CardContent className="p-4">
+                    <CardContent className="p-4 events-table">
                         {upcomingIncrements.length > 0 ? (
                             <DataTable
                                 columns={columnForupcomingIncrements}

@@ -227,7 +227,7 @@ function BirthdaysDetails() {
                         </CardTitle>
                     </CardHeader>
 
-                    <CardContent className='p-4'>
+                    <CardContent className='p-4 events-table'>
                         {upcomingBirthdays?.length > 0 ? (
                             <DataTable
                                 columns={columnForupcomingBirthdays}
@@ -251,7 +251,7 @@ function BirthdaysDetails() {
 
                         </CardTitle>
                     </CardHeader>
-                    <CardContent className='p-4'>
+                    <CardContent className='p-4 events-table'>
                         {PastBirthdays?.length > 0 ? (
                             <DataTable
                                 columns={columnForPastBirthdays}

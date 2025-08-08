@@ -214,7 +214,7 @@ function Page({ params }) {
 
           {/* Left Section */}
 
-          <div class="flex gap-4">
+          <div className="flex gap-4">
             <Card className='box'>
               <CardContent className='flex items-center gap-4'>
                 <img src='/images/pages/location.png' alt='trophy image' height={60} className='' />
@@ -272,7 +272,7 @@ function Page({ params }) {
 
 
           {/* Current & Expected Salary Card */}
-          <div class=" flex gap-4  ">
+          <div className=" flex gap-4  ">
             <Card className="">
               <CardContent className='flex justify-between items-center'>
                 {/* Current Salary */}

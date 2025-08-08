@@ -45,41 +45,41 @@ function AddEmployees() {
 
 
   const onSubmit = async (data) => {
-    console.log("datadata",data)
+    console.log("datadata", data)
     setLoader(true);
     try {
       const formData = new FormData();
-  
+
       Object.entries(data).forEach(([key, value]) => {
         const isDateField =
           key === 'dobDocument' ||
           key === 'dateOfJoining' ||
           key === 'dobCelebration' ||
           key === 'lastIncrementDate';
-  
+
         if (isDateField && value !== undefined) {
           formData.append(key, moment(value).format('YYYY-MM-DD'));
         } else {
           formData.append(key, value);
         }
       });
-  
+
       const response = await EmployeesApi.addEmployees(formData);
       if (response?.data?.status === true) {
         form.reset();
         setLoader(false);
         successMessage({ description: 'Added Successfully!' });
-        router.push('/dashboard/employee');
+        router.push('/dashboard/employees');
       }
     } catch (error) {
-      console.log("error",error)
+      console.log("error", error)
       setLoader(false);
       errorMessage(
         error?.message || 'Something went wrong while submitting the form.'
       );
     }
   };
-  
+
 
 
 
@@ -142,7 +142,7 @@ function AddEmployees() {
                     form={form}
                     inputFormat='YYYY-MM-DD'
                     className='datepickerouter'
-                    defaultMonth={new Date('1995-01-01')}
+                    defaultMonth={new Date('2006-01-01')}
                   />
                   <FormDatePicker
                     name='dobCelebration'
@@ -150,7 +150,7 @@ function AddEmployees() {
                     form={form}
                     inputFormat='YYYY-MM-DD'
                     className='datepickerouter'
-                    defaultMonth={new Date('1995-01-02')}
+                    defaultMonth={new Date('2006-01-02')}
                   />
                   <FormSelectField
                     name='gender'
@@ -177,7 +177,7 @@ function AddEmployees() {
 
               {/* Professional Info */}
               <fieldset className='custom-raduis bg-white font-semibold mb-9'>
-              <legend className="text-lg font-bold  ml-[25px]">Professional Information</legend>
+                <legend className="text-lg font-bold  ml-[25px]">Professional Information</legend>
                 <div className="multipart-field-two">
                   <FormInputField
                     name='companyEmail'
@@ -230,12 +230,25 @@ function AddEmployees() {
                     options={currentShiftOptions}
                     className='colum-box-bg-change'
                   />
+                  <FormInputField
+                    name='referenceNumber'
+                    label='Reference Number'
+                    form={form}
+                    inputType='number'
+                    className='colum-box-bg-change'
+                  /> <FormInputField
+                    name='employeeCode'
+                    label='Employee Code'
+                    form={form}
+                    inputType='text'
+                    className='colum-box-bg-change'
+                  />
                 </div>
               </fieldset>
 
               {/* Documents */}
               <fieldset className='custom-raduis bg-white font-semibold mb-9'>
-              <legend className="text-lg font-bold  ml-[25px]">Documents</legend>
+                <legend className="text-lg font-bold  ml-[25px]">Documents</legend>
                 <div className="multipart-field-one ">
                   <FormInputField
                     name='adharCard'
@@ -263,7 +276,7 @@ function AddEmployees() {
 
               {/* Banking Details */}
               <fieldset className='custom-raduis bg-white font-semibold mb-9'>
-              <legend className="text-lg font-bold  ml-[25px]">Banking Details</legend>
+                <legend className="text-lg font-bold  ml-[25px]">Banking Details</legend>
                 <div className="multipart-field-two">
                   <FormInputField
                     name='bankName'
@@ -291,7 +304,7 @@ function AddEmployees() {
 
               {/* Emergency Details */}
               <fieldset className='custom-raduis bg-white font-semibold mb-9'>
-              <legend className="text-lg font-bold  ml-[25px]">Emergency Contact Details</legend>
+                <legend className="text-lg font-bold  ml-[25px]">Emergency Contact Details</legend>
                 <div className="multipart-field-one">
                   <FormSelectField
                     name='bloodGroup'
