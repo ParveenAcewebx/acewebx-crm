@@ -117,8 +117,8 @@ const Skills = () => {
 
 
 
-       // filter :--
-       const form = useForm({
+    // filter :--
+    const form = useForm({
         resolver: yupResolver(SearchSkill),
         mode: 'onChange', // or 'onBlur' or 'onChange'
     });
@@ -155,13 +155,8 @@ const Skills = () => {
         <>
             <div>
                 <LayoutHeader pageTitle='Skills' />
-                <div className='mb-5 w-full flex justify-end items-center'>
-                    <Button className='site-button' onClick={handleOpenTagModal}>
-                        <Plus />
-                        Add Skills
-                    </Button>
-                </div>
-                <div className='flex justify-between items-center mb-5'>
+
+                <div className='flex justify-between items-center mb-6 mt-2'>
                     <div>
                         <FormProvider {...methods}>
                             <FormSelectField
@@ -172,31 +167,38 @@ const Skills = () => {
                             />
                         </FormProvider>
                     </div>
-
-                    <FormProvider {...form}>
-                        <div className="flex justify-between items-center gap-4">
-                            <div className='filters relative'>
-                                <div>
-                                    <FormInputField
-                                        name="search"
-                                        placeholder="Search...."
-                                        form={form}
-                                        inputType="text"
-                                        className="colum-box-bg-change col-span-2"
-                                        searchError="searchError"
-                                    />
-                                    <div className='filttersSearch'>
-                                        <Search
-                                            type="submit"
-                                            className="cursor-pointer "
-                                            onClick={() => handleSimpleFilter()}
+                    <div className='flex items-center gap-4 '>
+                        <FormProvider {...form}>
+                            <div className="flex justify-between items-center gap-4">
+                                <div className='filters relative'>
+                                    <div>
+                                        <FormInputField
+                                            name="search"
+                                            placeholder="Search...."
+                                            form={form}
+                                            inputType="text"
+                                            className="searchSizeChange"
+                                            searchError="searchError"
                                         />
+                                        <div className='filttersSearch'>
+                                            <Search
+                                                type="submit"
+                                                className="cursor-pointer "
+                                                onClick={() => handleSimpleFilter()}
+                                            />
+                                        </div>
                                     </div>
-                                </div>
 
+                                </div>
                             </div>
-                        </div>
-                    </FormProvider>
+                        </FormProvider>
+
+                        <Button className="cursor-pointer text-[#b82025] hover:text-[#fff] hover:bg-[#b82025] bg-transparent border border-[#b82025] text-[11px]" onClick={handleOpenTagModal}>
+                            <Plus />
+                            Add Skills
+                        </Button>
+                    </div>
+
                 </div>
 
                 <DataTable

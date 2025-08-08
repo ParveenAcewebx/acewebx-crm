@@ -196,10 +196,9 @@ useEffect(() => {
   // This code runs only on the client side
   if (typeof window !== "undefined" && window.localStorage) {
     const storedData = localStorage.getItem("skills");
-    if (storedData) {
-      const candidateData = JSON.parse(storedData); // Parse if storing JSON
-      const candidateOptions = candidateData?.candidate
-      ?.map((item) => ({
+    const skillDataOption = JSON.parse(storedData)
+    if (skillDataOption?.skills) {
+      const candidateOptions = skillDataOption?.skills?.candidate?.map((item) => ({
         label: item,
         value: item?.toLowerCase(), // assuming you meant to use lowercase
       }));

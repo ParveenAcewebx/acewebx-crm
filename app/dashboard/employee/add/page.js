@@ -35,7 +35,7 @@ import { EmployeeValidation } from '@/components/form-validations/EmployeeValida
 
 function AddEmployees() {
   const [loader, setLoader] = useState(false)
-  const [candEmail, setCandEmail] = useState("")
+  const [reportingManagerOptions, setReportingManagerOptions] = useState([])
   const router = useRouter()
   const form = useForm({
     mode: 'onChange',
@@ -45,25 +45,39 @@ function AddEmployees() {
 
 
   const onSubmit = async (data) => {
-    console.log("datadata", data)
+    console.log("datadata", data);
     setLoader(true);
     try {
       const formData = new FormData();
-
+  
+      const reportingManagerValue = JSON.stringify(data?.reportingManager);
+  
       Object.entries(data).forEach(([key, value]) => {
         const isDateField =
           key === 'dobDocument' ||
           key === 'dateOfJoining' ||
           key === 'dobCelebration' ||
           key === 'lastIncrementDate';
-
-        if (isDateField && value !== undefined) {
-          formData.append(key, moment(value).format('YYYY-MM-DD'));
+  
+        if (['reportingManager'].includes(key)) return;
+  
+        if (isDateField) {
+          if (key === 'dobCelebration') {
+            // Only for dobCelebration: send empty string if no date
+            formData.append(key, value ? moment(value).format('YYYY-MM-DD') : '');
+          } else {
+            // Other date fields: only append if value exists
+            if (value) {
+              formData.append(key, moment(value).format('YYYY-MM-DD'));
+            }
+          }
         } else {
-          formData.append(key, value);
+          formData.append(key, value ?? '');
         }
       });
-
+  
+      formData.append('reportingManager', reportingManagerValue);
+  
       const response = await EmployeesApi.addEmployees(formData);
       if (response?.data?.status === true) {
         form.reset();
@@ -72,14 +86,14 @@ function AddEmployees() {
         router.push('/dashboard/employees');
       }
     } catch (error) {
-      console.log("error", error)
+      console.log("error", error);
       setLoader(false);
       errorMessage(
         error?.message || 'Something went wrong while submitting the form.'
       );
     }
   };
-
+  
 
 
 
@@ -89,6 +103,26 @@ function AddEmployees() {
 
 
   const isOther = form.watch("emergencyContactRelationship")
+
+
+  //  localReportingManage :--
+
+  useEffect(() => {
+    // This code runs only on the client side
+    if (typeof window !== "undefined" && window.localStorage) {
+      const storedData = localStorage.getItem("globalSettings");
+      const skillDataOption = JSON.parse(storedData)
+      if (skillDataOption?.reportingManager) {
+        const candidateOptions = skillDataOption?.reportingManager?.map((item) => ({
+          value: item.email,         // or item.id if you have IDs
+          label: item.name,         // or item.name if you have names
+        }));
+        setReportingManagerOptions(candidateOptions);
+
+      }
+    }
+  }, []);
+
 
   return (
     <>
@@ -206,7 +240,9 @@ function AddEmployees() {
                     form={form}
                     inputFormat='YYYY-MM-DD'
                     className='datepickerouter'
-                    defaultMonth={new Date()}
+                    defaultMonth={ new Date()}
+                    disabled={{ before: new Date('2016-12-31') }}
+
                   />
                   <FormDatePicker
                     name='lastIncrementDate'
@@ -241,6 +277,13 @@ function AddEmployees() {
                     label='Employee Code'
                     form={form}
                     inputType='text'
+                    className='colum-box-bg-change'
+                  />
+                  <FormMultiSelectField
+                    name='reportingManager'
+                    label='Reporting Manager'
+                    form={form}
+                    options={reportingManagerOptions}
                     className='colum-box-bg-change'
                   />
                 </div>

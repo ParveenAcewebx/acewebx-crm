@@ -8,7 +8,7 @@ function GlobelLocalStoreData() {
     // Save data to localStorage when it changes
     useEffect(() => {
         if (typeof window !== "undefined" && data !== null) {
-            localStorage.setItem("skills", JSON.stringify(data));
+            localStorage.setItem("globalSettings", JSON.stringify(data));
         }
     }, [data]);
 
@@ -16,18 +16,18 @@ function GlobelLocalStoreData() {
         try {
             const response = await SkillApi.globalSkillGetApi();
             if (response.status === 200) {
-                const skills = response?.data?.data?.skills || [];
-                setData(skills);
-                localStorage.setItem("skills", JSON.stringify(skills));
+                const globalSettings = response?.data?.data || [];
+                setData(globalSettings);
+                localStorage.setItem("globalSettings", JSON.stringify(globalSettings));
             }
         } catch (error) {
-            console.error('Error fetching skills:', error);
+            console.error('Error fetching globalSettings:', error);
         }
     };
 
     useEffect(() => {
         if (typeof window !== "undefined") {
-            const localSkills = localStorage.getItem("skills");
+            const localSkills = localStorage.getItem("globalSettings");
             if (localSkills) {
                 setData(JSON.parse(localSkills));
             } else {

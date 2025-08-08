@@ -18,6 +18,7 @@ import { SearchValidation } from '@/components/form-validations/SearchValidation
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import moment from 'moment'
+import { Button } from '@/components/ui/button'
 
 const AllCandidates = () => {
   useDocumentTitle('Dev Candidate')
@@ -110,9 +111,9 @@ const AllCandidates = () => {
     setDeleteOpenModal(true)
     setDeleteIndex(row?.original?.id)
   }
-  
+
   // edit table row
-  
+
   const deleteHandleModalClose = () => {
     setDeleteOpenModal(false)
   }
@@ -203,7 +204,7 @@ const AllCandidates = () => {
         ? moment(data.lastContected.endDate).format('YYYY-MM-DD')
         : "",
       skill: data?.skill,
-      preferredShift : data?.preferredShift
+      preferredShift: data?.preferredShift
     }
 
     setConnectStartDate(newData.connectStartDate)
@@ -269,25 +270,24 @@ const AllCandidates = () => {
 
   const [skillsData, setSkillsData] = useState([])
 
-  
- useEffect(() => {
 
+
+  useEffect(() => {
     // This code runs only on the client side
     if (typeof window !== "undefined" && window.localStorage) {
-      const storedData = localStorage.getItem("skills");
-      if (storedData) {
-        const candidateData = JSON.parse(storedData); // Parse if storing JSON
-        const candidateOptions = candidateData?.candidate
-        ?.map((item) => ({
+      const storedData = localStorage.getItem("globalSettings");
+      const skillDataOption = JSON.parse(storedData)
+      if (skillDataOption?.skills) {
+        const candidateOptions = skillDataOption?.skills?.candidate?.map((item) => ({
           label: item,
           value: item?.toLowerCase(), // assuming you meant to use lowercase
         }));
-        console.log("candidateData",)
         setSkillsData(candidateOptions);
-  
+
       }
     }
   }, []);
+
 
   return (
     <>
@@ -296,82 +296,82 @@ const AllCandidates = () => {
       </div>
       {/* Filters */}
       <div className="flex justify-between items-center mb-4">
-  {/* Left: Length Selector */}
-  <FormProvider {...methods}>
-    <FormSelectField
-      name="length"
-      className="h-10 w-28"
-      form={methods}
-      options={LengthData}
-    />
-  </FormProvider>
+        {/* Left: Length Selector */}
+        <FormProvider {...methods}>
+          <FormSelectField
+            name="length"
+            className="h-10 w-28"
+            form={methods}
+            options={LengthData}
+          />
+        </FormProvider>
 
-  {/* Right: Search + Buttons */}
-  <FormProvider {...form}>
-    <div className="flex items-center gap-4">
-      {/* Search Bar */}
-      <div className="relative">
-        <FormInputField
-          name="search"
-          placeholder="Email/Name/Phone"
-          form={form}
-          inputType="text"
-          className="colum-box-bg-change"
-          searchError="searchError"
-        />
-        <Search
-          type="submit"
-          className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
-          onClick={handleSimpleFilter}
+        {/* Right: Search + Buttons */}
+        <FormProvider {...form}>
+          <div className="flex items-center gap-4">
+            {/* Search Bar */}
+            <div className="relative">
+              <FormInputField
+                name="search"
+                placeholder="Email/Name/Phone"
+                form={form}
+                inputType="text"
+                className="searchSizeChange"
+                searchError="searchError"
+              />
+              <Search
+                type="submit"
+                className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
+                onClick={handleSimpleFilter}
+              />
+            </div>
+
+            {/* Advance Search */}
+            <Button
+              onClick={AddvanceOpenModal}
+              className="cursor-pointer text-[#b82025] hover:text-[#fff] hover:bg-[#b82025] bg-transparent border border-[#b82025] text-[11px]"
+            >
+              Advance Search
+            </Button>
+
+            {/* Export */}
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  onClick={handleDownloadCSV}
+                  className="cursor-pointer text-[#231f20] hover:text-[#fff] hover:bg-[#231f20] bg-transparent border border-[#231f20] flex gap-2 text-[11px]"
+                >
+                  {/* <Import /> */}Export
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent className="w-auto rounded-sm bg-[#b82025] text-sm">
+                Download CSV
+              </TooltipContent>
+            </Tooltip>
+          </div>
+        </FormProvider>
+      </div>
+
+      {/* Table Starts Below */}
+      <div>
+        <DataTable
+
+          data={getList?.candidates}
+          loading={loading}
+          columns={CandidColumns(
+            handleDeleteCand,
+            handlePreviewCand,
+            handleSendWalkInForm
+          )}
+          totalRecord={totalRecord}
+          page={page}
+          setPage={setPage}
+          length={length}
         />
       </div>
 
-      {/* Advance Search */}
-      <p
-        onClick={AddvanceOpenModal}
-        className="cursor-pointer text-red-400 hover:text-red-500"
-      >
-        Advance Search
-      </p>
-
-      {/* Export */}
-      <Tooltip>
-        <TooltipTrigger>
-          <p
-            onClick={handleDownloadCSV}
-            className="cursor-pointer text-red-400 hover:text-red-500 flex gap-2"
-          >
-            <Import />
-          </p>
-        </TooltipTrigger>
-        <TooltipContent className="w-auto rounded-sm bg-[#b82025] text-sm">
-          Download CSV
-        </TooltipContent>
-      </Tooltip>
-    </div>
-  </FormProvider>
-</div>
-
-{/* Table Starts Below */}
-<div className="mt-2">
-<DataTable
-    
-    data={getList?.candidates}
-    loading={loading}
-    columns={CandidColumns(
-      handleDeleteCand,
-      handlePreviewCand,
-      handleSendWalkInForm
-    )}
-    totalRecord={totalRecord}
-    page={page}
-    setPage={setPage}
-    length={length}
-  />
-</div>
-
       {/* <div className="w-full overflow-x-auto"> */}
-    
+
       {/* </div> */}
 
       <DialogBox
