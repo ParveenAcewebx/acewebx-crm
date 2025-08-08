@@ -18,6 +18,7 @@ import { SearchValidation } from '@/components/form-validations/SearchValidation
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import moment from 'moment'
+import { Button } from '@/components/ui/button'
 
 const AllSalesCandidates = () => {
   useDocumentTitle('Sales Candidate')
@@ -272,18 +273,15 @@ const AllSalesCandidates = () => {
 
 
   useEffect(() => {
-
     // This code runs only on the client side
     if (typeof window !== "undefined" && window.localStorage) {
-      const storedData = localStorage.getItem("skills");
-      if (storedData) {
-        const candidateData = JSON.parse(storedData); // Parse if storing JSON
-        const candidateOptions = candidateData?.salesCandidate
-          ?.map((item) => ({
-            label: item,
-            value: item?.toLowerCase(), // assuming you meant to use lowercase
-          }));
-        console.log("candidateData",)
+      const storedData = localStorage.getItem("globalSettings");
+      const skillDataOption = JSON.parse(storedData)
+      if (skillDataOption?.skills) {
+        const candidateOptions = skillDataOption?.skills?.salesCandidate?.map((item) => ({
+          label: item,
+          value: item?.toLowerCase(), // assuming you meant to use lowercase
+        }));
         setSkillsData(candidateOptions);
 
       }
@@ -316,38 +314,39 @@ const AllSalesCandidates = () => {
           <div className="flex items-center gap-4">
             {/* Search Bar */}
             <div className="relative">
-              <FormInputField
+              <FormInputField                                                                                                                                                                               
                 name="search"
                 placeholder="Email/Name/Phone"
                 form={form}
                 inputType="text"
                 searchError="searchError"
-                className="colum-box-bg-change"
+                className="searchSizeChange"
               />
               <Search
                 type="submit"
                 className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
-                onClick={handleSimpleFilter}
+                onClick={handleSimpleFilter}                                                                                                                                                                                                                                                                                                                      
               />
             </div>
 
             {/* Advance Search */}
-            <p
+            <Button
               onClick={() => AddvanceOpenModal()}
-              className="cursor-pointer text-red-400 hover:text-red-500"
+          className="cursor-pointer text-[#b82025] hover:text-[#fff] hover:bg-[#b82025] bg-transparent border border-[#b82025] text-[11px]"
+
             >
               Advance Search
-            </p>
+            </Button>
 
             {/* Export Button */}
             <Tooltip>
-              <TooltipTrigger>
-                <p
+              <TooltipTrigger asChild>
+                <Button
                   onClick={handleDownloadCSV}
-                  className="cursor-pointer text-red-400 hover:text-red-500 flex gap-2"
+                 className="cursor-pointer text-[#231f20] hover:text-[#fff] hover:bg-[#231f20] bg-transparent border border-[#231f20] flex gap-2 text-[11px]"
                 >
-                  <Import />
-                </p>
+                  {/* <Import /> */} Export
+                </Button>
               </TooltipTrigger>
               <TooltipContent className="w-auto rounded-sm bg-[#b82025] text-sm">
                 Download CSV

@@ -7,10 +7,11 @@ export const EmployeeValidation = Yup.object().shape({
   phone: Yup.string()
     .required('Phone number is required')
     .matches(/^[0-9]{10}$/, 'Phone number must be 10 digits'),
-  alternatePhone: Yup.string()
-    .optional()
-    .matches(/^[0-9]{10}$/, 'Alternate phone must be 10 digits'),
-  dobDocument: Yup.date()
+    // alternatePhone: Yup.string()
+    // .nullable()
+    // .notRequired()
+    // .matches(/^[0-9]{10}$/, 'Alternate phone must be 10 digits'),
+    dobDocument: Yup.date()
     .transform((value, originalValue) => {
       return originalValue === "" ? null : value;
     })

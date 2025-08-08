@@ -244,29 +244,10 @@ const skill =  JSON.stringify(data?.skill)
   }, [id])
 
   const [skillsData , setSkillsData]= useState([])
-    // fetch skill list
-  //   const fetchAllSkill = async () => {
-  //     try {
-  //       const response = await SkillApi.getAllSkillByType("candidate")
-  //       if (response.status === 200) {
-  //         const candidateOptions = response?.data?.data?.map((item) => ({
-  //             label: item.title,
-  //             value: item.title.toLowerCase(), // assuming you meant to use lowercase
-  //           }));
-    
-  //         setSkillsData(candidateOptions);
-  //       }
-  //     } catch (error) {
-  //       console.log('error', error);
-  //     } 
-  //   };
-    
-  // useEffect(() => {
-  //     fetchAllSkill()
-  // }, [])
+
   useEffect(() => {
     if (typeof window !== "undefined" && window.localStorage) {
-      const storedData = localStorage.getItem("skills");
+      const storedData = localStorage.getItem("globalSettings");
   
       if (storedData && storedData !== "undefined") {
         try {

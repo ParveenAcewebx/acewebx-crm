@@ -23,7 +23,7 @@ export default async function AdminDashboardLayout({ children }) {
           <AppSidebar />
           <UserContextProvider>
             <SidebarInset className='theme-bg-light-rgba'>
-              <div className='mx-5 my-5 flex flex-1 flex-col gap-2 rounded-sm p-4 mt-20'>
+              <div className='mx-5 my-5 flex flex-1 flex-col gap-2 rounded-sm mt-20'>
                 <Toaster />
                 {children}
               </div>

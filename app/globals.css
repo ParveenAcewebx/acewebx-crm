@@ -2072,3 +2072,12 @@ width: 99%;
   padding: 9px;
   font-size: 15px;
 }
+button#\:rb\:-form-item {
+  font-size: 11px;
+}
+
+.searchSizeChange {
+  background-color: #fff !important;
+  width: 500px;
+  font-size: 11px;
+}

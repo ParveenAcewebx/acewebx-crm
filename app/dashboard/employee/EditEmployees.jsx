@@ -21,9 +21,12 @@ import { Loader } from 'lucide-react'
 import EmployeesApi from '@/services/cadidateApis/employees/EmployeesApi'
 import CommonLayout from '@/components/CommonLayouyt'
 import { EmployeeValidation } from '@/components/form-validations/EmployeeValidation'
+import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
 
 function EditEmployees({ editId }) {
     const [loader, setLoader] = useState(false)
+    const [reportingManagerOptions, setReportingManagerOptions] = useState([])
+
     const router = useRouter()
     const form = useForm({
         mode: 'onChange',
@@ -32,52 +35,61 @@ function EditEmployees({ editId }) {
     })
 
 
-    const onSubmit = async data => {
-        setLoader(true)
+    const onSubmit = async (data) => {
+        console.log("datadata", data);
+        setLoader(true);
+      
         try {
-            const formData = new FormData()
-
-            // Need only those keys which are touched
-            const dirtyFields = form.formState.dirtyFields;
-
-            const updateFieldsValue = Object.keys(dirtyFields);
-            if (updateFieldsValue) {
-                formData.append('updateField', JSON.stringify(updateFieldsValue))
+          const formData = new FormData();
+          const reportingManagerValue = JSON.stringify(data?.reportingManager);
+      
+          Object.entries(data).forEach(([key, value]) => {
+            const isDateField =
+              key === 'dobDocument' ||
+              key === 'dateOfJoining' ||
+              key === 'dobCelebration' ||
+              key === 'lastIncrementDate';
+      
+            if (key === 'reportingManager') return; // skip, append later
+      
+            if (isDateField) {
+                if (key === 'dobCelebration') {
+                    // Only format if the date is valid
+                    if (moment(value, moment.ISO_8601, true).isValid()) {
+                      formData.append(key, moment(value).format('YYYY-MM-DD'));
+                    } else {
+                      formData.append(key, '');
+                    }
+                  }
+                  else if (value) {
+                // Other dates → only append if value exists
+                formData.append(key, moment(value).format('YYYY-MM-DD'));
+              }
+            } else {
+              formData.append(key, value ?? '');
             }
-
-            Object.entries(data).forEach(([key, value]) => {
-                const isDateField =
-                    key === 'dobDocument' ||
-                    key === 'dateOfJoining' ||
-                    key === 'dobCelebration' ||
-                    key === 'lastIncrementDate';
-
-                if (isDateField && value !== undefined) {
-                    formData.append(key, moment(value).format('YYYY-MM-DD'));
-                } else {
-                    formData.append(key, value);
-                }
-            });
-
-            const response = await EmployeesApi.editEmployees(editId, formData)
-            if (response?.data?.status == true) {
-                form.reset()
-                setLoader(false)
-                successMessage({ description: 'Updated SuccessFully!' })
-                router.push('detail')
-            }
+          });
+      
+          // Append reportingManager separately
+          formData.append('reportingManager', reportingManagerValue);
+      
+          const response = await EmployeesApi.editEmployees(editId, formData);
+      
+          if (response?.data?.status === true) {
+            form.reset();
+            setLoader(false);
+            successMessage({ description: 'Added Successfully!' });
+            router.push('/dashboard/employees');
+          }
         } catch (error) {
-            setLoader(false)
-            console.log("error:---------> for error formate check", error)
-            setLoader(false)
-            errorMessage(
-                error?.message || 'Something went wrong while submitting the form.'
-            )
-
+          console.log("error", error);
+          setLoader(false);
+          errorMessage(
+            error?.message || 'Something went wrong while submitting the form.'
+          );
         }
-    }
-
-
+      };
+      
 
     const candidateDataGetById = async (editId) => {
         try {
@@ -130,6 +142,8 @@ function EditEmployees({ editId }) {
                 };
 
                 form.reset(dataForSet);
+                form?.setValue('reportingManager', JSON.parse(data?.reportingManager))
+
             }
         } catch (error) {
             console.error('Submission Error:', error);
@@ -150,6 +164,24 @@ function EditEmployees({ editId }) {
 
     const isOther = form.watch("emergencyContactRelationship")
 
+
+    //  localReportingManage :--
+
+    useEffect(() => {
+        // This code runs only on the client side
+        if (typeof window !== "undefined" && window.localStorage) {
+            const storedData = localStorage.getItem("globalSettings");
+            const skillDataOption = JSON.parse(storedData)
+            if (skillDataOption?.reportingManager) {
+                const candidateOptions = skillDataOption?.reportingManager?.map((item) => ({
+                    value: item.email,         // or item.id if you have IDs
+                    label: item.name,         // or item.name if you have names
+                }));
+                setReportingManagerOptions(candidateOptions);
+
+            }
+        }
+    }, []);
     return (
         <>
             <div className='mobile-view items-right relative flex min-h-screen w-full flex-col justify-start'>
@@ -267,6 +299,8 @@ function EditEmployees({ editId }) {
                                         inputFormat='YYYY-MM-DD'
                                         className='datepickerouter'
                                         defaultMonth={new Date()}
+                                        disabled={{ before: new Date('2016-12-31') }}
+
                                     />
                                     <FormDatePicker
                                         name='lastIncrementDate'
@@ -301,6 +335,13 @@ function EditEmployees({ editId }) {
                                         label='Employee Code'
                                         form={form}
                                         inputType='text'
+                                        className='colum-box-bg-change'
+                                    />
+                                    <FormMultiSelectField
+                                        name='reportingManager'
+                                        label='Reporting Manager'
+                                        form={form}
+                                        options={reportingManagerOptions}
                                         className='colum-box-bg-change'
                                     />
                                 </div>
