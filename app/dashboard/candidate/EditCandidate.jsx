@@ -87,8 +87,8 @@ function EditCandidate({ editId }) {
 
       setLoader(false)
       errorMessage(
-        error?.message || 'Something went wrong while submitting the form.'
-      )
+        { description: error?.message }
+      );
 
     }
   }
@@ -166,8 +166,8 @@ function EditCandidate({ editId }) {
     } catch (error) {
       console.error('Submission Error:', error)
       errorMessage(
-        error?.message || 'Something went wrong while submitting the form.'
-      )
+        { description: error?.message }
+      );
     }
   }
 
