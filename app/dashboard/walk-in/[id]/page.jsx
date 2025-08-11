@@ -171,31 +171,12 @@ function EditCandidateDetails() {
 
 
   const [skillsData , setSkillsData]= useState([])
-  // fetch skill list
-//   const fetchAllSkill = async () => {
-//     try {
-//       const response = await SkillApi.getAllSkillByType("candidate")
-//       if (response.status === 200) {
-//         const candidateOptions = response?.data?.data?.map((item) => ({
-//             label: item.title,
-//             value: item.title.toLowerCase(), // assuming you meant to use lowercase
-//           }));
-  
-//         setSkillsData(candidateOptions);
-//       }
-//     } catch (error) {
-//       console.log('error', error);
-//     } 
-//   };
-  
-// useEffect(() => {
-//     fetchAllSkill()
-// }, [])
+
 
 useEffect(() => {
   // This code runs only on the client side
   if (typeof window !== "undefined" && window.localStorage) {
-    const storedData = localStorage.getItem("skills");
+    const storedData = localStorage.getItem("globalSettings");
     const skillDataOption = JSON.parse(storedData)
     if (skillDataOption?.skills) {
       const candidateOptions = skillDataOption?.skills?.candidate?.map((item) => ({
