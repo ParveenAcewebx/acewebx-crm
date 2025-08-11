@@ -38,7 +38,7 @@ function EditSalesJobApplication({ editId }) {
     resolver: yupResolver(SalesCandidateValidationEdit)
   })
 
-// url to convert into file object:-----
+  // url to convert into file object:-----
   const urlToFile = async (url, fileName) => {
     const response = await fetch(url)
     const blob = await response.blob()
@@ -104,7 +104,7 @@ function EditSalesJobApplication({ editId }) {
       const preferred = JSON.stringify(data?.preferredShift)
       Object.entries(data).forEach(([key, value]) => {
         // Skip these keys entirely
-        if (['preferredShift', 'businessMethods', 'leadPlatforms','skill'].includes(key)) return;
+        if (['preferredShift', 'businessMethods', 'leadPlatforms', 'skill'].includes(key)) return;
 
         // Format 'joiningDate', append everything else as-is
         if (key === 'joiningDate') {
@@ -116,7 +116,7 @@ function EditSalesJobApplication({ editId }) {
 
       formData.append('businessMethods', JSON.stringify(data?.businessMethods))
       formData.append('leadPlatforms', JSON.stringify(data?.leadPlatforms))
-      formData.append("skill",JSON.stringify(data?.skill))
+      formData.append("skill", JSON.stringify(data?.skill))
       formData.append('preferredShift', preferred)
 
       const response = await SalesCandidate.updateSalesCandidate(id, formData)
@@ -147,44 +147,25 @@ function EditSalesJobApplication({ editId }) {
   }, [id])
 
 
-  const [skillsData , setSkillsData]= useState([])
-  // fetch skill list
-//   const fetchAllSkill = async () => {
-//     try {
-//       const response = await SkillApi.getAllSkillByType("candidateSales")
-//       if (response.status === 200) {
-//         const candidateOptions = response?.data?.data?.map((item) => ({
-//             label: item.title,
-//             value: item.title.toLowerCase(), // assuming you meant to use lowercase
-//           }));
-  
-//         setSkillsData(candidateOptions);
-//       }
-//     } catch (error) {
-//       console.log('error', error);
-//     } 
-//   };
-  
-// useEffect(() => {
-//     fetchAllSkill()
-// }, [])
+  const [skillsData, setSkillsData] = useState([])
 
 
-useEffect(() => {
-  // This code runs only on the client side
-  if (typeof window !== "undefined" && window.localStorage) {
-    const storedData = localStorage.getItem("skills");
-    const skillDataOption = JSON.parse(storedData)
-    if (skillDataOption?.skills) {
-      const candidateOptions = skillDataOption?.skills?.salesCandidate?.map((item) => ({
-        label: item,
-        value: item?.toLowerCase(), // assuming you meant to use lowercase
-      }));
-      setSkillsData(candidateOptions);
 
+  useEffect(() => {
+    // This code runs only on the client side
+    if (typeof window !== "undefined" && window.localStorage) {
+      const storedData = localStorage.getItem("skills");
+      const skillDataOption = JSON.parse(storedData)
+      if (skillDataOption?.skills) {
+        const candidateOptions = skillDataOption?.skills?.salesCandidate?.map((item) => ({
+          label: item,
+          value: item?.toLowerCase(), // assuming you meant to use lowercase
+        }));
+        setSkillsData(candidateOptions);
+
+      }
     }
-  }
-}, []);
+  }, []);
   return (
     <div className='mobile-view items-right relative flex min-h-screen w-full flex-col justify-start '>
       <div className=''>
@@ -199,21 +180,21 @@ useEffect(() => {
                 <div class="multipart-field-one">
                   <FormInputField
                     name='name'
-                    label='Full Name'
+                    label='Full Name*'
                     form={form}
                     inputType='text'
                     className='colum-box-bg-change'
                   />
                   <FormInputField
                     name='email'
-                    label='Email'
+                    label='Email*'
                     form={form}
                     inputType='email'
                     className='colum-box-bg-change'
                   />
                   <FormDatePicker
                     name='joiningDate'
-                    label='When can you join? '
+                    label='When can you join?*'
                     form={form}
                     inputFormat='YYYY-MM-DD'
                     className='datepickerouter'
@@ -222,7 +203,7 @@ useEffect(() => {
                   />
                   <FormInputField
                     name='phone'
-                    label='Contact Number'
+                    label='Contact Number*'
                     form={form}
                     inputType='number'
                     className='colum-box-bg-change'
@@ -318,16 +299,16 @@ useEffect(() => {
                 </div>
               </fieldset>
 
-              <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'> 
-              <FormMultiSelectField
-                          name="skill"
-                          form={form}
-                          label="Skills"
-                          options={skillsData}
-                          placeholder="Enter Your Skills"
-                          className="mt-2"
-                        /></div>     
-                <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
+              <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
+                <FormMultiSelectField
+                  name="skill"
+                  form={form}
+                  label="Skills"
+                  options={skillsData}
+                  placeholder="Enter Your Skills"
+                  className="mt-2"
+                /></div>
+              <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
                 <FormTextArea
                   name='reasonForLeaving'
                   label='Reason for leaving your current company?'
@@ -372,7 +353,7 @@ useEffect(() => {
                   name='resume'
                   control={form.control}
                   form={form}
-                  label='Drop Resume here or click to upload'
+                  label='Drop Resume here or click to upload*'
                 />
               </div>
 

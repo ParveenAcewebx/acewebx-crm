@@ -215,7 +215,7 @@ function EditCandidate({ editId }) {
               <div class="multipart-field-one">
                 <FormInputField
                   name='name'
-                  label='Full Name'
+                  label='Full Name*'
                   form={form}
                   inputType='text'
                   className='colum-box-bg-change'
@@ -224,14 +224,14 @@ function EditCandidate({ editId }) {
 
                 <FormInputField
                   name='email'
-                  label='Email'
+                  label='Email*'
                   form={form}
                   inputType='email'
                   className='colum-box-bg-change'
                 />
                 <FormDatePicker
                   name='dob'
-                  label='Date of Birth'
+                  label='Date of Birth*'
                   form={form}
                   inputFormat='YYYY-MM-DD'
                   className='datepickerouter'
@@ -240,21 +240,21 @@ function EditCandidate({ editId }) {
                 />
                 <FormSelectField
                   name='gender'
-                  label='Gender'
+                  label='Gender*'
                   form={form}
                   options={GenderData}
                   className='colum-box-bg-change'
                 />
                 <FormInputField
                   name='phone'
-                  label='Contact Number'
+                  label='Contact Number*'
                   form={form}
                   inputType='number'
                   className='colum-box-bg-change'
                 />
                 <FormInputField
                   name='currentLocation'
-                  label='Current Location'
+                  label='Current Location*'
                   form={form}
                   inputType='text'
                   className='colum-box-bg-change'
@@ -290,14 +290,14 @@ function EditCandidate({ editId }) {
               <div class="multipart-field-two">
                 <FormSelectField
                   name='designationApplyingFor'
-                  label='Designation Applying For'
+                  label='Designation Applying For*'
                   form={form}
                   options={designationOptions}
                   className='colum-box-bg-change'
                 />
                 <FormSelectField
                   name='totalExperience'
-                  label='Total Experience'
+                  label='Total Experience*'
                   form={form}
                   options={totalExperienceOptions}
                   className='colum-box-bg-change'
@@ -305,28 +305,28 @@ function EditCandidate({ editId }) {
 
                 <FormInputField
                   name='currentSalary'
-                  label='Current Salary (Monthly)'
+                  label='Current Salary (Monthly)*'
                   form={form}
                   inputType='number'
                   className='colum-box-bg-change'
                 />
                 <FormInputField
                   name='expectedSalary'
-                  label='Expected Salary (Monthly)'
+                  label='Expected Salary (Monthly)*'
                   form={form}
                   inputType='number'
                   className='colum-box-bg-change'
                 />
                 <FormInputField
                   name='currentCompanyName'
-                  label='Current Company'
+                  label='Current Company*'
                   form={form}
                   inputType='text'
                   className='colum-box-bg-change'
                 />
                 <FormInputField
                   name='noticePeriod'
-                  label='Notice Period (Days)'
+                  label='Notice Period (Days)*'
                   form={form}
                   inputType='number'
                   className='colum-box-bg-change'
@@ -357,7 +357,7 @@ function EditCandidate({ editId }) {
                 />
                 <FormMultiSelectField
                   name='preferredShift'
-                  label='Preferred Shift'
+                  label='Preferred Shift*'
                   form={form}
                   options={preferredShiftOptions}
                   className='colum-box-bg-change !w-[100%]'
@@ -479,7 +479,7 @@ function EditCandidate({ editId }) {
                 name='resume'
                 control={form.control}
                 form={form}
-                label='Drop Resume here or click to upload'
+                label='Drop Resume here or click to upload*'
               />
             </div>
 

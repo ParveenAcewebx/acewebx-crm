@@ -17,6 +17,9 @@ import FormSelectField from '@/components/share/form/FormSelect'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { SearchEmployee, SearchValidation } from '@/components/form-validations/SearchValidation'
 import { LengthData } from '@/components/constants/StaticData'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import AddvanceFilterDeveloper from '@/components/modal/AddvanceFilterDeveloper'
+import EmployeeCSVDownload from '@/components/modal/EmployeeCSVDownload'
 
 const EventList = () => {
     const [getList, setList] = useState([])
@@ -95,6 +98,7 @@ const EventList = () => {
         })
         return () => subscription.unsubscribe()
     }, [methods, totalRecord])
+
     const handleOpenTagModal = () => {
         router.push('/dashboard/employee/add')
         // setSubmitOpenModal(true)
@@ -141,7 +145,35 @@ const EventList = () => {
     }
 
 
+    const [selectedDcsValue, setSelectedDcsValue] = useState(null) // Store DCS value for modal
+    const [dcsModalOpen, setDcsModalOpen] = useState(false) // State for DCS modal
 
+
+    const AddvanceOpenModal = row => {
+        setSelectedDcsValue(row)
+        setDcsModalOpen(true)
+    }
+
+
+    const handleDownloadCSV = async (data) => {
+        const formData = new FormData()
+
+        const file = data?.file
+        if (file) {
+            formData.append('file', file)
+        }
+
+        try {
+            const response = await EmployeesApi.employeeCSVList(formData);
+            console.log("response", response)
+
+            // if(){}
+            fetchTagList()
+            setDcsModalOpen(false)
+        } catch (error) {
+            console.error("Download failed", error);
+        }
+    };
 
 
 
@@ -150,12 +182,7 @@ const EventList = () => {
         <>
             <div>
                 <LayoutHeader pageTitle='Employees' />
-                {/* <div className='mb-3 w-full flex justify-end items-center'>
-                    <Button className='site-button' onClick={handleOpenTagModal}>
-                        <Plus />
-                        Add Employees
-                    </Button>
-                </div> */}
+
 
                 <div className='flex justify-between items-center mb-5'>
                     <div>
@@ -169,42 +196,56 @@ const EventList = () => {
                         </FormProvider>
                     </div>
 
-                    <FormProvider {...form}>
-                        <div className="flex justify-between items-center gap-4">
-                            <div className='filters relative'>
-                                <div>
-                                    <FormInputField
-                                        name="search"
-                                        placeholder="Search...."
-                                        form={form}
-                                        inputType="text"
-                                        className="searchSizeChange"
-                                        searchError="searchError"
-                                        />
-                                    <div className='filttersSearch'>
-                                        <Search
-                                            type="submit"
-                                            className="cursor-pointer "
-                                            onClick={() => handleSimpleFilter()}
-                                        />
-                                    </div>
-                                </div>
 
+                    {/* Right: Search + Advance Search + Export */}
+                    <FormProvider {...form}>
+                        <div className="flex items-center gap-4">
+                            {/* Search Bar */}
+                            <div className="relative">
+                                <FormInputField
+                                    name="search"
+                                    placeholder="Email/Name/Phone"
+                                    form={form}
+                                    inputType="text"
+                                    searchError="searchError"
+                                    className="searchSizeChange"
+                                />
+                                <Search
+                                    type="submit"
+                                    className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
+                                    onClick={handleSimpleFilter}
+                                />
                             </div>
+
+
+                            {/* Export Button */}
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Button
+                                        onClick={AddvanceOpenModal}
+                                        className="cursor-pointer text-[#231f20] hover:text-[#fff] hover:bg-[#231f20] bg-transparent border border-[#231f20] flex gap-2 text-[11px]"
+                                    >
+                                        {/* <Import /> */} Import
+                                    </Button>
+                                </TooltipTrigger>
+                                <TooltipContent className="w-auto rounded-sm bg-[#b82025] text-sm">
+                                    Import CSV
+                                </TooltipContent>
+                            </Tooltip>
                         </div>
                     </FormProvider>
                 </div>
                 <div className='overflowX-auto'>
 
-                <DataTable
-                    columns={EmployeeColumn(handleDeleteTaskTag, handleEditTaskTag)}
-                    data={getList}
-                    totalRecord={totalRecord}
-                    page={page}
-                    setPage={setPage}
-                    length={length}
-                    loading={loading}
-                />
+                    <DataTable
+                        columns={EmployeeColumn(handleDeleteTaskTag, handleEditTaskTag)}
+                        data={getList}
+                        totalRecord={totalRecord}
+                        page={page}
+                        setPage={setPage}
+                        length={length}
+                        loading={loading}
+                    />
                 </div>
 
                 <DialogBox
@@ -233,6 +274,13 @@ const EventList = () => {
                     message={editData ? 'Edit Skill' : 'Add Skill'}
                 />
             </div>
+            <EmployeeCSVDownload
+                isOpen={dcsModalOpen}
+                CandidateType="candidateSales"
+                skillsData={[]}
+                onClose={() => setDcsModalOpen(false)}
+                handleDownloadCSV={handleDownloadCSV}
+            />
         </>
     )
 }

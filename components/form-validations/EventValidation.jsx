@@ -20,6 +20,5 @@ export const EventValidation = Yup.object().shape({
   isHoliday: Yup.string()
     .required('Holiday status is required'),
 
-  isExpired: Yup.string()
-    .required('Expired status is required'),
+  
 })

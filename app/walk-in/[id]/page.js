@@ -128,7 +128,7 @@ function EditJobApplicationForm() {
       }
 
       const preferred = JSON.stringify(data?.preferredShift)
-const skill =  JSON.stringify(data?.skill)
+      const skill = JSON.stringify(data?.skill)
       Object.entries(data).forEach(([key, value]) => {
         if (key === 'preferredShift') return;
         if (key === 'skill') return;
@@ -243,16 +243,16 @@ const skill =  JSON.stringify(data?.skill)
     candidateDataGetById(id, form)
   }, [id])
 
-  const [skillsData , setSkillsData]= useState([])
+  const [skillsData, setSkillsData] = useState([])
 
   useEffect(() => {
     if (typeof window !== "undefined" && window.localStorage) {
       const storedData = localStorage.getItem("globalSettings");
-  
+
       if (storedData && storedData !== "undefined") {
         try {
           const candidateData = JSON.parse(storedData); // Try parsing only if valid
-          const candidateOptions = candidateData?.candidate?.map((item) => ({
+          const candidateOptions = candidateData?.skills?.candidate?.map((item) => ({
             label: item,
             value: item?.toLowerCase(),
           }));
@@ -263,7 +263,8 @@ const skill =  JSON.stringify(data?.skill)
       }
     }
   }, []);
-  
+
+  console.log("skillsData", skillsData)
   return (
     <>
       {isVerify == false ? (
@@ -324,14 +325,14 @@ const skill =  JSON.stringify(data?.skill)
                       <FormInputField
                         name='name'
                         disable={true}
-                        label='Full Name'
+                        label='Full Name*'
                         form={form}
                         inputType='text'
                         className='colum-box-bg-change'
                       />
                       <FormInputField
                         name='email'
-                        label='Email'
+                        label='Email*'
                         disable={true}
                         form={form}
                         inputType='email'
@@ -339,7 +340,7 @@ const skill =  JSON.stringify(data?.skill)
                       />
                       <FormDatePicker
                         name='dob'
-                        label='Date of Birth'
+                        label='Date of Birth*'
                         form={form}
                         inputFormat='YYYY-MM-DD'
                         className='datepickerouter'
@@ -348,35 +349,35 @@ const skill =  JSON.stringify(data?.skill)
                       />
                       <FormSelectField
                         name='gender'
-                        label='Gender'
+                        label='Gender*'
                         form={form}
                         options={GenderData}
                         className='colum-box-bg-change'
                       />
                       <FormInputField
                         name='phone'
-                        label='Contact Number'
+                        label='Contact Number*'
                         form={form}
                         inputType='number'
                         className='colum-box-bg-change'
                       />
                       <FormInputField
                         name='currentLocation'
-                        label='Current Location'
+                        label='Current Location*'
                         form={form}
                         inputType='text'
                         className='colum-box-bg-change'
                       />
                       <FormSelectField
                         name='designationApplyingFor'
-                        label='Designation Applying For'
+                        label='Designation Applying For*'
                         form={form}
                         options={designationOptions}
                         className='colum-box-bg-change'
                       />
                       <FormSelectField
                         name='totalExperience'
-                        label='Total Experience'
+                        label='Total Experience*'
                         form={form}
                         options={totalExperienceOptions}
                         className='colum-box-bg-change'
@@ -390,28 +391,28 @@ const skill =  JSON.stringify(data?.skill)
                       <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-2'>
                         <FormInputField
                           name='currentSalary'
-                          label='Current Salary (Monthly)'
+                          label='Current Salary (Monthly)*'
                           form={form}
                           inputType='number'
                           className='colum-box-bg-change'
                         />
                         <FormInputField
                           name='expectedSalary'
-                          label='Expected Salary (Monthly)'
+                          label='Expected Salary (Monthly)*'
                           form={form}
                           inputType='number'
                           className='colum-box-bg-change'
                         />
                         <FormInputField
                           name='currentCompanyName'
-                          label='Current Company'
+                          label='Current Company*'
                           form={form}
                           inputType='text'
                           className='colum-box-bg-change'
                         />
                         <FormInputField
                           name='noticePeriod'
-                          label='Notice Period (Days)'
+                          label='Notice Period (Days)*'
                           form={form}
                           inputType='number'
                           className='colum-box-bg-change'
@@ -420,7 +421,7 @@ const skill =  JSON.stringify(data?.skill)
                       <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
                         <FormMultiSelectField
                           name='preferredShift'
-                          label='Preferred Shift'
+                          label='Preferred Shift*'
                           form={form}
                           options={preferredShiftOptions}
                           className='colum-box-bg-change !w-[100%]'
@@ -449,7 +450,7 @@ const skill =  JSON.stringify(data?.skill)
                           name='resume'
                           control={form.control}
                           form={form}
-                          label='Drop Resume here or click to upload'
+                          label='Drop Resume here or click to upload*'
                         />
                       </div>
                     </>
@@ -549,7 +550,7 @@ const skill =  JSON.stringify(data?.skill)
                           options={sourceOption}
                           className='colum-box-bg-change !w-[100%]'
                         />
-                      
+
 
                         <FormMultiSelectField
                           name="skill"
