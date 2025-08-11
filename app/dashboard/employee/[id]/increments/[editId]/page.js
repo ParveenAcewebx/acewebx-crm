@@ -13,7 +13,6 @@ import { isHoliday } from '@/components/constants/StaticData'
 import FormTextArea from '@/components/share/form/TextArea'
 import IncrementChatCompo from '../chat/Chat'
 
-
 function EditIncrement() {
   const { id, editId } = useParams()
   const eventId = editId
@@ -26,7 +25,6 @@ function EditIncrement() {
     defaultValues: {
       eventDate: '',
     },
-    // resolver: yupResolver(EventValidation), // Uncomment if you add Yup schema
   })
 
   const onSubmit = async (data) => {
@@ -123,7 +121,7 @@ function EditIncrement() {
 
               <FormSelectField
                 name='employeeSubmittedIncrementForm'
-                label='Employee Filled Application??'
+                label='Employee Filled Application?'
                 form={form}
                 options={isHoliday}
                 className='colum-box-bg-change'

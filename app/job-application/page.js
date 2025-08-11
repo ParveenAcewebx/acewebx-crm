@@ -132,6 +132,10 @@ function JobApplicationForm() {
     }
   }
 
+ 
+
+
+
   return (
     <div
       className='mobile-view relative flex min-h-screen w-full flex-col items-center justify-start bg-white'
@@ -166,21 +170,21 @@ function JobApplicationForm() {
               <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
                 <FormInputField
                   name='name'
-                  label='Full Name'
+                  label='Full Name*'
                   form={form}
                   inputType='text'
                   className='colum-box-bg-change'
                 />
                 <FormInputField
                   name='email'
-                  label='Email'
+                  label='Email*'
                   form={form}
                   inputType='email'
                   className='colum-box-bg-change'
                 />
                 <FormDatePicker
                   name='dob'
-                  label='Date of Birth'
+                  label='Date of Birth*'
                   form={form}
                   inputFormat='YYYY-MM-DD'
                   className='datepickerouter'
@@ -189,35 +193,35 @@ function JobApplicationForm() {
                 />
                 <FormSelectField
                   name='gender'
-                  label='Gender'
+                  label='Gender*'
                   form={form}
                   options={GenderData}
                   className='colum-box-bg-change'
                 />
                 <FormInputField
                   name='phone'
-                  label='Contact Number'
+                  label='Contact Number*'
                   form={form}
                   inputType='number'
                   className='colum-box-bg-change'
                 />
                 <FormInputField
                   name='currentLocation'
-                  label='Current Location'
+                  label='Current Location*'
                   form={form}
                   inputType='text'
                   className='colum-box-bg-change'
                 />
                 <FormSelectField
                   name='designationApplyingFor'
-                  label='Designation Applying For'
+                  label='Designation Applying For*'
                   form={form}
                   options={designationOptions}
                   className='colum-box-bg-change'
                 />
                 <FormSelectField
                   name='totalExperience'
-                  label='Total Experience'
+                  label='Total Experience*'
                   form={form}
                   options={totalExperienceOptions}
                   className='colum-box-bg-change'
@@ -231,28 +235,28 @@ function JobApplicationForm() {
                 <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-2'>
                   <FormInputField
                     name='currentSalary'
-                    label='Current Salary (Monthly)'
+                    label='Current Salary (Monthly)*'
                     form={form}
                     inputType='number'
                     className='colum-box-bg-change'
                   />
                   <FormInputField
                     name='expectedSalary'
-                    label='Expected Salary (Monthly)'
+                    label='Expected Salary (Monthly)*'
                     form={form}
                     inputType='number'
                     className='colum-box-bg-change'
                   />
                   <FormInputField
                     name='currentCompanyName'
-                    label='Current Company'
+                    label='Current Company*'
                     form={form}
                     inputType='text'
                     className='colum-box-bg-change'
                   />
                   <FormInputField
                     name='noticePeriod'
-                    label='Notice Period (Days)'
+                    label='Notice Period (Days)*'
                     form={form}
                     inputType='number'
                     className='colum-box-bg-change'
@@ -261,7 +265,7 @@ function JobApplicationForm() {
                 <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
                   <FormMultiSelectField
                     name='preferredShift'
-                    label='Preferred Shift'
+                    label='Preferred Shift*'
                     form={form}
                     options={preferredShiftOptions}
                     className='colum-box-bg-change !w-[100%]'
@@ -270,7 +274,7 @@ function JobApplicationForm() {
                 <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
                   <FormTextArea
                     name='reasonForChange'
-                    label='Reason for Change'
+                    label='Reason for Change*'
                     form={form}
                     multiline
                     className='col-span-2 !h-[160px] border '
@@ -290,7 +294,7 @@ function JobApplicationForm() {
                     name='resume'
                     control={form.control}
                     form={form}
-                    label='Drop Resume here or click to upload'
+                    label='Drop Resume here or click to upload*'
                   />
                 </div>
                 <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>

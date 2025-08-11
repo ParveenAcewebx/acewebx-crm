@@ -1951,7 +1951,6 @@ width: 48%;
 }
 
 
-
 /* .salery-outer {
 display: flex;
 gap: 30px;
@@ -2011,6 +2010,14 @@ width: 99%;
 .rdrDateDisplayItemActive {
   border-color: rgb(184 32 37);
 }
+.rc-anchor-normal {
+  transform: scale(0.85)!important;
+  transform-origin: 0 0!important;
+  -webkit-transform: scale(0.85)!important;
+  -webkit-transform-origin: 0 0!important;
+  width: 304px !important;
+  height: 78px !important;
+}
 
 @media (max-width: 850px) {
   .mobile-view {
@@ -2026,7 +2033,7 @@ width: 99%;
   color: #333;
 }
   }
-
+  
 
 /* july-23 css module candate details start */
 .resume-btn {
@@ -2081,3 +2088,5 @@ button#\:rb\:-form-item {
   width: 500px;
   font-size: 11px;
 }
+
+

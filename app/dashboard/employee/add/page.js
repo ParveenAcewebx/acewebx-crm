@@ -144,21 +144,21 @@ function AddEmployees() {
                 <div className="multipart-field-one">
                   <FormInputField
                     name='name'
-                    label='Full Name'
+                    label='Full Name*'
                     form={form}
                     inputType='text'
                     className='colum-box-bg-change'
                   />
                   <FormInputField
                     name='personalEmail'
-                    label='Personal Email ID'
+                    label='Personal Email ID*'
                     form={form}
                     inputType='email'
                     className='colum-box-bg-change'
                   />
                   <FormInputField
                     name='phone'
-                    label='Phone'
+                    label='Phone*'
                     form={form}
                     inputType='number'
                     className='colum-box-bg-change'
@@ -172,7 +172,7 @@ function AddEmployees() {
                   />
                   <FormDatePicker
                     name='dobDocument'
-                    label='Date of Birth (As per Documents)'
+                    label='Date of Birth (As per Documents)*'
                     form={form}
                     inputFormat='YYYY-MM-DD'
                     className='datepickerouter'
@@ -196,13 +196,13 @@ function AddEmployees() {
 
                   <FormTextArea
                     name='currentAddress'
-                    label='Current Address'
+                    label='Current Address*'
                     form={form}
                     className='col-span-2'
                   />
                   <FormTextArea
                     name='permanentAddress'
-                    label='Permanent Address'
+                    label='Permanent Address*'
                     form={form}
                     className='col-span-2'
                   />
@@ -215,14 +215,14 @@ function AddEmployees() {
                 <div className="multipart-field-two">
                   <FormInputField
                     name='companyEmail'
-                    label='Company Email ID'
+                    label='Company Email ID*'
                     form={form}
                     inputType='email'
                     className='colum-box-bg-change'
                   />
                   <FormInputField
                     name='designation'
-                    label='Designation'
+                    label='Designation*'
                     form={form}
                     inputType='text'
                     className='colum-box-bg-change'
@@ -236,7 +236,7 @@ function AddEmployees() {
                   />
                   <FormDatePicker
                     name='dateOfJoining'
-                    label='Date of Joining'
+                    label='Date of Joining*'
                     form={form}
                     inputFormat='YYYY-MM-DD'
                     className='datepickerouter'
@@ -295,14 +295,14 @@ function AddEmployees() {
                 <div className="multipart-field-one ">
                   <FormInputField
                     name='adharCard'
-                    label='Aadhar Card Link'
+                    label='Aadhar Card Link*'
                     form={form}
                     inputType='text'
                     className='colum-box-bg-change'
                   />
                   <FormInputField
                     name='panCard'
-                    label='PAN Card Link'
+                    label='PAN Card Link*'
                     form={form}
                     inputType='text'
                     className='colum-box-bg-change'
@@ -323,21 +323,23 @@ function AddEmployees() {
                 <div className="multipart-field-two">
                   <FormInputField
                     name='bankName'
-                    label='Bank Name'
+                    label='Bank Name*'
                     form={form}
                     inputType='text'
                     className='colum-box-bg-change'
                   />
                   <FormInputField
                     name='bankAccountNumber'
-                    label='Bank Account Number'
+                    label='Bank Account Number*'
                     form={form}
                     inputType='text'
                     className='colum-box-bg-change'
                   />
+
+                  {/* ADD NOTE HERE SMALL */}
                   <FormInputField
                     name='bankIfscCode'
-                    label='Bank IFSC Code'
+                    label='Bank IFSC Code*'
                     form={form}
                     inputType='text'
                     className='colum-box-bg-change'
@@ -351,7 +353,7 @@ function AddEmployees() {
                 <div className="multipart-field-one">
                   <FormSelectField
                     name='bloodGroup'
-                    label='Blood Group'
+                    label='Blood Group*'
                     form={form}
                     // inputType='text'
                     options={bloodGrupeType}
@@ -359,21 +361,21 @@ function AddEmployees() {
                   />
                   <FormInputField
                     name='emergencyContactName'
-                    label='Emergency Contact Name'
+                    label='Emergency Contact Name*'
                     form={form}
                     inputType='text'
                     className='colum-box-bg-change'
                   />
                   <FormInputField
                     name='emergencyContactNumber'
-                    label='Emergency Contact Number'
+                    label='Emergency Contact Number*'
                     form={form}
                     inputType='number'
                     className='colum-box-bg-change'
                   />
                   <FormSelectField
                     name='emergencyContactRelationship'
-                    label='Emergency Contact Relationship'
+                    label='Emergency Contact Relationship*'
                     form={form}
                     options={RelationData}
                     className='colum-box-bg-change'

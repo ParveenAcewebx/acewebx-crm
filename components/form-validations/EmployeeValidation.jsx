@@ -7,11 +7,8 @@ export const EmployeeValidation = Yup.object().shape({
   phone: Yup.string()
     .required('Phone number is required')
     .matches(/^[0-9]{10}$/, 'Phone number must be 10 digits'),
-    // alternatePhone: Yup.string()
-    // .nullable()
-    // .notRequired()
-    // .matches(/^[0-9]{10}$/, 'Alternate phone must be 10 digits'),
-    dobDocument: Yup.date()
+
+  dobDocument: Yup.date()
     .transform((value, originalValue) => {
       return originalValue === "" ? null : value;
     })
@@ -31,16 +28,17 @@ export const EmployeeValidation = Yup.object().shape({
 
   // Documents
   adharCard: Yup.string()
-    .required('Aadhar Card is required')
-  ,
+    .required('Aadhar Card is required').url('Enter a valid URL'),
+
   panCard: Yup.string()
-    .required('PAN Card is required'),
+    .required('PAN Card is required').url('Enter a valid URL'),
+    otherDocumentLink : Yup.string().url('Enter a valid URL'),
   // new fields:-
   referenceNumber: Yup.string().max(15, "Maximum 15 characters are allowed"),
   employeeCode: Yup.string()
     .trim()
     .max(15, "Maximum 15 characters are allowed"),
-    
+
   // Banking Details
   bankName: Yup.string().trim().required('Bank Name is required'),
   bankAccountNumber: Yup.string()

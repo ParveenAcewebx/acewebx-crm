@@ -76,7 +76,7 @@ function EditEvent() {
 
             // Append the rest of the form fields
             Object.entries(data).forEach(([key, value]) => {
-                if (key === 'from' || key === 'to') {
+                if (key === 'fromDate' || key === 'toDate') {
                     formData.append(key, moment(value).format('YYYY-MM-DD'))
                 } else {
                     formData.append(key, value)
@@ -111,7 +111,7 @@ function EditEvent() {
                 const dataForSet = {
                     title: data?.title,
                     isHoliday: data?.isHoliday,
-                    isExpired: data?.isExpired,
+                    // isExpired: data?.isExpired,
                     description: data?.description,
                     phone: data?.phone,
                     banners: data?.banners,
@@ -161,7 +161,7 @@ function EditEvent() {
                         <div className='mb-4 mt-6 grid grid-cols-1 gap-6 md:grid-cols-1'>
                             <FormInputField
                                 name='title'
-                                label='Title'
+                                label='Title*'
                                 form={form}
                                 inputType='text'
                                 className='colum-box-bg-change'
@@ -180,7 +180,7 @@ function EditEvent() {
                         </div>
 
 
-                        <div className='mb-4 mt-6 grid grid-cols-2 gap-6 md:grid-cols-2'>
+                        <div className='mb-4 mt-6 grid grid-cols-2 gap-6 md:grid-cols-3'>
                             <FormDatePicker
                                 name='fromDate'
                                 label='From Date'
@@ -201,24 +201,16 @@ function EditEvent() {
                                 defaultM
                                 onth={new Date()}
                             />
-                        </div>
-
-                        <div className='mb-4 mt-6 grid grid-cols-2 gap-6 md:grid-cols-2'>
                             <FormSelectField
                                 name='isHoliday'
-                                label='Is Holiday?'
-                                form={form}
-                                options={isHoliday}
-                                className='colum-box-bg-change'
-                            />
-                            <FormSelectField
-                                name='isExpired'
-                                label='Is Expired?'
+                                label='Is Holiday?*'
                                 form={form}
                                 options={isHoliday}
                                 className='colum-box-bg-change'
                             />
                         </div>
+
+
 
                         <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1 mt-7'>
                             <MultiImageUploader

@@ -108,7 +108,7 @@ function AddEvent() {
                         <div className='mb-4 mt-6 grid grid-cols-1 gap-6 md:grid-cols-1'>
                             <FormInputField
                                 name='title'
-                                label='Title'
+                                label='Title*'
                                 form={form}
                                 inputType='text'
                                 className='colum-box-bg-change'
@@ -127,14 +127,14 @@ function AddEvent() {
                         </div>
 
 
-                        <div className='mb-4 mt-6 grid grid-cols-2 gap-6 md:grid-cols-2'>
+                        <div className='mb-4 mt-6 grid grid-cols-2 gap-6 md:grid-cols-3'>
                             <FormDatePicker
                                 name='fromDate'
                                 label='From Date'
                                 form={form}
                                 inputFormat='YYYY-MM-DD'
                                 className='Date'
-                                disabled={{ before: new Date('2024-12-31') }}
+                                disabled={{ before: new Date('2023-12-31') }}
                                 defaultM
                                 onth={new Date()}
                             />
@@ -144,28 +144,20 @@ function AddEvent() {
                                 form={form}
                                 inputFormat='YYYY-MM-DD'
                                 className='Date'
-                                disabled={{ before: new Date('2024-12-31') }}
+                                disabled={{ before: new Date('2023-12-31') }}
                                 defaultM
                                 onth={new Date()}
                             /> 
+                             <FormSelectField
+                                name='isHoliday'
+                                label='Is Holiday?*'
+                                form={form}
+                                options={isHoliday}
+                                className='colum-box-bg-change'
+                            />
                         </div>
 
-                        <div className='mb-4 mt-6 grid grid-cols-2 gap-6 md:grid-cols-2'>
-                            <FormSelectField
-                                name='isHoliday'
-                                label='Is Holiday?'
-                                form={form}
-                                options={isHoliday}
-                                className='colum-box-bg-change'
-                            />
-                            <FormSelectField
-                                name='isExpired'
-                                label='Is Expired?'
-                                form={form}
-                                options={isHoliday}
-                                className='colum-box-bg-change'
-                            />
-                        </div>
+                  
 
                         <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1 mt-7'>
                             <MultiImageUploader

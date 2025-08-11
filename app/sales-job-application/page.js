@@ -123,21 +123,21 @@ function SalesJobApplicationForm() {
             <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
               <FormInputField
                 name='name'
-                label='Full Name'
+                label='Full Name*'
                 form={form}
                 inputType='text'
                 className='colum-box-bg-change'
               />
               <FormInputField
                 name='email'
-                label='Email'
+                label='Email*'
                 form={form}
                 inputType='email'
                 className='colum-box-bg-change'
               />
               <FormDatePicker
                 name='joiningDate'
-                label='When can you join? '
+                label='When can you join?*'
                 form={form}
                 inputFormat='YYYY-MM-DD'
                 className='datepickerouter'
@@ -153,7 +153,7 @@ function SalesJobApplicationForm() {
               />
               <FormInputField
                 name='phone'
-                label='Contact Number'
+                label='Contact Number*'
                 form={form}
                 inputType='number'
                 className='colum-box-bg-change'
@@ -278,7 +278,7 @@ function SalesJobApplicationForm() {
                 name='resume'
                 control={form.control}
                 form={form}
-                label='Drop Resume here or click to upload'
+                label='Drop Resume here or click to upload*'
               />
             </div>
             <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>

@@ -191,273 +191,275 @@ function EditEmployees({ editId }) {
                 </div>
 
                 <div className=''>
-                    <FormProvider {...form}>
-                        <form
-                            encType='multipart/form-data'
-                            onSubmit={form.handleSubmit(onSubmit)}
-                        >
-                            {/* Personal Info */}
-                            <fieldset className='custom-raduis   bg-white font-semibold mb-9'>
-                                <legend className="text-lg font-bold  ml-[25px]">Personal Information</legend>
-                                <div className="multipart-field-one">
-                                    <FormInputField
-                                        name='name'
-                                        label='Full Name'
-                                        form={form}
-                                        inputType='text'
-                                        className='colum-box-bg-change'
-                                    />
-                                    <FormInputField
-                                        name='personalEmail'
-                                        label='Personal Email ID'
-                                        form={form}
-                                        inputType='email'
-                                        className='colum-box-bg-change'
-                                    />
-                                    <FormInputField
-                                        name='phone'
-                                        label='Phone'
-                                        form={form}
-                                        inputType='number'
-                                        className='colum-box-bg-change'
-                                    />
-                                    <FormInputField
-                                        name='alternatePhone'
-                                        label='Alternate Contact Number'
-                                        form={form}
-                                        inputType='number'
-                                        className='colum-box-bg-change'
-                                    />
-                                    <FormDatePicker
-                                        name='dobDocument'
-                                        label='Date of Birth (As per Documents)'
-                                        form={form}
-                                        inputFormat='YYYY-MM-DD'
-                                        className='datepickerouter'
-                                        defaultMonth={new Date('2006-01-01')}
-                                    />
-                                    <FormDatePicker
-                                        name='dobCelebration'
-                                        label='Actual Date of Birth (For Celebrations)'
-                                        form={form}
-                                        inputFormat='YYYY-MM-DD'
-                                        className='datepickerouter'
-                                        defaultMonth={new Date('2006-01-02')}
-                                    />
-                                    <FormSelectField
-                                        name='gender'
-                                        label='Gender'
-                                        form={form}
-                                        options={GenderData}
-                                        className='colum-box-bg-change'
-                                    />
+                <FormProvider {...form}>
+            <form
+              encType='multipart/form-data'
+              onSubmit={form.handleSubmit(onSubmit)}
+            >
+              {/* Personal Info */}
+              <fieldset className='custom-raduis   bg-white font-semibold mb-9'>
+                <legend className="text-lg font-bold  ml-[25px]">Personal Information</legend>
+                <div className="multipart-field-one">
+                  <FormInputField
+                    name='name'
+                    label='Full Name*'
+                    form={form}
+                    inputType='text'
+                    className='colum-box-bg-change'
+                  />
+                  <FormInputField
+                    name='personalEmail'
+                    label='Personal Email ID*'
+                    form={form}
+                    inputType='email'
+                    className='colum-box-bg-change'
+                  />
+                  <FormInputField
+                    name='phone'
+                    label='Phone*'
+                    form={form}
+                    inputType='number'
+                    className='colum-box-bg-change'
+                  />
+                  <FormInputField
+                    name='alternatePhone'
+                    label='Alternate Contact Number'
+                    form={form}
+                    inputType='number'
+                    className='colum-box-bg-change'
+                  />
+                  <FormDatePicker
+                    name='dobDocument'
+                    label='Date of Birth (As per Documents)*'
+                    form={form}
+                    inputFormat='YYYY-MM-DD'
+                    className='datepickerouter'
+                    defaultMonth={new Date('2006-01-01')}
+                  />
+                  <FormDatePicker
+                    name='dobCelebration'
+                    label='Actual Date of Birth (For Celebrations)'
+                    form={form}
+                    inputFormat='YYYY-MM-DD'
+                    className='datepickerouter'
+                    defaultMonth={new Date('2006-01-02')}
+                  />
+                  <FormSelectField
+                    name='gender'
+                    label='Gender'
+                    form={form}
+                    options={GenderData}
+                    className='colum-box-bg-change'
+                  />
 
-                                    <FormTextArea
-                                        name='currentAddress'
-                                        label='Current Address'
-                                        form={form}
-                                        className='col-span-2'
-                                    />
-                                    <FormTextArea
-                                        name='permanentAddress'
-                                        label='Permanent Address'
-                                        form={form}
-                                        className='col-span-2'
-                                    />
-                                </div>
-                            </fieldset>
+                  <FormTextArea
+                    name='currentAddress'
+                    label='Current Address*'
+                    form={form}
+                    className='col-span-2'
+                  />
+                  <FormTextArea
+                    name='permanentAddress'
+                    label='Permanent Address*'
+                    form={form}
+                    className='col-span-2'
+                  />
+                </div>
+              </fieldset>
 
-                            {/* Professional Info */}
-                            <fieldset className='custom-raduis bg-white font-semibold mb-9'>
-                                <legend className="text-lg font-bold  ml-[25px]">Professional Information</legend>
-                                <div className="multipart-field-two">
-                                    <FormInputField
-                                        name='companyEmail'
-                                        label='Company Email ID'
-                                        form={form}
-                                        inputType='email'
-                                        className='colum-box-bg-change'
-                                    />
-                                    <FormInputField
-                                        name='designation'
-                                        label='Designation'
-                                        form={form}
-                                        inputType='text'
-                                        className='colum-box-bg-change'
-                                    />
-                                    <FormInputField
-                                        name='currentSalary'
-                                        label='Current Salary (Monthly)'
-                                        form={form}
-                                        inputType='number'
-                                        className='colum-box-bg-change'
-                                    />
-                                    <FormDatePicker
-                                        name='dateOfJoining'
-                                        label='Date of Joining'
-                                        form={form}
-                                        inputFormat='YYYY-MM-DD'
-                                        className='datepickerouter'
-                                        defaultMonth={new Date()}
-                                        disabled={{ before: new Date('2016-12-31') }}
+              {/* Professional Info */}
+              <fieldset className='custom-raduis bg-white font-semibold mb-9'>
+                <legend className="text-lg font-bold  ml-[25px]">Professional Information</legend>
+                <div className="multipart-field-two">
+                  <FormInputField
+                    name='companyEmail'
+                    label='Company Email ID*'
+                    form={form}
+                    inputType='email'
+                    className='colum-box-bg-change'
+                  />
+                  <FormInputField
+                    name='designation'
+                    label='Designation*'
+                    form={form}
+                    inputType='text'
+                    className='colum-box-bg-change'
+                  />
+                  <FormInputField
+                    name='currentSalary'
+                    label='Current Salary (Monthly)'
+                    form={form}
+                    inputType='number'
+                    className='colum-box-bg-change'
+                  />
+                  <FormDatePicker
+                    name='dateOfJoining'
+                    label='Date of Joining*'
+                    form={form}
+                    inputFormat='YYYY-MM-DD'
+                    className='datepickerouter'
+                    defaultMonth={ new Date()}
+                    disabled={{ before: new Date('2016-12-31') }}
 
-                                    />
-                                    <FormDatePicker
-                                        name='lastIncrementDate'
-                                        label='Last Increment Date'
-                                        form={form}
-                                        inputFormat='YYYY-MM-DD'
-                                        className='datepickerouter'
-                                        defaultMonth={new Date()}
-                                    />
-                                    <FormInputField
-                                        name='lastIncrementAmount'
-                                        label='Last Increment Amount'
-                                        form={form}
-                                        inputType='number'
-                                        className='colum-box-bg-change'
-                                    />
-                                    <FormSelectField
-                                        name='currentShift'
-                                        label='Current Shift'
-                                        form={form}
-                                        options={currentShiftOptions}
-                                        className='colum-box-bg-change'
-                                    />
-                                    <FormInputField
-                                        name='referenceNumber'
-                                        label='Reference Number'
-                                        form={form}
-                                        inputType='number'
-                                        className='colum-box-bg-change'
-                                    /> <FormInputField
-                                        name='employeeCode'
-                                        label='Employee Code'
-                                        form={form}
-                                        inputType='text'
-                                        className='colum-box-bg-change'
-                                    />
-                                    <FormMultiSelectField
-                                        name='reportingManager'
-                                        label='Reporting Manager'
-                                        form={form}
-                                        options={reportingManagerOptions}
-                                        className='colum-box-bg-change'
-                                    />
-                                </div>
-                            </fieldset>
+                  />
+                  <FormDatePicker
+                    name='lastIncrementDate'
+                    label='Last Increment Date'
+                    form={form}
+                    inputFormat='YYYY-MM-DD'
+                    className='datepickerouter'
+                    defaultMonth={new Date()}
+                  />
+                  <FormInputField
+                    name='lastIncrementAmount'
+                    label='Last Increment Amount'
+                    form={form}
+                    inputType='number'
+                    className='colum-box-bg-change'
+                  />
+                  <FormSelectField
+                    name='currentShift'
+                    label='Current Shift'
+                    form={form}
+                    options={currentShiftOptions}
+                    className='colum-box-bg-change'
+                  />
+                  <FormInputField
+                    name='referenceNumber'
+                    label='Reference Number'
+                    form={form}
+                    inputType='number'
+                    className='colum-box-bg-change'
+                  /> <FormInputField
+                    name='employeeCode'
+                    label='Employee Code'
+                    form={form}
+                    inputType='text'
+                    className='colum-box-bg-change'
+                  />
+                  <FormMultiSelectField
+                    name='reportingManager'
+                    label='Reporting Manager'
+                    form={form}
+                    options={reportingManagerOptions}
+                    className='colum-box-bg-change'
+                  />
+                </div>
+              </fieldset>
 
-                            {/* Documents */}
-                            <fieldset className='custom-raduis bg-white font-semibold mb-9'>
-                                <legend className="text-lg font-bold  ml-[25px]">Documents</legend>
-                                <div className="multipart-field-one ">
-                                    <FormInputField
-                                        name='adharCard'
-                                        label='Aadhar Card Link'
-                                        form={form}
-                                        inputType='text'
-                                        className='colum-box-bg-change'
-                                    />
-                                    <FormInputField
-                                        name='panCard'
-                                        label='PAN Card Link'
-                                        form={form}
-                                        inputType='text'
-                                        className='colum-box-bg-change'
-                                    />
-                                    <FormInputField
-                                        name='otherDocumentLink'
-                                        label='Other Document Link'
-                                        form={form}
-                                        inputType='text'
-                                        className='colum-box-bg-change'
-                                    />
-                                </div>
-                            </fieldset>
+              {/* Documents */}
+              <fieldset className='custom-raduis bg-white font-semibold mb-9'>
+                <legend className="text-lg font-bold  ml-[25px]">Documents</legend>
+                <div className="multipart-field-one ">
+                  <FormInputField
+                    name='adharCard'
+                    label='Aadhar Card Link*'
+                    form={form}
+                    inputType='text'
+                    className='colum-box-bg-change'
+                  />
+                  <FormInputField
+                    name='panCard'
+                    label='PAN Card Link*'
+                    form={form}
+                    inputType='text'
+                    className='colum-box-bg-change'
+                  />
+                  <FormInputField
+                    name='otherDocumentLink'
+                    label='Other Document Link'
+                    form={form}
+                    inputType='text'
+                    className='colum-box-bg-change'
+                  />
+                </div>
+              </fieldset>
 
-                            {/* Banking Details */}
-                            <fieldset className='custom-raduis bg-white font-semibold mb-9'>
-                                <legend className="text-lg font-bold  ml-[25px]">Banking Details</legend>
-                                <div className="multipart-field-two">
-                                    <FormInputField
-                                        name='bankName'
-                                        label='Bank Name'
-                                        form={form}
-                                        inputType='text'
-                                        className='colum-box-bg-change'
-                                    />
-                                    <FormInputField
-                                        name='bankAccountNumber'
-                                        label='Bank Account Number'
-                                        form={form}
-                                        inputType='text'
-                                        className='colum-box-bg-change'
-                                    />
-                                    <FormInputField
-                                        name='bankIfscCode'
-                                        label='Bank IFSC Code'
-                                        form={form}
-                                        inputType='text'
-                                        className='colum-box-bg-change'
-                                    />
-                                </div>
-                            </fieldset>
+              {/* Banking Details */}
+              <fieldset className='custom-raduis bg-white font-semibold mb-9'>
+                <legend className="text-lg font-bold  ml-[25px]">Banking Details</legend>
+                <div className="multipart-field-two">
+                  <FormInputField
+                    name='bankName'
+                    label='Bank Name*'
+                    form={form}
+                    inputType='text'
+                    className='colum-box-bg-change'
+                  />
+                  <FormInputField
+                    name='bankAccountNumber'
+                    label='Bank Account Number*'
+                    form={form}
+                    inputType='text'
+                    className='colum-box-bg-change'
+                  />
 
-                            {/* Emergency Details */}
-                            <fieldset className='custom-raduis bg-white font-semibold mb-9'>
-                                <legend className="text-lg font-bold  ml-[25px]">Emergency Contact Details</legend>
-                                <div className="multipart-field-one">
-                                    <FormSelectField
-                                        name='bloodGroup'
-                                        label='Blood Group'
-                                        form={form}
-                                        // inputType='text'
-                                        options={bloodGrupeType}
-                                        className='colum-box-bg-change'
-                                    />
-                                    <FormInputField
-                                        name='emergencyContactName'
-                                        label='Emergency Contact Name'
-                                        form={form}
-                                        inputType='text'
-                                        className='colum-box-bg-change'
-                                    />
-                                    <FormInputField
-                                        name='emergencyContactNumber'
-                                        label='Emergency Contact Number'
-                                        form={form}
-                                        inputType='number'
-                                        className='colum-box-bg-change'
-                                    />
-                                    <FormSelectField
-                                        name='emergencyContactRelationship'
-                                        label='Emergency Contact Relationship'
-                                        form={form}
-                                        options={RelationData}
-                                        className='colum-box-bg-change'
-                                    />
-                                    {isOther == "others" ? (<FormInputField
-                                        name='emergencyContactRelationshipOther'
-                                        label='Other Emergency Contact Relationship'
-                                        form={form}
-                                        inputType='text'
-                                        className='colum-box-bg-change'
-                                    />) : ""}
-                                </div>
-                            </fieldset>
+                  {/* ADD NOTE HERE SMALL */}
+                  <FormInputField
+                    name='bankIfscCode'
+                    label='Bank IFSC Code*'
+                    form={form}
+                    inputType='text'
+                    className='colum-box-bg-change'
+                  />
+                </div>
+              </fieldset>
 
-                            {/* Submit */}
-                            <div className={`mt-10 flex justify-end`}>
-                                <Button
-                                    type='submit'
-                                    variant='contained'
-                                    className='bg-[#B82025] !text-white'
-                                >
-                                    {loader ? <Loader /> : 'Submit'}
-                                </Button>
-                            </div>
-                        </form>
-                    </FormProvider>
+              {/* Emergency Details */}
+              <fieldset className='custom-raduis bg-white font-semibold mb-9'>
+                <legend className="text-lg font-bold  ml-[25px]">Emergency Contact Details</legend>
+                <div className="multipart-field-one">
+                  <FormSelectField
+                    name='bloodGroup'
+                    label='Blood Group*'
+                    form={form}
+                    // inputType='text'
+                    options={bloodGrupeType}
+                    className='colum-box-bg-change'
+                  />
+                  <FormInputField
+                    name='emergencyContactName'
+                    label='Emergency Contact Name*'
+                    form={form}
+                    inputType='text'
+                    className='colum-box-bg-change'
+                  />
+                  <FormInputField
+                    name='emergencyContactNumber'
+                    label='Emergency Contact Number*'
+                    form={form}
+                    inputType='number'
+                    className='colum-box-bg-change'
+                  />
+                  <FormSelectField
+                    name='emergencyContactRelationship'
+                    label='Emergency Contact Relationship*'
+                    form={form}
+                    options={RelationData}
+                    className='colum-box-bg-change'
+                  />
+                  {isOther == "others" ? (<FormInputField
+                    name='emergencyContactRelationshipOther'
+                    label='Other Emergency Contact Relationship'
+                    form={form}
+                    inputType='text'
+                    className='colum-box-bg-change'
+                  />) : ""}
+                </div>
+              </fieldset>
+
+              {/* Submit */}
+              <div className={`mt-10 flex justify-end`}>
+                <Button
+                  type='submit'
+                  variant='contained'
+                  className='bg-[#B82025] !text-white'
+                >
+                  {loader ? <Loader /> : 'Submit'}
+                </Button>
+              </div>
+            </form>
+          </FormProvider>
 
                 </div>
             </div>
