@@ -184,12 +184,12 @@ const EventList = () => {
                 <LayoutHeader pageTitle='Employees' />
 
 
-                <div className='flex justify-between items-center mb-5'>
+                <div className='flex justify-between items-center mb-5 mt-2'>
                     <div>
                         <FormProvider {...methods}>
                             <FormSelectField
                                 name='length'
-                                className='h-10 w-28'
+                                className='h-10 w-28 ace-employ'
                                 form={methods}
                                 options={LengthData}
                             />
@@ -207,8 +207,8 @@ const EventList = () => {
                                     placeholder="Email/Name/Phone"
                                     form={form}
                                     inputType="text"
-                                    searchError="searchError"
-                                    className="searchSizeChange"
+                                    searchError="searchError !mt-41"
+                                    className="searchSizeChange "
                                 />
                                 <Search
                                     type="submit"
@@ -235,7 +235,7 @@ const EventList = () => {
                         </div>
                     </FormProvider>
                 </div>
-                <div className='overflowX-auto'>
+                <div className='overflowX-auto pt-1'>
 
                     <DataTable
                         columns={EmployeeColumn(handleDeleteTaskTag, handleEditTaskTag)}

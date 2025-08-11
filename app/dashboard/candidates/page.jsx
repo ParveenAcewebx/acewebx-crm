@@ -295,12 +295,12 @@ const AllCandidates = () => {
         <LayoutHeader pageTitle='Developers List' />
       </div>
       {/* Filters */}
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between items-center mb-4 ">
         {/* Left: Length Selector */}
         <FormProvider {...methods}>
           <FormSelectField
             name="length"
-            className="h-10 w-28"
+            className="h-10 w-28 ace-methods"
             form={methods}
             options={LengthData}
           />

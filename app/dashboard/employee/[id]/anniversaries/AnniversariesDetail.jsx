@@ -212,7 +212,7 @@ function AnniversariesDetail() {
         <>
             <CommonLayout pageTitle='Employee Anniversaries' />
             {/* Up Birthdays */}
-            <div className='grid grid-cols-1 gap-6 mt-6'>
+            <div className='grid grid-cols-1 gap-6 mt-2'>
                 <Card className='box'>
                     <CardHeader className='theme-bg-white-rgba border-color-grey min-h-14 border-b p-3'>
                         <CardTitle className='flex justify-between'>

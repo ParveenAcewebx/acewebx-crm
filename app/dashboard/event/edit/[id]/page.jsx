@@ -19,6 +19,7 @@ import { MultiImageUploader } from '@/components/share/form/MultiFileUpload'
 import EventApi from '@/services/cadidateApis/events/EventApi'
 import FormSelectField from '@/components/share/form/FormSelect'
 import { EventValidation } from '@/components/form-validations/EventValidation'
+import CurrentAndNextYearDatepicker from '@/components/share/form/CurrentAndNextYearDatepicker'
 
 function EditEvent() {
     const { id } = useParams()
@@ -134,7 +135,7 @@ function EditEvent() {
             console.error('Submission Error:', error)
             errorMessage(
                 { description: error?.message }
-              );
+            );
         }
     }
 
@@ -151,14 +152,14 @@ function EditEvent() {
                 <CommonLayout pageTitle={`Event Edit`} />
             </div>
 
-            <div className='mt-5'>{/* <Separator /> */}</div>
+            <div className='mt-2'>{/* <Separator /> */}</div>
             <div className=''>
                 <FormProvider {...form}>
                     <form
                         encType='multipart/form-data'
                         onSubmit={form.handleSubmit(onSubmit)}
                     >
-                        <div className='mb-4 mt-6 grid grid-cols-1 gap-6 md:grid-cols-1'>
+                        <div className='mb-4 mt-2 grid grid-cols-1 gap-6 md:grid-cols-1'>
                             <FormInputField
                                 name='title'
                                 label='Title*'
@@ -181,7 +182,7 @@ function EditEvent() {
 
 
                         <div className='mb-4 mt-6 grid grid-cols-2 gap-6 md:grid-cols-3'>
-                            <FormDatePicker
+                            <CurrentAndNextYearDatepicker
                                 name='fromDate'
                                 label='From Date'
                                 form={form}
@@ -191,7 +192,7 @@ function EditEvent() {
                                 defaultM
                                 onth={new Date()}
                             />
-                            <FormDatePicker
+                            <CurrentAndNextYearDatepicker
                                 name='toDate'
                                 label='To Date'
                                 form={form}

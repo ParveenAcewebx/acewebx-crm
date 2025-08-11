@@ -1,10 +1,10 @@
 'use client'
 import {
-    bloodGrupeType,
-    currentShiftOptions,
-    formDefaultValues,
-    GenderData,
-    RelationData
+  bloodGrupeType,
+  currentShiftOptions,
+  formDefaultValues,
+  GenderData,
+  RelationData
 } from '@/components/constants/StaticData'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -24,174 +24,181 @@ import { EmployeeValidation } from '@/components/form-validations/EmployeeValida
 import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
 
 function EditEmployees({ editId }) {
-    const [loader, setLoader] = useState(false)
-    const [reportingManagerOptions, setReportingManagerOptions] = useState([])
+  const [loader, setLoader] = useState(false)
+  const [reportingManagerOptions, setReportingManagerOptions] = useState([])
 
-    const router = useRouter()
-    const form = useForm({
-        mode: 'onChange',
-        defaultValues: formDefaultValues,
-        resolver: yupResolver(EmployeeValidation)
-    })
+  const router = useRouter()
+  const form = useForm({
+    mode: 'onChange',
+    defaultValues: formDefaultValues,
+    resolver: yupResolver(EmployeeValidation)
+  })
 
 
-    const onSubmit = async (data) => {
-        console.log("datadata", data);
-        setLoader(true);
-      
-        try {
-          const formData = new FormData();
-          const reportingManagerValue = JSON.stringify(data?.reportingManager);
-      
-          Object.entries(data).forEach(([key, value]) => {
-            const isDateField =
-              key === 'dobDocument' ||
-              key === 'dateOfJoining' ||
-              key === 'dobCelebration' ||
-              key === 'lastIncrementDate';
-      
-            if (key === 'reportingManager') return; // skip, append later
-      
-            if (isDateField) {
-                if (key === 'dobCelebration') {
-                    // Only format if the date is valid
-                    if (moment(value, moment.ISO_8601, true).isValid()) {
-                      formData.append(key, moment(value).format('YYYY-MM-DD'));
-                    } else {
-                      formData.append(key, '');
-                    }
-                  }
-                  else if (value) {
-                // Other dates → only append if value exists
-                formData.append(key, moment(value).format('YYYY-MM-DD'));
-              }
+  const onSubmit = async (data) => {
+    console.log("datadata", data);
+    setLoader(true);
+
+    try {
+      const formData = new FormData();
+      // Need only those keys which are touched
+      const dirtyFields = form.formState.dirtyFields;
+      const updateFieldsValue = Object.keys(dirtyFields);
+      if (updateFieldsValue) {
+        formData.append('updateField', JSON.stringify(updateFieldsValue))
+      }
+
+      const reportingManagerValue = JSON.stringify(data?.reportingManager);
+
+      Object.entries(data).forEach(([key, value]) => {
+        const isDateField =
+          key === 'dobDocument' ||
+          key === 'dateOfJoining' ||
+          key === 'dobCelebration' ||
+          key === 'lastIncrementDate';
+
+        if (key === 'reportingManager') return; // skip, append later
+
+        if (isDateField) {
+          if (key === 'dobCelebration') {
+            // Only format if the date is valid
+            if (moment(value, moment.ISO_8601, true).isValid()) {
+              formData.append(key, moment(value).format('YYYY-MM-DD'));
             } else {
-              formData.append(key, value ?? '');
+              formData.append(key, '');
             }
-          });
-      
-          // Append reportingManager separately
-          formData.append('reportingManager', reportingManagerValue);
-      
-          const response = await EmployeesApi.editEmployees(editId, formData);
-      
-          if (response?.data?.status === true) {
-            form.reset();
-            setLoader(false);
-            successMessage({ description: 'Added Successfully!' });
-            router.push('/dashboard/employees');
           }
-        } catch (error) {
-          console.log("error", error.message);
-          setLoader(false);
-          errorMessage(
-            { description: error?.message }
-          );
+          else if (value) {
+            // Other dates → only append if value exists
+            formData.append(key, moment(value).format('YYYY-MM-DD'));
+          }
+        } else {
+          formData.append(key, value ?? '');
         }
-      };
-      
+      });
 
-    const candidateDataGetById = async (editId) => {
-        try {
-            const response = await EmployeesApi.getByIdEmployees(editId);
+      // Append reportingManager separately
+      formData.append('reportingManager', reportingManagerValue);
 
-            if (response?.data?.status === true) {
-                const data = response?.data?.data;
-                const meta = data?.meta || {};
-                // const joiningDate = new Date(data.dob + 'T00:00:00')
-                const dataForSet = {
-                    // Personal Info
-                    name: data?.name || '',
-                    personalEmail: data?.personalEmail || '',
-                    phone: data?.phone || '',
-                    alternatePhone: data?.alternatePhone || '',
-                    dobDocument: new Date(data?.dobDocument + 'T00:00:00') || '',
-                    dobCelebration: new Date(data?.dobCelebration + 'T00:00:00') || '',
-                    currentAddress: data?.currentAddress || '',
-                    permanentAddress: data?.permanentAddress || '',
-                    // New Fields added :--
-                    referenceNumber: data.referenceNumber || '',
-                    employeeCode: data.employeeCode || '',
-                    // Professional Info
-                    companyEmail: data?.companyEmail || '',
-                    designation: data?.designation || '',
-                    dateOfJoining: new Date(data?.dateOfJoining + 'T00:00:00') || '',
+      const response = await EmployeesApi.editEmployees(editId, formData);
 
-                    // Documents
-                    adharCard: meta?._adharCard || '',
-                    panCard: meta?._panCard || '',
-                    otherDocumentLink: meta?._otherDocumentLink || '',
-                    // Banking Details
-                    bankName: meta?._bankName || '',
-                    bankAccountNumber: meta?._bankAccountNumber || '',
-                    bankIfscCode: meta?._bankIfscCode || '',
-
-                    // Emergency Details
-                    bloodGroup: meta?._bloodGroup || '',
-                    emergencyContactName: meta?._emergencyContactName || '',
-                    emergencyContactNumber: meta?._emergencyContactNumber || '',
-                    emergencyContactRelationship: meta?._emergencyContactRelationship || '',
-                    emergencyContactRelationshipOther: meta?._emergencyContactRelationshipOther || '',
-
-                    // Additional Fields
-                    gender: meta?._gender || '',
-                    currentSalary: meta?._currentSalary || '',
-                    currentShift: meta?._currentShift || '',
-                    lastIncrementAmount: meta?._lastIncrementAmount || '',
-                    lastIncrementDate: new Date(meta?._lastIncrementDate + 'T00:00:00') || '',
-                };
-
-                form.reset(dataForSet);
-                form?.setValue('reportingManager', JSON.parse(data?.reportingManager))
-
-            }
-        } catch (error) {
-            console.error('Submission Error:', error);
-            errorMessage(
-              { description: error?.message }
-            );
-        }
-    };
+      if (response?.data?.status === true) {
+        form.reset();
+        setLoader(false);
+        successMessage({ description: 'Added Successfully!' });
+        router.push('/dashboard/employees');
+      }
+    } catch (error) {
+      console.log("error", error.message);
+      setLoader(false);
+      errorMessage(
+        { description: error?.message }
+      );
+    }
+  };
 
 
+  const candidateDataGetById = async (editId) => {
+    try {
+      const response = await EmployeesApi.getByIdEmployees(editId);
 
-    useEffect(() => {
-        if (!editId) return
-        candidateDataGetById(editId)
-    }, [editId])
+      if (response?.data?.status === true) {
+        const data = response?.data?.data;
+        const meta = data?.meta || {};
+        // const joiningDate = new Date(data.dob + 'T00:00:00')
+        const dataForSet = {
+          // Personal Info
+          name: data?.name || '',
+          personalEmail: data?.personalEmail || '',
+          phone: data?.phone || '',
+          alternatePhone: data?.alternatePhone || '',
+          dobDocument: new Date(data?.dobDocument + 'T00:00:00') || '',
+          dobCelebration: new Date(data?.dobCelebration + 'T00:00:00') || '',
+          currentAddress: data?.currentAddress || '',
+          permanentAddress: data?.permanentAddress || '',
+          // New Fields added :--
+          referenceNumber: data.referenceNumber || '',
+          employeeCode: data.employeeCode || '',
+          // Professional Info
+          companyEmail: data?.companyEmail || '',
+          designation: data?.designation || '',
+          dateOfJoining: new Date(data?.dateOfJoining + 'T00:00:00') || '',
+
+          // Documents
+          adharCard: meta?._adharCard || '',
+          panCard: meta?._panCard || '',
+          otherDocumentLink: meta?._otherDocumentLink || '',
+          // Banking Details
+          bankName: meta?._bankName || '',
+          bankAccountNumber: meta?._bankAccountNumber || '',
+          bankIfscCode: meta?._bankIfscCode || '',
+
+          // Emergency Details
+          bloodGroup: meta?._bloodGroup || '',
+          emergencyContactName: meta?._emergencyContactName || '',
+          emergencyContactNumber: meta?._emergencyContactNumber || '',
+          emergencyContactRelationship: meta?._emergencyContactRelationship || '',
+          emergencyContactRelationshipOther: meta?._emergencyContactRelationshipOther || '',
+
+          // Additional Fields
+          gender: meta?._gender || '',
+          currentSalary: meta?._currentSalary || '',
+          currentShift: meta?._currentShift || '',
+          lastIncrementAmount: meta?._lastIncrementAmount || '',
+          lastIncrementDate: new Date(meta?._lastIncrementDate + 'T00:00:00') || '',
+        };
+
+        form.reset(dataForSet);
+        form?.setValue('reportingManager', JSON.parse(data?.reportingManager))
+
+      }
+    } catch (error) {
+      console.error('Submission Error:', error);
+      errorMessage(
+        { description: error?.message }
+      );
+    }
+  };
 
 
 
-    const isOther = form.watch("emergencyContactRelationship")
+  useEffect(() => {
+    if (!editId) return
+    candidateDataGetById(editId)
+  }, [editId])
 
 
-    //  localReportingManage :--
 
-    useEffect(() => {
-        // This code runs only on the client side
-        if (typeof window !== "undefined" && window.localStorage) {
-            const storedData = localStorage.getItem("globalSettings");
-            const skillDataOption = JSON.parse(storedData)
-            if (skillDataOption?.reportingManager) {
-                const candidateOptions = skillDataOption?.reportingManager?.map((item) => ({
-                    value: item.email,         // or item.id if you have IDs
-                    label: item.name,         // or item.name if you have names
-                }));
-                setReportingManagerOptions(candidateOptions);
+  const isOther = form.watch("emergencyContactRelationship")
 
-            }
-        }
-    }, []);
-    return (
-        <>
-            <div className='mobile-view items-right relative flex min-h-screen w-full flex-col justify-start'>
 
-                <div className='flex justify-between'>
-                    <CommonLayout pageTitle={`Employee Edit`} />
-                </div>
+  //  localReportingManage :--
 
-                <div className=''>
-                <FormProvider {...form}>
+  useEffect(() => {
+    // This code runs only on the client side
+    if (typeof window !== "undefined" && window.localStorage) {
+      const storedData = localStorage.getItem("globalSettings");
+      const skillDataOption = JSON.parse(storedData)
+      if (skillDataOption?.reportingManager) {
+        const candidateOptions = skillDataOption?.reportingManager?.map((item) => ({
+          value: item.email,         // or item.id if you have IDs
+          label: item.name,         // or item.name if you have names
+        }));
+        setReportingManagerOptions(candidateOptions);
+
+      }
+    }
+  }, []);
+  return (
+    <>
+      <div className='mobile-view items-right relative flex min-h-screen w-full flex-col justify-start'>
+
+        <div className='flex justify-between'>
+          <CommonLayout pageTitle={`Employee Edit`} />
+        </div>
+
+        <div className=''>
+          <FormProvider {...form}>
             <form
               encType='multipart/form-data'
               onSubmit={form.handleSubmit(onSubmit)}
@@ -298,7 +305,7 @@ function EditEmployees({ editId }) {
                     form={form}
                     inputFormat='YYYY-MM-DD'
                     className='datepickerouter'
-                    defaultMonth={ new Date()}
+                    defaultMonth={new Date()}
                     disabled={{ before: new Date('2016-12-31') }}
 
                   />
@@ -395,13 +402,18 @@ function EditEmployees({ editId }) {
                   />
 
                   {/* ADD NOTE HERE SMALL */}
-                  <FormInputField
-                    name='bankIfscCode'
-                    label='Bank IFSC Code*'
-                    form={form}
-                    inputType='text'
-                    className='colum-box-bg-change'
-                  />
+                  <div className='bankIfc'>
+                    <FormInputField
+                      name='bankIfscCode'
+                      label='Bank IFSC Code*'
+                      form={form}
+                      inputType='text'
+                      className='colum-box-bg-change'
+                    />
+                    <div className='text-slate-400 text-xs w-full text-start mt-2'>
+                      Ex: PUNB0073800
+                    </div>
+                  </div>
                 </div>
               </fieldset>
 
@@ -461,10 +473,10 @@ function EditEmployees({ editId }) {
             </form>
           </FormProvider>
 
-                </div>
-            </div>
-        </>
-    )
+        </div>
+      </div>
+    </>
+  )
 }
 
 export default EditEmployees

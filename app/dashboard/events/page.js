@@ -148,17 +148,17 @@ const EventList = () => {
             <div>
                 <LayoutHeader pageTitle='Events' />
               
-  <div className='flex justify-between items-center mb-5'>
-        <div>
-          <FormProvider {...methods}>
-            <FormSelectField
-              name='length'
-              className='h-10 w-28'
-              form={methods}
-              options={LengthData}
-            />
-          </FormProvider>
-        </div>
+                <div className='flex justify-between items-center mb-5 mt-2'>
+                    <div>
+                        <FormProvider {...methods}>
+                            <FormSelectField
+                                name='length'
+                                className='h-10 w-28   '
+                                form={methods}
+                                options={LengthData}
+                            />
+                        </FormProvider>
+                    </div>
 
         <FormProvider {...form}>
           <div className="flex justify-between items-center gap-4">
