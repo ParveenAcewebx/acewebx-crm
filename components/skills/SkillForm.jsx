@@ -16,7 +16,6 @@ const SkillForm = ({ setSubmitOpenModal, fetchTagList, editData }) => {
             type: '',
             status: ''
         },
-        // resolver: yupResolver(LeadsSettingFormSchema)
     })
 
     const editId = editData?.id || ''

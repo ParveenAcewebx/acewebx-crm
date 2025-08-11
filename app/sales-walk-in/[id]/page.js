@@ -162,26 +162,6 @@ function EditSalesJobApplicationForm() {
 
 
   const [skillsData, setSkillsData] = useState([])
-  // fetch skill list
-  // const fetchAllSkill = async () => {
-  //   try {
-  //     const response = await SkillApi.getAllSkillByType("candidateSales")
-  //     if (response.status === 200) {
-  //       const candidateOptions = response?.data?.data?.map((item) => ({
-  //           label: item.title,
-  //           value: item.title.toLowerCase(), // assuming you meant to use lowercase
-  //         }));
-
-  //       setSkillsData(candidateOptions);
-  //     }
-  //   } catch (error) {
-  //     console.log('error', error);
-  //   } 
-  // };
-
-  // useEffect(() => {
-  //   fetchAllSkill()
-  // }, [])
 
   useEffect(() => {
     if (typeof window !== "undefined" && window.localStorage) {
@@ -190,7 +170,7 @@ function EditSalesJobApplicationForm() {
       if (storedData && storedData !== "undefined") {
         try {
           const candidateData = JSON.parse(storedData); // Try parsing only if valid
-          const candidateOptions = candidateData?.salesCandidate?.map((item) => ({
+          const candidateOptions = candidateData?.skills?.salesCandidate?.map((item) => ({
             label: item,
             value: item?.toLowerCase(),
           }));
@@ -251,7 +231,7 @@ function EditSalesJobApplicationForm() {
                 <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
                   <FormInputField
                     name='name'
-                    label='Full Name'
+                    label='Full Name*'
                     disable={true}
                     form={form}
                     inputType='text'
@@ -260,14 +240,14 @@ function EditSalesJobApplicationForm() {
                   <FormInputField
                     name='email'
                     disable={true}
-                    label='Email'
+                    label='*Email*'
                     form={form}
                     inputType='email'
                     className='colum-box-bg-change'
                   />
                   <FormDatePicker
                     name='joiningDate'
-                    label='When can you join? '
+                    label='When can you join?*'
                     form={form}
                     inputFormat='YYYY-MM-DD'
                     className='datepickerouter'
@@ -283,7 +263,7 @@ function EditSalesJobApplicationForm() {
                   />
                   <FormInputField
                     name='phone'
-                    label='Contact Number'
+                    label='Contact Number*'
                     form={form}
                     inputType='number'
                     className='colum-box-bg-change'
@@ -419,7 +399,7 @@ function EditSalesJobApplicationForm() {
                     name='resume'
                     control={form.control}
                     form={form}
-                    label='Drop Resume here or click to upload'
+                    label='Drop Resume here or click to upload*'
                   />
                 </div>
                 <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>

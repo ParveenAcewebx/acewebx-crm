@@ -71,7 +71,7 @@ export default function Login() {
             <FormInputField
               control={form.control}
               name='email'
-              label='Email'
+              label='Email*'
               type='email'
               placeholder='Enter your email'
             />
@@ -81,7 +81,7 @@ export default function Login() {
               name='password'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor='password'>Password</FormLabel>
+                  <FormLabel htmlFor='password'>Password*</FormLabel>
                   <FormControl>
                     <PasswordInput
                       id='password'

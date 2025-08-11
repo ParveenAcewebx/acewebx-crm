@@ -11,8 +11,9 @@ import { errorMessage } from '@/components/ToasterMessage'
 import IncrementsTabApi from '@/services/cadidateApis/employees/IncrementsTabApi'
 import FormSelectField from '@/components/share/form/FormSelect'
 import { isHoliday } from '@/components/constants/StaticData'
-import FormTextArea from '@/components/share/form/TextArea'
+import * as Yup from 'yup'
 import FormInputField from '@/components/share/form/FormInputField'
+import { yupResolver } from '@hookform/resolvers/yup'
 
 function EditBirthdays() {
   const { id, editId } = useParams()
@@ -20,11 +21,17 @@ function EditBirthdays() {
   const router = useRouter()
   const [loader, setLoader] = useState(false)
 
+  const schema = Yup.object({
+    bannerUrl: Yup.string().url('Enter a valid URL'),
+  });
+
   const form = useForm({
     mode: 'onChange',
     defaultValues: {
       eventDate: '',
     },
+    resolver: yupResolver(schema),
+
   })
 
   const onSubmit = async (data) => {

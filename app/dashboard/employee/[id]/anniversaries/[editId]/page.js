@@ -12,8 +12,9 @@ import IncrementsTabApi from '@/services/cadidateApis/employees/IncrementsTabApi
 import FormSelectField from '@/components/share/form/FormSelect'
 import { isHoliday } from '@/components/constants/StaticData'
 import FormInputField from '@/components/share/form/FormInputField'
-// import { yupResolver } from '@hookform/resolvers/yup'  // Uncomment if using validation
-// import { EventValidation } from '@/validations/EventValidation' // Add your schema if needed
+import * as Yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+
 
 function EditAnniversary() {
   const { id, editId } = useParams()
@@ -21,6 +22,9 @@ function EditAnniversary() {
   const router = useRouter()
 
   const [loader, setLoader] = useState(false)
+  const schema = Yup.object({
+    bannerUrl: Yup.string().url('Enter a valid URL'),
+  });
 
   const form = useForm({
     mode: 'onChange',
@@ -32,7 +36,7 @@ function EditAnniversary() {
       isGiftVoucherCreated: 'no',
       // Add more defaults if needed
     },
-    // resolver: yupResolver(EventValidation), // Uncomment if you add Yup schema
+    resolver: yupResolver(schema), // Uncomment if you add Yup schema
   })
 
   const onSubmit = async (data) => {

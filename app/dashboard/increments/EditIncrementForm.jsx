@@ -90,30 +90,30 @@ function EditIncrementForm({ editId }) {
 
                             <>
                                 <div className=' mb-3 grid grid-cols-1 gap-6 md:grid-cols-1'>
-                                    <FormInputField name='name' className="!h-[3.8rem]" label='Name' inputType='text' form={form} /></div>
+                                    <FormInputField name='name' className="!h-[3.8rem]" label='Name*' inputType='text' form={form} /></div>
                                 <div className='mb-3  grid grid-cols-1 gap-6 md:grid-cols-2'>
 
-                                    <FormInputField name='acewebxTenure' className="!h-[3.8rem]" label='Tenure with AceWebX (in years).' inputType='number' form={form} />
-                                    <FormInputField name='totalExperience' className="!h-[3.8rem]" label='Overall Years of Experience.' inputType='number' form={form} />
+                                    <FormInputField name='acewebxTenure' className="!h-[3.8rem]" label='Tenure with AceWebX (in years)*' inputType='number' form={form} />
+                                    <FormInputField name='totalExperience' className="!h-[3.8rem]" label='Overall Years of Experience*' inputType='number' form={form} />
                                 </div>
 
                                 <div className='mb-3  grid grid-cols-1 gap-6'>
-                                    <FormTextArea name='experienceWithAcewebx' label='Describe Your Working Experience So Far with AceWebX.' form={form} className='col-span-2' />
+                                    <FormTextArea name='experienceWithAcewebx' label='Describe Your Working Experience So Far with AceWebX*' form={form} className='col-span-2' />
                                 </div>
 
                                 <div className='mb-3  grid grid-cols-2 gap-6'>
-                                    <FormInputField name='totalProjects' className="!h-[3.8rem]" label='Projects Completed Last Year.' inputType='number' form={form} />
-                                    <FormInputField name='ratingOnProjects' className="!h-[3.8rem]" label='Rating on Completed Projects (e.g. 4.5/5).' inputType='number' form={form} />
+                                    <FormInputField name='totalProjects' className="!h-[3.8rem]" label='Projects Completed Last Year*' inputType='number' form={form} />
+                                    <FormInputField name='ratingOnProjects' className="!h-[3.8rem]" label='Rating on Completed Projects (e.g. 4.5/5)*' inputType='number' form={form} />
                                 </div>
 
                                 <div className='mb-3  grid grid-cols-1 gap-6 md:grid-cols-2'>
-                                    <FormSelectField name='clientCalls' className="!h-[3.8rem]" label='Did You Participate in Any Client Calls?' form={form} options={YesNoOptions} />
-                                    <FormSelectField name='clientConverted' className="!h-[3.8rem]" label='Clients Converted via Test Jobs.' form={form} options={YesNoOptions} />
+                                    <FormSelectField name='clientCalls' className="!h-[3.8rem]" label='Did You Participate in Any Client Calls?*' form={form} options={YesNoOptions} />
+                                    <FormSelectField name='clientConverted' className="!h-[3.8rem]" label='Clients Converted via Test Jobs*' form={form} options={YesNoOptions} />
                                 </div>
 
                                 <div className='mb-3  grid grid-cols-2 gap-6 md:grid-cols-2'>
-                                    <FormInputField name='newSkills' className="!h-[3.8rem]" label='New Skills Acquired in the Last Year.' inputType='text' form={form} />
-                                    <FormTextArea name='improvementAreas' label='Areas Needing Improvement' form={form} className='col-span-2' />
+                                    <FormInputField name='newSkills' className="!h-[3.8rem]" label='New Skills Acquired in the Last Year*' inputType='text' form={form} />
+                                    <FormTextArea name='improvementAreas' label='Areas Needing Improvement*' form={form} className='col-span-2' />
 
                                 </div>
 
@@ -123,28 +123,28 @@ function EditIncrementForm({ editId }) {
 
                             <>
                                 <div className='mb-3  grid grid-cols-2 gap-6 md:grid-cols-2'>
-                                    <FormInputField name='currentSalary' label='Current Salary (Monthly).' className="!h-[3.8rem]" inputType='number' form={form} />
-                                    <FormInputField name='expectedSalary' label='Expected Raise (%) or ₹' className="!h-[3.8rem]" inputType='number' form={form} />
+                                    <FormInputField name='currentSalary' label='Current Salary (Monthly)*' className="!h-[3.8rem]" inputType='number' form={form} />
+                                    <FormInputField name='expectedSalary' label='Expected Raise (%) or ₹*' className="!h-[3.8rem]" inputType='number' form={form} />
                                 </div>
 
                                 <div className='mb-3  grid grid-cols-1 gap-6 md:grid-cols-1'>
-                                    <FormTextArea name='raiseJustified' label='Why Do You Feel the Expected Raise Is Justified?' form={form} className='col-span-2' />
+                                    <FormTextArea name='raiseJustified' label='Why Do You Feel the Expected Raise Is Justified?*' form={form} className='col-span-2' />
                                 </div>
 
                                 <div className='mb-3  grid grid-cols-2 gap-6 md:grid-cols-2'>
 
-                                    <FormTextArea name='ShortTermGoals' label='Your Short-Term Goals.' form={form} className='col-span-2' />
-                                    <FormTextArea name='longTermGoals' label='Your Long-Term Goals.' form={form} className='col-span-2' />
+                                    <FormTextArea name='ShortTermGoals' label='Your Short-Term Goals*' form={form} className='col-span-2' />
+                                    <FormTextArea name='longTermGoals' label='Your Long-Term Goals*' form={form} className='col-span-2' />
                                 </div>
                                 <div className='mb-3  grid grid-cols-2 gap-6 md:grid-cols-2'>
 
-                                    <FormTextArea name='weaknesses' label='Your Weaknesses.' form={form} className='col-span-2' />
-                                    <FormTextArea name='keyAchievements' label='Key Achievements This Cycle.' form={form} className='col-span-2' />
+                                    <FormTextArea name='weaknesses' label='*Your Weaknesses.' form={form} className='col-span-2' />
+                                    <FormTextArea name='keyAchievements' label='Key Achievements This Cycle*' form={form} className='col-span-2' />
 
                                 </div>
                                 <div className='mb-3  grid grid-cols-1 gap-6 md:grid-cols-1'>
 
-                                    <FormTextArea name='Suggestions' label='Suggestions for Improving Team Processes or Company Culture.' form={form} className='col-span-2' />
+                                    <FormTextArea name='Suggestions' label='Suggestions for Improving Team Processes or Company Culture*' form={form} className='col-span-2' />
                                 </div>
                             </>
 
