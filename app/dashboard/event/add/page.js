@@ -25,6 +25,7 @@ import { MultiImageUploader } from '@/components/share/form/MultiFileUpload'
 import EventApi from '@/services/cadidateApis/events/EventApi'
 import FormSelectField from '@/components/share/form/FormSelect'
 import { EventValidation } from '@/components/form-validations/EventValidation'
+import CurrentAndNextYearDatepicker from '@/components/share/form/CurrentAndNextYearDatepicker'
 
 function AddEvent() {
     const [loader, setLoader] = useState(false)
@@ -62,9 +63,9 @@ function AddEvent() {
                     }
                 })
             }
-           
+
             Object.entries(data).forEach(([key, value]) => {
-               
+
                 if (key === 'fromDate' || key === 'toDate') {
                     formData.append(key, moment(value).format('YYYY-MM-DD'));
                 } else {
@@ -98,14 +99,15 @@ function AddEvent() {
                 <CommonLayout pageTitle={`Events`} />
             </div>
 
-            <div className='mt-5'>{/* <Separator /> */}</div>
+            <div className='mt-2'>{/* <Separator /> */}</div>
             <div className=''>
                 <FormProvider {...form}>
                     <form
                         encType='multipart/form-data'
                         onSubmit={form.handleSubmit(onSubmit)}
                     >
-                        <div className='mb-4 mt-6 grid grid-cols-1 gap-6 md:grid-cols-1'>
+                        <div className='mb-4 mt-2 grid grid-cols-1 gap-6 md:grid-cols-1'>
+
                             <FormInputField
                                 name='title'
                                 label='Title*'
@@ -122,13 +124,13 @@ function AddEvent() {
                                 form={form}
                                 multiline
                                 className='col-span-2   !bg-white '
-                              
+
                             />
                         </div>
 
 
                         <div className='mb-4 mt-6 grid grid-cols-2 gap-6 md:grid-cols-3'>
-                            <FormDatePicker
+                            <CurrentAndNextYearDatepicker
                                 name='fromDate'
                                 label='From Date'
                                 form={form}
@@ -138,7 +140,7 @@ function AddEvent() {
                                 defaultM
                                 onth={new Date()}
                             />
-                            <FormDatePicker
+                            <CurrentAndNextYearDatepicker
                                 name='toDate'
                                 label='To Date'
                                 form={form}
@@ -147,8 +149,8 @@ function AddEvent() {
                                 disabled={{ before: new Date('2023-12-31') }}
                                 defaultM
                                 onth={new Date()}
-                            /> 
-                             <FormSelectField
+                            />
+                            <FormSelectField
                                 name='isHoliday'
                                 label='Is Holiday?*'
                                 form={form}
@@ -157,7 +159,7 @@ function AddEvent() {
                             />
                         </div>
 
-                  
+
 
                         <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1 mt-7'>
                             <MultiImageUploader

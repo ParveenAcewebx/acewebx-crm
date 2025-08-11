@@ -12,6 +12,7 @@ import FormSelectField from '@/components/share/form/FormSelect'
 import { isHoliday } from '@/components/constants/StaticData'
 import FormTextArea from '@/components/share/form/TextArea'
 import IncrementChatCompo from '../chat/Chat'
+import CurrentAndNextYearDatepicker from '@/components/share/form/CurrentAndNextYearDatepicker'
 
 function EditIncrement() {
   const { id, editId } = useParams()
@@ -224,7 +225,7 @@ function EditIncrement() {
                 className='colum-box-bg-change'
               />
 
-              <FormDatePicker
+              <CurrentAndNextYearDatepicker
                 name='eventDate'
                 label='Event Date'
                 form={form}

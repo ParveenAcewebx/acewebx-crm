@@ -154,7 +154,8 @@ function EditSalesJobApplication({ editId }) {
   useEffect(() => {
     // This code runs only on the client side
     if (typeof window !== "undefined" && window.localStorage) {
-      const storedData = localStorage.getItem("skills");
+      const storedData = localStorage.getItem("globalSettings");
+      console.log("storedData",storedData)
       const skillDataOption = JSON.parse(storedData)
       if (skillDataOption?.skills) {
         const candidateOptions = skillDataOption?.skills?.salesCandidate?.map((item) => ({
@@ -166,6 +167,8 @@ function EditSalesJobApplication({ editId }) {
       }
     }
   }, []);
+
+  console.log("skillsData",skillsData)
   return (
     <div className='mobile-view items-right relative flex min-h-screen w-full flex-col justify-start '>
       <div className=''>

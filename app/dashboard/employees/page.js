@@ -26,14 +26,14 @@ const EventList = () => {
     const [loading, setLoading] = useState(true)
     const [page, setPage] = useState(1)
     const [totalRecord, setTotalRecord] = useState()
-    const [length, setLength] = useState(10)
+    const [length, setLength] = useState(50)
     const [deleteOpenModal, setDeleteOpenModal] = useState(false)
     const [deleteIndex, setDeleteIndex] = useState(null)
     const [submitOpenModal, setSubmitOpenModal] = useState(false)
     const [editData, setEditData] = useState(null)
     const methods = useForm({
         defaultValues: {
-            length: '10'
+            length: '50'
         }
     })
 
@@ -167,7 +167,6 @@ const EventList = () => {
             const response = await EmployeesApi.employeeCSVList(formData);
             console.log("response", response)
 
-            // if(){}
             fetchTagList()
             setDcsModalOpen(false)
         } catch (error) {
@@ -184,12 +183,12 @@ const EventList = () => {
                 <LayoutHeader pageTitle='Employees' />
 
 
-                <div className='flex justify-between items-center mb-5'>
+                <div className='flex justify-between items-center mb-5 mt-2'>
                     <div>
                         <FormProvider {...methods}>
                             <FormSelectField
                                 name='length'
-                                className='h-10 w-28'
+                                className='h-10 w-28 ace-employ'
                                 form={methods}
                                 options={LengthData}
                             />
@@ -207,8 +206,8 @@ const EventList = () => {
                                     placeholder="Email/Name/Phone"
                                     form={form}
                                     inputType="text"
-                                    searchError="searchError"
-                                    className="searchSizeChange"
+                                    searchError="searchError !mt-41"
+                                    className="searchSizeChange "
                                 />
                                 <Search
                                     type="submit"
@@ -235,7 +234,7 @@ const EventList = () => {
                         </div>
                     </FormProvider>
                 </div>
-                <div className='overflowX-auto'>
+                <div className='overflowX-auto pt-1'>
 
                     <DataTable
                         columns={EmployeeColumn(handleDeleteTaskTag, handleEditTaskTag)}

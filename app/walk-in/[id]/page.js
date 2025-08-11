@@ -264,12 +264,10 @@ function EditJobApplicationForm() {
     }
   }, []);
 
-  console.log("skillsData", skillsData)
   return (
     <>
       {isVerify == false ? (
         <>
-          {/* <span className='text-2xl'></span> */}
           <PageExpired />
         </>
       ) : (

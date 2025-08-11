@@ -14,6 +14,7 @@ import { isHoliday } from '@/components/constants/StaticData'
 import * as Yup from 'yup'
 import FormInputField from '@/components/share/form/FormInputField'
 import { yupResolver } from '@hookform/resolvers/yup'
+import CurrentAndNextYearDatepicker from '@/components/share/form/CurrentAndNextYearDatepicker'
 
 function EditBirthdays() {
   const { id, editId } = useParams()
@@ -143,7 +144,7 @@ function EditBirthdays() {
               options={isHoliday}
               className='colum-box-bg-change'
             />
-            <FormDatePicker
+            <CurrentAndNextYearDatepicker
               name='eventDate'
               label='Event Date'
               form={form}

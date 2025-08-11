@@ -40,7 +40,7 @@ const FormSelectField = ({
             disabled={disabled}
           >
             <FormControl
-              className={`border-color-grey h-12 rounded !bg-white !shadow-none ${
+              className={`border-color-grey h-12 rounded !bg-white !shadow-none ace-employ${
                 fieldState.error ? 'border-red-500' : ''
               } ${className}`}
             >
@@ -48,7 +48,7 @@ const FormSelectField = ({
                 <SelectValue placeholder={placeholder} />
               </SelectTrigger>
             </FormControl>
-            <SelectContent>
+            <SelectContent className='!text-[11px]'>
               {options?.map(option => (
                 <SelectItem
                   key={option.value}
@@ -57,7 +57,7 @@ const FormSelectField = ({
                 >
                   {option.icon ? (
                     <>
-                      <option.icon className='mr-2 inline h-5 w-5' />
+                      <option.icon className="mr-2 inline h-5 w-5 " />
                       {option.label}
                     </>
                   ) : (

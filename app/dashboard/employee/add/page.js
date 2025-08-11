@@ -138,8 +138,8 @@ function AddEmployees() {
               encType='multipart/form-data'
               onSubmit={form.handleSubmit(onSubmit)}
             >
-              {/* Personal Info */}
-              <fieldset className='custom-raduis   bg-white font-semibold mb-9'>
+             {/* Personal Info */}
+             <fieldset className='custom-raduis   bg-white font-semibold mb-9 mt-4'>
                 <legend className="text-lg font-bold  ml-[25px]">Personal Information</legend>
                 <div className="multipart-field-one">
                   <FormInputField
@@ -337,8 +337,7 @@ function AddEmployees() {
                   />
 
                   {/* ADD NOTE HERE SMALL */}
-                  <div>
-
+                  <div className='bankIfc'>
                     <FormInputField
                       name='bankIfscCode'
                       label='Bank IFSC Code*'
@@ -346,9 +345,9 @@ function AddEmployees() {
                       inputType='text'
                       className='colum-box-bg-change'
                     />
-                    {/* <span className='text-slate-400 text-xs'>
-                      Ex:- PUNB0073800
-                    </span> */}
+                    <div className='text-slate-400 text-xs w-full text-start mt-2'>
+                      Ex: PUNB0073800
+                    </div>
                   </div>
                 </div>
               </fieldset>

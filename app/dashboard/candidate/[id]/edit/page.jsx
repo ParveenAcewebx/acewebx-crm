@@ -18,7 +18,7 @@ function Page({ params }) {
   return (
     <>
       <CommonLayout pageTitle='Candidate Detail' />
-      <Tabs value={currentTab} onValueChange={handleTabChange}>
+      <Tabs value={currentTab} onValueChange={handleTabChange} className='mt-3'>
       <TabsList className='inline-flex h-9 items-center p-1 text-muted-foreground custom-tabs mb-3 w-full justify-start gap-2 rounded-none border-b'>
         <TabsList>
           <TabsTrigger  className='rounded-none px-4 py-1.5 !shadow-none' value="detail">Details</TabsTrigger>

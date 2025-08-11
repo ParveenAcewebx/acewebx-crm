@@ -2019,6 +2019,10 @@ width: 99%;
   height: 78px !important;
 }
 
+.bankIfc .space-y-2 {
+  width: 100%;
+}
+
 @media (max-width: 850px) {
   .mobile-view {
     padding: 0px 15px;
@@ -2070,7 +2074,9 @@ width: 99%;
   margin: 7px 0;
 }
 
-
+.ace-employ span {
+  /* font-size: 11px; */
+}
 .events-table td {
   padding: 9px;
   font-size: 14px;

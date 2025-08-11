@@ -14,6 +14,7 @@ import { isHoliday } from '@/components/constants/StaticData'
 import FormInputField from '@/components/share/form/FormInputField'
 import * as Yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
+import CurrentAndNextYearDatepicker from '@/components/share/form/CurrentAndNextYearDatepicker'
 
 
 function EditAnniversary() {
@@ -171,7 +172,7 @@ form.setValue("bannerUrl", "")
                 options={isHoliday}
                 className='colum-box-bg-change'
               />
-               <FormDatePicker
+               <CurrentAndNextYearDatepicker
                 name='eventDate'
                 label='Event Date'
                 form={form}
