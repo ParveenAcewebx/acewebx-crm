@@ -12,10 +12,8 @@ import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import moment from 'moment';
 
-// import Loader from '@/components/Loader'
 import { errorMessage, successMessage } from '@/components/ToasterMessage'
 import { CandidateFormValidationEdit } from '@/components/form-validations/CandidateFormValidationEdit'
-import LayoutHeader from '@/components/layoutHeader'
 import FormInputField from '@/components/share/form/FormInputField'
 import FormSelectField from '@/components/share/form/FormSelect'
 import FormInputFileUploaderSingle from '@/components/share/form/SingleFileUpload'
@@ -27,7 +25,6 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { Loader } from 'lucide-react'
 import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
 import CommonLayout from '@/components/CommonLayouyt'
-import SkillApi from '@/services/cadidateApis/settings/SkillApi'
 
 function EditCandidateDetails() {
   const { id } = useParams()

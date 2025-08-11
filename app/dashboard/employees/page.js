@@ -26,14 +26,14 @@ const EventList = () => {
     const [loading, setLoading] = useState(true)
     const [page, setPage] = useState(1)
     const [totalRecord, setTotalRecord] = useState()
-    const [length, setLength] = useState(10)
+    const [length, setLength] = useState(50)
     const [deleteOpenModal, setDeleteOpenModal] = useState(false)
     const [deleteIndex, setDeleteIndex] = useState(null)
     const [submitOpenModal, setSubmitOpenModal] = useState(false)
     const [editData, setEditData] = useState(null)
     const methods = useForm({
         defaultValues: {
-            length: '10'
+            length: '50'
         }
     })
 
@@ -167,7 +167,6 @@ const EventList = () => {
             const response = await EmployeesApi.employeeCSVList(formData);
             console.log("response", response)
 
-            // if(){}
             fetchTagList()
             setDcsModalOpen(false)
         } catch (error) {
