@@ -48,11 +48,11 @@ export const EmployeeColumn = (handleDeleteTaskTag, handleEditTaskTag) => [
   },
   {
     accessorKey: 'id',
-    header: '#ID',
+    header: '#',
     size: 80,
     cell: ({ row }) => (
       <div className="max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
-        {`#EMP-${row.original.id}`}
+        {row.original.employeeCode == null ? "-" : `#${row.original.employeeCode}`}
       </div>
     ),
   },
@@ -66,6 +66,11 @@ export const EmployeeColumn = (handleDeleteTaskTag, handleEditTaskTag) => [
       </div>
     ),
   },
+  // {
+  //   accessorKey: 'employeeCode',
+  //   header: 'Employee Code',
+  //   cell: ({ row }) => row.original.employeeCode,
+  // },
 
   {
     accessorKey: 'designation',

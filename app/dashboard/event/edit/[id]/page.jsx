@@ -30,7 +30,7 @@ function EditEvent() {
     const [deletedOldImages, setDeletedOldImages] = useState([])
     const [files, setFiles] = useState([])
 
- 
+
     const router = useRouter()
     const form = useForm({
         mode: 'onChange',
@@ -50,52 +50,52 @@ function EditEvent() {
 
     const onSubmit = async data => {
         try {
-          const formData = new FormData()
-      
-          const existingImageFiles = await Promise.all(
-            updateImage.map(async (img, index) => {
-              const response = await fetch(img.url)
-              const blob = await response.blob()
-              const fileName = img.url.split('/').pop() || `image_${index}.jpg`
-              return new File([blob], fileName, { type: blob.type })
+            const formData = new FormData()
+
+            const existingImageFiles = await Promise.all(
+                updateImage.map(async (img, index) => {
+                    const response = await fetch(img.url)
+                    const blob = await response.blob()
+                    const fileName = img.url.split('/').pop() || `image_${index}.jpg`
+                    return new File([blob], fileName, { type: blob.type })
+                })
+            )
+
+            // Combine old and new image files
+            const allImageFiles = [
+                ...existingImageFiles,
+                ...(Array.isArray(imageUpload)
+                    ? imageUpload.filter(file => file instanceof File)
+                    : [])
+            ]
+
+            // Append them to formData
+            allImageFiles.forEach((file, index) => {
+                formData.append(`banners${index}`, file)
             })
-          )
-      
-          // Combine old and new image files
-          const allImageFiles = [
-            ...existingImageFiles,
-            ...(Array.isArray(imageUpload)
-              ? imageUpload.filter(file => file instanceof File)
-              : [])
-          ]
-      
-          // Append them to formData
-          allImageFiles.forEach((file, index) => {
-            formData.append(`banners${index}`, file)
-          })
-      
-          // Append the rest of the form fields
-          Object.entries(data).forEach(([key, value]) => {
-            if (key === 'from' || key === 'to') {
-              formData.append(key, moment(value).format('YYYY-MM-DD'))
-            } else {
-              formData.append(key, value)
+
+            // Append the rest of the form fields
+            Object.entries(data).forEach(([key, value]) => {
+                if (key === 'from' || key === 'to') {
+                    formData.append(key, moment(value).format('YYYY-MM-DD'))
+                } else {
+                    formData.append(key, value)
+                }
+            })
+
+            const response = await EventApi.editEvent(id, formData)
+            if (response?.data?.status === true) {
+                setLoader(false)
+                router.back()
             }
-          })
-      
-          const response = await EventApi.editEvent(id, formData)
-          if (response?.data?.status === true) {
-            setLoader(false)
-            router.back()
-          }
         } catch (error) {
-          setLoader(false)
-          console.error('Submission Error:', error?.message)
-          errorMessage({ description: error?.message })
+            setLoader(false)
+            console.error('Submission Error:', error?.message)
+            errorMessage({ description: error?.message })
         }
-      }
-      
-      
+    }
+
+
 
 
 
@@ -119,8 +119,8 @@ function EditEvent() {
                     toDate: toDate
 
                 }
-           
-                const mappedImages = data.banners?.map(file => ({ 
+
+                const mappedImages = data.banners?.map(file => ({
                     url: `${process.env.NEXT_PUBLIC_API_URL}${file.filePath}`
                 }))
 
@@ -153,7 +153,7 @@ function EditEvent() {
 
             <div className='mt-5'>{/* <Separator /> */}</div>
             <div className=''>
-            <FormProvider {...form}>
+                <FormProvider {...form}>
                     <form
                         encType='multipart/form-data'
                         onSubmit={form.handleSubmit(onSubmit)}
@@ -175,7 +175,7 @@ function EditEvent() {
                                 form={form}
                                 multiline
                                 className='col-span-2   !bg-white '
-                              
+
                             />
                         </div>
 
@@ -200,7 +200,7 @@ function EditEvent() {
                                 disabled={{ before: new Date('2024-12-31') }}
                                 defaultM
                                 onth={new Date()}
-                            /> 
+                            />
                         </div>
 
                         <div className='mb-4 mt-6 grid grid-cols-2 gap-6 md:grid-cols-2'>

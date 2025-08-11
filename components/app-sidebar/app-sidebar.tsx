@@ -64,11 +64,11 @@ const data = {
 
         {
           title: 'Add Event',
-          url: '/dashboard/events/add'
+          url: '/dashboard/event/add'
         },
         {
           title: 'All Events',
-          url: '/dashboard/event'
+          url: '/dashboard/events'
         }
       ]
     },

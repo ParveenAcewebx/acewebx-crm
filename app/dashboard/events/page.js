@@ -80,7 +80,7 @@ const EventList = () => {
     const handleEditTaskTag = async (row) => {
         if (row?.original?.id) {
             // router.push(`events/edit/${row?.original?.id}`)
-            router.push(`/dashboard/events/edit/${row?.original?.id}`)
+            router.push(`/dashboard/event/edit/${row?.original?.id}`)
 
         }
     }
@@ -99,7 +99,7 @@ const EventList = () => {
         return () => subscription.unsubscribe()
     }, [methods, totalRecord])
     const handleOpenTagModal = () => {
-        router.push('/dashboard/events/add')
+        router.push('/dashboard/event/add')
       
     }
     const submitHandleModalClose = () => {
@@ -169,7 +169,7 @@ const EventList = () => {
                   placeholder="Search by Title/Description"
                   form={form}
                   inputType="text"
-                  className="colum-box-bg-change col-span-2"
+                  className="searchSizeChange"
                   searchError="searchError"
                 />
                 <div className='filttersSearch'>

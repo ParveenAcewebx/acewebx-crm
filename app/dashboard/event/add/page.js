@@ -51,9 +51,7 @@ function AddEvent() {
         resolver: yupResolver(EventValidation)
     })
 
-    console.log("files", files)
     const onSubmit = async data => {
-        console.log("dataa", data)
         try {
             const formData = new FormData()
 
@@ -64,22 +62,9 @@ function AddEvent() {
                     }
                 })
             }
-            console.log("filefile", files)
-            // if (Array.isArray(files)) {
-            //     for (const file of files) {
-            //         if (file instanceof File) {
-            //             formData.append('banners', file);
-            //         }
-            //     }
-            // }
-
-            // const zip = new Blob(files, { type: 'application/octet-stream' });
-            // formData.append('banners', zip);
-
+           
             Object.entries(data).forEach(([key, value]) => {
-                // Skip these keys entirely
-                // if (['preferredShift', 'businessMethods', 'leadPlatforms'].includes(key)) return;
-                // Format 'date', append everything else as-is
+               
                 if (key === 'fromDate' || key === 'toDate') {
                     formData.append(key, moment(value).format('YYYY-MM-DD'));
                 } else {
@@ -91,9 +76,8 @@ function AddEvent() {
 
             const response = await EventApi.addEvent(formData)
             if (response?.data?.status == true) {
-                // form.reset()
                 setLoader(false)
-                router.push('/dashboard/event')
+                router.push('/dashboard/events')
             }
         } catch (error) {
             setLoader(false)

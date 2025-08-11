@@ -178,9 +178,9 @@ const EventList = () => {
                                         placeholder="Search...."
                                         form={form}
                                         inputType="text"
-                                        className="colum-box-bg-change col-span-2"
+                                        className="searchSizeChange"
                                         searchError="searchError"
-                                    />
+                                        />
                                     <div className='filttersSearch'>
                                         <Search
                                             type="submit"
@@ -194,6 +194,7 @@ const EventList = () => {
                         </div>
                     </FormProvider>
                 </div>
+                <div className='overflowX-auto'>
 
                 <DataTable
                     columns={EmployeeColumn(handleDeleteTaskTag, handleEditTaskTag)}
@@ -204,6 +205,8 @@ const EventList = () => {
                     length={length}
                     loading={loading}
                 />
+                </div>
+
                 <DialogBox
                     onDelete={onDelete}
                     description='Are you certain you want to proceed with this deletion?'

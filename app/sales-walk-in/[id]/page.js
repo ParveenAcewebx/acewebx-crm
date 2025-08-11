@@ -185,7 +185,7 @@ function EditSalesJobApplicationForm() {
 
   useEffect(() => {
     if (typeof window !== "undefined" && window.localStorage) {
-      const storedData = localStorage.getItem("skills");
+      const storedData = localStorage.getItem("globalSettings");
 
       if (storedData && storedData !== "undefined") {
         try {
