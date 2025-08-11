@@ -82,10 +82,10 @@ function EditEmployees({ editId }) {
             router.push('/dashboard/employees');
           }
         } catch (error) {
-          console.log("error", error);
+          console.log("error", error.message);
           setLoader(false);
           errorMessage(
-            error?.message || 'Something went wrong while submitting the form.'
+            { description: error?.message }
           );
         }
       };
@@ -148,7 +148,7 @@ function EditEmployees({ editId }) {
         } catch (error) {
             console.error('Submission Error:', error);
             errorMessage(
-                error?.message || 'Something went wrong while submitting the form.'
+              { description: error?.message }
             );
         }
     };

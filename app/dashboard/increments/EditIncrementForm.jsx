@@ -42,8 +42,8 @@ function EditIncrementForm({ editId }) {
             console.log("error:---------> for error formate check", error)
             setLoader(false)
             errorMessage(
-                error?.message || 'Something went wrong while submitting the form.'
-            )
+                { description: error?.message }
+              );
 
         }
     }
@@ -61,8 +61,8 @@ function EditIncrementForm({ editId }) {
         } catch (error) {
             console.error('Submission Error:', error);
             errorMessage(
-                error?.message || 'Something went wrong while submitting the form.'
-            );
+                { description: error?.message }
+              );
         }
     };
 

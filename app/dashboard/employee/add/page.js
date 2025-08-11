@@ -49,18 +49,18 @@ function AddEmployees() {
     setLoader(true);
     try {
       const formData = new FormData();
-  
+
       const reportingManagerValue = JSON.stringify(data?.reportingManager);
-  
+
       Object.entries(data).forEach(([key, value]) => {
         const isDateField =
           key === 'dobDocument' ||
           key === 'dateOfJoining' ||
           key === 'dobCelebration' ||
           key === 'lastIncrementDate';
-  
+
         if (['reportingManager'].includes(key)) return;
-  
+
         if (isDateField) {
           if (key === 'dobCelebration') {
             // Only for dobCelebration: send empty string if no date
@@ -75,9 +75,9 @@ function AddEmployees() {
           formData.append(key, value ?? '');
         }
       });
-  
+
       formData.append('reportingManager', reportingManagerValue);
-  
+
       const response = await EmployeesApi.addEmployees(formData);
       if (response?.data?.status === true) {
         form.reset();
@@ -86,14 +86,14 @@ function AddEmployees() {
         router.push('/dashboard/employees');
       }
     } catch (error) {
-      console.log("error", error);
+      // console.log("error", error.message);
       setLoader(false);
       errorMessage(
-        error?.message || 'Something went wrong while submitting the form.'
+        { description: error.message }
       );
     }
   };
-  
+
 
 
 
@@ -240,7 +240,7 @@ function AddEmployees() {
                     form={form}
                     inputFormat='YYYY-MM-DD'
                     className='datepickerouter'
-                    defaultMonth={ new Date()}
+                    defaultMonth={new Date()}
                     disabled={{ before: new Date('2016-12-31') }}
 
                   />
@@ -337,13 +337,19 @@ function AddEmployees() {
                   />
 
                   {/* ADD NOTE HERE SMALL */}
-                  <FormInputField
-                    name='bankIfscCode'
-                    label='Bank IFSC Code*'
-                    form={form}
-                    inputType='text'
-                    className='colum-box-bg-change'
-                  />
+                  <div>
+
+                    <FormInputField
+                      name='bankIfscCode'
+                      label='Bank IFSC Code*'
+                      form={form}
+                      inputType='text'
+                      className='colum-box-bg-change'
+                    />
+                    {/* <span className='text-slate-400 text-xs'>
+                      Ex:- PUNB0073800
+                    </span> */}
+                  </div>
                 </div>
               </fieldset>
 

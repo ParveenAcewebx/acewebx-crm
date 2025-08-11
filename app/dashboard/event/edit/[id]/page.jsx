@@ -133,8 +133,8 @@ function EditEvent() {
         } catch (error) {
             console.error('Submission Error:', error)
             errorMessage(
-                error?.message || 'Something went wrong while submitting the form.'
-            )
+                { description: error?.message }
+              );
         }
     }
 

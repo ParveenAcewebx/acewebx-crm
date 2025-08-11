@@ -153,8 +153,8 @@ function EditJobApplicationForm() {
     } catch (error) {
       setLoader(false)
       errorMessage(
-        error?.message || 'Something went wrong while submitting the form.'
-      )
+        { description: error?.message }
+      );
       if (error?.message == 'reCaptcha verification failed.') {
         form.unregister('recaptcha', { keepError: false })
       }
