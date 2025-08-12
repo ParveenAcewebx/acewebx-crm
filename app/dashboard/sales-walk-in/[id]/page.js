@@ -23,14 +23,12 @@ import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
 import { SalesCandidateValidationEdit } from '@/components/form-validations/SalesCandidateValidationEdit'
 import moment from 'moment'
 import CommonLayout from '@/components/CommonLayouyt'
-import SkillApi from '@/services/cadidateApis/settings/SkillApi'
 
 function EditSalesJobApplicationForm() {
   const { id } = useParams()
-
   const [loader, setLoader] = useState(false)
   const [candEmail, setCandEmail] = useState("")
-
+  const [skillsData, setSkillsData] = useState([])
   const router = useRouter()
   const form = useForm({
     mode: 'onChange',
@@ -40,15 +38,15 @@ function EditSalesJobApplicationForm() {
 
 
 
-
+// Conevrt url to file object:)
   const urlToFile = async (url, fileName) => {
     const response = await fetch(url)
     const blob = await response.blob()
     const contentType = blob.type || 'application/octet-stream'
-
     return new File([blob], fileName, { type: contentType })
   }
 
+  // function for data get by id:)
   const candidateDataGetById = async () => {
     try {
       const response = await SalesCandidate.salesCandidateGetById(id)
@@ -61,7 +59,6 @@ function EditSalesJobApplicationForm() {
         form?.setValue('businessMethods', JSON.parse(data?.businessMethods))
         form?.setValue('leadPlatforms', JSON.parse(data?.leadPlatforms))
         form?.setValue('skill', JSON.parse(data?.skill))
-
         const joiningDate = new Date(data.joiningDate + 'T00:00:00')
         form?.setValue('joiningDate', joiningDate)
 
@@ -70,10 +67,8 @@ function EditSalesJobApplicationForm() {
         if (resumePath) {
           const fileUrl = `${process.env.NEXT_PUBLIC_API_URL}${resumePath}`
           const fileName = resumePath.split('/').pop() || 'resume.pdf'
-
           try {
             const fileObj = await urlToFile(fileUrl, fileName)
-
             form.setValue('resume', fileObj)
           } catch (err) {
             console.error('Failed to convert resume URL to File:', err)
@@ -85,15 +80,14 @@ function EditSalesJobApplicationForm() {
     }
   }
 
+  // function for form submit:)
   const onSubmit = async data => {
     try {
       const formData = new FormData()
-
       const file = data.resume?.[0]
       if (file) {
         formData.append('resume', file)
       }
-
       const preferred = JSON.stringify(data?.preferredShift)
       Object.entries(data).forEach(([key, value]) => {
         // Skip these keys entirely
@@ -136,7 +130,6 @@ function EditSalesJobApplicationForm() {
 
 
 
-  const [skillsData, setSkillsData] = useState([])
  
 
   useEffect(() => {

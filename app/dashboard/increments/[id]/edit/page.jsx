@@ -16,7 +16,6 @@ function Page({ params }) {
   }
   return (
     <>
-      {/* <CommonLayout pageTitle='Event Detail' /> */}
       <Tabs value={currentTab} onValueChange={handleTabChange}>
       <TabsList className='inline-flex h-9 items-center p-1 text-muted-foreground custom-tabs mb-3 w-full justify-start gap-2 rounded-none border-b'>
         <TabsList>

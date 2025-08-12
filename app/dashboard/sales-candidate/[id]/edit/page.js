@@ -9,7 +9,6 @@ import EditSalesJobApplication from '../../SalesCandidateEdit'
 
 function Page({ params }) {
   const router = useRouter()
-  // useDocumentTitle('View Lead Dashboard')
   const id = params?.id
   const editId = id
   const pathname = usePathname()

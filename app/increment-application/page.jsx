@@ -20,7 +20,6 @@ import { errorMessage } from '@/components/ToasterMessage'
 function IncrementApplicationForm() {
     const [step, setStep] = useState(0)
     const [loader, setLoader] = useState(false)
-    const [recaptcha, setRecaptcha] = useState(null)
     const router = useRouter()
 
     const form = useForm({
@@ -73,7 +72,6 @@ function IncrementApplicationForm() {
 
 
     const onSubmit = async data => {
-        console.log("dataa", data)
         try {
           
 
@@ -83,7 +81,6 @@ function IncrementApplicationForm() {
                 router.push('/thankyou')
             }
         } catch (error) {
-            // setLoader(false)
             console.error('Submission Error:', error?.message)
             errorMessage({ description: error?.message })
         }

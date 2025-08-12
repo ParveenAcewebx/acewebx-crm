@@ -23,13 +23,12 @@ import { Loader } from 'lucide-react'
 import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
 import { SalesCandidateValidationEdit } from '@/components/form-validations/SalesCandidateValidationEdit'
 import moment from 'moment'
-import SkillApi from '@/services/cadidateApis/settings/SkillApi'
 
 function EditSalesJobApplication({ editId }) {
   const id = editId
 
   const [loader, setLoader] = useState(false)
-  const [candEmail, setCandEmail] = useState("")
+  const [skillsData, setSkillsData] = useState([])
 
   const router = useRouter()
   const form = useForm({
@@ -54,7 +53,6 @@ function EditSalesJobApplication({ editId }) {
       const response = await SalesCandidate.salesCandidateGetById(id)
       if (response?.data?.status === true) {
         const data = response?.data?.data
-        setCandEmail(data?.email)
         // Set form fields first
         form.reset(data)
         form?.setValue('preferredShift', JSON.parse(data?.preferredShift))
@@ -126,7 +124,6 @@ function EditSalesJobApplication({ editId }) {
         successMessage({ description: 'Updated SuccessFully!' })
         router.replace("detail")
 
-        // router.push('/dashboard/candidate-sales')
       }
     } catch (error) {
       setLoader(false)
@@ -147,7 +144,6 @@ function EditSalesJobApplication({ editId }) {
   }, [id])
 
 
-  const [skillsData, setSkillsData] = useState([])
 
 
 
@@ -155,7 +151,6 @@ function EditSalesJobApplication({ editId }) {
     // This code runs only on the client side
     if (typeof window !== "undefined" && window.localStorage) {
       const storedData = localStorage.getItem("globalSettings");
-      console.log("storedData",storedData)
       const skillDataOption = JSON.parse(storedData)
       if (skillDataOption?.skills) {
         const candidateOptions = skillDataOption?.skills?.salesCandidate?.map((item) => ({
@@ -168,7 +163,6 @@ function EditSalesJobApplication({ editId }) {
     }
   }, []);
 
-  console.log("skillsData",skillsData)
   return (
     <div className='mobile-view items-right relative flex min-h-screen w-full flex-col justify-start '>
       <div className=''>

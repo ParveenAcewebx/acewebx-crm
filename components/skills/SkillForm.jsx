@@ -9,7 +9,7 @@ import FormSelectField from '../share/form/FormSelect'
 import { StatusData, TypeData } from '../constants/StaticData'
 import SkillApi from '@/services/cadidateApis/settings/SkillApi'
 
-const SkillForm = ({ setSubmitOpenModal, fetchTagList, editData }) => {
+const SkillForm = ({ setSubmitOpenModal, fetchSkillsList, editData }) => {
     const form = useForm({
         defaultValues: {
             title: '',
@@ -43,7 +43,7 @@ const SkillForm = ({ setSubmitOpenModal, fetchTagList, editData }) => {
 
             if (response.status === 200) {
                 setSubmitOpenModal(false)
-                fetchTagList()
+                fetchSkillsList()
                 successMessage({ description: response?.data?.message })
             }
         } catch (error) {

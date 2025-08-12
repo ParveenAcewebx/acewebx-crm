@@ -33,6 +33,7 @@ function EditSalesJobApplicationForm() {
   const [recaptcha, setRecaptcha] = useState([])
   const [candiId, setCandiID] = useState()
   const [isVerify, setIsVerify] = useState(true)
+  const [skillsData, setSkillsData] = useState([])
 
   const router = useRouter()
   const form = useForm({
@@ -48,6 +49,7 @@ function EditSalesJobApplicationForm() {
 
   const reValue = form.watch('recaptcha')
 
+  // url to convert into file object :-
   const urlToFile = async (url, fileName) => {
     const response = await fetch(url)
     const blob = await response.blob()
@@ -87,7 +89,7 @@ function EditSalesJobApplicationForm() {
         }
       }
     } catch (error) {
-      // errorMessage({ description: error?.message })
+      errorMessage({ description: error?.message })
       setIsVerify(error?.status)
     }
   }
@@ -161,7 +163,7 @@ function EditSalesJobApplicationForm() {
 
 
 
-  const [skillsData, setSkillsData] = useState([])
+  
 
   useEffect(() => {
     if (typeof window !== "undefined" && window.localStorage) {

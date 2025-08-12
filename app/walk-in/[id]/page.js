@@ -25,7 +25,6 @@ import { Loader } from 'lucide-react'
 import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
 import { CandidateFormValidationEditClient } from '@/components/form-validations/CandidateFormValidationEditClient'
 import moment from 'moment';
-import SkillApi from '@/services/cadidateApis/settings/SkillApi'
 function EditJobApplicationForm() {
   const { id } = useParams()
   const [step, setStep] = useState(2)
@@ -34,6 +33,7 @@ function EditJobApplicationForm() {
   const [submitAddValidation, setSubmitAddValidation] = useState(false)
   const [isVerify, setIsVerify] = useState(true)
   const [candiId, setCandiId] = useState('')
+  const [skillsData, setSkillsData] = useState([])
   const router = useRouter()
   const form = useForm({
     mode: 'onChange',
@@ -43,6 +43,7 @@ function EditJobApplicationForm() {
         ? undefined
         : yupResolver(CandidateFormValidationEditClient)
   })
+
 
   const stepFields = [
     [
@@ -161,7 +162,7 @@ function EditJobApplicationForm() {
     }
   }
 
-
+// url to convert into file object:)
   const urlToFile = async (url, fileName) => {
     const response = await fetch(url)
     const blob = await response.blob()
@@ -233,7 +234,7 @@ function EditJobApplicationForm() {
         }
       }
     } catch (error) {
-      // errorMessage({ description: error?.message })
+      errorMessage({ description: error?.message })
       setIsVerify(error?.status)
     }
   }
@@ -243,7 +244,7 @@ function EditJobApplicationForm() {
     candidateDataGetById(id, form)
   }, [id])
 
-  const [skillsData, setSkillsData] = useState([])
+ 
 
   useEffect(() => {
     if (typeof window !== "undefined" && window.localStorage) {
