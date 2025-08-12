@@ -101,7 +101,7 @@ export const formDefaultValues = {
   bankName: '',
   bankAccountNumber: '',
   bankIfscCode: '',
-
+  reportingManager:[],
   // Emergency Details
   bloodGroup: '',
   emergencyContactName: '',
