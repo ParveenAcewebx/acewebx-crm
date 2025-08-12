@@ -42,7 +42,17 @@ function AnniversariesDetail() {
     }
 
 
+    const getDaysLeft = (dateString) => {
+        const eventDate = new Date(dateString)
+        const today = new Date()
 
+        eventDate.setHours(0, 0, 0, 0)
+        today.setHours(0, 0, 0, 0)
+
+        const diff = Math.ceil((eventDate - today) / (1000 * 60 * 60 * 24))
+
+        return diff === 0 ? 'Today' : `${diff}`
+    }
     // upcomingAnniversaries:)
 
     const columnForupcomingAnniversaries = [
@@ -50,41 +60,8 @@ function AnniversariesDetail() {
             accessorKey: 'eventDate',
             header: 'Days Left',
             id: 'eventDate',
-            cell: ({ row }) => {
+            cell: ({ row }) => getDaysLeft(row?.original?.eventDate+ 'T00:00:00')
 
-                const originalDate = new Date(row.original.eventDate);
-                if (isNaN(originalDate.getTime())) return <span>Invalid Date</span>; // Handle invalid date string
-
-                function getNextIncrementDate(startDate, cycleInYears = 1) {
-                    const today = new Date();
-                    let nextDate = new Date(startDate);
-
-                    while (nextDate <= today) {
-                        nextDate.setFullYear(nextDate.getFullYear() + cycleInYears);
-                    }
-
-                    return nextDate.toISOString().split('T')[0];
-                }
-
-                const finalDate = getNextIncrementDate(originalDate);
-
-                // if (!incrementDateStr) return <span className="">N/A</span>;
-
-                const incrementDate = new Date(finalDate + 'T00:00:00');
-                const today = new Date();
-
-                incrementDate.setHours(0, 0, 0, 0);
-                today.setHours(0, 0, 0, 0);
-
-                const diffTime = incrementDate.getTime() - today.getTime();
-                const dayLeft = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-                return (
-                    <span>
-                        {dayLeft > 0 ? `${dayLeft}` : dayLeft === 0 ? 'Today' : `${Math.abs(dayLeft)}`}
-                    </span>
-                );
-            }
         },
 
         {
