@@ -33,7 +33,7 @@ const Skills = () => {
         }
     })
 
-    // fetch group tag list
+    // fetch group  list
     const fetchSkillsList = async () => {
         try {
             const response = await SkillApi.getAllSkill(page, length)
@@ -225,7 +225,7 @@ const Skills = () => {
                     description={
                         <SkillForm
                             setSubmitOpenModal={setSubmitOpenModal}
-                            fetchSkillsList={fetchSkillsList}
+                            fetchList={fetchSkillsList}
                             editData={editData}
                         />
                     }

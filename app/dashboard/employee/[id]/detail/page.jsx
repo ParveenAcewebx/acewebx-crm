@@ -20,7 +20,9 @@ function Page({ params }) {
   const id = params?.id
   const editId = id
   const [candidateData, setCandidateData] = useState({})
-
+  const [activitiesData, setActivitiesData] = useState()
+  const pathname = usePathname()
+  // Get Data by Id:)
   const handleGetApi = async () => {
     try {
       const apiData = await EmployeesApi.getByIdEmployees(editId)
@@ -37,7 +39,6 @@ function Page({ params }) {
   }, [id, router])
 
 
-  const [activitiesData, setActivitiesData] = useState()
 
   // Activity function :-
   const getActivities = async () => {
@@ -57,11 +58,8 @@ function Page({ params }) {
     getActivities()
   }, [])
 
-  const pathname = usePathname()
-  // const currentTab = pathname?.endsWith('edit') ? 'edit' : 'detail'
-  // const handleTabChange = (value) => {
-  //   router.replace(value)
-  // }
+
+  
 
   // Get last part of the path
   const currentTab = pathname?.split('/').pop() || 'detail'
@@ -82,7 +80,6 @@ function Page({ params }) {
 
   const genderCol = genderColor(candidateData?.meta?._gender)
 
-  // send walk-in form
 
 
   return (

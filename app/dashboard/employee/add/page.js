@@ -15,17 +15,12 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import moment from 'moment';
-
-// import Loader from '@/components/Loader'
 import { errorMessage, successMessage } from '@/components/ToasterMessage'
-import { CandidateFormValidationEdit } from '@/components/form-validations/CandidateFormValidationEdit'
 import FormInputField from '@/components/share/form/FormInputField'
 import FormSelectField from '@/components/share/form/FormSelect'
-import FormInputFileUploaderSingle from '@/components/share/form/SingleFileUpload'
 import FormTextArea from '@/components/share/form/TextArea'
 import FormDatePicker from '@/components/share/form/datePicker'
 import { Button } from '@/components/ui/button'
-import Candidate from '@/services/cadidateApis/CandidateApi'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Loader } from 'lucide-react'
 import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
@@ -45,7 +40,6 @@ function AddEmployees() {
 
 
   const onSubmit = async (data) => {
-    console.log("datadata", data);
     setLoader(true);
     try {
       const formData = new FormData();
@@ -86,7 +80,6 @@ function AddEmployees() {
         router.push('/dashboard/employees');
       }
     } catch (error) {
-      // console.log("error", error.message);
       setLoader(false);
       errorMessage(
         { description: error.message }

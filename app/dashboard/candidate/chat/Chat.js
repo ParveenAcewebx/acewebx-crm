@@ -18,10 +18,8 @@ function ChatCompo({ id }) {
   const message = form.watch('chat')
   const bottomRef = useRef(null)
 
-  const scrollToBottom = () => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }
 
+// messageSendHandler:)
   const messageSendHandler = async () => {
     if (!message?.trim()) return
     const data = {

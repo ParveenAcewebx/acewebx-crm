@@ -43,6 +43,7 @@ const AllSalesCandidates = () => {
   const [maxExperience, setMaxExperience] = useState('');
   const [connectStartDate, setConnectStartDate] = useState('');
   const [connectEndDate, setConnectEndDate] = useState('');
+  const [skillsData, setSkillsData] = useState([])
 
   const methods = useForm({
     defaultValues: {
@@ -269,7 +270,6 @@ const AllSalesCandidates = () => {
     }
   };
 
-  const [skillsData, setSkillsData] = useState([])
 
 
   useEffect(() => {

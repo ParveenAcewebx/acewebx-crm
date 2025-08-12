@@ -77,7 +77,6 @@ function EditCandidate({ editId }) {
         setLoader(false)
         successMessage({ description: 'Updated SuccessFully!' })
         router.replace("detail")
-        // router.push('/dashboard/candidates')
       }
     } catch (error) {
       setLoader(false)
@@ -90,7 +89,7 @@ function EditCandidate({ editId }) {
     }
   }
 
-
+// convert url to file object:)
   const urlToFile = async (url, fileName) => {
     const response = await fetch(url)
     const blob = await response.blob()
@@ -175,9 +174,6 @@ function EditCandidate({ editId }) {
   }, [editId])
 
 
-
-
- 
 
   useEffect(() => {
     // This code runs only on the client side

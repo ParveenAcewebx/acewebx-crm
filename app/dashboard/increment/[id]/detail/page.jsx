@@ -73,8 +73,8 @@ function Page({ params }) {
 
   const genderCol = genderColor(candidateData?.meta?._gender)
 
-   // send walk-in form
-   const handleSendWalkInForm = async row => {
+   // send Increment form
+   const handleSendIncrementForm = async row => {
     try {
       const sendEmailLin = await IncrementAPi.activityDevIncrementAPi(id)
 
@@ -114,7 +114,7 @@ function Page({ params }) {
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Button
-                      onClick={handleSendWalkInForm}
+                      onClick={handleSendIncrementForm}
                       size='icon'
                       variant='outline'
                       className='shrink-0  hover:bg-accent sendIcon'
