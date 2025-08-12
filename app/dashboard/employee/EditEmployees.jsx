@@ -86,7 +86,7 @@ function EditEmployees({ editId }) {
         form.reset();
         setLoader(false);
         successMessage({ description: 'Added Successfully!' });
-        router.push('/dashboard/employees');
+        router.push('detail');
       }
     } catch (error) {
       console.log("error", error.message);

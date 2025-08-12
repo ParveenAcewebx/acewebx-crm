@@ -11,8 +11,6 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { FormProvider, useForm } from 'react-hook-form'
-
-// import Loader from '@/components/Loader'
 import { errorMessage } from '@/components/ToasterMessage'
 import { SalesCandidateValidation } from '@/components/form-validations/SalesCandidateValidation'
 import FormInputField from '@/components/share/form/FormInputField'

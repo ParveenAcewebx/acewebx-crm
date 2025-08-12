@@ -26,7 +26,7 @@ function EditIncrementForm({ editId }) {
         resolver: yupResolver(IncrementFormValidation),
     })
 
-
+// Submit Handler:)
     const onSubmit = async data => {
         setLoader(true)
         try {
@@ -49,7 +49,7 @@ function EditIncrementForm({ editId }) {
     }
 
 
-
+// GetDataById Handler:)
     const candidateDataGetById = async (editId) => {
         try {
             const response = await IncrementAPi.getByIdIncrementAPi(editId);

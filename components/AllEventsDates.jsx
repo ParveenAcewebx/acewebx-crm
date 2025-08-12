@@ -15,6 +15,7 @@ function AllEventsDates() {
 
     const router = useRouter()
 
+    // Get All Data :)
     const handleGetApi = async () => {
         try {
             const res = await EventApi.upComingEventList()
@@ -33,7 +34,7 @@ function AllEventsDates() {
         handleGetApi()
     }, [])
 
-    // Handlers
+    // BirthdaysHandlers:)
     const handleForupcomingBirthdays = (row) => {
         const id = row?.original?.employee?.id
         if (id) {
@@ -41,21 +42,26 @@ function AllEventsDates() {
         }
     }
 
+    // IncrementsHandlers:)
     const handleForupcomingIncrements = (row) => {
         const id = row?.original?.employee?.id
         if (id) {
             router.push(`/dashboard/employee/${id}/detail`)
         }
     }
-
+    // AnniversariesHandlers:)
     const handleForupcomingAnniversaries = (row) => {
         const id = row?.original?.employee?.id
         if (id) {
             router.push(`/dashboard/employee/${id}/detail`)
         }
     }
+    // EventsHandlers:)
+    const handleForupcomingEvents = (row) => {
+        router.push(`/dashboard/event/edit/${row?.original?.id}`)
+    }
 
-    // Utils
+    // DaysLeft  function :)
     const getDaysLeft = (dateString) => {
         const eventDate = new Date(dateString)
         const today = new Date()
@@ -68,13 +74,14 @@ function AllEventsDates() {
         return diff === 0 ? 'Today' : `${diff}`
     }
 
+    // Date Format  function :)
     const formatDate = (dateString) => {
         if (!dateString) return '—'
         const date = new Date(dateString)
         return isNaN(date.getTime()) ? 'Invalid Date' : date.toLocaleDateString()
     }
 
-    // Columns
+    // BirthdaysColumns:)
     const columnForupcomingBirthdays = [
         {
             accessorKey: 'name',
@@ -86,7 +93,7 @@ function AllEventsDates() {
             accessorKey: 'eventDate',
             header: 'Birthday Date',
             id: 'eventDate',
-           cell: ({ row }) => row.original.eventDate ?? ''
+            cell: ({ row }) => row.original.eventDate ?? ''
 
         },
         {
@@ -109,6 +116,7 @@ function AllEventsDates() {
         }
     ]
 
+    // IncrementsColumns:)
     const columnForupcomingIncrements = [
         {
             accessorKey: 'name',
@@ -141,6 +149,7 @@ function AllEventsDates() {
         }
     ]
 
+    // AnniversariesColumns:)
     const columnForupcomingAnniversaries = [
         {
             accessorKey: 'name',
@@ -173,11 +182,7 @@ function AllEventsDates() {
         }
     ]
 
-
-    const handleForupcomingEvents = (row) => {
-        router.push(`/dashboard/events/edit/${row?.original?.id}`)
-    }
-
+    // EventsColumns:)
     const columnForupcomingEvents = [
 
 
@@ -215,7 +220,7 @@ function AllEventsDates() {
             size: 50,
             cell: ({ row }) => {
                 return (
-                    <div className='grid grid-cols-3 w-2 text-center '>
+                    <div className='grid grid-cols-3 w-2 text-center cursor-pointer '>
                         <Eye className='text-blue-500 h-4 w-4' onClick={() => handleForupcomingEvents(row)} />
                     </div>
                 );
@@ -227,7 +232,7 @@ function AllEventsDates() {
     return (
         <>
             <CommonLayout pageTitle="Dashboard" />
-            {/* Anniversaries */}
+            {/* Events */}
             <div className="grid grid-cols-2 gap-6 mt-6">
                 <Card className="box">
                     <CardHeader className="theme-bg-white-rgba border-color-grey min-h-14 border-b p-3">
@@ -247,7 +252,7 @@ function AllEventsDates() {
                         )}
                     </CardContent>
                 </Card>
-
+                {/* Birthdays */}
                 <Card className="box">
                     <CardHeader className="theme-bg-white-rgba border-color-grey min-h-14 border-b p-3">
                         <CardTitle className="flex justify-between">
@@ -266,7 +271,8 @@ function AllEventsDates() {
                     </CardContent>
                 </Card>
             </div>
-            {/* Birthdays */}
+
+            {/* Anniversaries */}
             <div className="grid grid-cols-2 gap-6 mt-7">
                 <Card className="box">
                     <CardHeader className="theme-bg-white-rgba border-color-grey min-h-14 border-b p-3">

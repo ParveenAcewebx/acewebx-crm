@@ -20,6 +20,7 @@ function Page({ params }) {
   const id = params?.id
   const editId = id
   const [candidateData, setCandidateData] = useState({})
+  const [activitiesData, setActivitiesData] = useState()
 
   const handleGetApi = async () => {
     try {
@@ -37,7 +38,6 @@ function Page({ params }) {
   }, [id, router])
 
 
-  const [activitiesData, setActivitiesData] = useState()
 
   // Activity function :-
   const getActivities = async () => {

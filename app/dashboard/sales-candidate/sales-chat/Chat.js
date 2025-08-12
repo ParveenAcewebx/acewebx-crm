@@ -1,17 +1,14 @@
 'use client'
-
 import React, { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-import { cn } from '@/lib/utils'
-import ChatApis from '@/services/cadidateApis/ChatApis'
 import ActionsDots from '@/components/ActionsDots'
 import { Separator } from '@/components/ui/separator'
 import SalesChatApi from '@/services/cadidateApis/SalesChatApi'
 
-function ChatCompo({id}) {
+function ChatCompo({ id }) {
   const form = useForm({ defaultValues: { chat: '' } })
   const [allChat, setAllChat] = useState([])
   const [isEditMsg, setIsEditMsg] = useState(false)
@@ -19,16 +16,13 @@ function ChatCompo({id}) {
   const message = form.watch('chat')
   const bottomRef = useRef(null)
 
-  const scrollToBottom = () => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }
-
+// SendHandler:)
   const messageSendHandler = async () => {
     if (!message?.trim()) return
-const data = {
-  message,
-  candidateSaleId : id
-}
+    const data = {
+      message,
+      candidateSaleId: id
+    }
 
     try {
       await SalesChatApi.addSaleMessage(data)
@@ -38,7 +32,7 @@ const data = {
       console.error('Error sending message:', error)
     }
   }
-
+// EditHandler:)
   const editMsgHandler = async () => {
     if (!message?.trim() || !editMsgId) return
     try {
@@ -51,7 +45,7 @@ const data = {
       console.error('Error editing message:', error)
     }
   }
-
+// dataGetByIdHandler:)
   const getByIdMsgHandler = async id => {
     try {
       setIsEditMsg(true)
@@ -63,6 +57,7 @@ const data = {
     }
   }
 
+// DeleteHandler:)
   const deleteMsgHandler = async id => {
     try {
       await SalesChatApi.deleteSaleMessage(id)
@@ -71,7 +66,7 @@ const data = {
       console.error('Error deleting message:', error)
     }
   }
-
+// GetAllChatHandler:)
   const getAllChats = async () => {
     try {
       const allMsg = await SalesChatApi.getAllSaleMessages(id)
@@ -80,7 +75,7 @@ const data = {
       console.error('Error fetching messages:', error)
     }
   }
-
+// CancelEditHandler:)
   const cancelEditHandler = () => {
     setIsEditMsg(false)
     setEditMsgId(null)
@@ -93,27 +88,27 @@ const data = {
 
   return (
     <Card className='w-full  border rounded-lg shadow-sm'>
-    <CardHeader className='theme-bg-white-rgba border-color-grey min-h-14 border-b p-3'>
-                    <CardTitle className='flex justify-between'>
-                      <div className='!text-lg '>Notes</div>
-  
-                    </CardTitle>
-                  </CardHeader>      <CardContent className='flex !p-4 flex-col gap-2 h-[360px] overflow-y-auto'>
-          {allChat.length > 0 ? (
-            allChat.map(item => {
-              const createdTime = new Date(item?.createdAt)
-              const updatedTime = new Date(item?.updatedAt)
-              const formattedTime = createdTime.toLocaleTimeString([], {
-                hour: '2-digit',
-                minute: '2-digit'
-              })
-  
-              const isEdited =
-                item?.message !== 'This message was deleted' &&
-                createdTime.toLocaleTimeString() !== updatedTime.toLocaleTimeString()
-  
-              return (
-                <Card className='mb-0 p-3 bg-muted rounded-md shadow-sm' key={item?.id}>
+      <CardHeader className='theme-bg-white-rgba border-color-grey min-h-14 border-b p-3'>
+        <CardTitle className='flex justify-between'>
+          <div className='!text-lg '>Notes</div>
+
+        </CardTitle>
+      </CardHeader>      <CardContent className='flex !p-4 flex-col gap-2 h-[360px] overflow-y-auto'>
+        {allChat.length > 0 ? (
+          allChat.map(item => {
+            const createdTime = new Date(item?.createdAt)
+            const updatedTime = new Date(item?.updatedAt)
+            const formattedTime = createdTime.toLocaleTimeString([], {
+              hour: '2-digit',
+              minute: '2-digit'
+            })
+
+            const isEdited =
+              item?.message !== 'This message was deleted' &&
+              createdTime.toLocaleTimeString() !== updatedTime.toLocaleTimeString()
+
+            return (
+              <Card className='mb-0 p-3 bg-muted rounded-md shadow-sm' key={item?.id}>
                 {/* Message and action dots */}
                 <div className='flex justify-between items-start'>
                   <p className='text-base text-muted-foreground !text-black mt-1 mb-2 flex-1'>
@@ -127,14 +122,14 @@ const data = {
                     />
                   )}
                 </div>
-              
+
                 {/* Edited flag if applicable */}
                 {isEdited && (
                   <div className='text-xs italic text-gray-500 mb-1'>
                     Edited
                   </div>
                 )}
-              
+
                 {/* User and timestamp */}
                 <div className="text-xs flex ">
                   <span className='mr-2 text-gray-500'>{item?.userName ?? 'Unknown User'}</span>
@@ -142,17 +137,17 @@ const data = {
                   <span className='ml-2 text-gray-500'>{formattedTime}</span>
                 </div>
               </Card>
-              
-              )
-            })
-          ) : (
-            <p className='text-sm text-muted-foreground'>No Messages Found!</p>
-          )}
-          <div ref={bottomRef} />
-          
-        </CardContent>
-  <CardContent>
-  <div className='mt-4 flex items-start gap-2'>
+
+            )
+          })
+        ) : (
+          <p className='text-sm text-muted-foreground'>No Messages Found!</p>
+        )}
+        <div ref={bottomRef} />
+
+      </CardContent>
+      <CardContent>
+        <div className='mt-4 flex items-start gap-2'>
           {isEditMsg && (
             <Button
               variant='destructive'
@@ -163,13 +158,13 @@ const data = {
               X
             </Button>
           )}
-  
+
           <Textarea
             {...form.register('chat')}
             placeholder='Type your message here...'
             className='flex-1 resize-none max-h-[150px] overflow-y-auto'
           />
-  
+
           {message?.trim() && (
             <Button
               onClick={isEditMsg ? editMsgHandler : messageSendHandler}
@@ -192,9 +187,9 @@ const data = {
             </Button>
           )}
         </div>
-  </CardContent>
-       
-      </Card>
+      </CardContent>
+
+    </Card>
   )
 }
 

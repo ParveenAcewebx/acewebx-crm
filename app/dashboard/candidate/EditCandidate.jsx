@@ -11,8 +11,6 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import moment from 'moment';
-
-// import Loader from '@/components/Loader'
 import { errorMessage, successMessage } from '@/components/ToasterMessage'
 import { CandidateFormValidationEdit } from '@/components/form-validations/CandidateFormValidationEdit'
 import FormInputField from '@/components/share/form/FormInputField'
@@ -25,11 +23,10 @@ import Candidate from '@/services/cadidateApis/CandidateApi'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Loader } from 'lucide-react'
 import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
-import SkillApi from '@/services/cadidateApis/settings/SkillApi'
 
 function EditCandidate({ editId }) {
   const [loader, setLoader] = useState(false)
-  const [candEmail, setCandEmail] = useState("")
+  const [skillsData, setSkillsData] = useState([])
   const router = useRouter()
   const form = useForm({
     mode: 'onChange',
@@ -102,6 +99,8 @@ function EditCandidate({ editId }) {
     return new File([blob], fileName, { type: contentType })
   }
 
+
+  // get candidte by id:)
   const candidateDataGetById = async (editId) => {
     try {
       const response = await Candidate.candidateGetById(editId)
@@ -109,7 +108,6 @@ function EditCandidate({ editId }) {
       if (response?.data?.status === true) {
         const data = response?.data?.data
         const meta = data?.meta
-        setCandEmail(data?.email)
 
         const joiningDate = new Date(data.dob + 'T00:00:00')
         const dataForSet = {
@@ -179,7 +177,6 @@ function EditCandidate({ editId }) {
 
 
 
-  const [skillsData, setSkillsData] = useState([])
  
 
   useEffect(() => {

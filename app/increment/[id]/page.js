@@ -98,18 +98,16 @@ function EditIncrementApplicationForm() {
   const candidateDataGetById = async () => {
     try {
       const response = await IncrementAPi.getByIdVerifyIncrementAPi(editId);
-      console.log("response", response)
       if (response?.data?.status === true) {
         const empId = response?.data?.data?.id;
         setEventID(empId)
-        // setIsEplId(empId)
       }
     } catch (error) {
       console.error('Submission Error:', error);
       setIsVerify(error?.status)
-      // errorMessage(
-      //   error?.message || 'Something went wrong while submitting the form.'
-      // );
+      errorMessage(
+        { description: error?.message }
+      );
     }
   };
 

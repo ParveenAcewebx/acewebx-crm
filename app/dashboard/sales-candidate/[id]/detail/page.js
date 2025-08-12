@@ -19,6 +19,8 @@ function Page({ params }) {
   const router = useRouter()
   const id = params?.id
   const editId = id
+  const pathname = usePathname()
+
   const [url, setUrl] = useState('')
   const [loading, setLoading] = useState(false)
   const [dcsModalOpen, setDcsModalOpen] = useState(false) // State for DCS modal
@@ -115,7 +117,6 @@ function Page({ params }) {
   const getActivities = async () => {
     try {
       const res = await SalesCandidate.activitySalesCandidate("candidateSales", editId)
-      console.log("res", res)
       if (res?.data?.status === true) {
         setActivitiesData(res?.data?.data)
       }
@@ -131,7 +132,6 @@ function Page({ params }) {
   }, [])
 
 
-  const pathname = usePathname()
   const currentTab = pathname?.endsWith('edit') ? 'edit' : 'detail'
   const handleTabChange = (value) => {
     router.replace(value)
@@ -151,7 +151,6 @@ function Page({ params }) {
       const sendEmailLin = await SalesCandidate.sendSalesWalkInLink(
         id
       )
-
       if (sendEmailLin?.data?.status == true) {
         successMessage({
           description: 'Link sent successfully to the mail.'
