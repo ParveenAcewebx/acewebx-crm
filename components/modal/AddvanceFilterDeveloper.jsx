@@ -14,8 +14,6 @@ import { preferredShiftOptions } from '../constants/StaticData'
 import { Label } from '../ui/label'
 import { startOfWeek, endOfWeek, subDays } from 'date-fns'
 import { YearRangInput } from '../share/form/YearRangInput'
-import SkillApi from '@/services/cadidateApis/settings/SkillApi'
-import { useEffect, useState } from 'react'
 
 const AddvanceFilterDeveloper = ({ isOpen, onClose, handleAddvanceSearch, skillsData }) => {
   const today = new Date()
@@ -32,11 +30,6 @@ const AddvanceFilterDeveloper = ({ isOpen, onClose, handleAddvanceSearch, skills
       preferredShift: [],
       skill: [],
       totalExperience: "",
-      // lastContected: {
-      //   startDate: startOfLastWeek,
-      //   endDate: endOfLastWeek,
-      //   key: 'selection'
-      // }, 
     }
   })
   const handleDateChnage = (date) => {
@@ -51,29 +44,6 @@ const AddvanceFilterDeveloper = ({ isOpen, onClose, handleAddvanceSearch, skills
     form.setValue("skill", "")
 
   }
-
-
-
-  // fetch skill list
-  // const fetchAllSkill = async () => {
-  //   try {
-  //     const response = await SkillApi.getAllSkillByType(CandidateType)
-  //     if (response.status === 200) {
-  //       const candidateOptions = response?.data?.data?.map((item) => ({
-  //         label: item.title,
-  //         value: item.title.toLowerCase(), // assuming you meant to use lowercase
-  //       }));
-
-  //       setSkillsData(candidateOptions);
-  //     }
-  //   } catch (error) {
-  //     console.log('error', error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchAllSkill()
-  // }, [])
 
  
   return (

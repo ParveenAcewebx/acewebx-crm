@@ -13,6 +13,7 @@ import { isHoliday } from '@/components/constants/StaticData'
 import FormTextArea from '@/components/share/form/TextArea'
 import IncrementChatCompo from '../chat/Chat'
 import CurrentAndNextYearDatepicker from '@/components/share/form/CurrentAndNextYearDatepicker'
+import IncrementPreview from '@/components/modal/IncrementPreview'
 
 function EditIncrement() {
   const { id, editId } = useParams()
@@ -20,7 +21,9 @@ function EditIncrement() {
   const router = useRouter()
 
   const [loader, setLoader] = useState(false)
-
+  const [incrementData, setIncrementData] = useState({})
+  const [incrementModalOpen, setIncrementModalOpen] = useState(false)
+  const [checkIsIncrementFromYes, setcheckIsIncrementFromYes] = useState()
   const form = useForm({
     mode: 'onChange',
     defaultValues: {
@@ -53,6 +56,8 @@ function EditIncrement() {
       if (response?.data?.data) {
         const eventData = response?.data?.data?.increment;
         const newData = { ...eventData, eventDate: new Date(eventData?.eventDate + 'T00:00:00') }
+        setIncrementData(response?.data?.data?.incrementApplication)
+        setcheckIsIncrementFromYes(eventData?.employeeSubmittedIncrementForm)
         form.reset(newData);
       }
     } catch (error) {
@@ -64,10 +69,24 @@ function EditIncrement() {
   };
 
 
+  const metaDataInrementPreview = async () => {
+    try {
+      const response = await IncrementsTabApi.getByIdIncrementsMetaData(Number(eventId));
+      if (response?.data?.data) {
+        setIncrementData(response?.data?.data?.incrementApplication)
+      }
+    } catch (error) {
+      console.error("Fetch Error:", error);
+      errorMessage({
+        description: error?.message || "Something went wrong while fetching event data.",
+      });
+    }
+  }
 
   useEffect(() => {
     if (id && eventId) {
       candidateDataGetById()
+      metaDataInrementPreview()
     }
   }, [id, eventId])
 
@@ -87,15 +106,35 @@ function EditIncrement() {
       form.setValue("finalDiscussionRemark", "")
     }
   }, [isReviewedByHod, isoneToOneMeeting, isfinalDiscussion, form])
+
+
+
+
+  const AddvanceOpenModal = () => {
+    setIncrementModalOpen(true)
+  }
   return (
     <div className='mobile-view items-right relative flex min-h-screen w-full flex-col justify-start'>
       <div className='flex justify-between'>
         <CommonLayout pageTitle='Edit Increment' />
       </div>
-      <div>
+
+
+
+      <div className='flex justify-between mt-3'>
         <Button onClick={() => router.push(`/dashboard/employee/${id}/increments`)} >
           <ArrowLeft />  Back To The Increments
-        </Button></div>
+        </Button>
+
+        {
+          checkIsIncrementFromYes == "yes" && (
+            <Button onClick={() => AddvanceOpenModal()}>
+              Review Form
+            </Button>)
+        }
+
+      </div>
+
       <div className='w-[100%] mb-4 mt-6 grid grid-cols-2 gap-6 md:grid-cols-2'>
         <FormProvider {...form}>
           <form
@@ -250,6 +289,11 @@ function EditIncrement() {
         {/* </div> */}
       </div>
 
+      <IncrementPreview
+        isOpen={incrementModalOpen}
+        incrementsData={incrementData}
+        onClose={() => setIncrementModalOpen(false)}
+      />
     </div>
   )
 }
