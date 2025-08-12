@@ -137,6 +137,27 @@ function AllEventsDates() {
             cell: ({ row }) => <span>{getDaysLeft(row.original.eventDate)}</span>
         },
         {
+            accessorKey: 'daysLeft',
+            header: 'Next Step',
+            id: 'daysLeft',
+            cell: ({ row }) => {
+                const meta = row?.original?.meta || {};
+
+                const getNextStep = () => {
+                    if (meta?.incrementFormSent === "no") return "Increment Form Sent";
+                    if (meta?.employeeSubmittedIncrementForm === "no") return "Employee Submitted Increment Form";
+                    if (meta?.reviewedByHod === "no") return "Reviewed By Hod";
+                    if (meta?.oneToOneMeeting === "no") return "One To One Meeting";
+                    if (meta?.hrMeeting === "no") return "Hr Meeting";
+                    if (meta?.finalDiscussion === "no") return "Final Discussion";
+                    return ""; // all steps done
+                };
+
+                return <span>{getNextStep()}</span>;
+            }
+        },
+
+        {
             accessorKey: 'actions',
             header: 'Action',
             id: 'actions',
