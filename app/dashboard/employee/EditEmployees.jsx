@@ -35,6 +35,7 @@ function EditEmployees({ editId }) {
   })
 
 
+  console.log("form", form.watch("lastIncrementDate"))
   const onSubmit = async (data) => {
     setLoader(true);
 
@@ -44,7 +45,7 @@ function EditEmployees({ editId }) {
       const dirtyFields = form.formState.dirtyFields;
       const updateFieldsValue = Object.keys(dirtyFields);
 
-      if (data.lastIncrementDate == "Invalid date") {
+      if (data?.lastIncrementDate == "Invalid date") {
         formData.append('lastIncrementDate', "")
 
       }
@@ -59,8 +60,7 @@ function EditEmployees({ editId }) {
         const isDateField =
           key === 'dobDocument' ||
           key === 'dateOfJoining' ||
-          key === 'dobCelebration' ||
-          key === 'lastIncrementDate';
+          key === 'dobCelebration' 
 
         if (key === 'reportingManager') return; // skip, append later
 
@@ -104,6 +104,11 @@ function EditEmployees({ editId }) {
     }
   };
 
+  const parseDateOrEmpty = (dateString) => {
+    if (!dateString) return '';
+    const parsed = new Date(dateString + 'T00:00:00');
+    return isNaN(parsed) ? '' : parsed;
+  };
 
   const candidateDataGetById = async (editId) => {
     try {
@@ -119,44 +124,44 @@ function EditEmployees({ editId }) {
           personalEmail: data?.personalEmail || '',
           phone: data?.phone || '',
           alternatePhone: data?.alternatePhone || '',
-          dobDocument: new Date(data?.dobDocument + 'T00:00:00') || '',
-          dobCelebration: new Date(data?.dobCelebration + 'T00:00:00') || '',
+          dobDocument: parseDateOrEmpty(data?.dobDocument),
+          dobCelebration: parseDateOrEmpty(data?.dobCelebration),
           currentAddress: data?.currentAddress || '',
           permanentAddress: data?.permanentAddress || '',
-          // New Fields added :--
           referenceNumber: data.referenceNumber || '',
           employeeCode: data.employeeCode || '',
-          // Professional Info
           companyEmail: data?.companyEmail || '',
           designation: data?.designation || '',
-          dateOfJoining: new Date(data?.dateOfJoining + 'T00:00:00') || '',
-
+          dateOfJoining: parseDateOrEmpty(data?.dateOfJoining),
+        
           // Documents
           adharCard: meta?._adharCard || '',
           panCard: meta?._panCard || '',
           otherDocumentLink: meta?._otherDocumentLink || '',
+        
           // Banking Details
           bankName: meta?._bankName || '',
           bankAccountNumber: meta?._bankAccountNumber || '',
           bankIfscCode: meta?._bankIfscCode || '',
-
+        
           // Emergency Details
           bloodGroup: meta?._bloodGroup || '',
           emergencyContactName: meta?._emergencyContactName || '',
           emergencyContactNumber: meta?._emergencyContactNumber || '',
           emergencyContactRelationship: meta?._emergencyContactRelationship || '',
           emergencyContactRelationshipOther: meta?._emergencyContactRelationshipOther || '',
-
+        
           // Additional Fields
           gender: meta?._gender || '',
           currentSalary: meta?._currentSalary || '',
           currentShift: meta?._currentShift || '',
           lastIncrementAmount: meta?._lastIncrementAmount || '',
-          lastIncrementDate: meta?._lastIncrementDate == "Invalid date" ? "" : new Date(meta?._lastIncrementDate + 'T00:00:00') || '',
+          lastIncrementDate: parseDateOrEmpty(meta?._lastIncrementDate),
         };
+        
 
         form.reset(dataForSet);
-        form?.setValue('reportingManager', JSON.parse(data?.reportingManager))
+        form?.setValue('reportingManager',  JSON.parse(data?.reportingManager))
 
       }
     } catch (error) {

@@ -14,6 +14,7 @@ import EmployeeChatCompo from '../../chat/Chat'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { Button } from '@/components/ui/button'
 import IncrementAPi from '@/services/cadidateApis/increment/IncrementAPi'
+import moment from 'moment'
 
 function Page({ params }) {
   const router = useRouter()
@@ -59,7 +60,7 @@ function Page({ params }) {
   }, [])
 
 
-  
+
 
   // Get last part of the path
   const currentTab = pathname?.split('/').pop() || 'detail'
@@ -191,7 +192,7 @@ function Page({ params }) {
                   {/* ₹ */}
                   <span className='tittle'>Last Hike</span> <br />
                   <span className="subtittle">
-                    {candidateData?.meta?._lastIncrementAmount} ({candidateData?.meta?._lastIncrementDate})
+                    {candidateData?.meta?._lastIncrementAmount} ({moment(candidateData?.meta?._lastIncrementDate).format('YYYY-MM-DD')})
                   </span>
                 </div>
               </CardContent>

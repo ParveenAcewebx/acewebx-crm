@@ -38,6 +38,7 @@ function AddEmployees() {
     resolver: yupResolver(EmployeeValidation)
   })
 
+  console.log("form", form.watch("lastIncrementDate"))
 
   const onSubmit = async (data) => {
     setLoader(true);
@@ -45,6 +46,7 @@ function AddEmployees() {
       const formData = new FormData();
 
       const reportingManagerValue = JSON.stringify(data?.reportingManager);
+  
 
       Object.entries(data).forEach(([key, value]) => {
         const isDateField =
@@ -131,8 +133,8 @@ function AddEmployees() {
               encType='multipart/form-data'
               onSubmit={form.handleSubmit(onSubmit)}
             >
-             {/* Personal Info */}
-             <fieldset className='custom-raduis   bg-white font-semibold mb-9 mt-4'>
+              {/* Personal Info */}
+              <fieldset className='custom-raduis   bg-white font-semibold mb-9 mt-4'>
                 <legend className="text-lg font-bold  ml-[25px]">Personal Information</legend>
                 <div className="multipart-field-one">
                   <FormInputField
