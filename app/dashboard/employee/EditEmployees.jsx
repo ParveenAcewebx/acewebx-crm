@@ -43,6 +43,12 @@ function EditEmployees({ editId }) {
       // Need only those keys which are touched
       const dirtyFields = form.formState.dirtyFields;
       const updateFieldsValue = Object.keys(dirtyFields);
+
+      if (data.lastIncrementDate == "Invalid date") {
+        formData.append('lastIncrementDate', "")
+
+      }
+
       if (updateFieldsValue) {
         formData.append('updateField', JSON.stringify(updateFieldsValue))
       }
@@ -57,6 +63,8 @@ function EditEmployees({ editId }) {
           key === 'lastIncrementDate';
 
         if (key === 'reportingManager') return; // skip, append later
+
+
 
         if (isDateField) {
           if (key === 'dobCelebration') {
@@ -144,7 +152,7 @@ function EditEmployees({ editId }) {
           currentSalary: meta?._currentSalary || '',
           currentShift: meta?._currentShift || '',
           lastIncrementAmount: meta?._lastIncrementAmount || '',
-          lastIncrementDate: new Date(meta?._lastIncrementDate + 'T00:00:00') || '',
+          lastIncrementDate: meta?._lastIncrementDate == "Invalid date" ? "" : new Date(meta?._lastIncrementDate + 'T00:00:00') || '',
         };
 
         form.reset(dataForSet);
