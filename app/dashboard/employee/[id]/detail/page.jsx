@@ -192,7 +192,9 @@ function Page({ params }) {
                   {/* ₹ */}
                   <span className='tittle'>Last Hike</span> <br />
                   <span className="subtittle">
-                    {candidateData?.meta?._lastIncrementAmount} ({moment(candidateData?.meta?._lastIncrementDate).format('YYYY-MM-DD')})
+                    {candidateData?.meta?._lastIncrementDate
+                      ? `${candidateData?.meta?._lastIncrementAmount} (${moment(candidateData?.meta?._lastIncrementDate).format('YYYY-MM-DD')})`
+                      : ""}
                   </span>
                 </div>
               </CardContent>
