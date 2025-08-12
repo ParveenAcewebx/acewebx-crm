@@ -13,162 +13,162 @@ const IncrementPreview = ({ isOpen, onClose, incrementsData }) => {
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogTrigger />
-           
+
 
             <DialogContent
                 className="!top-4 !translate-y-0 w-full max-w-[60vw] max-h-[140vw] overflow-auto "
                 onInteractOutside={(e) => e.preventDefault()}
                 onPointerDownOutside={(e) => e.preventDefault()}
             >
-                 <DialogTitle>Increment Detail ({incrementsData?.name})</DialogTitle>
+                <DialogTitle>Increment Detail ({incrementsData?.name})</DialogTitle>
                 <div className="max-h-[80vh] overflow-y-auto pt-2">
                     <div className="mb-4 grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
                         <div>
                             <h3 className="capitalize font-[500]">Name</h3>
-                            <span>{incrementsData?.name}</span>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.name}</span>
                         </div>
                         <div>
                             <h3 className="capitalize font-[500]">Acewebx Tenure</h3>
-                            <span>{incrementsData?.acewebxTenure}</span>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.acewebxTenure}</span>
                         </div>
                     </div>
 
                     <div className="mb-4 grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
                         <div>
                             <h3 className="capitalize font-[500]">Total Experience</h3>
-                            <span>{incrementsData?.totalExperience}</span>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.totalExperience}</span>
                         </div>
                         <div>
                             <h3 className="capitalize font-[500]">Experience With Acewebx</h3>
-                            <span>{incrementsData?.experienceWithAcewebx}</span>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.experienceWithAcewebx}</span>
                         </div>
                     </div>
 
                     <div className="mb-4 grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
                         <div>
                             <h3 className="capitalize font-[500]">Total Projects</h3>
-                            <span>{incrementsData?.totalProjects}</span>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.totalProjects}</span>
                         </div>
                         <div>
                             <h3 className="capitalize font-[500]">Rating On Projects</h3>
-                            <span>{incrementsData?.ratingOnProjects}</span>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.ratingOnProjects}</span>
                         </div>
                     </div>
 
                     <div className="mb-4 grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
                         <div>
                             <h3 className="capitalize font-[500]">Client Calls</h3>
-                            <span>{incrementsData?.clientCalls}</span>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.clientCalls}</span>
                         </div>
                         <div>
                             <h3 className="capitalize font-[500]">Client Converted</h3>
-                            <span>{incrementsData?.clientConverted}</span>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.clientConverted}</span>
                         </div>
                     </div>
 
                     <div className="mb-4 grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
                         <div>
                             <h3 className="capitalize font-[500]">New Skills</h3>
-                            <span>{incrementsData?.newSkills}</span>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.newSkills}</span>
                         </div>
                         <div>
                             <h3 className="capitalize font-[500]">Improvement Areas</h3>
-                            <span>{incrementsData?.improvementAreas}</span>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.improvementAreas}</span>
                         </div>
                     </div>
 
                     <div className="mb-4 grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
                         <div>
                             <h3 className="capitalize font-[500]">Current Salary</h3>
-                            <span>{incrementsData?.currentSalary}</span>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.currentSalary}</span>
                         </div>
                         <div>
                             <h3 className="capitalize font-[500]">Expected Salary</h3>
-                            <span>{incrementsData?.expectedSalary}</span>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.expectedSalary}</span>
                         </div>
                     </div>
 
                     <div className="mb-4 grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
                         <div>
                             <h3 className="capitalize font-[500]">Raise Justified</h3>
-                            <span>{incrementsData?.raiseJustified}</span>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.raiseJustified}</span>
                         </div>
                         <div>
                             <h3 className="capitalize font-[500]">Short Term Goals</h3>
-                            <span>{incrementsData?.shortTermGoals}</span>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.shortTermGoals}</span>
                         </div>
                     </div>
 
                     <div className="mb-4 grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
                         <div>
                             <h3 className="capitalize font-[500]">Long Term Goals</h3>
-                            <span>{incrementsData?.longTermGoals}</span>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.longTermGoals}</span>
                         </div>
                         <div>
                             <h3 className="capitalize font-[500]">Weaknesses</h3>
-                            <span>{incrementsData?.weaknesses}</span>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.weaknesses}</span>
                         </div>
                     </div>
 
                     <div className="mb-4 grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
                         <div>
                             <h3 className="capitalize font-[500]">Key Achievements</h3>
-                            <span>{incrementsData?.keyAchievements}</span>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.keyAchievements}</span>
                         </div>
                         <div>
                             <h3 className="capitalize font-[500]">Suggestions</h3>
-                            <span>{incrementsData?.suggestions}</span>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.suggestions}</span>
                         </div>
                     </div>
 
                     <div className="mb-4 grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
                         <div>
                             <h3 className="capitalize font-[500]">Reviewed By</h3>
-                            <span>{incrementsData?.reviewedBy}</span>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.reviewedBy}</span>
                         </div>
                         <div>
                             <h3 className="capitalize font-[500]">Review Date</h3>
-                            <span>{incrementsData?.reviewDate}</span>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.reviewDate}</span>
                         </div>
                     </div>
 
                     <div className="mb-4 grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
                         <div>
                             <h3 className="capitalize font-[500]">Performance Rating</h3>
-                            <span>{incrementsData?.performanceRating}</span>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.performanceRating}</span>
                         </div>
                         <div>
                             <h3 className="capitalize font-[500]">Strengths By Reporting Manager</h3>
-                            <span>{incrementsData?.strengthsByReportingManager}</span>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.strengthsByReportingManager}</span>
                         </div>
                     </div>
 
                     <div className="mb-4 grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
                         <div>
                             <h3 className="capitalize font-[500]">Areas Of Improvement</h3>
-                            <span>{incrementsData?.areasOfImprovement}</span>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.areasOfImprovement}</span>
                         </div>
                         <div>
                             <h3 className="capitalize font-[500]">Manager Comments</h3>
-                            <span>{incrementsData?.managerComments}</span>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.managerComments}</span>
                         </div>
                     </div>
 
                     <div className="mb-4 grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
                         <div>
                             <h3 className="capitalize font-[500]">Recommended Raise</h3>
-                            <span>{incrementsData?.recommendedRaise}</span>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.recommendedRaise}</span>
                         </div>
                         <div>
                             <h3 className="capitalize font-[500]">Promotion Recommendation</h3>
-                            <span>{incrementsData?.promotionRecommendation}</span>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.promotionRecommendation}</span>
                         </div>
                     </div>
 
                     <div className="mb-4 grid grid-cols-1 gap-6 md:grid-cols-1 mt-2">
                         <div>
                             <h3 className="capitalize font-[500]">Promotion Details</h3>
-                            <span>{incrementsData?.promotionDetails}</span>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.promotionDetails}</span>
                         </div>
                         {/* <div>
                             <h3 className="capitalize font-[500]">Created At</h3>
