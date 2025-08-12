@@ -195,7 +195,7 @@ function EditSalesJobApplication({ editId }) {
                     form={form}
                     inputFormat='YYYY-MM-DD'
                     className='datepickerouter'
-                    disabled={{ before: new Date('2024-12-31') }}
+                    disabled={{ before: new Date('2016-12-31') }}
                     defaultMonth={new Date()}
                   />
                   <FormInputField
