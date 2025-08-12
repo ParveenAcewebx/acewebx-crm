@@ -85,15 +85,10 @@ function EditAnniversary() {
   const candidateDataGetById = async () => {
     try {
       const response = await IncrementsTabApi.getByIdIncrements(Number(eventId));
-  
-     
       if (response?.data?.data) {
         const eventData = response?.data?.data?.anniversary;
-
         const newData = {...eventData ,eventDate : new Date(eventData?.eventDate + 'T00:00:00')}
         form.reset(newData);
-
-    
       }
     } catch (error) {
       console.error("Fetch Error:", error);

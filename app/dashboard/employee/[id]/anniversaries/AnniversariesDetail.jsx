@@ -3,8 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import CommonLayout from '@/components/CommonLayouyt'
-import EventApi from '@/services/cadidateApis/events/EventApi'
-import { Edit, Eye } from 'lucide-react'
+import { Edit } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { DataTable } from '@/components/Table'
 import AnniversariesApi from '@/services/cadidateApis/employees/AnniversariesApi'
@@ -34,7 +33,7 @@ function AnniversariesDetail() {
         handleGetApi()
     }, [])
 
-
+    // Anniversaries handler:)
     const handleForupcomingAnniversaries = (row) => {
         if (row?.original?.id) {
             router.push(`/dashboard/employee/${eventId}/anniversaries/${row?.original?.id}`)
@@ -44,7 +43,7 @@ function AnniversariesDetail() {
 
 
 
-    // upcomingIncrements :-
+    // upcomingAnniversaries:)
 
     const columnForupcomingAnniversaries = [
         {
@@ -87,18 +86,19 @@ function AnniversariesDetail() {
                 );
             }
         },
+
         {
             accessorKey: 'eventDate',
             header: 'Anniversary Date',
             id: 'eventDate',
-            cell: ({ row }) => row.original.eventDate
+            cell: ({ row }) => row.original.eventDate == undefined ? "NA" : row.original.eventDate
         },
 
         {
             accessorKey: 'meta',
             header: 'Banner',
             id: 'meta',
-            cell: ({ row }) => row.original?.meta?.isBannerCreated
+            cell: ({ row }) => row.original?.meta?.isBannerCreated == undefined ? "NA" : row.original?.meta?.isBannerCreated
         },
         {
             accessorKey: 'meta',
@@ -116,19 +116,15 @@ function AnniversariesDetail() {
                 </>
             ),
             id: 'meta',
-            cell: ({ row }) => row?.original?.meta?.isSocialMediaPost
-        }, {
+            cell: ({ row }) => row?.original?.meta?.isSocialMediaPost == undefined ? "NA" : row?.original?.meta?.isSocialMediaPost
+        },
+        {
             accessorKey: 'meta',
             header: 'Gift Voucher',
             id: 'meta',
-            cell: ({ row }) => row?.original?.meta?.isGiftVoucherCreated
+            cell: ({ row }) => row?.original?.meta?.isGiftVoucherCreated == undefined ? "NA" : row?.original?.meta?.isGiftVoucherCreated
         },
-        // {
-        //     accessorKey: 'status',
-        //     header: 'Status',
-        //     id: 'status',
-        //     cell: ({ row }) => row.original.status
-        // },
+
         {
             accessorKey: 'action',
             header: 'Action',
@@ -146,7 +142,7 @@ function AnniversariesDetail() {
     ];
 
 
-
+    // upcomingOld :-
     const columnForPastAnniversaries = [
 
 
@@ -154,14 +150,14 @@ function AnniversariesDetail() {
             accessorKey: 'eventDate',
             header: 'Anniversary Date',
             id: 'eventDate',
-            cell: ({ row }) => row.original.eventDate
+            cell: ({ row }) => row.original.eventDate == undefined ? "NA" : row.original.eventDate
         },
 
         {
             accessorKey: 'meta',
             header: 'Banner',
             id: 'meta',
-            cell: ({ row }) => row.original?.meta?.isBannerCreated
+            cell: ({ row }) => row.original?.meta?.isBannerCreated == undefined ? "NA" : row.original?.meta?.isBannerCreated
         },
         {
             accessorKey: 'meta',
@@ -179,19 +175,15 @@ function AnniversariesDetail() {
                 </>
             ),
             id: 'meta',
-            cell: ({ row }) => row?.original?.meta?.isSocialMediaPost
-        }, {
+            cell: ({ row }) => row?.original?.meta?.isSocialMediaPost == undefined ? "NA" : row?.original?.meta?.isSocialMediaPost
+        },
+        {
             accessorKey: 'meta',
             header: 'Gift Voucher',
             id: 'meta',
-            cell: ({ row }) => row?.original?.meta?.isGiftVoucherCreated
+            cell: ({ row }) => row?.original?.meta?.isGiftVoucherCreated == undefined ? "NA" : row?.original?.meta?.isGiftVoucherCreated
         },
-        // {
-        //     accessorKey: 'status',
-        //     header: 'Status',
-        //     id: 'status',
-        //     cell: ({ row }) => row.original.status
-        // },
+
         {
             accessorKey: 'action',
             header: 'Action',

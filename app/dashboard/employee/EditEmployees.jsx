@@ -36,7 +36,6 @@ function EditEmployees({ editId }) {
 
 
   const onSubmit = async (data) => {
-    console.log("datadata", data);
     setLoader(true);
 
     try {

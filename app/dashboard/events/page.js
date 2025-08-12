@@ -36,8 +36,8 @@ const EventList = () => {
     })
 
     const router = useRouter()
-    // fetch group tag list
-    const fetchTagList = async () => {
+    // fetch group list
+    const fetchList = async () => {
         try {
             const response = await EventApi.getAllEvent(page, length)
             console.log("response", response)
@@ -52,7 +52,7 @@ const EventList = () => {
         }
     }
     useEffect(() => {
-        fetchTagList()
+        fetchList()
     }, [page, length])
 
     // delete row
@@ -62,7 +62,7 @@ const EventList = () => {
                 const res = await EventApi.deleteEvent(deleteIndex)
                 setDeleteOpenModal(false)
                 if (res?.status === 200) {
-                    fetchTagList()
+                    fetchList()
                     successMessage({ description: res?.data?.message })
                 }
             } catch (error) {
@@ -73,7 +73,7 @@ const EventList = () => {
         }
     }
 
-    const handleDeleteTaskTag = row => {
+    const handleDeleteEvent = row => {
         setDeleteOpenModal(true)
         setDeleteIndex(row?.original?.id)
     }
@@ -187,7 +187,7 @@ const EventList = () => {
                 <div className='overflowX-auto pt-1'>
 
                     <DataTable
-                        columns={EventColumn(handleDeleteTaskTag, handleEditEvent)}
+                        columns={EventColumn(handleDeleteEvent, handleEditEvent)}
                         data={getList}
                         totalRecord={totalRecord}
                         page={page}
@@ -215,7 +215,7 @@ const EventList = () => {
                     description={
                         <SkillForm
                             setSubmitOpenModal={setSubmitOpenModal}
-                            fetchTagList={fetchTagList}
+                            fetchList={fetchList}
                             editData={editData}
                         />
                     }

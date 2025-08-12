@@ -29,8 +29,6 @@ import CurrentAndNextYearDatepicker from '@/components/share/form/CurrentAndNext
 
 function AddEvent() {
     const [loader, setLoader] = useState(false)
-    const [candEmail, setCandEmail] = useState("")
-    const [recaptcha, setRecaptcha] = useState([])
     // image :
     const [imageUpload, setImageUpload] = useState(null)
     const [updateImage, setUpdateImage] = useState([])

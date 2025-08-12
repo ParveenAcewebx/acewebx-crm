@@ -50,17 +50,10 @@ function EditIncrement() {
   const candidateDataGetById = async () => {
     try {
       const response = await IncrementsTabApi.getByIdIncrements(Number(eventId));
-      console.log("Full API Response:", response);
-
       if (response?.data?.data) {
         const eventData = response?.data?.data?.increment;
-
         const newData = { ...eventData, eventDate: new Date(eventData?.eventDate + 'T00:00:00') }
         form.reset(newData);
-
-
-
-
       }
     } catch (error) {
       console.error("Fetch Error:", error);
@@ -104,7 +97,6 @@ function EditIncrement() {
           <ArrowLeft />  Back To The Increments
         </Button></div>
       <div className='w-[100%] mb-4 mt-6 grid grid-cols-2 gap-6 md:grid-cols-2'>
-        {/* <div className='w-[50%] '> */}
         <FormProvider {...form}>
           <form
             encType='multipart/form-data'

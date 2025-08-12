@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import SkillForm from '@/components/skills/SkillForm'
 import SkillSettingModal from '@/components/modal/SkillSettingModal'
-import { EventColumn } from './increment-column'
 import { useRouter } from 'next/navigation'
 import FormInputField from '@/components/share/form/FormInputField'
 import FormSelectField from '@/components/share/form/FormSelect'
@@ -16,6 +15,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { incrementSearchEvent, SearchEvent, SearchValidation } from '@/components/form-validations/SearchValidation'
 import { Search } from 'lucide-react'
 import IncrementAPi from '@/services/cadidateApis/increment/IncrementAPi'
+import { IncrementColumn } from './increment-column'
 
 const IncrementList = () => {
   const [getList, setList] = useState([])
@@ -34,8 +34,8 @@ const IncrementList = () => {
   })
 
   const router = useRouter()
-  // fetch group tag list
-  const fetchTagList = async () => {
+  // fetch list
+  const fetchList = async () => {
     try {
       const response = await IncrementAPi.getAllIncrementAPi(page, length)
       console.log("response", response)
@@ -50,7 +50,7 @@ const IncrementList = () => {
     }
   }
   useEffect(() => {
-    fetchTagList()
+    fetchList()
   }, [page, length])
 
   // delete row
@@ -60,7 +60,7 @@ const IncrementList = () => {
         const res = await IncrementAPi.deleteIncrementAPi(deleteIndex)
         setDeleteOpenModal(false)
         if (res?.status === 200) {
-          fetchTagList()
+          fetchList()
           successMessage({ description: res?.data?.message })
         }
       } catch (error) {
@@ -71,13 +71,13 @@ const IncrementList = () => {
     }
   }
 
-  const handleDeleteTaskTag = row => {
+  const handleDeleteIncrement = row => {
     setDeleteOpenModal(true)
     setDeleteIndex(row?.original?.id)
   }
-  const handleEditTaskTag = async (row) => {
+  const handleEditIncrement = async (row) => {
     if (row?.original?.id) {
-      router.push(`/dashboard/increments/${row?.original?.id}/edit`)
+      router.push(`/dashboard/increment/${row?.original?.id}/edit`)
 
     }
   }
@@ -108,12 +108,6 @@ const IncrementList = () => {
     mode: 'onChange', // or 'onBlur' or 'onChange'
   });
   const search = form.watch('search')
-
-  const handleClearSearch = () => {
-    form.setValue('search', '')
-
-    getListCadidate()
-  }
 
   const handleSimpleFilter = async data => {
 
@@ -180,7 +174,7 @@ const IncrementList = () => {
           </FormProvider>
         </div>
         <DataTable
-          columns={EventColumn(handleDeleteTaskTag, handleEditTaskTag)}
+          columns={IncrementColumn(handleDeleteIncrement, handleEditIncrement)}
           data={getList}
           totalRecord={totalRecord}
           page={page}
@@ -207,7 +201,7 @@ const IncrementList = () => {
           description={
             <SkillForm
               setSubmitOpenModal={setSubmitOpenModal}
-              fetchTagList={fetchTagList}
+              fetchList={fetchList}
               editData={editData}
             />
           }

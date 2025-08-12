@@ -39,14 +39,17 @@ function BirthdaysDetails() {
 
 
 
-    // upcomingIncrements :-
+    // Birthdayshandler:-
 
-    const handleForupcomingIncrements = (row) => {
+    const handleForupcomingBirthdays = (row) => {
         if (row?.original?.id) {
             router.push(`/dashboard/employee/${eventId}/birthdays/${row?.original?.id}`)
 
         }
     }
+
+
+    // upcomingBirthdays:-
     const columnForupcomingBirthdays = [
 
         {
@@ -95,14 +98,14 @@ function BirthdaysDetails() {
             accessorKey: 'eventDate',
             header: 'Birthday Date',
             id: 'eventDate',
-            cell: ({ row }) => row.original.eventDate
+            cell: ({ row }) => row.original.eventDate == undefined ? "NA" : row.original.eventDate
         },
-        // ----------------------------
+
         {
             accessorKey: 'meta',
             header: 'Banner',
             id: 'meta',
-            cell: ({ row }) => row.original?.meta?.isBannerCreated
+            cell: ({ row }) => row.original?.meta?.isBannerCreated == undefined ? "NA" : row.original?.meta?.isBannerCreated
         },
         {
             accessorKey: 'meta',
@@ -120,20 +123,15 @@ function BirthdaysDetails() {
                 </>
             ),
             id: 'meta',
-            cell: ({ row }) => row?.original?.meta?.isSocialMediaPost
-        }, {
+            cell: ({ row }) => row?.original?.meta?.isSocialMediaPost == undefined ? "NA" : row?.original?.meta?.isSocialMediaPost
+        },
+        {
             accessorKey: 'meta',
             header: 'Gift Voucher',
             id: 'meta',
-            cell: ({ row }) => row?.original?.meta?.isGiftVoucherCreated
+            cell: ({ row }) => row?.original?.meta?.isGiftVoucherCreated == undefined ? "NA" : row?.original?.meta?.isGiftVoucherCreated
         },
-        // ------------------------
-        // {
-        //     accessorKey: 'status',
-        //     header: 'Status',
-        //     id: 'status',
-        //     cell: ({ row }) => row.original.status
-        // },
+
         {
             accessorKey: 'action',
             header: 'Action',
@@ -143,7 +141,7 @@ function BirthdaysDetails() {
                 <div className="w-full flex justify-left">
                     <Edit
                         className="text-blue-500 h-4 w-4 cursor-pointer"
-                        onClick={() => handleForupcomingIncrements(row)} // You may want to use handleForupcomingIncrements
+                        onClick={() => handleForupcomingBirthdays(row)} // You may want to use handleForupcomingBirthdays
                     />
                 </div>
             )
@@ -151,22 +149,23 @@ function BirthdaysDetails() {
     ];
 
 
-
+    // PastBirthdays :)
     const columnForPastBirthdays = [
+
 
 
         {
             accessorKey: 'eventDate',
             header: 'Birthday Date',
             id: 'eventDate',
-            cell: ({ row }) => row.original.eventDate
+            cell: ({ row }) => row.original.eventDate == undefined ? "NA" : row.original.eventDate
         },
 
         {
             accessorKey: 'meta',
             header: 'Banner',
             id: 'meta',
-            cell: ({ row }) => row.original?.meta?.isBannerCreated
+            cell: ({ row }) => row.original?.meta?.isBannerCreated == undefined ? "NA" : row.original?.meta?.isBannerCreated
         },
         {
             accessorKey: 'meta',
@@ -184,20 +183,15 @@ function BirthdaysDetails() {
                 </>
             ),
             id: 'meta',
-            cell: ({ row }) => row?.original?.meta?.isSocialMediaPost
-        }, {
+            cell: ({ row }) => row?.original?.meta?.isSocialMediaPost == undefined ? "NA" : row?.original?.meta?.isSocialMediaPost
+        },
+        {
             accessorKey: 'meta',
             header: 'Gift Voucher',
             id: 'meta',
-            cell: ({ row }) => row?.original?.meta?.isGiftVoucherCreated
+            cell: ({ row }) => row?.original?.meta?.isGiftVoucherCreated == undefined ? "NA" : row?.original?.meta?.isGiftVoucherCreated
         },
 
-        // {
-        //     accessorKey: 'status',
-        //     header: 'Status',
-        //     id: 'status',
-        //     cell: ({ row }) => row.original.status
-        // },
         {
             accessorKey: 'action',
             header: 'Action',
@@ -207,7 +201,7 @@ function BirthdaysDetails() {
                 <div className="w-full flex justify-left">
                     <Edit
                         className="text-blue-500 h-4 w-4 cursor-pointer"
-                        onClick={() => handleForupcomingIncrements(row)} // You may want to use handleForupcomingIncrements
+                        onClick={() => handleForupcomingBirthdays(row)} // You may want to use handleForupcomingBirthdays
                     />
                 </div>
             )

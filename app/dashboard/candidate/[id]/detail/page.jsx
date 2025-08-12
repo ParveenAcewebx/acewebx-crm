@@ -14,7 +14,6 @@ import { Mail, Phone, UserIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { errorMessage, successMessage } from '@/components/ToasterMessage'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import { ChartForHike } from '@/components/Chart'
 
 function Page({ params }) {
   const router = useRouter()
@@ -24,6 +23,7 @@ function Page({ params }) {
   const [candidateData, setCandidateData] = useState({})
   const [url, setUrl] = useState('')
   const [loading, setLoading] = useState(false)
+  const [activitiesData, setActivitiesData] = useState()
 
   const handleGetApi = async () => {
     try {
@@ -85,7 +85,6 @@ function Page({ params }) {
     candidateDataGetById(id)
   }, [id])
 
-  const [activitiesData, setActivitiesData] = useState()
 
   // Activity function :-
   const getActivities = async () => {

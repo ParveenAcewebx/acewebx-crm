@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Edit, EllipsisVertical, Eye, Trash2 } from 'lucide-react'
 
-export const EventColumn = (handleDeleteTaskTag, handleEditEvent) => [
+export const EventColumn = (handleDeleteEvent, handleEditEvent) => [
   {
     accessorKey: 'action',
     header: '',
@@ -26,7 +26,7 @@ export const EventColumn = (handleDeleteTaskTag, handleEditEvent) => [
               Edit
             </DropdownMenuItem>
               <DropdownMenuItem
-                onClick={() => handleDeleteTaskTag(row)}
+                onClick={() => handleDeleteEvent(row)}
                 className='cursor-pointer text-red-600'
               >
                 <Trash2 className='mr-2 h-4 w-4' />

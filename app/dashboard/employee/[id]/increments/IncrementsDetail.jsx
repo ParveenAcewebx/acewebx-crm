@@ -37,11 +37,9 @@ function IncrementsDetail() {
     }, [])
 
     // upcomingIncrements :-
-
-    const handleSendWalkInForm = async (eventID) => {
+    const handleSendIncrementForm = async (eventID) => {
         try {
             const sendEmailLin = await IncrementAPi.sendIncrementInLink(id, eventID)
-            console.log("sendEmailLin", sendEmailLin)
             if (sendEmailLin?.data?.status == true) {
                 successMessage({
                     description: 'Link sent successfully to the mail.'
@@ -63,6 +61,8 @@ function IncrementsDetail() {
 
         }
     }
+
+    // comingIncrements:)
     const columnForupcomingIncrements = [
         {
             accessorKey: 'eventDate',
@@ -109,26 +109,6 @@ function IncrementsDetail() {
             header: 'Increment Date',
             id: 'eventDate',
             cell: ({ row }) => {
-                //   const meta = row.original?.meta ?? [];
-                //   const incrementDateStr = meta.find(m => m.metaKey === '_lastIncrementDate')?.metaValue;
-
-                //   if (!incrementDateStr) return <span>—</span>; // Gracefully handle missing date
-
-                //   const originalDate = new Date(row.original?.eventDate);
-                //   if (isNaN(originalDate.getTime())) return <span>Invalid Date</span>; // Handle invalid date string
-
-                //   function getNextIncrementDate(startDate, cycleInYears = 1) {
-                //     const today = new Date();
-                //     let nextDate = new Date(startDate);
-
-                //     while (nextDate <= today) {
-                //       nextDate.setFullYear(nextDate.getFullYear() + cycleInYears);
-                //     }
-
-                //     return nextDate.toISOString().split('T')[0];
-                //   }
-
-                //   const finalDate = getNextIncrementDate(originalDate);
 
                 return <span>{row.original?.eventDate}</span>;
             }
@@ -153,7 +133,7 @@ function IncrementsDetail() {
                 </>
             ),
             id: 'meta',
-            cell: ({ row }) => row.original?.meta?.incrementFormSent
+            cell: ({ row }) => row.original?.meta?.incrementFormSent == undefined ? "NA" : row.original?.meta?.incrementFormSent
         },
         {
             accessorKey: 'meta',
@@ -171,8 +151,9 @@ function IncrementsDetail() {
                 </>
             ),
             id: 'meta',
-            cell: ({ row }) => row?.original?.meta?.employeeSubmittedIncrementForm
-        }, {
+            cell: ({ row }) => row?.original?.meta?.employeeSubmittedIncrementForm == undefined ? "NA" : row?.original?.meta?.employeeSubmittedIncrementForm
+        },
+        {
             accessorKey: 'meta',
             header: '',
             header: () => (
@@ -189,7 +170,7 @@ function IncrementsDetail() {
                 </>
             ),
             id: 'meta',
-            cell: ({ row }) => row?.original?.meta?.reviewedByHod
+            cell: ({ row }) => (row?.original?.meta?.reviewedByHod == undefined ? "NA" : row?.original?.meta?.reviewedByHod)
         },
 
         {
@@ -209,33 +190,26 @@ function IncrementsDetail() {
                 </>
             ),
             id: 'meta',
-            cell: ({ row }) => row?.original?.meta?.oneToOneMeeting
+            cell: ({ row }) => row?.original?.meta?.oneToOneMeeting == undefined ? "NA" : row?.original?.meta?.oneToOneMeeting
         },
 
         {
             accessorKey: 'meta',
             header: 'HR Meeting',
             id: 'meta',
-            cell: ({ row }) => row?.original?.meta?.hrMeeting
+            cell: ({ row }) => row?.original?.meta?.hrMeeting == undefined ? "NA" : row?.original?.meta?.hrMeeting
         },
 
         {
             accessorKey: 'meta',
             header: 'Final Discussion',
             id: 'meta',
-            cell: ({ row }) => row?.original?.meta?.finalDiscussion
+            cell: ({ row }) => row?.original?.meta?.finalDiscussion == undefined ? "NA" : row?.original?.meta?.finalDiscussion
         },
 
         // meta---------------------------------------end
 
 
-
-        // {
-        //     accessorKey: 'status',
-        //     header: 'Status',
-        //     id: 'status',
-        //     cell: ({ row }) => row.original.status
-        // },
         {
             accessorKey: 'eventDate',
             header: 'Action',
@@ -260,7 +234,6 @@ function IncrementsDetail() {
 
                 const finalDate = getNextIncrementDate(originalDate);
 
-                // if (!incrementDateStr) return <span className="">N/A</span>;
 
                 const incrementDate = new Date(finalDate + 'T00:00:00');
                 const today = new Date();
@@ -271,8 +244,7 @@ function IncrementsDetail() {
                 const diffTime = incrementDate.getTime() - today.getTime();
                 const dayLeft = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-                console.log("dayLeftdayLeft", dayLeft)
-
+                const isIncrementFormSend = row.original?.meta?.incrementFormSent
                 return (
                     <div className="w-full flex justify-left">
 
@@ -282,12 +254,12 @@ function IncrementsDetail() {
                                 className="text-blue-500 h-4 w-4 cursor-pointer"
                                 onClick={() => handleForupcomingIncrements(row)} // You may want to use handleForupcomingIncrements
                             />
-                            {dayLeft <= 20 ? (
+                            {isIncrementFormSend !== "yes" && dayLeft <= 20 ? (
                                 <div>
                                     <Tooltip>
                                         <TooltipTrigger asChild>
                                             <Button
-                                                onClick={() => handleSendWalkInForm(row?.original?.id)}
+                                                onClick={() => handleSendIncrementForm(row?.original?.id)}
                                                 size='icon'
                                                 variant='outline'
                                                 className='shrink-0  hover:bg-accent sendIcon'
@@ -325,13 +297,13 @@ function IncrementsDetail() {
     ];
 
 
-
+    // OldIncrements
     const columnForOldIncrements = [
         {
             accessorKey: 'eventDate',
             header: 'Increment Date',
             id: 'eventDate',
-            cell: ({ row }) => row.original.eventDate
+            cell: ({ row }) => row.original.eventDate == undefined ? "NA" : row.original.eventDate
         },
 
         // meta---------------------------------------start
@@ -351,7 +323,7 @@ function IncrementsDetail() {
                 </>
             ),
             id: 'meta',
-            cell: ({ row }) => row.original?.meta?.incrementFormSent
+            cell: ({ row }) => row.original?.meta?.incrementFormSent == undefined ? "NA" : row.original?.meta?.incrementFormSent
         },
         {
             accessorKey: 'meta',
@@ -369,8 +341,9 @@ function IncrementsDetail() {
                 </>
             ),
             id: 'meta',
-            cell: ({ row }) => row?.original?.meta?.employeeSubmittedIncrementForm
-        }, {
+            cell: ({ row }) => row?.original?.meta?.employeeSubmittedIncrementForm == undefined ? "NA" : row?.original?.meta?.employeeSubmittedIncrementForm
+        },
+        {
             accessorKey: 'meta',
             header: '',
             header: () => (
@@ -387,7 +360,7 @@ function IncrementsDetail() {
                 </>
             ),
             id: 'meta',
-            cell: ({ row }) => row?.original?.meta?.reviewedByHod
+            cell: ({ row }) => (row?.original?.meta?.reviewedByHod == undefined ? "NA" : row?.original?.meta?.reviewedByHod)
         },
 
         {
@@ -407,31 +380,25 @@ function IncrementsDetail() {
                 </>
             ),
             id: 'meta',
-            cell: ({ row }) => row?.original?.meta?.oneToOneMeeting
+            cell: ({ row }) => row?.original?.meta?.oneToOneMeeting == undefined ? "NA" : row?.original?.meta?.oneToOneMeeting
         },
 
         {
             accessorKey: 'meta',
             header: 'HR Meeting',
             id: 'meta',
-            cell: ({ row }) => row?.original?.meta?.hrMeeting
+            cell: ({ row }) => row?.original?.meta?.hrMeeting == undefined ? "NA" : row?.original?.meta?.hrMeeting
         },
 
         {
             accessorKey: 'meta',
             header: 'Final Discussion',
             id: 'meta',
-            cell: ({ row }) => row?.original?.meta?.finalDiscussion
+            cell: ({ row }) => row?.original?.meta?.finalDiscussion == undefined ? "NA" : row?.original?.meta?.finalDiscussion
         },
-
         // meta---------------------------------------end
 
-        // {
-        //     accessorKey: 'status',
-        //     header: 'Status',
-        //     id: 'status',
-        //     cell: ({ row }) => row.original.status
-        // },
+
         {
             accessorKey: 'action',
             header: 'Action',
