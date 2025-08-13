@@ -44,6 +44,8 @@ function IncrementsDetail() {
                 successMessage({
                     description: 'Link sent successfully to the mail.'
                 })
+                handleGetApi()
+
             }
         } catch (error) {
             console.log('error', error)
@@ -79,7 +81,7 @@ function IncrementsDetail() {
             accessorKey: 'eventDate',
             header: 'Days Left',
             id: 'eventDate',
-            cell: ({ row }) => getDaysLeft(row?.original?.eventDate+ 'T00:00:00')
+            cell: ({ row }) => getDaysLeft(row?.original?.eventDate + 'T00:00:00')
         },
         {
             accessorKey: 'eventDate',

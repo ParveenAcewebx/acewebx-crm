@@ -22,7 +22,7 @@ export const IncrementFormValidation = Yup.object().shape({
 
   ratingOnProjects: Yup.string()
     .required('Project rating is required')
-    .matches(/^[0-5](\.\d)?$/, 'Enter a valid rating (e.g. 4.5)'),
+    .matches(/^(10(\.0)?|[0-9](\.\d)?)$/, 'Enter a valid rating (e.g. 4.5)'),
 
   clientCalls: Yup.string()
     .required('Please select client call participation'),
