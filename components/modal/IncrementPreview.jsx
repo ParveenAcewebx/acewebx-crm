@@ -96,7 +96,7 @@ const IncrementPreview = ({ isOpen, onClose, incrementsData, incrementMeta }) =>
                         </div>
                         <div>
                             <h3 className="capitalize font-[500]">Short Term Goals</h3>
-                            <span className="text-gray-600 text-[14px]">{incrementsData?.shortTermGoals}</span>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.ShortTermGoals}</span>
                         </div>
                     </div>
 
@@ -118,7 +118,7 @@ const IncrementPreview = ({ isOpen, onClose, incrementsData, incrementMeta }) =>
                         </div>
                         <div>
                             <h3 className="capitalize font-[500]">Suggestions</h3>
-                            <span className="text-gray-600 text-[14px]">{incrementsData?.suggestions}</span>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.Suggestions}</span>
                         </div>
                     </div>
                     {/* incrementMeta */}
