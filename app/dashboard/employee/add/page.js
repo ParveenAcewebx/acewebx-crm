@@ -24,7 +24,7 @@ import { Button } from '@/components/ui/button'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Loader } from 'lucide-react'
 import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
-import EmployeesApi from '@/services/cadidateApis/employees/EmployeesApi'
+import EmployeesApi from '@/services/employees/EmployeesApi'
 import CommonLayout from '@/components/CommonLayouyt'
 import { EmployeeValidation } from '@/components/form-validations/EmployeeValidation'
 
@@ -38,7 +38,6 @@ function AddEmployees() {
     resolver: yupResolver(EmployeeValidation)
   })
 
-  console.log("form", form.watch("lastIncrementDate"))
 
   const onSubmit = async (data) => {
     setLoader(true);

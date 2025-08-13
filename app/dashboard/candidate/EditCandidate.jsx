@@ -19,10 +19,10 @@ import FormInputFileUploaderSingle from '@/components/share/form/SingleFileUploa
 import FormTextArea from '@/components/share/form/TextArea'
 import FormDatePicker from '@/components/share/form/datePicker'
 import { Button } from '@/components/ui/button'
-import Candidate from '@/services/cadidateApis/CandidateApi'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Loader } from 'lucide-react'
 import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
+import Candidate from '@/services/candidates/CandidateApi'
 
 function EditCandidate({ editId }) {
   const [loader, setLoader] = useState(false)
@@ -89,7 +89,7 @@ function EditCandidate({ editId }) {
     }
   }
 
-// convert url to file object:)
+  // convert url to file object:)
   const urlToFile = async (url, fileName) => {
     const response = await fetch(url)
     const blob = await response.blob()
@@ -140,9 +140,9 @@ function EditCandidate({ editId }) {
           source: meta?._source,
           currentAddress: meta?._currentAddress,
           permanentAddress: meta?._permanentAddress,
-          lastIncrementDate: new Date(meta?._lastIncrementDate + 'T00:00:00'),
-          lastIncrementAmount: meta?._lastIncrementAmount,
-          resume: null // temporarily null until file is loaded
+          lastIncrementDate: meta?._lastIncrementDate ? new Date(meta?._lastIncrementDate + 'T00:00:00') :"",
+          lastIncrementAmount: meta?._lastIncrementAmount ,
+           resume: null // temporarily null until file is loaded
         }
         // Set form fields first
         form.reset(dataForSet)

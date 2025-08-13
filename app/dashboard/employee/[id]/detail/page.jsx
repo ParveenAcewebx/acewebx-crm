@@ -7,13 +7,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import CommonLayout from '@/components/CommonLayouyt'
 import ActivitiesList from '@/components/ActivitiesList'
 import { Mail, Phone, UserIcon } from 'lucide-react'
-import { errorMessage, successMessage } from '@/components/ToasterMessage'
-import EmployeesApi from '@/services/cadidateApis/employees/EmployeesApi'
+import { errorMessage } from '@/components/ToasterMessage'
+import EmployeesApi from '@/services/employees/EmployeesApi'
 import Link from 'next/link'
 import EmployeeChatCompo from '../../chat/Chat'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import { Button } from '@/components/ui/button'
-import IncrementAPi from '@/services/cadidateApis/increment/IncrementAPi'
 import moment from 'moment'
 
 function Page({ params }) {
@@ -192,8 +189,8 @@ function Page({ params }) {
                   {/* ₹ */}
                   <span className='tittle'>Last Hike</span> <br />
                   <span className="subtittle">
-                    {candidateData?.meta?._lastIncrementDate
-                      ? `${candidateData?.meta?._lastIncrementAmount} (${moment(candidateData?.meta?._lastIncrementDate).format('YYYY-MM-DD')})`
+                  {candidateData?.meta?._lastIncrementAmount} {candidateData?.meta?._lastIncrementDate
+                      ? `(${moment(candidateData?.meta?._lastIncrementDate).format('YYYY-MM-DD')})`
                       : ""}
                   </span>
                 </div>

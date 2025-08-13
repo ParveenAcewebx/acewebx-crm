@@ -18,7 +18,7 @@ import FormDatePicker from '@/components/share/form/datePicker'
 import { Button } from '@/components/ui/button'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Loader } from 'lucide-react'
-import EmployeesApi from '@/services/cadidateApis/employees/EmployeesApi'
+import EmployeesApi from '@/services/employees/EmployeesApi'
 import CommonLayout from '@/components/CommonLayouyt'
 import { EmployeeValidation } from '@/components/form-validations/EmployeeValidation'
 import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
@@ -35,7 +35,6 @@ function EditEmployees({ editId }) {
   })
 
 
-  console.log("form", form.watch("lastIncrementDate"))
   const onSubmit = async (data) => {
     setLoader(true);
 
@@ -156,7 +155,9 @@ function EditEmployees({ editId }) {
           currentSalary: meta?._currentSalary || '',
           currentShift: meta?._currentShift || '',
           lastIncrementAmount: meta?._lastIncrementAmount || '',
-          lastIncrementDate: parseDateOrEmpty(meta?._lastIncrementDate),
+          // lastIncrementDate: parseDateOrEmpty(meta?._lastIncrementDate),
+          lastIncrementDate: meta?._lastIncrementDate ? new Date(meta?._lastIncrementDate + 'T00:00:00') :"",
+
         };
         
 

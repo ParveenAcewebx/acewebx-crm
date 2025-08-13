@@ -19,11 +19,11 @@ import FormInputFileUploaderSingle from '@/components/share/form/SingleFileUploa
 import FormTextArea from '@/components/share/form/TextArea'
 import FormDatePicker from '@/components/share/form/datePicker'
 import { Button } from '@/components/ui/button'
-import Candidate from '@/services/cadidateApis/CandidateApi'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Loader } from 'lucide-react'
 import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
 import CommonLayout from '@/components/CommonLayouyt'
+import Candidate from '@/services/candidates/CandidateApi'
 
 function EditCandidateDetails() {
   const { id } = useParams()
@@ -126,7 +126,8 @@ function EditCandidateDetails() {
           source: meta?._source,
           currentAddress: meta?._currentAddress,
           permanentAddress: meta?._permanentAddress,
-          lastIncrementDate: new Date(meta?._lastIncrementDate + 'T00:00:00'),
+          // lastIncrementDate: new Date(meta?._lastIncrementDate + 'T00:00:00'),
+          lastIncrementDate: meta?._lastIncrementDate ? new Date(meta?._lastIncrementDate + 'T00:00:00') :"",
           lastIncrementAmount: meta?._lastIncrementAmount,
           resume: null // temporarily null until file is loaded
         }

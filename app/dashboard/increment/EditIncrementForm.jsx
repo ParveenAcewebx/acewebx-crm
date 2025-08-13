@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Loader } from 'lucide-react'
 import CommonLayout from '@/components/CommonLayouyt'
-import IncrementAPi from '@/services/cadidateApis/increment/IncrementAPi'
+import IncrementAPi from '@/services/increment/IncrementAPi'
 import { IncrementFormValidation } from '@/components/form-validations/IncrementFormValidation'
 
 function EditIncrementForm({ editId }) {

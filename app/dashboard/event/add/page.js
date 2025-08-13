@@ -1,28 +1,23 @@
 'use client'
 import {
     isHoliday,
-    salesCandidateDefaultValue,
+    
 } from '@/components/constants/StaticData'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import ReCAPTCHA from 'react-google-recaptcha'
 import { FormProvider, useForm } from 'react-hook-form'
 
 // import Loader from '@/components/Loader'
 import { errorMessage } from '@/components/ToasterMessage'
-import { SalesCandidateValidation } from '@/components/form-validations/SalesCandidateValidation'
 import FormInputField from '@/components/share/form/FormInputField'
-import FormDatePicker from '@/components/share/form/datePicker'
 import { Button } from '@/components/ui/button'
-import SalesCandidate from '@/services/cadidateApis/SalesCandidateApi'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Loader } from 'lucide-react'
-import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
 import moment from 'moment'
 import CommonLayout from '@/components/CommonLayouyt'
 import TextEditor from '@/components/share/form/TextEditor'
 import { MultiImageUploader } from '@/components/share/form/MultiFileUpload'
-import EventApi from '@/services/cadidateApis/events/EventApi'
+import EventApi from '@/services/events/EventApi'
 import FormSelectField from '@/components/share/form/FormSelect'
 import { EventValidation } from '@/components/form-validations/EventValidation'
 import CurrentAndNextYearDatepicker from '@/components/share/form/CurrentAndNextYearDatepicker'

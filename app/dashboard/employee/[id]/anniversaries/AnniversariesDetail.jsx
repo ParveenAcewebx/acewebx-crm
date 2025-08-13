@@ -6,7 +6,7 @@ import CommonLayout from '@/components/CommonLayouyt'
 import { Edit } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { DataTable } from '@/components/Table'
-import AnniversariesApi from '@/services/cadidateApis/employees/AnniversariesApi'
+import AnniversariesApi from '@/services/employees/AnniversariesApi'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 
 function AnniversariesDetail() {

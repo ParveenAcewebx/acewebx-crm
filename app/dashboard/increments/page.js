@@ -12,9 +12,9 @@ import FormInputField from '@/components/share/form/FormInputField'
 import FormSelectField from '@/components/share/form/FormSelect'
 import { LengthData } from '@/components/constants/StaticData'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { incrementSearchEvent, SearchEvent, SearchValidation } from '@/components/form-validations/SearchValidation'
+import { incrementSearchEvent} from '@/components/form-validations/SearchValidation'
 import { Search } from 'lucide-react'
-import IncrementAPi from '@/services/cadidateApis/increment/IncrementAPi'
+import IncrementAPi from '@/services/increment/IncrementAPi'
 import { IncrementColumn } from './increment-column'
 
 const IncrementList = () => {
@@ -38,7 +38,6 @@ const IncrementList = () => {
   const fetchList = async () => {
     try {
       const response = await IncrementAPi.getAllIncrementAPi(page, length)
-      console.log("response", response)
       if (response.status === 200) {
         setList(response?.data?.data?.increments)
         setTotalRecord(response?.data?.data?.pagination?.total)

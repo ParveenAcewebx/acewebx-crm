@@ -7,8 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import ActionsDots from '@/components/ActionsDots'
 import { Separator } from '@/components/ui/separator'
-import EmployeesApi from '@/services/cadidateApis/employees/EmployeesApi'
-import IncrementAPi from '@/services/cadidateApis/increment/IncrementAPi'
+import IncrementAPi from '@/services/increment/IncrementAPi'
 
 function IncrementChatCompo({ id }) {
   const form = useForm({ defaultValues: { chat: '' } })

@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import Candidate from '@/services/cadidateApis/CandidateApi'
 import DcsModal from '@/components/modal/dscForm'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import CommonLayout from '@/components/CommonLayouyt'
@@ -14,6 +13,7 @@ import { Mail, Phone, UserIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { errorMessage, successMessage } from '@/components/ToasterMessage'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import Candidate from '@/services/candidates/CandidateApi'
 
 function Page({ params }) {
   const router = useRouter()

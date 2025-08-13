@@ -20,12 +20,11 @@ import FormInputFileUploaderSingle from '@/components/share/form/SingleFileUploa
 import FormTextArea from '@/components/share/form/TextArea'
 import FormDatePicker from '@/components/share/form/datePicker'
 import { Button } from '@/components/ui/button'
-import SalesCandidate from '@/services/cadidateApis/SalesCandidateApi'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Loader } from 'lucide-react'
 import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
 import moment from 'moment'
-import SkillApi from '@/services/cadidateApis/settings/SkillApi'
+import SalesCandidate from '@/services/salesCandidates/SalesCandidateApi'
 
 function EditSalesJobApplicationForm() {
   const { id } = useParams()

@@ -5,10 +5,10 @@ import CommonLayout from '@/components/CommonLayouyt'
 import { useParams, useRouter } from 'next/navigation'
 import { DataTable } from '@/components/Table'
 import { Edit } from 'lucide-react'
-import AnniversariesApi from '@/services/cadidateApis/employees/AnniversariesApi'
+import AnniversariesApi from '@/services/employees/AnniversariesApi'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { Button } from '@/components/ui/button'
-import IncrementAPi from '@/services/cadidateApis/increment/IncrementAPi'
+import IncrementAPi from '@/services/increment/IncrementAPi'
 import { errorMessage, successMessage } from '@/components/ToasterMessage'
 
 function IncrementsDetail() {
