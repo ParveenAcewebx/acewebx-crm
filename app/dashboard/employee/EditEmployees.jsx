@@ -59,7 +59,7 @@ function EditEmployees({ editId }) {
         const isDateField =
           key === 'dobDocument' ||
           key === 'dateOfJoining' ||
-          key === 'dobCelebration' 
+          key === 'dobCelebration'
 
         if (key === 'reportingManager') return; // skip, append later
 
@@ -132,37 +132,37 @@ function EditEmployees({ editId }) {
           companyEmail: data?.companyEmail || '',
           designation: data?.designation || '',
           dateOfJoining: parseDateOrEmpty(data?.dateOfJoining),
-        
+
           // Documents
           adharCard: meta?._adharCard || '',
           panCard: meta?._panCard || '',
           otherDocumentLink: meta?._otherDocumentLink || '',
-        
+
           // Banking Details
           bankName: meta?._bankName || '',
           bankAccountNumber: meta?._bankAccountNumber || '',
           bankIfscCode: meta?._bankIfscCode || '',
-        
+
           // Emergency Details
           bloodGroup: meta?._bloodGroup || '',
           emergencyContactName: meta?._emergencyContactName || '',
           emergencyContactNumber: meta?._emergencyContactNumber || '',
           emergencyContactRelationship: meta?._emergencyContactRelationship || '',
           emergencyContactRelationshipOther: meta?._emergencyContactRelationshipOther || '',
-        
+
           // Additional Fields
           gender: meta?._gender || '',
           currentSalary: meta?._currentSalary || '',
           currentShift: meta?._currentShift || '',
           lastIncrementAmount: meta?._lastIncrementAmount || '',
           // lastIncrementDate: parseDateOrEmpty(meta?._lastIncrementDate),
-          lastIncrementDate: meta?._lastIncrementDate ? new Date(meta?._lastIncrementDate + 'T00:00:00') :"",
+          lastIncrementDate: meta?._lastIncrementDate ? new Date(meta?._lastIncrementDate + 'T00:00:00') : "",
 
         };
-        
+
 
         form.reset(dataForSet);
-        form?.setValue('reportingManager',  JSON.parse(data?.reportingManager))
+        form?.setValue('reportingManager', data?.reportingManager == undefined ? [] : JSON.parse(data?.reportingManager))
 
       }
     } catch (error) {
