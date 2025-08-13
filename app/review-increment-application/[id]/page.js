@@ -8,104 +8,70 @@ import { errorMessage } from '@/components/ToasterMessage'
 import IncrementsTabApi from '@/services/employees/IncrementsTabApi'
 import FormTextArea from '@/components/share/form/TextArea'
 import FormInputField from '@/components/share/form/FormInputField'
+import { Separator } from '@radix-ui/react-select'
+import FormSelectField from '@/components/share/form/FormSelect'
+import { TenuretotalExperienceOptions } from '@/components/constants/StaticData'
+import IncrementAPi from '@/services/increment/IncrementAPi'
 
 function ReviewEditIncrement() {
-    const { id, editId } = useParams()
-    const eventId = editId
+    const { id } = useParams()
     const router = useRouter()
     const [loader, setLoader] = useState(false)
-
+    const [incrementsData, setIncrementData] = useState({})
+    const [idForForm, setIdForForm] = useState("")
     const form = useForm({
         mode: 'onChange',
-        defaultValues: {
-            eventDate: '',
-        },
+        // defaultValues: {
+        //     eventDate: '',
+        // },
     })
 
     const onSubmit = async (data) => {
-        console.log("data", data)
-        // setLoader(true)
-        // const newData = { ...data, empEventId: editId, eventType: "increment" }
-        // try {
-        //     const response = await IncrementsTabApi.saveEmployeeMetaData(newData)
-        //     if (response?.data?.status === true) {
-        //         setLoader(false)
-        //         router.back()
-        //     } else {
-        //         setLoader(false)
-        //         errorMessage({ description: 'Failed to update event.' })
-        //     }
-        // } catch (error) {
-        //     setLoader(false)
-        //     console.error('Submission Error:', error?.message)
-        //     errorMessage({ description: error?.message || 'Something went wrong.' })
-        // }
+        setLoader(true)
+        const newData = { ...data, token: id }
+        try {
+            const response = await IncrementAPi.addIncrementReview(idForForm, newData)
+            if (response?.data?.status === true) {
+                setLoader(false)
+                router.push('/feedback')
+            } else {
+                setLoader(false)
+                errorMessage({ description: 'Failed to update event.' })
+            }
+        } catch (error) {
+            setLoader(false)
+            console.error('Submission Error:', error?.message)
+            errorMessage({ description: error?.message || 'Something went wrong.' })
+        }
     }
 
-    const candidateDataGetById = async () => {
-        // try {
-        //     const response = await IncrementsTabApi.getByIdIncrements(Number(eventId));
-        //     if (response?.data?.data) {
-        //         const eventData = response?.data?.data?.increment;
-        //         const newData = { ...eventData, eventDate: new Date(eventData?.eventDate + 'T00:00:00') }
-        //         setIncrementData(response?.data?.data?.incrementApplication)
-        //         setcheckIsIncrementFromYes(eventData?.employeeSubmittedIncrementForm)
-        //         form.reset(newData);
-        //     }
-        // } catch (error) {
-        //     console.error("Fetch Error:", error);
-        //     errorMessage({
-        //         description: error?.message || "Something went wrong while fetching event data.",
-        //     });
-        // }
+    const confirmIncremetData = async () => {
+        try {
+            const response = await IncrementAPi.IncrementGetByUUIDConfirm(id);
+
+
+            if (response?.data) {
+                setIncrementData(response?.data?.incrementData)
+                setIdForForm(response?.data?.incrementData?.id)
+
+            }
+        } catch (error) {
+            console.error("Fetch Error:", error);
+            errorMessage({
+                description: error?.message || "Something went wrong while fetching event data.",
+            });
+        }
     };
 
 
 
 
     useEffect(() => {
-        if (id && eventId) {
-            candidateDataGetById()
-        }
-    }, [id, eventId])
+        confirmIncremetData()
+
+    }, [id])
 
 
-
-
-
-    const incrementsData = {
-        id: 1,
-        empId: 101,
-        name: "John Doe",
-        acewebxTenure: "2 years",
-        totalExperience: "5 years",
-        experienceWithAcewebx: "2 years",
-        totalProjects: "12",
-        ratingOnProjects: "4.5",
-        clientCalls: "25",
-        clientConverted: "10",
-        newSkills: "React, Node.js, AWS",
-        improvementAreas: "Time management, Testing",
-        currentSalary: "50000",
-        expectedSalary: "60000",
-        raiseJustified: "Yes",
-        shortTermGoals: "Complete AWS certification",
-        longTermGoals: "Become a Tech Lead",
-        weaknesses: "Procrastination, Documentation",
-        keyAchievements: "Led project X to success, Won employee of the month",
-        suggestions: "Improve deployment automation",
-        reviewedBy: "Jane Smith",
-        reviewDate: "2025-08-12",
-        performanceRating: "Excellent",
-        strengthsByReportingManager: "Strong leadership, Great problem-solving skills",
-        areasOfImprovement: "Better client communication",
-        managerComments: "Keep up the great work!",
-        recommendedRaise: "10%",
-        promotionRecommendation: "Yes",
-        promotionDetails: "Promote to Senior Developer",
-        createdAt: "2025-08-12 10:00:00",
-        updatedAt: "2025-08-12 10:30:00"
-    }
 
 
     const AddvanceOpenModal = () => {
@@ -135,13 +101,8 @@ function ReviewEditIncrement() {
                     Increment Preview
                 </h2>
 
-                <h4 className='mb-8'>
-
-                </h4>
-
-
-                <div className=" bg-white pt-2  !">
-                    <div className="mb-4 ml-1 grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
+                <div className=" pt-2  !">
+                    <div className="mb-4  grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
                         <div>
                             <h3 className="capitalize font-[500]">Name</h3>
                             <span className="text-gray-600 text-[14px]">{incrementsData?.name}</span>
@@ -152,7 +113,7 @@ function ReviewEditIncrement() {
                         </div>
                     </div>
 
-                    <div className="mb-4 ml-1 grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
+                    <div className="mb-4  grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
                         <div>
                             <h3 className="capitalize font-[500]">Total Experience</h3>
                             <span className="text-gray-600 text-[14px]">{incrementsData?.totalExperience}</span>
@@ -163,7 +124,7 @@ function ReviewEditIncrement() {
                         </div>
                     </div>
 
-                    <div className="mb-4 ml-1 grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
+                    <div className="mb-4  grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
                         <div>
                             <h3 className="capitalize font-[500]">Total Projects</h3>
                             <span className="text-gray-600 text-[14px]">{incrementsData?.totalProjects}</span>
@@ -174,7 +135,7 @@ function ReviewEditIncrement() {
                         </div>
                     </div>
 
-                    <div className="mb-4 ml-1 grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
+                    <div className="mb-4  grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
                         <div>
                             <h3 className="capitalize font-[500]">Client Calls</h3>
                             <span className="text-gray-600 text-[14px]">{incrementsData?.clientCalls}</span>
@@ -185,7 +146,7 @@ function ReviewEditIncrement() {
                         </div>
                     </div>
 
-                    <div className="mb-4 ml-1 grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
+                    <div className="mb-4  grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
                         <div>
                             <h3 className="capitalize font-[500]">New Skills</h3>
                             <span className="text-gray-600 text-[14px]">{incrementsData?.newSkills}</span>
@@ -196,7 +157,7 @@ function ReviewEditIncrement() {
                         </div>
                     </div>
 
-                    <div className="mb-4 ml-1 grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
+                    <div className="mb-4  grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
                         <div>
                             <h3 className="capitalize font-[500]">Current Salary</h3>
                             <span className="text-gray-600 text-[14px]">{incrementsData?.currentSalary}</span>
@@ -207,7 +168,7 @@ function ReviewEditIncrement() {
                         </div>
                     </div>
 
-                    <div className="mb-4 ml-1 grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
+                    <div className="mb-4  grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
                         <div>
                             <h3 className="capitalize font-[500]">Raise Justified</h3>
                             <span className="text-gray-600 text-[14px]">{incrementsData?.raiseJustified}</span>
@@ -218,7 +179,7 @@ function ReviewEditIncrement() {
                         </div>
                     </div>
 
-                    <div className="mb-4  ml-1 grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
+                    <div className="mb-4   grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
                         <div>
                             <h3 className="capitalize font-[500]">Long Term Goals</h3>
                             <span className="text-gray-600 text-[14px]">{incrementsData?.longTermGoals}</span>
@@ -229,7 +190,7 @@ function ReviewEditIncrement() {
                         </div>
                     </div>
 
-                    <div className="mb-4 ml-1 grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
+                    <div className="mb-4  grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
                         <div>
                             <h3 className="capitalize font-[500]">Key Achievements</h3>
                             <span className="text-gray-600 text-[14px]">{incrementsData?.keyAchievements}</span>
@@ -242,13 +203,18 @@ function ReviewEditIncrement() {
 
 
                 </div>
+                <Separator orientation="vertical" className="h-[1px] bg-black mt-5 mb-12" />
+
+                <h2 className='walking mb-6 text-2xl font-semibold text-gray-800'>
+                    Add your feedback
+                </h2>
                 <FormProvider {...form}>
                     <form
                         encType='multipart/form-data'
                         onSubmit={form.handleSubmit(onSubmit)}
                     >
 
-                        <div className='mb-4 ml-1 mt-6 grid grid-cols-2 gap-6 md:grid-cols-2'>
+                        <div className='mb-4  mt-6 grid grid-cols-2 gap-6 md:grid-cols-2'>
                             <FormInputField
                                 name='recommendedRaise'
                                 label='Recommended Raise'
@@ -256,11 +222,13 @@ function ReviewEditIncrement() {
                                 form={form}
                             />
 
-                            <FormInputField
+                            <FormSelectField
                                 name='performanceRating'
-                                label='Performance Rating (e.g. 4.5/10)'
-                                inputType='number'
-                                form={form} />
+                                label='Performance Rating'
+                                options={TenuretotalExperienceOptions}
+                                form={form}
+                            />
+
 
                             <FormInputField name='strengths'
                                 label='Strengths By Reporting Manager'
@@ -287,7 +255,7 @@ function ReviewEditIncrement() {
                                 className='col-span-2' />
 
                         </div>
-                        <div className=' ml-1 grid grid-cols-1 gap-6 md:grid-cols-1'>
+                        <div className='  grid grid-cols-1 gap-6 md:grid-cols-1'>
                             <FormTextArea
                                 name='promotionDetails'
                                 label='Promotion Details'

@@ -23,6 +23,7 @@ function EditIncrement() {
   const [incrementData, setIncrementData] = useState({})
   const [incrementModalOpen, setIncrementModalOpen] = useState(false)
   const [checkIsIncrementFromYes, setcheckIsIncrementFromYes] = useState()
+  const [incrementMeta, setIncrementMeta] = useState([])
   const form = useForm({
     mode: 'onChange',
     defaultValues: {
@@ -73,6 +74,7 @@ function EditIncrement() {
       const response = await IncrementsTabApi.getByIdIncrementsMetaData(Number(eventId));
       if (response?.data?.data) {
         setIncrementData(response?.data?.data?.incrementApplication)
+        setIncrementMeta(response?.data?.data?.incrementMeta)
       }
     } catch (error) {
       console.error("Fetch Error:", error);
@@ -291,6 +293,7 @@ function EditIncrement() {
       <IncrementPreview
         isOpen={incrementModalOpen}
         incrementsData={incrementData}
+        incrementMeta={incrementMeta}
         onClose={() => setIncrementModalOpen(false)}
       />
     </div>

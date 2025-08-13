@@ -5,9 +5,10 @@ import {
     DialogTitle,
     DialogTrigger
 } from '@/components/ui/dialog'
+import { Separator } from '@radix-ui/react-select'
 
 
-const IncrementPreview = ({ isOpen, onClose, incrementsData }) => {
+const IncrementPreview = ({ isOpen, onClose, incrementsData, incrementMeta }) => {
 
 
     return (
@@ -120,68 +121,67 @@ const IncrementPreview = ({ isOpen, onClose, incrementsData }) => {
                             <span className="text-gray-600 text-[14px]">{incrementsData?.suggestions}</span>
                         </div>
                     </div>
+                    {/* incrementMeta */}
 
-                    <div className="mb-4 grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
-                        <div>
-                            <h3 className="capitalize font-[500]">Reviewed By</h3>
-                            <span className="text-gray-600 text-[14px]">{incrementsData?.reviewedBy}</span>
-                        </div>
-                        <div>
-                            <h3 className="capitalize font-[500]">Review Date</h3>
-                            <span className="text-gray-600 text-[14px]">{incrementsData?.reviewDate}</span>
-                        </div>
-                    </div>
+                    {incrementMeta?.map((item, index) => (
+                        <div key={index}>
+                            <Separator orientation="vertical" className="h-[1px] bg-black mt-5 mb-12" />
 
-                    <div className="mb-4 grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
-                        <div>
-                            <h3 className="capitalize font-[500]">Performance Rating</h3>
-                            <span className="text-gray-600 text-[14px]">{incrementsData?.performanceRating}</span>
-                        </div>
-                        <div>
-                            <h3 className="capitalize font-[500]">Strengths By Reporting Manager</h3>
-                            <span className="text-gray-600 text-[14px]">{incrementsData?.strengthsByReportingManager}</span>
-                        </div>
-                    </div>
 
-                    <div className="mb-4 grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
-                        <div>
-                            <h3 className="capitalize font-[500]">Areas Of Improvement</h3>
-                            <span className="text-gray-600 text-[14px]">{incrementsData?.areasOfImprovement}</span>
-                        </div>
-                        <div>
-                            <h3 className="capitalize font-[500]">Manager Comments</h3>
-                            <span className="text-gray-600 text-[14px]">{incrementsData?.managerComments}</span>
-                        </div>
-                    </div>
+                            <div className="mb-4 grid grid-cols-2 gap-6 mt-2">
+                                <div>
+                                    <h3 className="capitalize font-[800]">Reviewed By</h3>
+                                    <span className="text-gray-600 text-[14px]">{item?.email}</span>
+                                </div>
+                                <div>
+                                    <h3 className="capitalize font-[500]">Review Date</h3>
+                                    <span className="text-gray-600 text-[14px]">{item?.feedback?.reviewDate}</span>
+                                </div>
+                            </div>
 
-                    <div className="mb-4 grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
-                        <div>
-                            <h3 className="capitalize font-[500]">Recommended Raise</h3>
-                            <span className="text-gray-600 text-[14px]">{incrementsData?.recommendedRaise}</span>
-                        </div>
-                        <div>
-                            <h3 className="capitalize font-[500]">Promotion Recommendation</h3>
-                            <span className="text-gray-600 text-[14px]">{incrementsData?.promotionRecommendation}</span>
-                        </div>
-                    </div>
+                            <div className="mb-4 grid grid-cols-2 gap-6 mt-2">
+                                <div>
+                                    <h3 className="capitalize font-[500]">Performance Rating</h3>
+                                    <span className="text-gray-600 text-[14px]">{item?.feedback?.performanceRating}</span>
+                                </div>
+                                <div>
+                                    <h3 className="capitalize font-[500]">Strengths By Reporting Manager</h3>
+                                    <span className="text-gray-600 text-[14px]">{item?.feedback?.strengths}</span>
+                                </div>
+                            </div>
 
-                    <div className="mb-4 grid grid-cols-1 gap-6 md:grid-cols-1 mt-2">
-                        <div>
-                            <h3 className="capitalize font-[500]">Promotion Details</h3>
-                            <span className="text-gray-600 text-[14px]">{incrementsData?.promotionDetails}</span>
-                        </div>
-                        {/* <div>
-                            <h3 className="capitalize font-[500]">Created At</h3>
-                            <span>{incrementsData?.createdAt}</span>
-                        </div> */}
-                    </div>
+                            <div className="mb-4 grid grid-cols-2 gap-6 mt-2">
+                                <div>
+                                    <h3 className="capitalize font-[500]">Areas Of Improvement</h3>
+                                    <span className="text-gray-600 text-[14px]">{item?.feedback?.areasOfImprovement}</span>
+                                </div>
+                                <div>
+                                    <h3 className="capitalize font-[500]">Manager Comments</h3>
+                                    <span className="text-gray-600 text-[14px]">{item?.feedback?.managerComments}</span>
+                                </div>
+                            </div>
 
-                    {/* <div className="mb-4 grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
-                        <div>
-                            <h3 className="capitalize font-[500]">Updated At</h3>
-                            <span>{incrementsData?.updatedAt}</span>
+                            <div className="mb-4 grid grid-cols-2 gap-6 mt-2">
+                                <div>
+                                    <h3 className="capitalize font-[500]">Recommended Raise</h3>
+                                    <span className="text-gray-600 text-[14px]">{item?.feedback?.recommendedRaise}</span>
+                                </div>
+                                <div>
+                                    <h3 className="capitalize font-[500]">Promotion Recommendation</h3>
+                                    <span className="text-gray-600 text-[14px]">{item?.feedback?.promotionRecommendation}</span>
+                                </div>
+                            </div>
+
+                            <div className="mb-4 grid grid-cols-1 gap-6 mt-2">
+                                <div>
+                                    <h3 className="capitalize font-[500]">Promotion Details</h3>
+                                    <span className="text-gray-600 text-[14px]">{item?.feedback?.promotionDetails}</span>
+                                </div>
+                            </div>
                         </div>
-                    </div> */}
+                    ))}
+
+
                 </div>
             </DialogContent>
         </Dialog>

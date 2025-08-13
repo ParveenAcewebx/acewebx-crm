@@ -101,7 +101,7 @@ export const formDefaultValues = {
   bankName: '',
   bankAccountNumber: '',
   bankIfscCode: '',
-  reportingManager:[],
+  reportingManager: [],
   // Emergency Details
   bloodGroup: '',
   emergencyContactName: '',
@@ -208,29 +208,41 @@ export const totalExperienceOptions = [
   { label: '10+ Years', value: '10' }
 ]
 
+
+export const TenuretotalExperienceOptions = [
+  { label: '1', value: '1' },
+  { label: '2', value: '2' },
+  { label: '3', value: '3' },
+  { label: '4', value: '4 ' },
+  { label: '5', value: '5' },
+  { label: '6', value: '6' },
+  { label: '7', value: '7' },
+  { label: '8', value: '8' },
+  { label: '9', value: '9' },
+  { label: '10', value: '10' }
+]
+
 export const overAllExperienceOptions = [
-  { label: 'Fresher', value: '0' },
-  { label: '6 Months', value: '0.6' },
-  { label: '1+ Years', value: '1' },
-  { label: '2+ Years', value: '2' },
-  { label: '3+ Years', value: '3' },
-  { label: '4+ Years', value: '4 ' },
-  { label: '5+ Years', value: '5' },
-  { label: '6+ Years', value: '6' },
-  { label: '7+ Years', value: '7' },
-  { label: '8+ Years', value: '8' },
-  { label: '9+ Years', value: '9' },
-  { label: '10+ Years', value: '10' },
-  { label: '11+ Years', value: '11' },
-  { label: '12+ Years', value: '12' },
-  { label: '13+ Years', value: '13' },
-  { label: '14+ Years', value: '14 ' },
-  { label: '15+ Years', value: '15' },
-  { label: '16+ Years', value: '16' },
-  { label: '17+ Years', value: '17' },
-  { label: '18+ Years', value: '18' },
-  { label: '19+ Years', value: '19' },
-  { label: '20+ Years', value: '20' }
+  { label: '1', value: '1' },
+  { label: '2', value: '2' },
+  { label: '3', value: '3' },
+  { label: '4', value: '4 ' },
+  { label: '5', value: '5' },
+  { label: '6', value: '6' },
+  { label: '7', value: '7' },
+  { label: '8', value: '8' },
+  { label: '9', value: '9' },
+  { label: '10', value: '10' },
+  { label: '11', value: '11' },
+  { label: '12', value: '12' },
+  { label: '13', value: '13' },
+  { label: '14', value: '14 ' },
+  { label: '15', value: '15' },
+  { label: '16', value: '16' },
+  { label: '17', value: '17' },
+  { label: '18', value: '18' },
+  { label: '19', value: '19' },
+  { label: '20', value: '20' }
 ]
 
 

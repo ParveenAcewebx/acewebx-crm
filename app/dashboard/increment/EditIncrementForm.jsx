@@ -2,6 +2,7 @@
 import {
     IncrementFormDefaultValues,
     overAllExperienceOptions,
+    TenuretotalExperienceOptions,
     totalExperienceOptions,
     YesNoOptions
 } from '@/components/constants/StaticData'
@@ -95,7 +96,7 @@ function EditIncrementForm({ editId }) {
                                     <FormInputField name='name' className="!h-[3.8rem]" label='Name*' inputType='text' form={form} /></div>
                                 <div className='mb-3  grid grid-cols-1 gap-6 md:grid-cols-2'>
 
-                                    <FormSelectField name='acewebxTenure' className="!h-[3.8rem]" options={totalExperienceOptions} label='Tenure with AceWebX (in years)*' inputType='number' form={form} />
+                                    <FormSelectField name='acewebxTenure' className="!h-[3.8rem]" options={TenuretotalExperienceOptions} label='Tenure with AceWebX (in years)*' inputType='number' form={form} />
                                     <FormSelectField name='totalExperience' className="!h-[3.8rem]" options={overAllExperienceOptions} label='Overall Years of Experience*' inputType='number' form={form} />
                                 </div>
 
@@ -104,8 +105,8 @@ function EditIncrementForm({ editId }) {
                                 </div>
 
                                 <div className='mb-3  grid grid-cols-2 gap-6'>
-                                    <FormSelectField name='totalProjects' className="!h-[3.8rem]" options={totalExperienceOptions} label='Projects Completed Last Year*' inputType='number' form={form} />
-                                    <FormInputField name='ratingOnProjects' className="!h-[3.8rem]" label='Rating on Completed Projects (e.g. 4.5/10)*' inputType='number' form={form} />
+                                    <FormSelectField name='totalProjects' className="!h-[3.8rem]" options={TenuretotalExperienceOptions} label='Projects Completed Last Year*' inputType='number' form={form} />
+                                    <FormSelectField name='ratingOnProjects' className="!h-[3.8rem]" options={TenuretotalExperienceOptions} label='Rating on Completed Projects*' inputType='number' form={form} />
                                 </div>
 
                                 <div className='mb-3  grid grid-cols-1 gap-6 md:grid-cols-2'>
