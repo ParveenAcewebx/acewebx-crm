@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import ActionsDots from '@/components/ActionsDots'
 import { Separator } from '@/components/ui/separator'
-import SalesChatApi from '@/services/cadidateApis/SalesChatApi'
+import SalesChatApi from '@/services/salesCandidates/SalesChatApi'
 
 function ChatCompo({ id }) {
   const form = useForm({ defaultValues: { chat: '' } })

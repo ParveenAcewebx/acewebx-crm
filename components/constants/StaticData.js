@@ -208,6 +208,32 @@ export const totalExperienceOptions = [
   { label: '10+ Years', value: '10' }
 ]
 
+export const overAllExperienceOptions = [
+  { label: 'Fresher', value: '0' },
+  { label: '6 Months', value: '0.6' },
+  { label: '1+ Years', value: '1' },
+  { label: '2+ Years', value: '2' },
+  { label: '3+ Years', value: '3' },
+  { label: '4+ Years', value: '4 ' },
+  { label: '5+ Years', value: '5' },
+  { label: '6+ Years', value: '6' },
+  { label: '7+ Years', value: '7' },
+  { label: '8+ Years', value: '8' },
+  { label: '9+ Years', value: '9' },
+  { label: '10+ Years', value: '10' },
+  { label: '11+ Years', value: '11' },
+  { label: '12+ Years', value: '12' },
+  { label: '13+ Years', value: '13' },
+  { label: '14+ Years', value: '14 ' },
+  { label: '15+ Years', value: '15' },
+  { label: '16+ Years', value: '16' },
+  { label: '17+ Years', value: '17' },
+  { label: '18+ Years', value: '18' },
+  { label: '19+ Years', value: '19' },
+  { label: '20+ Years', value: '20' }
+]
+
+
 export const designationOptions = [
   { label: 'Software Developer', value: 'software developer' },
   { label: 'Frontend Developer', value: 'frontend developer' },

@@ -57,7 +57,6 @@ const IncrementAPi = {
     return api.get(`employeeEventNote/getMessagesById?chatId=${id}`)
   },
   getAllMessagesIncrement: (id) => {
-    console.log("ididid",id)
     return api.get(`employeeEventNote/getMessages?empEventId=${id}`)
   },
   deleteMessageIncrement: (id, data) => {

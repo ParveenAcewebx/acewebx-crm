@@ -64,7 +64,6 @@ const EmployeesApi = {
     return api.get(`employeeChat/getMessagesById?chatId=${id}`)
   },
   getAllMessagesEmployee: (id) => {
-    console.log("ididid", id)
     return api.get(`employeeChat/getMessagesByEmployeeId?employeeId=${id}`)
   },
   deleteMessageEmployee: (id, data) => {

@@ -5,10 +5,9 @@ import { useForm } from 'react-hook-form'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-import { cn } from '@/lib/utils'
-import ChatApis from '@/services/cadidateApis/ChatApis'
 import ActionsDots from '@/components/ActionsDots'
 import { Separator } from '@/components/ui/separator'
+import ChatApis from '@/services/candidates/ChatApis'
 
 function ChatCompo({ id }) {
   const form = useForm({ defaultValues: { chat: '' } })

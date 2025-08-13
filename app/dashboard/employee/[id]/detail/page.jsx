@@ -6,15 +6,13 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import CommonLayout from '@/components/CommonLayouyt'
 import ActivitiesList from '@/components/ActivitiesList'
-import { Mail, Phone, UserIcon } from 'lucide-react'
-import { errorMessage, successMessage } from '@/components/ToasterMessage'
-import EmployeesApi from '@/services/cadidateApis/employees/EmployeesApi'
+import { Eye, EyeClosed, EyeOff, Mail, Phone, UserIcon } from 'lucide-react'
+import { errorMessage } from '@/components/ToasterMessage'
+import EmployeesApi from '@/services/employees/EmployeesApi'
 import Link from 'next/link'
 import EmployeeChatCompo from '../../chat/Chat'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import { Button } from '@/components/ui/button'
-import IncrementAPi from '@/services/cadidateApis/increment/IncrementAPi'
 import moment from 'moment'
+import { EyeSlashIcon } from '@heroicons/react/24/outline'
 
 function Page({ params }) {
   const router = useRouter()
@@ -22,6 +20,9 @@ function Page({ params }) {
   const editId = id
   const [candidateData, setCandidateData] = useState({})
   const [activitiesData, setActivitiesData] = useState()
+  const [salaryHide, setSalaryHide] = useState(false)
+  const [hikeHide, setHikeHide] = useState(false)
+
   const pathname = usePathname()
   // Get Data by Id:)
   const handleGetApi = async () => {
@@ -168,34 +169,65 @@ function Page({ params }) {
 
           {/* Current & Expected Salary Card */}
           <div class=" flex gap-4  ">
-            <Card className="">
-              <CardContent className='flex justify-between items-center'>
+            <Card className="relative">
+              {/* Toggle salary visibility icon */}
+              <div className="absolute top-2 right-2 cursor-pointer">
+                {salaryHide ? (
+                  <Eye size={16} onClick={() => setSalaryHide(false)} />
+                ) : (
+                  <EyeOff size={16} onClick={() => setSalaryHide(true)} />
+                )}
+              </div>
+
+              <CardContent className="flex justify-between items-center">
                 {/* Current Salary */}
-                <div className="salery-outer ">
+                <div className="salery-outer">
                   <div className="salery-content flex justify-between gap-4 items-center">
                     <img src="/images/pages/rs.png" alt="trophy image" />
                     <div className="salery-inner">
-                      <span className="tittle">Current Salary</span><br />
-                      <span className="subtittle">{candidateData?.meta?._currentSalary}</span>
+                      <span className="tittle">Current Salary</span>
+                      <br />
+                      <span className="subtittle">
+                        {salaryHide ? candidateData?.meta?._currentSalary : (
+                          "*****"
+                        )}
+                      </span>
                     </div>
                   </div>
                 </div>
-
               </CardContent>
             </Card>
 
+
             {/* Hike Card */}
-            <Card className='box border   rounded-[10px]'>
+            <Card className='relative'>
+              {/* Toggle salary visibility icon */}
+              <div className="absolute top-2 right-2 cursor-pointer">
+                {hikeHide ? (
+                  <Eye size={16} onClick={() => setHikeHide(false)} />
+                ) : (
+                  <EyeOff size={16} onClick={() => setHikeHide(true)} />
+                )}
+              </div>
+
               <CardContent className='flex items-center gap-4 '>
                 <img src='/images/pages/hike.png' alt='trophy image' height={60} className='' />
                 <div>
                   {/* ₹ */}
                   <span className='tittle'>Last Hike</span> <br />
                   <span className="subtittle">
-                    {candidateData?.meta?._lastIncrementDate
-                      ? `${candidateData?.meta?._lastIncrementAmount} (${moment(candidateData?.meta?._lastIncrementDate).format('YYYY-MM-DD')})`
-                      : ""}
+                    {hikeHide ? (
+                      <>
+                        {candidateData?.meta?._lastIncrementAmount}{" "}
+                        {candidateData?.meta?._lastIncrementDate
+                          ? `(${moment(candidateData?.meta?._lastIncrementDate).format("YYYY-MM-DD")})`
+                          : ""}
+                      </>
+                    ) : (
+                      "*****"
+                    )}
                   </span>
+
                 </div>
               </CardContent>
             </Card>

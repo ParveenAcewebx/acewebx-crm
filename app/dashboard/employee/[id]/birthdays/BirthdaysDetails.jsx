@@ -4,9 +4,8 @@ import { Edit, Eye } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { DataTable } from '@/components/Table'
 import CommonLayout from '@/components/CommonLayouyt'
-import EventApi from '@/services/cadidateApis/events/EventApi'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import AnniversariesApi from '@/services/cadidateApis/employees/AnniversariesApi'
+import AnniversariesApi from '@/services/employees/AnniversariesApi'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 
 function BirthdaysDetails() {

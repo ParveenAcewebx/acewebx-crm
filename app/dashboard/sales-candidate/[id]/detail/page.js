@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { Card, CardContent } from '@/components/ui/card'
-import SalesCandidate from '@/services/cadidateApis/SalesCandidateApi'
 import DcsModal from '@/components/modal/dscForm'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { TabsContent } from '@radix-ui/react-tabs'
@@ -14,6 +13,7 @@ import CommonLayout from '@/components/CommonLayouyt'
 import { Button } from '@/components/ui/button'
 import { errorMessage, successMessage } from '@/components/ToasterMessage'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import SalesCandidate from '@/services/salesCandidates/SalesCandidateApi'
 
 function Page({ params }) {
   const router = useRouter()

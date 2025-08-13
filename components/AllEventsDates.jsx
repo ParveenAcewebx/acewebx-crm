@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import CommonLayout from '@/components/CommonLayouyt'
-import EventApi from '@/services/cadidateApis/events/EventApi'
+import EventApi from '@/services/events/EventApi'
 import { Eye } from 'lucide-react'
 import { DataTable } from './Table'
 import { useRouter } from 'next/navigation'

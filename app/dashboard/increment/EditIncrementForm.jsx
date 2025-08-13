@@ -1,6 +1,8 @@
 'use client'
 import {
     IncrementFormDefaultValues,
+    overAllExperienceOptions,
+    totalExperienceOptions,
     YesNoOptions
 } from '@/components/constants/StaticData'
 import { useRouter } from 'next/navigation'
@@ -14,7 +16,7 @@ import { Button } from '@/components/ui/button'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Loader } from 'lucide-react'
 import CommonLayout from '@/components/CommonLayouyt'
-import IncrementAPi from '@/services/cadidateApis/increment/IncrementAPi'
+import IncrementAPi from '@/services/increment/IncrementAPi'
 import { IncrementFormValidation } from '@/components/form-validations/IncrementFormValidation'
 
 function EditIncrementForm({ editId }) {
@@ -26,7 +28,7 @@ function EditIncrementForm({ editId }) {
         resolver: yupResolver(IncrementFormValidation),
     })
 
-// Submit Handler:)
+    // Submit Handler:)
     const onSubmit = async data => {
         setLoader(true)
         try {
@@ -43,13 +45,13 @@ function EditIncrementForm({ editId }) {
             setLoader(false)
             errorMessage(
                 { description: error?.message }
-              );
+            );
 
         }
     }
 
 
-// GetDataById Handler:)
+    // GetDataById Handler:)
     const candidateDataGetById = async (editId) => {
         try {
             const response = await IncrementAPi.getByIdIncrementAPi(editId);
@@ -62,7 +64,7 @@ function EditIncrementForm({ editId }) {
             console.error('Submission Error:', error);
             errorMessage(
                 { description: error?.message }
-              );
+            );
         }
     };
 
@@ -93,8 +95,8 @@ function EditIncrementForm({ editId }) {
                                     <FormInputField name='name' className="!h-[3.8rem]" label='Name*' inputType='text' form={form} /></div>
                                 <div className='mb-3  grid grid-cols-1 gap-6 md:grid-cols-2'>
 
-                                    <FormInputField name='acewebxTenure' className="!h-[3.8rem]" label='Tenure with AceWebX (in years)*' inputType='number' form={form} />
-                                    <FormInputField name='totalExperience' className="!h-[3.8rem]" label='Overall Years of Experience*' inputType='number' form={form} />
+                                    <FormSelectField name='acewebxTenure' className="!h-[3.8rem]" options={totalExperienceOptions} label='Tenure with AceWebX (in years)*' inputType='number' form={form} />
+                                    <FormSelectField name='totalExperience' className="!h-[3.8rem]" options={overAllExperienceOptions} label='Overall Years of Experience*' inputType='number' form={form} />
                                 </div>
 
                                 <div className='mb-3  grid grid-cols-1 gap-6'>
@@ -102,8 +104,8 @@ function EditIncrementForm({ editId }) {
                                 </div>
 
                                 <div className='mb-3  grid grid-cols-2 gap-6'>
-                                    <FormInputField name='totalProjects' className="!h-[3.8rem]" label='Projects Completed Last Year*' inputType='number' form={form} />
-                                    <FormInputField name='ratingOnProjects' className="!h-[3.8rem]" label='Rating on Completed Projects (e.g. 4.5/5)*' inputType='number' form={form} />
+                                    <FormSelectField name='totalProjects' className="!h-[3.8rem]" options={totalExperienceOptions} label='Projects Completed Last Year*' inputType='number' form={form} />
+                                    <FormInputField name='ratingOnProjects' className="!h-[3.8rem]" label='Rating on Completed Projects (e.g. 4.5/10)*' inputType='number' form={form} />
                                 </div>
 
                                 <div className='mb-3  grid grid-cols-1 gap-6 md:grid-cols-2'>

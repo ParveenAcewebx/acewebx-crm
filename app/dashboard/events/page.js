@@ -3,14 +3,12 @@ import DialogBox from '@/components/modal/DialogBox'
 import LayoutHeader from '@/components/layoutHeader'
 import { DataTable } from '@/components/Table'
 import { errorMessage, successMessage } from '@/components/ToasterMessage'
-import { Button } from '@/components/ui/button'
-import { Plus, Search } from 'lucide-react'
+import { Search } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import SkillForm from '@/components/skills/SkillForm'
 import SkillSettingModal from '@/components/modal/SkillSettingModal'
-import SkillApi from '@/services/cadidateApis/settings/SkillApi'
-import EventApi from '@/services/cadidateApis/events/EventApi'
+import EventApi from '@/services/events/EventApi'
 import { EventColumn } from './event-column'
 import { useRouter } from 'next/navigation'
 import FormInputField from '@/components/share/form/FormInputField'
@@ -40,7 +38,6 @@ const EventList = () => {
     const fetchList = async () => {
         try {
             const response = await EventApi.getAllEvent(page, length)
-            console.log("response", response)
             if (response.status === 200) {
                 setList(response?.data?.data?.events)
                 setTotalRecord(response?.data?.data?.pagination?.total)

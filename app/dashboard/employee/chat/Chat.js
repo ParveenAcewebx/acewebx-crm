@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import ActionsDots from '@/components/ActionsDots'
 import { Separator } from '@/components/ui/separator'
-import EmployeesApi from '@/services/cadidateApis/employees/EmployeesApi'
+import EmployeesApi from '@/services/employees/EmployeesApi'
 
 function EmployeeChatCompo({ id }) {
   const form = useForm({ defaultValues: { chat: '' } })

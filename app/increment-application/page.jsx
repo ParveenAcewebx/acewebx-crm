@@ -2,6 +2,8 @@
 
 import {
     IncrementFormDefaultValues,
+    overAllExperienceOptions,
+    totalExperienceOptions,
     YesNoOptions,
 } from '@/components/constants/StaticData'
 import { useRouter } from 'next/navigation'
@@ -14,7 +16,7 @@ import FormInputField from '@/components/share/form/FormInputField'
 import FormSelectField from '@/components/share/form/FormSelect'
 import FormTextArea from '@/components/share/form/TextArea'
 import { Button } from '@/components/ui/button'
-import IncrementAPi from '@/services/cadidateApis/increment/IncrementAPi'
+import IncrementAPi from '@/services/increment/IncrementAPi'
 import { errorMessage } from '@/components/ToasterMessage'
 
 function IncrementApplicationForm() {
@@ -68,12 +70,12 @@ function IncrementApplicationForm() {
         setLoader(false)
     }
 
-  
+
 
 
     const onSubmit = async data => {
         try {
-          
+
 
             const response = await IncrementAPi.addIncrementAPi(data)
             if (response?.data?.status == true) {
@@ -113,7 +115,7 @@ function IncrementApplicationForm() {
                 </h4>
                 <p className='mb-4 text-sm text-gray-500'>Step {step + 1} of 2</p>
 
-        <FormProvider {...form}>
+                <FormProvider {...form}>
                     <form encType='multipart/form-data' onSubmit={form.handleSubmit(onSubmit)}>
                         {step === 0 && (
                             <>
@@ -121,8 +123,8 @@ function IncrementApplicationForm() {
                                     <FormInputField name='name' className="!h-[3.8rem]" label='Name*' inputType='text' form={form} /></div>
                                 <div className='mb-3  grid grid-cols-1 gap-6 md:grid-cols-2'>
 
-                                    <FormInputField name='acewebxTenure' className="!h-[3.8rem]" label='Tenure with AceWebX (in years)*' inputType='number' form={form} />
-                                    <FormInputField name='totalExperience' className="!h-[3.8rem]" label='Overall Years of Experience*' inputType='number' form={form} />
+                                    <FormSelectField name='acewebxTenure' className="!h-[3.8rem]" options={totalExperienceOptions} label='Tenure with AceWebX (in years)*' inputType='number' form={form} />
+                                    <FormSelectField name='totalExperience' className="!h-[3.8rem]" options={overAllExperienceOptions} label='Overall Years of Experience*' inputType='number' form={form} />
                                 </div>
 
                                 <div className='mb-3  grid grid-cols-1 gap-6'>
@@ -130,8 +132,8 @@ function IncrementApplicationForm() {
                                 </div>
 
                                 <div className='mb-3  grid grid-cols-2 gap-6'>
-                                    <FormInputField name='totalProjects' className="!h-[3.8rem]" label='Projects Completed Last Year*' inputType='number' form={form} />
-                                    <FormInputField name='ratingOnProjects' className="!h-[3.8rem]" label='Rating on Completed Projects (e.g. 4.5/5)*' inputType='number' form={form} />
+                                <FormSelectField name='totalProjects' className="!h-[3.8rem]" options={totalExperienceOptions} label='Projects Completed Last Year*' inputType='number' form={form} />
+                                <FormInputField name='ratingOnProjects' className="!h-[3.8rem]" label='Rating on Completed Projects (e.g. 4.5/10)*' inputType='number' form={form} />
                                 </div>
 
                                 <div className='mb-3  grid grid-cols-1 gap-6 md:grid-cols-2'>

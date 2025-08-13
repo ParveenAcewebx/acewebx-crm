@@ -6,7 +6,6 @@ import FormSelectField from '@/components/share/form/FormSelect'
 import { DataTable } from '@/components/Table'
 import { errorMessage, successMessage } from '@/components/ToasterMessage'
 import useDocumentTitle from '@/components/utils/useDocumentTitle'
-import Candidate from '@/services/cadidateApis/CandidateApi'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -19,6 +18,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import moment from 'moment'
 import { Button } from '@/components/ui/button'
+import Candidate from '@/services/candidates/CandidateApi'
 
 const AllCandidates = () => {
   useDocumentTitle('Dev Candidate')
