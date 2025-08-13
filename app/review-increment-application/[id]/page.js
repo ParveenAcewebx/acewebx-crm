@@ -230,15 +230,17 @@ function ReviewEditIncrement() {
                             />
 
 
-                            <FormInputField name='strengths'
+                            <FormTextArea name='strengths'
                                 label='Strengths By Reporting Manager'
-                                inputType='number'
+                                inputType='text'
+                                className='col-span-2'
                                 form={form} />
+
 
                             <FormTextArea
                                 name='managerComments'
                                 label='Manager Comments'
-                                inputType='number'
+                                inputType='text'
                                 form={form}
                                 className='col-span-2' />
 
