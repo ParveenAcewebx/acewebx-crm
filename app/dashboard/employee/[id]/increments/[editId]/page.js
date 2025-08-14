@@ -55,7 +55,7 @@ function EditIncrement() {
       const response = await IncrementsTabApi.getByIdIncrements(Number(eventId));
       if (response?.data?.data) {
         const eventData = response?.data?.data?.increment;
-        const newData = { ...eventData, eventDate: new Date(eventData?.eventDate + 'T00:00:00') }
+        const newData = { ...eventData, eventDate:eventData?.eventDate }
         setIncrementData(response?.data?.data?.incrementApplication)
         setcheckIsIncrementFromYes(eventData?.employeeSubmittedIncrementForm)
         form.reset(newData);
