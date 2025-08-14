@@ -39,16 +39,7 @@ export const EventColumn = (handleDeleteEvent, handleEditEvent) => [
       )
     }
   },
-  // {
-  //   accessorKey: 'id',
-  //   header: '#ID',
-  //   size: 80, 
-  //   cell: ({ row }) => (
-  //     <div className="max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
-  //       {`#EVN-${row.original?.id}`}
-  //     </div>
-  //   )
-  //   },
+
   {
     accessorKey: 'title',
     header: 'Title',
