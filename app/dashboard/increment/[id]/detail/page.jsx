@@ -10,8 +10,8 @@ import { Card, CardContent } from '@/components/ui/card'
 import ActivitiesList from '@/components/ActivitiesList'
 import { errorMessage } from '@/components/ToasterMessage'
 import EmployeeChatCompo from '@/app/dashboard/employee/chat/Chat'
-import EmployeesApi from '@/services/cadidateApis/employees/EmployeesApi'
-import IncrementAPi from '@/services/cadidateApis/increment/IncrementAPi'
+import EmployeesApi from '@/services/employees/EmployeesApi'
+import IncrementAPi from '@/services/increment/IncrementAPi'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 
@@ -20,6 +20,7 @@ function Page({ params }) {
   const id = params?.id
   const editId = id
   const [candidateData, setCandidateData] = useState({})
+  const [activitiesData, setActivitiesData] = useState()
 
   const handleGetApi = async () => {
     try {
@@ -37,7 +38,6 @@ function Page({ params }) {
   }, [id, router])
 
 
-  const [activitiesData, setActivitiesData] = useState()
 
   // Activity function :-
   const getActivities = async () => {
@@ -73,8 +73,8 @@ function Page({ params }) {
 
   const genderCol = genderColor(candidateData?.meta?._gender)
 
-   // send walk-in form
-   const handleSendWalkInForm = async row => {
+   // send Increment form
+   const handleSendIncrementForm = async row => {
     try {
       const sendEmailLin = await IncrementAPi.activityDevIncrementAPi(id)
 
@@ -114,7 +114,7 @@ function Page({ params }) {
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Button
-                      onClick={handleSendWalkInForm}
+                      onClick={handleSendIncrementForm}
                       size='icon'
                       variant='outline'
                       className='shrink-0  hover:bg-accent sendIcon'

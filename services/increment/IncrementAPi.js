@@ -26,7 +26,7 @@ const IncrementAPi = {
     )
   },
 
-  sendIncrementInLink: (id,eventID) => {
+  sendIncrementInLink: (id, eventID) => {
     return api.post(`employee/send-increment-link/${id}`, { empEventId: eventID })
   },
   getByIdVerifyIncrementAPi: id => {
@@ -46,9 +46,20 @@ const IncrementAPi = {
   },
 
 
+  // review increment :-
+  IncrementGetByUUIDConfirm: id => {
+    return api.get(`increment/confirm-reviewer-token/${id}`)
+  },
+  addIncrementReview: (idForForm, data) => {
+    let id = idForForm
+    return api.put(`increment/updateIncrementReview/${id}`, data)
+  },
+
+
+
   //   chat apis
   addMessageIncrement: data => {
-    return api.post(`employeeEventNote/sendMessage`,data )
+    return api.post(`employeeEventNote/sendMessage`, data)
   },
   editMessageIncrement: (id, data) => {
     return api.put(`employeeEventNote/updateMessage/${id}`, { message: data })
@@ -57,7 +68,6 @@ const IncrementAPi = {
     return api.get(`employeeEventNote/getMessagesById?chatId=${id}`)
   },
   getAllMessagesIncrement: (id) => {
-    console.log("ididid",id)
     return api.get(`employeeEventNote/getMessages?empEventId=${id}`)
   },
   deleteMessageIncrement: (id, data) => {

@@ -10,11 +10,11 @@ import { FormProvider, useForm } from 'react-hook-form'
 import SkillForm from '@/components/skills/SkillForm'
 import SkillSettingModal from '@/components/modal/SkillSettingModal'
 import { SkillColumn } from './skill-column'
-import SkillApi from '@/services/cadidateApis/settings/SkillApi'
+import SkillApi from '@/services/settings/SkillApi'
 import FormInputField from '@/components/share/form/FormInputField'
 import FormSelectField from '@/components/share/form/FormSelect'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { SearchSkill, SearchValidation } from '@/components/form-validations/SearchValidation'
+import { SearchSkill } from '@/components/form-validations/SearchValidation'
 import { LengthData } from '@/components/constants/StaticData'
 
 const Skills = () => {
@@ -33,8 +33,8 @@ const Skills = () => {
         }
     })
 
-    // fetch group tag list
-    const fetchTagList = async () => {
+    // fetch group  list
+    const fetchSkillsList = async () => {
         try {
             const response = await SkillApi.getAllSkill(page, length)
             if (response.status === 200) {
@@ -48,7 +48,7 @@ const Skills = () => {
         }
     }
     useEffect(() => {
-        fetchTagList()
+        fetchSkillsList()
     }, [page, length])
 
     // delete row
@@ -58,7 +58,7 @@ const Skills = () => {
                 const res = await SkillApi.deleteSkill(deleteIndex)
                 setDeleteOpenModal(false)
                 if (res?.status === 200) {
-                    fetchTagList()
+                    fetchSkillsList()
                     localStorage.removeItem("skills");
 
                     successMessage({ description: res?.data?.message })
@@ -82,7 +82,7 @@ const Skills = () => {
                 if (response.status === 200) {
                     setEditData(response.data.data)
                     localStorage.removeItem("skills");
-                    fetchTagList()
+                    fetchSkillsList()
 
                     successMessage({ description: response?.data?.message })
                 }
@@ -124,11 +124,7 @@ const Skills = () => {
     });
     const search = form.watch('search')
 
-    const handleClearSearch = () => {
-        form.setValue('search', '')
 
-        getListCadidate()
-    }
 
     const handleSimpleFilter = async data => {
 
@@ -229,7 +225,7 @@ const Skills = () => {
                     description={
                         <SkillForm
                             setSubmitOpenModal={setSubmitOpenModal}
-                            fetchTagList={fetchTagList}
+                            fetchList={fetchSkillsList}
                             editData={editData}
                         />
                     }

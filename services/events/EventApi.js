@@ -16,9 +16,7 @@ const EventApi = {
     deleteEvent: id => {
         return api.delete(`event/deleteEvent/${id}`)
     },
-    // getAllEventByType: (type) => {
-    //     return api.get(`event/getSkillByType/${type}`)
-    // },
+  
 
     globalEventGetApi: () => {
         return api.get(`/event/globalSkill`)
@@ -35,11 +33,7 @@ const EventApi = {
           `dashboard/upcoming-events`
         )
       },
-    // getUSkillByFilter: data => {
-    //     return api.get(
-    //         `auth/getAllUser?page=${data?.page}&limit=${data?.limit}&name=${data?.name}&email=${data?.email}&currentSalary=${data?.currentSalary}`
-    //     )
-    // }
+
 }
 
 export default EventApi

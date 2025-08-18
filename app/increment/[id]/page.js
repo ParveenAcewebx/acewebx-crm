@@ -1,5 +1,5 @@
 'use client'
-import { IncrementFormDefaultValues, YesNoOptions } from '@/components/constants/StaticData'
+import { IncrementFormDefaultValues, overAllExperienceOptions, TenuretotalExperienceOptions, totalExperienceOptions, YesNoOptions } from '@/components/constants/StaticData'
 import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -10,7 +10,7 @@ import FormInputField from '@/components/share/form/FormInputField'
 import FormSelectField from '@/components/share/form/FormSelect'
 import FormTextArea from '@/components/share/form/TextArea'
 import { Button } from '@/components/ui/button'
-import IncrementAPi from '@/services/cadidateApis/increment/IncrementAPi'
+import IncrementAPi from '@/services/increment/IncrementAPi'
 import { errorMessage, successMessage } from '@/components/ToasterMessage'
 import PageExpired from '@/app/url-expired/page'
 
@@ -98,18 +98,16 @@ function EditIncrementApplicationForm() {
   const candidateDataGetById = async () => {
     try {
       const response = await IncrementAPi.getByIdVerifyIncrementAPi(editId);
-      console.log("response", response)
       if (response?.data?.status === true) {
         const empId = response?.data?.data?.id;
         setEventID(empId)
-        // setIsEplId(empId)
       }
     } catch (error) {
       console.error('Submission Error:', error);
       setIsVerify(error?.status)
-      // errorMessage(
-      //   error?.message || 'Something went wrong while submitting the form.'
-      // );
+      errorMessage(
+        { description: error?.message }
+      );
     }
   };
 
@@ -161,8 +159,8 @@ function EditIncrementApplicationForm() {
                       <FormInputField name='name' className="!h-[3.8rem]" label='Name*' inputType='text' form={form} /></div>
                     <div className='mb-3  grid grid-cols-1 gap-6 md:grid-cols-2'>
 
-                      <FormInputField name='acewebxTenure' className="!h-[3.8rem]" label='Tenure with AceWebX (in years)*' inputType='number' form={form} />
-                      <FormInputField name='totalExperience' className="!h-[3.8rem]" label='Overall Years of Experience*' inputType='number' form={form} />
+                      <FormSelectField name='acewebxTenure' className="!h-[3.8rem]" options={TenuretotalExperienceOptions} label='Tenure with AceWebX (in years)*' inputType='number' form={form} />
+                      <FormSelectField name='totalExperience' className="!h-[3.8rem]" options={overAllExperienceOptions} label='Overall Years of Experience*' inputType='number' form={form} />
                     </div>
 
                     <div className='mb-3  grid grid-cols-1 gap-6'>
@@ -170,8 +168,8 @@ function EditIncrementApplicationForm() {
                     </div>
 
                     <div className='mb-3  grid grid-cols-2 gap-6'>
-                      <FormInputField name='totalProjects' className="!h-[3.8rem]" label='Projects Completed Last Year*' inputType='number' form={form} />
-                      <FormInputField name='ratingOnProjects' className="!h-[3.8rem]" label='Rating on Completed Projects (e.g. 4.5/5)*' inputType='number' form={form} />
+                      <FormSelectField name='totalProjects' className="!h-[3.8rem]" options={TenuretotalExperienceOptions} label='Projects Completed Last Year*' inputType='number' form={form} />
+                      <FormSelectField name='ratingOnProjects' className="!h-[3.8rem]" options={TenuretotalExperienceOptions} label='Rating on Completed Projects*' inputType='number' form={form} />
                     </div>
 
                     <div className='mb-3  grid grid-cols-1 gap-6 md:grid-cols-2'>

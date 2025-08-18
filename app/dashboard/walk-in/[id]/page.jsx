@@ -11,7 +11,6 @@ import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import moment from 'moment';
-
 import { errorMessage, successMessage } from '@/components/ToasterMessage'
 import { CandidateFormValidationEdit } from '@/components/form-validations/CandidateFormValidationEdit'
 import FormInputField from '@/components/share/form/FormInputField'
@@ -20,16 +19,17 @@ import FormInputFileUploaderSingle from '@/components/share/form/SingleFileUploa
 import FormTextArea from '@/components/share/form/TextArea'
 import FormDatePicker from '@/components/share/form/datePicker'
 import { Button } from '@/components/ui/button'
-import Candidate from '@/services/cadidateApis/CandidateApi'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Loader } from 'lucide-react'
 import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
 import CommonLayout from '@/components/CommonLayouyt'
+import Candidate from '@/services/candidates/CandidateApi'
 
 function EditCandidateDetails() {
   const { id } = useParams()
   const [loader, setLoader] = useState(false)
   const [candEmail, setCandEmail] = useState("")
+  const [skillsData , setSkillsData]= useState([])
   const router = useRouter()
   const form = useForm({
     mode: 'onChange',
@@ -39,11 +39,9 @@ function EditCandidateDetails() {
 
 
   const onSubmit = async data => {
-
     setLoader(true)
     try {
       const formData = new FormData()
-
       const file = data.resume?.[0]
       if (file) {
         formData.append('resume', file)
@@ -84,7 +82,7 @@ function EditCandidateDetails() {
     }
   }
 
-
+// Convert Url to file object :)
   const urlToFile = async (url, fileName) => {
     const response = await fetch(url)
     const blob = await response.blob()
@@ -96,7 +94,6 @@ function EditCandidateDetails() {
   const candidateDataGetById = async (id, form) => {
     try {
       const response = await Candidate.candidateGetById(id)
-
       if (response?.data?.status === true) {
         const data = response?.data?.data
         const meta = data?.meta
@@ -129,7 +126,8 @@ function EditCandidateDetails() {
           source: meta?._source,
           currentAddress: meta?._currentAddress,
           permanentAddress: meta?._permanentAddress,
-          lastIncrementDate: new Date(meta?._lastIncrementDate + 'T00:00:00'),
+          // lastIncrementDate: new Date(meta?._lastIncrementDate + 'T00:00:00'),
+          lastIncrementDate: meta?._lastIncrementDate ? new Date(meta?._lastIncrementDate + 'T00:00:00') :"",
           lastIncrementAmount: meta?._lastIncrementAmount,
           resume: null // temporarily null until file is loaded
         }
@@ -139,7 +137,6 @@ function EditCandidateDetails() {
 
         // Then load and set the resume file if available
         const resumePath = response?.data?.data?.resume?.filePath
-        // const resumePath = meta?._resume
 
         if (resumePath) {
           const fileUrl = `${process.env.NEXT_PUBLIC_API_URL}${resumePath}`
@@ -167,7 +164,7 @@ function EditCandidateDetails() {
   }, [id])
 
 
-  const [skillsData , setSkillsData]= useState([])
+  
 
 
 useEffect(() => {

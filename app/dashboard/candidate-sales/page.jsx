@@ -6,19 +6,19 @@ import FormSelectField from '@/components/share/form/FormSelect'
 import { DataTable } from '@/components/Table'
 import { errorMessage, successMessage } from '@/components/ToasterMessage'
 import useDocumentTitle from '@/components/utils/useDocumentTitle'
-import SalesCandidate from '@/services/cadidateApis/SalesCandidateApi'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { SalesCandidColumns } from './sales-candid-columns'
 import { LengthData } from '@/components/constants/StaticData'
 import AddvanceFilterDeveloper from '@/components/modal/AddvanceFilterDeveloper'
-import { Import, Search } from 'lucide-react'
+import { Search } from 'lucide-react'
 import { SearchValidation } from '@/components/form-validations/SearchValidation'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import moment from 'moment'
 import { Button } from '@/components/ui/button'
+import SalesCandidate from '@/services/salesCandidates/SalesCandidateApi'
 
 const AllSalesCandidates = () => {
   useDocumentTitle('Sales Candidate')
@@ -43,6 +43,7 @@ const AllSalesCandidates = () => {
   const [maxExperience, setMaxExperience] = useState('');
   const [connectStartDate, setConnectStartDate] = useState('');
   const [connectEndDate, setConnectEndDate] = useState('');
+  const [skillsData, setSkillsData] = useState([])
 
   const methods = useForm({
     defaultValues: {
@@ -269,7 +270,6 @@ const AllSalesCandidates = () => {
     }
   };
 
-  const [skillsData, setSkillsData] = useState([])
 
 
   useEffect(() => {

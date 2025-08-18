@@ -5,14 +5,14 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft, Loader } from 'lucide-react'
 import CommonLayout from '@/components/CommonLayouyt'
-import FormDatePicker from '@/components/share/form/datePicker'
 import { errorMessage } from '@/components/ToasterMessage'
-import IncrementsTabApi from '@/services/cadidateApis/employees/IncrementsTabApi'
+import IncrementsTabApi from '@/services/employees/IncrementsTabApi'
 import FormSelectField from '@/components/share/form/FormSelect'
 import { isHoliday } from '@/components/constants/StaticData'
 import FormTextArea from '@/components/share/form/TextArea'
 import IncrementChatCompo from '../chat/Chat'
 import CurrentAndNextYearDatepicker from '@/components/share/form/CurrentAndNextYearDatepicker'
+import IncrementPreview from '@/components/modal/IncrementPreview'
 
 function EditIncrement() {
   const { id, editId } = useParams()
@@ -20,7 +20,10 @@ function EditIncrement() {
   const router = useRouter()
 
   const [loader, setLoader] = useState(false)
-
+  const [incrementData, setIncrementData] = useState({})
+  const [incrementModalOpen, setIncrementModalOpen] = useState(false)
+  const [checkIsIncrementFromYes, setcheckIsIncrementFromYes] = useState()
+  const [incrementMeta, setIncrementMeta] = useState([])
   const form = useForm({
     mode: 'onChange',
     defaultValues: {
@@ -50,17 +53,12 @@ function EditIncrement() {
   const candidateDataGetById = async () => {
     try {
       const response = await IncrementsTabApi.getByIdIncrements(Number(eventId));
-      console.log("Full API Response:", response);
-
       if (response?.data?.data) {
         const eventData = response?.data?.data?.increment;
-
-        const newData = { ...eventData, eventDate: new Date(eventData?.eventDate + 'T00:00:00') }
+        const newData = { ...eventData, eventDate:eventData?.eventDate }
+        setIncrementData(response?.data?.data?.incrementApplication)
+        setcheckIsIncrementFromYes(eventData?.employeeSubmittedIncrementForm)
         form.reset(newData);
-
-
-
-
       }
     } catch (error) {
       console.error("Fetch Error:", error);
@@ -71,10 +69,25 @@ function EditIncrement() {
   };
 
 
+  const metaDataInrementPreview = async () => {
+    try {
+      const response = await IncrementsTabApi.getByIdIncrementsMetaData(Number(eventId));
+      if (response?.data?.data) {
+        setIncrementData(response?.data?.data?.incrementApplication)
+        setIncrementMeta(response?.data?.data?.incrementMeta)
+      }
+    } catch (error) {
+      console.error("Fetch Error:", error);
+      errorMessage({
+        description: error?.message || "Something went wrong while fetching event data.",
+      });
+    }
+  }
 
   useEffect(() => {
     if (id && eventId) {
       candidateDataGetById()
+      metaDataInrementPreview()
     }
   }, [id, eventId])
 
@@ -94,17 +107,36 @@ function EditIncrement() {
       form.setValue("finalDiscussionRemark", "")
     }
   }, [isReviewedByHod, isoneToOneMeeting, isfinalDiscussion, form])
+
+
+
+
+  const AddvanceOpenModal = () => {
+    setIncrementModalOpen(true)
+  }
   return (
     <div className='mobile-view items-right relative flex min-h-screen w-full flex-col justify-start'>
       <div className='flex justify-between'>
         <CommonLayout pageTitle='Edit Increment' />
       </div>
-      <div>
+
+
+
+      <div className='flex justify-between mt-3'>
         <Button onClick={() => router.push(`/dashboard/employee/${id}/increments`)} >
           <ArrowLeft />  Back To The Increments
-        </Button></div>
+        </Button>
+
+        {
+          checkIsIncrementFromYes == "yes" && (
+            <Button onClick={() => AddvanceOpenModal()}>
+              Review Form
+            </Button>)
+        }
+
+      </div>
+
       <div className='w-[100%] mb-4 mt-6 grid grid-cols-2 gap-6 md:grid-cols-2'>
-        {/* <div className='w-[50%] '> */}
         <FormProvider {...form}>
           <form
             encType='multipart/form-data'
@@ -258,6 +290,12 @@ function EditIncrement() {
         {/* </div> */}
       </div>
 
+      <IncrementPreview
+        isOpen={incrementModalOpen}
+        incrementsData={incrementData}
+        incrementMeta={incrementMeta}
+        onClose={() => setIncrementModalOpen(false)}
+      />
     </div>
   )
 }

@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import ActionsDots from '@/components/ActionsDots'
 import { Separator } from '@/components/ui/separator'
-import EmployeesApi from '@/services/cadidateApis/employees/EmployeesApi'
+import EmployeesApi from '@/services/employees/EmployeesApi'
 
 function EmployeeChatCompo({ id }) {
   const form = useForm({ defaultValues: { chat: '' } })
@@ -17,10 +17,8 @@ function EmployeeChatCompo({ id }) {
   const message = form.watch('chat')
   const bottomRef = useRef(null)
 
-  const scrollToBottom = () => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }
-
+  
+// messageSendHandler:)
   const messageSendHandler = async () => {
     if (!message?.trim()) return
     const data = {
@@ -37,6 +35,7 @@ function EmployeeChatCompo({ id }) {
     }
   }
 
+  // messageediHandler:)
   const editMsgHandler = async () => {
     if (!message?.trim() || !editMsgId) return
     try {
@@ -49,7 +48,7 @@ function EmployeeChatCompo({ id }) {
       console.error('Error editing message:', error)
     }
   }
-
+// messagegetByIdHandler:)
   const getByIdMsgHandler = async id => {
     try {
       setIsEditMsg(true)
@@ -60,7 +59,7 @@ function EmployeeChatCompo({ id }) {
       console.error('Error fetching message by ID:', error)
     }
   }
-
+// messagedeleteHandler:)
   const deleteMsgHandler = async id => {
     try {
       await EmployeesApi.deleteMessageEmployee(id)
@@ -69,7 +68,7 @@ function EmployeeChatCompo({ id }) {
       console.error('Error deleting message:', error)
     }
   }
-
+// allMessagesGetHandler:)
   const getAllChats = async () => {
     try {
       const allMsg = await EmployeesApi.getAllMessagesEmployee(id)
@@ -78,7 +77,7 @@ function EmployeeChatCompo({ id }) {
       console.error('Error fetching messages:', error)
     }
   }
-
+// cancelEditMessagesHandler:)
   const cancelEditHandler = () => {
     setIsEditMsg(false)
     setEditMsgId(null)

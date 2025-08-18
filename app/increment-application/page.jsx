@@ -2,6 +2,9 @@
 
 import {
     IncrementFormDefaultValues,
+    overAllExperienceOptions,
+    TenuretotalExperienceOptions,
+    totalExperienceOptions,
     YesNoOptions,
 } from '@/components/constants/StaticData'
 import { useRouter } from 'next/navigation'
@@ -14,13 +17,12 @@ import FormInputField from '@/components/share/form/FormInputField'
 import FormSelectField from '@/components/share/form/FormSelect'
 import FormTextArea from '@/components/share/form/TextArea'
 import { Button } from '@/components/ui/button'
-import IncrementAPi from '@/services/cadidateApis/increment/IncrementAPi'
+import IncrementAPi from '@/services/increment/IncrementAPi'
 import { errorMessage } from '@/components/ToasterMessage'
 
 function IncrementApplicationForm() {
     const [step, setStep] = useState(0)
     const [loader, setLoader] = useState(false)
-    const [recaptcha, setRecaptcha] = useState(null)
     const router = useRouter()
 
     const form = useForm({
@@ -69,13 +71,12 @@ function IncrementApplicationForm() {
         setLoader(false)
     }
 
-  
+
 
 
     const onSubmit = async data => {
-        console.log("dataa", data)
         try {
-          
+
 
             const response = await IncrementAPi.addIncrementAPi(data)
             if (response?.data?.status == true) {
@@ -83,7 +84,6 @@ function IncrementApplicationForm() {
                 router.push('/thankyou')
             }
         } catch (error) {
-            // setLoader(false)
             console.error('Submission Error:', error?.message)
             errorMessage({ description: error?.message })
         }
@@ -116,7 +116,7 @@ function IncrementApplicationForm() {
                 </h4>
                 <p className='mb-4 text-sm text-gray-500'>Step {step + 1} of 2</p>
 
-        <FormProvider {...form}>
+                <FormProvider {...form}>
                     <form encType='multipart/form-data' onSubmit={form.handleSubmit(onSubmit)}>
                         {step === 0 && (
                             <>
@@ -124,8 +124,8 @@ function IncrementApplicationForm() {
                                     <FormInputField name='name' className="!h-[3.8rem]" label='Name*' inputType='text' form={form} /></div>
                                 <div className='mb-3  grid grid-cols-1 gap-6 md:grid-cols-2'>
 
-                                    <FormInputField name='acewebxTenure' className="!h-[3.8rem]" label='Tenure with AceWebX (in years)*' inputType='number' form={form} />
-                                    <FormInputField name='totalExperience' className="!h-[3.8rem]" label='Overall Years of Experience*' inputType='number' form={form} />
+                                    <FormSelectField name='acewebxTenure' className="!h-[3.8rem]" options={TenuretotalExperienceOptions} label='Tenure with AceWebX (in years)*' inputType='number' form={form} />
+                                    <FormSelectField name='totalExperience' className="!h-[3.8rem]" options={overAllExperienceOptions} label='Overall Years of Experience*' inputType='number' form={form} />
                                 </div>
 
                                 <div className='mb-3  grid grid-cols-1 gap-6'>
@@ -133,8 +133,8 @@ function IncrementApplicationForm() {
                                 </div>
 
                                 <div className='mb-3  grid grid-cols-2 gap-6'>
-                                    <FormInputField name='totalProjects' className="!h-[3.8rem]" label='Projects Completed Last Year*' inputType='number' form={form} />
-                                    <FormInputField name='ratingOnProjects' className="!h-[3.8rem]" label='Rating on Completed Projects (e.g. 4.5/5)*' inputType='number' form={form} />
+                                    <FormSelectField name='totalProjects' className="!h-[3.8rem]" options={TenuretotalExperienceOptions} label='Projects Completed Last Year*' inputType='number' form={form} />
+                                    <FormSelectField name='ratingOnProjects' className="!h-[3.8rem]" options={TenuretotalExperienceOptions} label='Rating on Completed Projects*' inputType='number' form={form} />
                                 </div>
 
                                 <div className='mb-3  grid grid-cols-1 gap-6 md:grid-cols-2'>

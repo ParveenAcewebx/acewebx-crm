@@ -29,11 +29,7 @@ const SkillApi = {
           `skill/getAllSkill?search=${search}`
         )
       },
-    // getUSkillByFilter: data => {
-    //     return api.get(
-    //         `auth/getAllUser?page=${data?.page}&limit=${data?.limit}&name=${data?.name}&email=${data?.email}&currentSalary=${data?.currentSalary}`
-    //     )
-    // }
+
 }
 
 export default SkillApi

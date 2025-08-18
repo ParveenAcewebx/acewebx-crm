@@ -6,19 +6,19 @@ import FormSelectField from '@/components/share/form/FormSelect'
 import { DataTable } from '@/components/Table'
 import { errorMessage, successMessage } from '@/components/ToasterMessage'
 import useDocumentTitle from '@/components/utils/useDocumentTitle'
-import Candidate from '@/services/cadidateApis/CandidateApi'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { CandidColumns } from './candid-columns'
 import { LengthData } from '@/components/constants/StaticData'
 import AddvanceFilterDeveloper from '@/components/modal/AddvanceFilterDeveloper'
-import { Import, Search } from 'lucide-react'
+import { Search } from 'lucide-react'
 import { SearchValidation } from '@/components/form-validations/SearchValidation'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import moment from 'moment'
 import { Button } from '@/components/ui/button'
+import Candidate from '@/services/candidates/CandidateApi'
 
 const AllCandidates = () => {
   useDocumentTitle('Dev Candidate')
@@ -149,6 +149,7 @@ const AllCandidates = () => {
     getListCadidate()
   }
 
+  // Filter handler:)
   const handleSimpleFilter = async data => {
 
     const isValid = await form.trigger('search'); // only validate 'search'
@@ -170,6 +171,8 @@ const AllCandidates = () => {
     }
   }
 
+
+  // send walk-in form:)
   const handleSendWalkInForm = async row => {
     try {
       const sendEmailLin = await Candidate.sendWalkInLink(row.original.id)
@@ -234,6 +237,7 @@ const AllCandidates = () => {
     }
   }
 
+  // Handler for CSV file Download:)
   const handleDownloadCSV = async () => {
     const newData = {
       startDate,

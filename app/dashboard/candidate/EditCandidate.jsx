@@ -11,8 +11,6 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import moment from 'moment';
-
-// import Loader from '@/components/Loader'
 import { errorMessage, successMessage } from '@/components/ToasterMessage'
 import { CandidateFormValidationEdit } from '@/components/form-validations/CandidateFormValidationEdit'
 import FormInputField from '@/components/share/form/FormInputField'
@@ -21,15 +19,14 @@ import FormInputFileUploaderSingle from '@/components/share/form/SingleFileUploa
 import FormTextArea from '@/components/share/form/TextArea'
 import FormDatePicker from '@/components/share/form/datePicker'
 import { Button } from '@/components/ui/button'
-import Candidate from '@/services/cadidateApis/CandidateApi'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Loader } from 'lucide-react'
 import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
-import SkillApi from '@/services/cadidateApis/settings/SkillApi'
+import Candidate from '@/services/candidates/CandidateApi'
 
 function EditCandidate({ editId }) {
   const [loader, setLoader] = useState(false)
-  const [candEmail, setCandEmail] = useState("")
+  const [skillsData, setSkillsData] = useState([])
   const router = useRouter()
   const form = useForm({
     mode: 'onChange',
@@ -80,7 +77,6 @@ function EditCandidate({ editId }) {
         setLoader(false)
         successMessage({ description: 'Updated SuccessFully!' })
         router.replace("detail")
-        // router.push('/dashboard/candidates')
       }
     } catch (error) {
       setLoader(false)
@@ -93,7 +89,7 @@ function EditCandidate({ editId }) {
     }
   }
 
-
+  // convert url to file object:)
   const urlToFile = async (url, fileName) => {
     const response = await fetch(url)
     const blob = await response.blob()
@@ -102,6 +98,8 @@ function EditCandidate({ editId }) {
     return new File([blob], fileName, { type: contentType })
   }
 
+
+  // get candidte by id:)
   const candidateDataGetById = async (editId) => {
     try {
       const response = await Candidate.candidateGetById(editId)
@@ -109,7 +107,6 @@ function EditCandidate({ editId }) {
       if (response?.data?.status === true) {
         const data = response?.data?.data
         const meta = data?.meta
-        setCandEmail(data?.email)
 
         const joiningDate = new Date(data.dob + 'T00:00:00')
         const dataForSet = {
@@ -143,9 +140,9 @@ function EditCandidate({ editId }) {
           source: meta?._source,
           currentAddress: meta?._currentAddress,
           permanentAddress: meta?._permanentAddress,
-          lastIncrementDate: new Date(meta?._lastIncrementDate + 'T00:00:00'),
-          lastIncrementAmount: meta?._lastIncrementAmount,
-          resume: null // temporarily null until file is loaded
+          lastIncrementDate: meta?._lastIncrementDate ? new Date(meta?._lastIncrementDate + 'T00:00:00') :"",
+          lastIncrementAmount: meta?._lastIncrementAmount ,
+           resume: null // temporarily null until file is loaded
         }
         // Set form fields first
         form.reset(dataForSet)
@@ -177,10 +174,6 @@ function EditCandidate({ editId }) {
   }, [editId])
 
 
-
-
-  const [skillsData, setSkillsData] = useState([])
- 
 
   useEffect(() => {
     // This code runs only on the client side

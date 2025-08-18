@@ -20,12 +20,11 @@ import FormInputFileUploaderSingle from '@/components/share/form/SingleFileUploa
 import FormTextArea from '@/components/share/form/TextArea'
 import FormDatePicker from '@/components/share/form/datePicker'
 import { Button } from '@/components/ui/button'
-import SalesCandidate from '@/services/cadidateApis/SalesCandidateApi'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Loader } from 'lucide-react'
 import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
 import moment from 'moment'
-import SkillApi from '@/services/cadidateApis/settings/SkillApi'
+import SalesCandidate from '@/services/salesCandidates/SalesCandidateApi'
 
 function EditSalesJobApplicationForm() {
   const { id } = useParams()
@@ -33,6 +32,7 @@ function EditSalesJobApplicationForm() {
   const [recaptcha, setRecaptcha] = useState([])
   const [candiId, setCandiID] = useState()
   const [isVerify, setIsVerify] = useState(true)
+  const [skillsData, setSkillsData] = useState([])
 
   const router = useRouter()
   const form = useForm({
@@ -48,6 +48,7 @@ function EditSalesJobApplicationForm() {
 
   const reValue = form.watch('recaptcha')
 
+  // url to convert into file object :-
   const urlToFile = async (url, fileName) => {
     const response = await fetch(url)
     const blob = await response.blob()
@@ -87,7 +88,7 @@ function EditSalesJobApplicationForm() {
         }
       }
     } catch (error) {
-      // errorMessage({ description: error?.message })
+      errorMessage({ description: error?.message })
       setIsVerify(error?.status)
     }
   }
@@ -161,7 +162,7 @@ function EditSalesJobApplicationForm() {
 
 
 
-  const [skillsData, setSkillsData] = useState([])
+  
 
   useEffect(() => {
     if (typeof window !== "undefined" && window.localStorage) {
@@ -251,7 +252,7 @@ function EditSalesJobApplicationForm() {
                     form={form}
                     inputFormat='YYYY-MM-DD'
                     className='datepickerouter'
-                    disabled={{ before: new Date('2024-12-31') }}
+                    disabled={{ before: new Date('2016-12-31') }}
                     defaultMonth={new Date()}
                   />
                   <FormSelectField

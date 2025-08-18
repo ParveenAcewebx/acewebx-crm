@@ -7,9 +7,9 @@ import { errorMessage, successMessage } from '../ToasterMessage'
 import { Button } from '../ui/button'
 import FormSelectField from '../share/form/FormSelect'
 import { StatusData, TypeData } from '../constants/StaticData'
-import SkillApi from '@/services/cadidateApis/settings/SkillApi'
+import SkillApi from '@/services/settings/SkillApi'
 
-const SkillForm = ({ setSubmitOpenModal, fetchTagList, editData }) => {
+const SkillForm = ({ setSubmitOpenModal, fetchList, editData }) => {
     const form = useForm({
         defaultValues: {
             title: '',
@@ -43,7 +43,7 @@ const SkillForm = ({ setSubmitOpenModal, fetchTagList, editData }) => {
 
             if (response.status === 200) {
                 setSubmitOpenModal(false)
-                fetchTagList()
+                fetchList()
                 successMessage({ description: response?.data?.message })
             }
         } catch (error) {

@@ -6,9 +6,8 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft, Loader } from 'lucide-react'
 import CommonLayout from '@/components/CommonLayouyt'
-import FormDatePicker from '@/components/share/form/datePicker'
 import { errorMessage } from '@/components/ToasterMessage'
-import IncrementsTabApi from '@/services/cadidateApis/employees/IncrementsTabApi'
+import IncrementsTabApi from '@/services/employees/IncrementsTabApi'
 import FormSelectField from '@/components/share/form/FormSelect'
 import { isHoliday } from '@/components/constants/StaticData'
 import FormInputField from '@/components/share/form/FormInputField'
@@ -85,15 +84,10 @@ function EditAnniversary() {
   const candidateDataGetById = async () => {
     try {
       const response = await IncrementsTabApi.getByIdIncrements(Number(eventId));
-  
-     
       if (response?.data?.data) {
         const eventData = response?.data?.data?.anniversary;
-
         const newData = {...eventData ,eventDate : new Date(eventData?.eventDate + 'T00:00:00')}
         form.reset(newData);
-
-    
       }
     } catch (error) {
       console.error("Fetch Error:", error);

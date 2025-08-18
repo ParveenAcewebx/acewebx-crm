@@ -15,21 +15,16 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import moment from 'moment';
-
-// import Loader from '@/components/Loader'
 import { errorMessage, successMessage } from '@/components/ToasterMessage'
-import { CandidateFormValidationEdit } from '@/components/form-validations/CandidateFormValidationEdit'
 import FormInputField from '@/components/share/form/FormInputField'
 import FormSelectField from '@/components/share/form/FormSelect'
-import FormInputFileUploaderSingle from '@/components/share/form/SingleFileUpload'
 import FormTextArea from '@/components/share/form/TextArea'
 import FormDatePicker from '@/components/share/form/datePicker'
 import { Button } from '@/components/ui/button'
-import Candidate from '@/services/cadidateApis/CandidateApi'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Loader } from 'lucide-react'
 import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
-import EmployeesApi from '@/services/cadidateApis/employees/EmployeesApi'
+import EmployeesApi from '@/services/employees/EmployeesApi'
 import CommonLayout from '@/components/CommonLayouyt'
 import { EmployeeValidation } from '@/components/form-validations/EmployeeValidation'
 
@@ -45,12 +40,12 @@ function AddEmployees() {
 
 
   const onSubmit = async (data) => {
-    console.log("datadata", data);
     setLoader(true);
     try {
       const formData = new FormData();
 
       const reportingManagerValue = JSON.stringify(data?.reportingManager);
+  
 
       Object.entries(data).forEach(([key, value]) => {
         const isDateField =
@@ -86,7 +81,6 @@ function AddEmployees() {
         router.push('/dashboard/employees');
       }
     } catch (error) {
-      // console.log("error", error.message);
       setLoader(false);
       errorMessage(
         { description: error.message }
@@ -138,8 +132,8 @@ function AddEmployees() {
               encType='multipart/form-data'
               onSubmit={form.handleSubmit(onSubmit)}
             >
-             {/* Personal Info */}
-             <fieldset className='custom-raduis   bg-white font-semibold mb-9 mt-4'>
+              {/* Personal Info */}
+              <fieldset className='custom-raduis   bg-white font-semibold mb-9 mt-4'>
                 <legend className="text-lg font-bold  ml-[25px]">Personal Information</legend>
                 <div className="multipart-field-one">
                   <FormInputField

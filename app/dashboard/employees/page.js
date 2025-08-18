@@ -4,21 +4,20 @@ import LayoutHeader from '@/components/layoutHeader'
 import { DataTable } from '@/components/Table'
 import { errorMessage, successMessage } from '@/components/ToasterMessage'
 import { Button } from '@/components/ui/button'
-import { Plus, Search } from 'lucide-react'
+import { Search } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import SkillForm from '@/components/skills/SkillForm'
 import SkillSettingModal from '@/components/modal/SkillSettingModal'
 import { useRouter } from 'next/navigation'
-import EmployeesApi from '@/services/cadidateApis/employees/EmployeesApi'
+import EmployeesApi from '@/services/employees/EmployeesApi'
 import { EmployeeColumn } from './employee-column'
 import FormInputField from '@/components/share/form/FormInputField'
 import FormSelectField from '@/components/share/form/FormSelect'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { SearchEmployee, SearchValidation } from '@/components/form-validations/SearchValidation'
+import { SearchEmployee } from '@/components/form-validations/SearchValidation'
 import { LengthData } from '@/components/constants/StaticData'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import AddvanceFilterDeveloper from '@/components/modal/AddvanceFilterDeveloper'
 import EmployeeCSVDownload from '@/components/modal/EmployeeCSVDownload'
 
 const EventList = () => {
@@ -37,11 +36,10 @@ const EventList = () => {
         }
     })
 
-    // fetch group tag list
-    const fetchTagList = async () => {
+    // fetch group list
+    const fetchList = async () => {
         try {
             const response = await EmployeesApi.getAllEmployees(page, length)
-            console.log("response", response)
             if (response.status === 200) {
                 setList(response?.data?.data?.employees)
                 setTotalRecord(response?.data?.data?.pagination?.total)
@@ -53,7 +51,7 @@ const EventList = () => {
         }
     }
     useEffect(() => {
-        fetchTagList()
+        fetchList()
     }, [page, length])
 
     // delete row
@@ -63,7 +61,7 @@ const EventList = () => {
                 const res = await EmployeesApi.deleteEmployees(deleteIndex)
                 setDeleteOpenModal(false)
                 if (res?.status === 200) {
-                    fetchTagList()
+                    fetchList()
                     successMessage({ description: res?.data?.message })
                 }
             } catch (error) {
@@ -74,11 +72,11 @@ const EventList = () => {
         }
     }
 
-    const handleDeleteTaskTag = row => {
+    const handleDeleteEmployee = row => {
         setDeleteOpenModal(true)
         setDeleteIndex(row?.original?.id)
     }
-    const handleEditTaskTag = async (row) => {
+    const handleEditEmployee = async (row) => {
         if (row?.original?.id) {
             router.push(`/dashboard/employee/${row?.original?.id}/detail`)
 
@@ -165,9 +163,7 @@ const EventList = () => {
 
         try {
             const response = await EmployeesApi.employeeCSVList(formData);
-            console.log("response", response)
-
-            fetchTagList()
+            fetchList()
             setDcsModalOpen(false)
         } catch (error) {
             console.error("Download failed", error);
@@ -237,7 +233,7 @@ const EventList = () => {
                 <div className='overflowX-auto pt-1'>
 
                     <DataTable
-                        columns={EmployeeColumn(handleDeleteTaskTag, handleEditTaskTag)}
+                        columns={EmployeeColumn(handleDeleteEmployee, handleEditEmployee)}
                         data={getList}
                         totalRecord={totalRecord}
                         page={page}
@@ -266,7 +262,7 @@ const EventList = () => {
                     description={
                         <SkillForm
                             setSubmitOpenModal={setSubmitOpenModal}
-                            fetchTagList={fetchTagList}
+                            fetchList={fetchList}
                             editData={editData}
                         />
                     }

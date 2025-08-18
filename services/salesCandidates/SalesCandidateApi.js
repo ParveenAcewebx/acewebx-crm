@@ -51,7 +51,6 @@ const SalesCandidate = {
     )
   },
   candidateSaleListAddvanceFilters: newData => {
-    console.log("newData",newData)
     let start = newData?.startDate == undefined ? "" : newData?.startDate
     let end = newData?.endDate == undefined ? "" : newData?.endDate
     let search = newData?.search == undefined ? "" : newData?.search

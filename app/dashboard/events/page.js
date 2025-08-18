@@ -3,14 +3,12 @@ import DialogBox from '@/components/modal/DialogBox'
 import LayoutHeader from '@/components/layoutHeader'
 import { DataTable } from '@/components/Table'
 import { errorMessage, successMessage } from '@/components/ToasterMessage'
-import { Button } from '@/components/ui/button'
-import { Plus, Search } from 'lucide-react'
+import { Search } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import SkillForm from '@/components/skills/SkillForm'
 import SkillSettingModal from '@/components/modal/SkillSettingModal'
-import SkillApi from '@/services/cadidateApis/settings/SkillApi'
-import EventApi from '@/services/cadidateApis/events/EventApi'
+import EventApi from '@/services/events/EventApi'
 import { EventColumn } from './event-column'
 import { useRouter } from 'next/navigation'
 import FormInputField from '@/components/share/form/FormInputField'
@@ -36,11 +34,10 @@ const EventList = () => {
     })
 
     const router = useRouter()
-    // fetch group tag list
-    const fetchTagList = async () => {
+    // fetch group list
+    const fetchList = async () => {
         try {
             const response = await EventApi.getAllEvent(page, length)
-            console.log("response",response)
             if (response.status === 200) {
                 setList(response?.data?.data?.events)
                 setTotalRecord(response?.data?.data?.pagination?.total)
@@ -52,7 +49,7 @@ const EventList = () => {
         }
     }
     useEffect(() => {
-        fetchTagList()
+        fetchList()
     }, [page, length])
 
     // delete row
@@ -62,7 +59,7 @@ const EventList = () => {
                 const res = await EventApi.deleteEvent(deleteIndex)
                 setDeleteOpenModal(false)
                 if (res?.status === 200) {
-                    fetchTagList()
+                    fetchList()
                     successMessage({ description: res?.data?.message })
                 }
             } catch (error) {
@@ -73,13 +70,12 @@ const EventList = () => {
         }
     }
 
-    const handleDeleteTaskTag = row => {
+    const handleDeleteEvent = row => {
         setDeleteOpenModal(true)
         setDeleteIndex(row?.original?.id)
     }
-    const handleEditTaskTag = async (row) => {
+    const handleEditEvent = async (row) => {
         if (row?.original?.id) {
-            // router.push(`events/edit/${row?.original?.id}`)
             router.push(`/dashboard/event/edit/${row?.original?.id}`)
 
         }
@@ -100,7 +96,7 @@ const EventList = () => {
     }, [methods, totalRecord])
     const handleOpenTagModal = () => {
         router.push('/dashboard/event/add')
-      
+
     }
     const submitHandleModalClose = () => {
         setSubmitOpenModal(false)
@@ -108,46 +104,46 @@ const EventList = () => {
 
 
 
-  // filter :--
-  const form = useForm({
-    resolver: yupResolver(SearchEvent),
-    mode: 'onChange', // or 'onBlur' or 'onChange'
-  });
-  const search = form.watch('search')
+    // filter :--
+    const form = useForm({
+        resolver: yupResolver(SearchEvent),
+        mode: 'onChange', // or 'onBlur' or 'onChange'
+    });
+    const search = form.watch('search')
 
-  const handleClearSearch = () => {
-    form.setValue('search', '')
+    const handleClearSearch = () => {
+        form.setValue('search', '')
 
-    getListCadidate()
-  }
-
-  const handleSimpleFilter = async data => {
-
-    const isValid = await form.trigger('search'); // only validate 'search'
-
-    if (!isValid) return;
-    try {
-      const apiData = await EventApi.eventListFilters({
-        ...data,
-        search,
-      })
-
-      const candidates = apiData?.data?.data?.events || []
-      const paginationInfo = apiData?.data?.data?.pagination
-
-      setList(candidates)
-      setTotalRecord(paginationInfo?.total || 0)
-    } catch (error) {
-      console.error('Fetch error:', error)
+        getListCadidate()
     }
-  }
+
+    const handleSimpleFilter = async data => {
+
+        const isValid = await form.trigger('search'); // only validate 'search'
+
+        if (!isValid) return;
+        try {
+            const apiData = await EventApi.eventListFilters({
+                ...data,
+                search,
+            })
+
+            const candidates = apiData?.data?.data?.events || []
+            const paginationInfo = apiData?.data?.data?.pagination
+
+            setList(candidates)
+            setTotalRecord(paginationInfo?.total || 0)
+        } catch (error) {
+            console.error('Fetch error:', error)
+        }
+    }
 
 
     return (
         <>
             <div>
                 <LayoutHeader pageTitle='Events' />
-              
+
                 <div className='flex justify-between items-center mb-5 mt-2'>
                     <div>
                         <FormProvider {...methods}>
@@ -160,40 +156,43 @@ const EventList = () => {
                         </FormProvider>
                     </div>
 
-        <FormProvider {...form}>
-          <div className="flex justify-between items-center gap-4">
-            <div className='filters relative'>
-              <div>
-                <FormInputField
-                  name="search"
-                  placeholder="Search by Title/Description"
-                  form={form}
-                  inputType="text"
-                  className="searchSizeChange"
-                  searchError="searchError"
-                />
-                <div className='filttersSearch'>
-                  <Search
-                    type="submit"
-                    className="cursor-pointer "
-                    onClick={() => handleSimpleFilter()}
-                  />
+                    <FormProvider {...form}>
+                        <div className="flex justify-between items-center gap-4">
+                            <div className='filters relative'>
+                                <div>
+                                    <FormInputField
+                                        name="search"
+                                        placeholder="Search by Title/Description"
+                                        form={form}
+                                        inputType="text"
+                                        className="searchSizeChange"
+                                        searchError="searchError"
+                                    />
+                                    <div className='filttersSearch'>
+                                        <Search
+                                            type="submit"
+                                            className="cursor-pointer "
+                                            onClick={() => handleSimpleFilter()}
+                                        />
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </FormProvider>
                 </div>
-              </div>
-             
-            </div>
-          </div>
-        </FormProvider>
-      </div>
-                <DataTable
-                    columns={EventColumn(handleDeleteTaskTag, handleEditTaskTag)}
-                    data={getList}
-                    totalRecord={totalRecord}
-                    page={page}
-                    setPage={setPage}
-                    length={length}
-                    loading={loading}
-                />
+                <div className='overflowX-auto pt-1'>
+
+                    <DataTable
+                        columns={EventColumn(handleDeleteEvent, handleEditEvent)}
+                        data={getList}
+                        totalRecord={totalRecord}
+                        page={page}
+                        setPage={setPage}
+                        length={length}
+                        loading={loading}
+                    />
+                </div>
                 <DialogBox
                     onDelete={onDelete}
                     description='Are you certain you want to proceed with this deletion?'
@@ -213,7 +212,7 @@ const EventList = () => {
                     description={
                         <SkillForm
                             setSubmitOpenModal={setSubmitOpenModal}
-                            fetchTagList={fetchTagList}
+                            fetchList={fetchList}
                             editData={editData}
                         />
                     }

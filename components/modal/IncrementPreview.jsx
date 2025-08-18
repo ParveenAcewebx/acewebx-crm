@@ -1,0 +1,192 @@
+'use client'
+import {
+    Dialog,
+    DialogContent,
+    DialogTitle,
+    DialogTrigger
+} from '@/components/ui/dialog'
+import { Separator } from '@radix-ui/react-select'
+
+
+const IncrementPreview = ({ isOpen, onClose, incrementsData, incrementMeta }) => {
+
+
+    return (
+        <Dialog open={isOpen} onOpenChange={onClose}>
+            <DialogTrigger />
+
+
+            <DialogContent
+                className="!top-4 !translate-y-0 w-full max-w-[60vw] max-h-[140vw] overflow-auto "
+                onInteractOutside={(e) => e.preventDefault()}
+                onPointerDownOutside={(e) => e.preventDefault()}
+            >
+                <DialogTitle>Increment Detail ({incrementsData?.name})</DialogTitle>
+                <div className="max-h-[80vh] overflow-y-auto pt-2">
+                    <div className="mb-4 grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
+                        <div>
+                            <h3 className="capitalize font-[500]">Name</h3>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.name}</span>
+                        </div>
+                        <div>
+                            <h3 className="capitalize font-[500]">Acewebx Tenure</h3>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.acewebxTenure}</span>
+                        </div>
+                    </div>
+
+                    <div className="mb-4 grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
+                        <div>
+                            <h3 className="capitalize font-[500]">Total Experience</h3>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.totalExperience}</span>
+                        </div>
+                        <div>
+                            <h3 className="capitalize font-[500]">Experience With Acewebx</h3>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.experienceWithAcewebx}</span>
+                        </div>
+                    </div>
+
+                    <div className="mb-4 grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
+                        <div>
+                            <h3 className="capitalize font-[500]">Total Projects</h3>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.totalProjects}</span>
+                        </div>
+                        <div>
+                            <h3 className="capitalize font-[500]">Rating On Projects</h3>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.ratingOnProjects}</span>
+                        </div>
+                    </div>
+
+                    <div className="mb-4 grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
+                        <div>
+                            <h3 className="capitalize font-[500]">Client Calls</h3>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.clientCalls}</span>
+                        </div>
+                        <div>
+                            <h3 className="capitalize font-[500]">Client Converted</h3>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.clientConverted}</span>
+                        </div>
+                    </div>
+
+                    <div className="mb-4 grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
+                        <div>
+                            <h3 className="capitalize font-[500]">New Skills</h3>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.newSkills}</span>
+                        </div>
+                        <div>
+                            <h3 className="capitalize font-[500]">Improvement Areas</h3>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.improvementAreas}</span>
+                        </div>
+                    </div>
+
+                    <div className="mb-4 grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
+                        <div>
+                            <h3 className="capitalize font-[500]">Current Salary</h3>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.currentSalary}</span>
+                        </div>
+                        <div>
+                            <h3 className="capitalize font-[500]">Expected Salary</h3>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.expectedSalary}</span>
+                        </div>
+                    </div>
+
+                    <div className="mb-4 grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
+                        <div>
+                            <h3 className="capitalize font-[500]">Raise Justified</h3>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.raiseJustified}</span>
+                        </div>
+                        <div>
+                            <h3 className="capitalize font-[500]">Short Term Goals</h3>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.ShortTermGoals}</span>
+                        </div>
+                    </div>
+
+                    <div className="mb-4 grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
+                        <div>
+                            <h3 className="capitalize font-[500]">Long Term Goals</h3>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.longTermGoals}</span>
+                        </div>
+                        <div>
+                            <h3 className="capitalize font-[500]">Weaknesses</h3>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.weaknesses}</span>
+                        </div>
+                    </div>
+
+                    <div className="mb-4 grid grid-cols-2 gap-6 md:grid-cols-2 mt-2">
+                        <div>
+                            <h3 className="capitalize font-[500]">Key Achievements</h3>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.keyAchievements}</span>
+                        </div>
+                        <div>
+                            <h3 className="capitalize font-[500]">Suggestions</h3>
+                            <span className="text-gray-600 text-[14px]">{incrementsData?.Suggestions}</span>
+                        </div>
+                    </div>
+                    {/* incrementMeta */}
+
+                    {incrementMeta?.map((item, index) => (
+                        <div key={index}>
+                            <Separator orientation="vertical" className="h-[1px] bg-black mt-5 mb-12" />
+
+
+                            <div className="mb-4 grid grid-cols-2 gap-6 mt-2">
+                                <div>
+                                    <h3 className="capitalize font-[800]">Reviewed By</h3>
+                                    <span className="text-gray-600 text-[14px]">{item?.email}</span>
+                                </div>
+                                <div>
+                                    <h3 className="capitalize font-[500]">Review Date</h3>
+                                    <span className="text-gray-600 text-[14px]">{item?.feedback?.reviewDate}</span>
+                                </div>
+                            </div>
+
+                            <div className="mb-4 grid grid-cols-2 gap-6 mt-2">
+                                <div>
+                                    <h3 className="capitalize font-[500]">Performance Rating</h3>
+                                    <span className="text-gray-600 text-[14px]">{item?.feedback?.performanceRating}</span>
+                                </div>
+                                <div>
+                                    <h3 className="capitalize font-[500]">Strengths By Reporting Manager</h3>
+                                    <span className="text-gray-600 text-[14px]">{item?.feedback?.strengths}</span>
+                                </div>
+                            </div>
+
+                            <div className="mb-4 grid grid-cols-2 gap-6 mt-2">
+                                <div>
+                                    <h3 className="capitalize font-[500]">Areas Of Improvement</h3>
+                                    <span className="text-gray-600 text-[14px]">{item?.feedback?.areasOfImprovement}</span>
+                                </div>
+                                <div>
+                                    <h3 className="capitalize font-[500]">Manager Comments</h3>
+                                    <span className="text-gray-600 text-[14px]">{item?.feedback?.managerComments}</span>
+                                </div>
+                            </div>
+
+                            <div className="mb-4 grid grid-cols-2 gap-6 mt-2">
+                                <div>
+                                    <h3 className="capitalize font-[500]">Recommended Raise</h3>
+                                    <span className="text-gray-600 text-[14px]">{item?.feedback?.recommendedRaise}</span>
+                                </div>
+                                <div>
+                                    <h3 className="capitalize font-[500]">Promotion Recommendation</h3>
+                                    <span className="text-gray-600 text-[14px]">{item?.feedback?.promotionRecommendation}</span>
+                                </div>
+                            </div>
+
+                            <div className="mb-4 grid grid-cols-1 gap-6 mt-2">
+                                <div>
+                                    <h3 className="capitalize font-[500]">Promotion Details</h3>
+                                    <span className="text-gray-600 text-[14px]">{item?.feedback?.promotionDetails}</span>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+
+
+                </div>
+            </DialogContent>
+        </Dialog>
+
+    )
+}
+
+export default IncrementPreview

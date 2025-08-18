@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { Card, CardContent } from '@/components/ui/card'
-import SalesCandidate from '@/services/cadidateApis/SalesCandidateApi'
 import DcsModal from '@/components/modal/dscForm'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { TabsContent } from '@radix-ui/react-tabs'
@@ -14,11 +13,14 @@ import CommonLayout from '@/components/CommonLayouyt'
 import { Button } from '@/components/ui/button'
 import { errorMessage, successMessage } from '@/components/ToasterMessage'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import SalesCandidate from '@/services/salesCandidates/SalesCandidateApi'
 
 function Page({ params }) {
   const router = useRouter()
   const id = params?.id
   const editId = id
+  const pathname = usePathname()
+
   const [url, setUrl] = useState('')
   const [loading, setLoading] = useState(false)
   const [dcsModalOpen, setDcsModalOpen] = useState(false) // State for DCS modal
@@ -115,7 +117,6 @@ function Page({ params }) {
   const getActivities = async () => {
     try {
       const res = await SalesCandidate.activitySalesCandidate("candidateSales", editId)
-      console.log("res", res)
       if (res?.data?.status === true) {
         setActivitiesData(res?.data?.data)
       }
@@ -131,7 +132,6 @@ function Page({ params }) {
   }, [])
 
 
-  const pathname = usePathname()
   const currentTab = pathname?.endsWith('edit') ? 'edit' : 'detail'
   const handleTabChange = (value) => {
     router.replace(value)
@@ -151,7 +151,6 @@ function Page({ params }) {
       const sendEmailLin = await SalesCandidate.sendSalesWalkInLink(
         id
       )
-
       if (sendEmailLin?.data?.status == true) {
         successMessage({
           description: 'Link sent successfully to the mail.'

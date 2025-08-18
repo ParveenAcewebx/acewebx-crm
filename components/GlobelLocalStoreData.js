@@ -1,5 +1,5 @@
 "use client";
-import SkillApi from '@/services/cadidateApis/settings/SkillApi';
+import SkillApi from '@/services/settings/SkillApi';
 import React, { useEffect, useState } from 'react';
 
 function GlobelLocalStoreData() {

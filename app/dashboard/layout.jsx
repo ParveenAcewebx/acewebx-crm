@@ -1,10 +1,8 @@
 import { AppSidebar } from '@/components/app-sidebar/app-sidebar'
 import GlobalLoader from '@/components/GlobalLoader'
-import { Separator } from '@/components/ui/separator'
 import {
   SidebarInset,
   SidebarProvider,
-  SidebarTrigger
 } from '@/components/ui/sidebar'
 import { Toaster } from '@/components/ui/toaster'
 import UserContextProvider from '@/contexts/UserContextProvider'

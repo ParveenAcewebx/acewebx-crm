@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Edit, EllipsisVertical, Eye, Trash2 } from 'lucide-react'
 
-export const EventColumn = (handleDeleteTaskTag, handleEditTaskTag) => [
+export const EventColumn = (handleDeleteEvent, handleEditEvent) => [
   {
     accessorKey: 'action',
     header: '',
@@ -19,14 +19,14 @@ export const EventColumn = (handleDeleteTaskTag, handleEditTaskTag) => [
             </DropdownMenuTrigger>
             <DropdownMenuContent align='end'>
               <DropdownMenuItem
-              onClick={() => handleEditTaskTag(row)}
+              onClick={() => handleEditEvent(row)}
               className='cursor-pointer text-green-600'
             >
               <Edit className='mr-2 h-4 w-4' />
               Edit
             </DropdownMenuItem>
               <DropdownMenuItem
-                onClick={() => handleDeleteTaskTag(row)}
+                onClick={() => handleDeleteEvent(row)}
                 className='cursor-pointer text-red-600'
               >
                 <Trash2 className='mr-2 h-4 w-4' />
@@ -39,16 +39,7 @@ export const EventColumn = (handleDeleteTaskTag, handleEditTaskTag) => [
       )
     }
   },
-  // {
-  //   accessorKey: 'id',
-  //   header: '#ID',
-  //   size: 80, 
-  //   cell: ({ row }) => (
-  //     <div className="max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
-  //       {`#EVN-${row.original?.id}`}
-  //     </div>
-  //   )
-  //   },
+
   {
     accessorKey: 'title',
     header: 'Title',

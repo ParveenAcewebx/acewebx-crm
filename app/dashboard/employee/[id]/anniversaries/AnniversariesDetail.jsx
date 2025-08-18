@@ -3,11 +3,10 @@
 import React, { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import CommonLayout from '@/components/CommonLayouyt'
-import EventApi from '@/services/cadidateApis/events/EventApi'
-import { Edit, Eye } from 'lucide-react'
+import { Edit } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { DataTable } from '@/components/Table'
-import AnniversariesApi from '@/services/cadidateApis/employees/AnniversariesApi'
+import AnniversariesApi from '@/services/employees/AnniversariesApi'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 
 function AnniversariesDetail() {
@@ -34,7 +33,7 @@ function AnniversariesDetail() {
         handleGetApi()
     }, [])
 
-
+    // Anniversaries handler:)
     const handleForupcomingAnniversaries = (row) => {
         if (row?.original?.id) {
             router.push(`/dashboard/employee/${eventId}/anniversaries/${row?.original?.id}`)
@@ -43,62 +42,40 @@ function AnniversariesDetail() {
     }
 
 
+    const getDaysLeft = (dateString) => {
+        const eventDate = new Date(dateString)
+        const today = new Date()
 
-    // upcomingIncrements :-
+        eventDate.setHours(0, 0, 0, 0)
+        today.setHours(0, 0, 0, 0)
+
+        const diff = Math.ceil((eventDate - today) / (1000 * 60 * 60 * 24))
+
+        return diff === 0 ? 'Today' : `${diff}`
+    }
+    // upcomingAnniversaries:)
 
     const columnForupcomingAnniversaries = [
         {
             accessorKey: 'eventDate',
             header: 'Days Left',
             id: 'eventDate',
-            cell: ({ row }) => {
+            cell: ({ row }) => getDaysLeft(row?.original?.eventDate+ 'T00:00:00')
 
-                const originalDate = new Date(row.original.eventDate);
-                if (isNaN(originalDate.getTime())) return <span>Invalid Date</span>; // Handle invalid date string
-
-                function getNextIncrementDate(startDate, cycleInYears = 1) {
-                    const today = new Date();
-                    let nextDate = new Date(startDate);
-
-                    while (nextDate <= today) {
-                        nextDate.setFullYear(nextDate.getFullYear() + cycleInYears);
-                    }
-
-                    return nextDate.toISOString().split('T')[0];
-                }
-
-                const finalDate = getNextIncrementDate(originalDate);
-
-                // if (!incrementDateStr) return <span className="">N/A</span>;
-
-                const incrementDate = new Date(finalDate + 'T00:00:00');
-                const today = new Date();
-
-                incrementDate.setHours(0, 0, 0, 0);
-                today.setHours(0, 0, 0, 0);
-
-                const diffTime = incrementDate.getTime() - today.getTime();
-                const dayLeft = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-                return (
-                    <span>
-                        {dayLeft > 0 ? `${dayLeft}` : dayLeft === 0 ? 'Today' : `${Math.abs(dayLeft)}`}
-                    </span>
-                );
-            }
         },
+
         {
             accessorKey: 'eventDate',
             header: 'Anniversary Date',
             id: 'eventDate',
-            cell: ({ row }) => row.original.eventDate
+            cell: ({ row }) => row.original.eventDate == undefined ? "NA" : row.original.eventDate
         },
 
         {
             accessorKey: 'meta',
             header: 'Banner',
             id: 'meta',
-            cell: ({ row }) => row.original?.meta?.isBannerCreated
+            cell: ({ row }) => row.original?.meta?.isBannerCreated == undefined ? "NA" : row.original?.meta?.isBannerCreated
         },
         {
             accessorKey: 'meta',
@@ -116,19 +93,15 @@ function AnniversariesDetail() {
                 </>
             ),
             id: 'meta',
-            cell: ({ row }) => row?.original?.meta?.isSocialMediaPost
-        }, {
+            cell: ({ row }) => row?.original?.meta?.isSocialMediaPost == undefined ? "NA" : row?.original?.meta?.isSocialMediaPost
+        },
+        {
             accessorKey: 'meta',
             header: 'Gift Voucher',
             id: 'meta',
-            cell: ({ row }) => row?.original?.meta?.isGiftVoucherCreated
+            cell: ({ row }) => row?.original?.meta?.isGiftVoucherCreated == undefined ? "NA" : row?.original?.meta?.isGiftVoucherCreated
         },
-        // {
-        //     accessorKey: 'status',
-        //     header: 'Status',
-        //     id: 'status',
-        //     cell: ({ row }) => row.original.status
-        // },
+
         {
             accessorKey: 'action',
             header: 'Action',
@@ -146,7 +119,7 @@ function AnniversariesDetail() {
     ];
 
 
-
+    // upcomingOld :-
     const columnForPastAnniversaries = [
 
 
@@ -154,14 +127,14 @@ function AnniversariesDetail() {
             accessorKey: 'eventDate',
             header: 'Anniversary Date',
             id: 'eventDate',
-            cell: ({ row }) => row.original.eventDate
+            cell: ({ row }) => row.original.eventDate == undefined ? "NA" : row.original.eventDate
         },
 
         {
             accessorKey: 'meta',
             header: 'Banner',
             id: 'meta',
-            cell: ({ row }) => row.original?.meta?.isBannerCreated
+            cell: ({ row }) => row.original?.meta?.isBannerCreated == undefined ? "NA" : row.original?.meta?.isBannerCreated
         },
         {
             accessorKey: 'meta',
@@ -179,19 +152,15 @@ function AnniversariesDetail() {
                 </>
             ),
             id: 'meta',
-            cell: ({ row }) => row?.original?.meta?.isSocialMediaPost
-        }, {
+            cell: ({ row }) => row?.original?.meta?.isSocialMediaPost == undefined ? "NA" : row?.original?.meta?.isSocialMediaPost
+        },
+        {
             accessorKey: 'meta',
             header: 'Gift Voucher',
             id: 'meta',
-            cell: ({ row }) => row?.original?.meta?.isGiftVoucherCreated
+            cell: ({ row }) => row?.original?.meta?.isGiftVoucherCreated == undefined ? "NA" : row?.original?.meta?.isGiftVoucherCreated
         },
-        // {
-        //     accessorKey: 'status',
-        //     header: 'Status',
-        //     id: 'status',
-        //     cell: ({ row }) => row.original.status
-        // },
+
         {
             accessorKey: 'action',
             header: 'Action',

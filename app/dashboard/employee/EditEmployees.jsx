@@ -18,7 +18,7 @@ import FormDatePicker from '@/components/share/form/datePicker'
 import { Button } from '@/components/ui/button'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Loader } from 'lucide-react'
-import EmployeesApi from '@/services/cadidateApis/employees/EmployeesApi'
+import EmployeesApi from '@/services/employees/EmployeesApi'
 import CommonLayout from '@/components/CommonLayouyt'
 import { EmployeeValidation } from '@/components/form-validations/EmployeeValidation'
 import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
@@ -36,7 +36,6 @@ function EditEmployees({ editId }) {
 
 
   const onSubmit = async (data) => {
-    console.log("datadata", data);
     setLoader(true);
 
     try {
@@ -44,6 +43,12 @@ function EditEmployees({ editId }) {
       // Need only those keys which are touched
       const dirtyFields = form.formState.dirtyFields;
       const updateFieldsValue = Object.keys(dirtyFields);
+
+      if (data?.lastIncrementDate == "Invalid date") {
+        formData.append('lastIncrementDate', "")
+
+      }
+
       if (updateFieldsValue) {
         formData.append('updateField', JSON.stringify(updateFieldsValue))
       }
@@ -54,10 +59,11 @@ function EditEmployees({ editId }) {
         const isDateField =
           key === 'dobDocument' ||
           key === 'dateOfJoining' ||
-          key === 'dobCelebration' ||
-          key === 'lastIncrementDate';
+          key === 'dobCelebration'
 
         if (key === 'reportingManager') return; // skip, append later
+
+
 
         if (isDateField) {
           if (key === 'dobCelebration') {
@@ -86,7 +92,7 @@ function EditEmployees({ editId }) {
         form.reset();
         setLoader(false);
         successMessage({ description: 'Added Successfully!' });
-        router.push('/dashboard/employees');
+        router.push('detail');
       }
     } catch (error) {
       console.log("error", error.message);
@@ -97,6 +103,11 @@ function EditEmployees({ editId }) {
     }
   };
 
+  const parseDateOrEmpty = (dateString) => {
+    if (!dateString) return '';
+    const parsed = new Date(dateString + 'T00:00:00');
+    return isNaN(parsed) ? '' : parsed;
+  };
 
   const candidateDataGetById = async (editId) => {
     try {
@@ -112,22 +123,21 @@ function EditEmployees({ editId }) {
           personalEmail: data?.personalEmail || '',
           phone: data?.phone || '',
           alternatePhone: data?.alternatePhone || '',
-          dobDocument: new Date(data?.dobDocument + 'T00:00:00') || '',
-          dobCelebration: new Date(data?.dobCelebration + 'T00:00:00') || '',
+          dobDocument: parseDateOrEmpty(data?.dobDocument),
+          dobCelebration: parseDateOrEmpty(data?.dobCelebration),
           currentAddress: data?.currentAddress || '',
           permanentAddress: data?.permanentAddress || '',
-          // New Fields added :--
           referenceNumber: data.referenceNumber || '',
           employeeCode: data.employeeCode || '',
-          // Professional Info
           companyEmail: data?.companyEmail || '',
           designation: data?.designation || '',
-          dateOfJoining: new Date(data?.dateOfJoining + 'T00:00:00') || '',
+          dateOfJoining: parseDateOrEmpty(data?.dateOfJoining),
 
           // Documents
           adharCard: meta?._adharCard || '',
           panCard: meta?._panCard || '',
           otherDocumentLink: meta?._otherDocumentLink || '',
+
           // Banking Details
           bankName: meta?._bankName || '',
           bankAccountNumber: meta?._bankAccountNumber || '',
@@ -145,11 +155,14 @@ function EditEmployees({ editId }) {
           currentSalary: meta?._currentSalary || '',
           currentShift: meta?._currentShift || '',
           lastIncrementAmount: meta?._lastIncrementAmount || '',
-          lastIncrementDate: new Date(meta?._lastIncrementDate + 'T00:00:00') || '',
+          // lastIncrementDate: parseDateOrEmpty(meta?._lastIncrementDate),
+          lastIncrementDate: meta?._lastIncrementDate ? new Date(meta?._lastIncrementDate + 'T00:00:00') : "",
+
         };
 
+
         form.reset(dataForSet);
-        form?.setValue('reportingManager', JSON.parse(data?.reportingManager))
+        form?.setValue('reportingManager', data?.reportingManager == undefined ? [] : JSON.parse(data?.reportingManager))
 
       }
     } catch (error) {

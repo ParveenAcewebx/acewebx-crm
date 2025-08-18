@@ -7,10 +7,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { Edit, EllipsisVertical, Eye, Send, Trash2 } from 'lucide-react'
+import { EllipsisVertical, Eye,  Trash2 } from 'lucide-react'
 
-export const EmployeeColumn = (handleDeleteTaskTag, handleEditTaskTag) => [
+export const EmployeeColumn = (handleDeleteEmployee, handleEditEmployee) => [
   {
     accessorKey: 'action',
     header: '',
@@ -25,7 +24,7 @@ export const EmployeeColumn = (handleDeleteTaskTag, handleEditTaskTag) => [
             </DropdownMenuTrigger>
             <DropdownMenuContent align='end'>
               <DropdownMenuItem
-                onClick={() => handleEditTaskTag(row)}
+                onClick={() => handleEditEmployee(row)}
                 className='cursor-pointer text-blue-400'
               >
                 <Eye className='mr-2 h-4 w-4' />
@@ -33,7 +32,7 @@ export const EmployeeColumn = (handleDeleteTaskTag, handleEditTaskTag) => [
               </DropdownMenuItem>
 
               <DropdownMenuItem
-                onClick={() => handleDeleteTaskTag(row)}
+                onClick={() => handleDeleteEmployee(row)}
                 className='cursor-pointer text-red-600'
               >
                 <Trash2 className='mr-2 h-4 w-4' />

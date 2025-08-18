@@ -11,8 +11,6 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { FormProvider, useForm } from 'react-hook-form'
-
-// import Loader from '@/components/Loader'
 import { errorMessage } from '@/components/ToasterMessage'
 import { SalesCandidateValidation } from '@/components/form-validations/SalesCandidateValidation'
 import FormInputField from '@/components/share/form/FormInputField'
@@ -21,11 +19,11 @@ import FormInputFileUploaderSingle from '@/components/share/form/SingleFileUploa
 import FormTextArea from '@/components/share/form/TextArea'
 import FormDatePicker from '@/components/share/form/datePicker'
 import { Button } from '@/components/ui/button'
-import SalesCandidate from '@/services/cadidateApis/SalesCandidateApi'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Loader } from 'lucide-react'
 import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
 import moment from 'moment'
+import SalesCandidate from '@/services/salesCandidates/SalesCandidateApi'
 
 function SalesJobApplicationForm() {
   const [loader, setLoader] = useState(false)
@@ -141,7 +139,7 @@ function SalesJobApplicationForm() {
                 form={form}
                 inputFormat='YYYY-MM-DD'
                 className='datepickerouter'
-                disabled={{ before: new Date('2024-12-31') }}
+                disabled={{ before: new Date('2016-12-31') }}
                 defaultMonth={new Date()}
               />
               <FormSelectField

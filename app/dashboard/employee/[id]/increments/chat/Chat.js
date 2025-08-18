@@ -7,8 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import ActionsDots from '@/components/ActionsDots'
 import { Separator } from '@/components/ui/separator'
-import EmployeesApi from '@/services/cadidateApis/employees/EmployeesApi'
-import IncrementAPi from '@/services/cadidateApis/increment/IncrementAPi'
+import IncrementAPi from '@/services/increment/IncrementAPi'
 
 function IncrementChatCompo({ id }) {
   const form = useForm({ defaultValues: { chat: '' } })
@@ -91,7 +90,7 @@ function IncrementChatCompo({ id }) {
   }, [])
 
   return (
-    <Card className='w-full  border rounded-lg shadow-sm'>
+    <Card className='w-full  border rounded-lg shadow-sm relative'>
       <CardHeader className='theme-bg-white-rgba border-color-grey min-h-14 border-b p-3'>
         <CardTitle className='flex justify-between'>
           <div className='!text-lg '>Notes</div>
@@ -152,7 +151,7 @@ function IncrementChatCompo({ id }) {
 
       </CardContent>
       <CardContent>
-        <div className='mt-4 flex items-start gap-2'>
+        <div className='mt-4 flex items-start gap-2 absolute w-[100%] bottom-0 left-0'>
           {isEditMsg && (
             <Button
               variant='destructive'
@@ -167,7 +166,7 @@ function IncrementChatCompo({ id }) {
           <Textarea
             {...form.register('chat')}
             placeholder='Type your message here...'
-            className='flex-1 resize-none max-h-[150px] overflow-y-auto'
+            className='flex-1 resize-none max-h-[150px] overflow-y-auto '
           />
 
           {message?.trim() && (

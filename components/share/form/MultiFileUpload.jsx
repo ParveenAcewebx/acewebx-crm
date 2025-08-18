@@ -114,7 +114,6 @@ const MultiImageUploader = ({
         )}
         <div className='grid grid-cols-4 gap-4'>
           {finalUpdatedImg?.map(file => {
-            console.log('file', file)
             return (
               <div
                 key={file.id}
