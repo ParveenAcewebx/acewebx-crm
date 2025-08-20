@@ -1301,7 +1301,14 @@ td.site-tab span {
   color: white !important;
 
 }
+.paginationouter .main-pagination {
+  justify-content: end;
+}
 
+.paginationouter {
+  justify-content: space-between;
+  align-items: center;
+}
 .custom-tabels table tr:nth-child(even) {
   background: #fbfbfb;
 }

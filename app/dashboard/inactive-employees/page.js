@@ -30,6 +30,8 @@ const EventList = () => {
     const [deleteOpenModal, setDeleteOpenModal] = useState(false)
     const [deleteIndex, setDeleteIndex] = useState(null)
     const [submitOpenModal, setSubmitOpenModal] = useState(false)
+    const [status, setStatus] = useState(0)
+
     const [editData, setEditData] = useState(null)
     const methods = useForm({
         defaultValues: {
@@ -40,7 +42,7 @@ const EventList = () => {
     // fetch group list
     const fetchList = async () => {
         try {
-            const response = await EmployeesApi.getAllEmployees(page, length)
+            const response = await EmployeesApi.getAllEmployees(page, length, status)
             if (response.status === 200) {
                 setList(response?.data?.data?.employees)
                 setTotalRecord(response?.data?.data?.pagination?.total)
@@ -131,6 +133,7 @@ const EventList = () => {
             const apiData = await EmployeesApi.employeesListFilters({
                 ...data,
                 search,
+                status
             })
 
             const candidates = apiData?.data?.data?.employees || []

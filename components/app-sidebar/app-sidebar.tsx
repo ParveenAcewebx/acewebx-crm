@@ -54,7 +54,7 @@ const data = {
           url: '/dashboard/employees'
         }
         , {
-          title: 'Inactive Employees',
+          title: 'Ex Employees',
           url: '/dashboard/inactive-employees'
         }
       ]
