@@ -6,7 +6,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import CommonLayout from '@/components/CommonLayouyt'
 import ActivitiesList from '@/components/ActivitiesList'
-import { Eye, EyeClosed, EyeOff, Mail, Phone, UserIcon } from 'lucide-react'
+import { Eye, EyeClosed, EyeOff, Mail, PartyPopper, Phone, UserIcon } from 'lucide-react'
 import { errorMessage } from '@/components/ToasterMessage'
 import EmployeesApi from '@/services/employees/EmployeesApi'
 import Link from 'next/link'
@@ -102,15 +102,22 @@ function Page({ params }) {
         <TabsContent value="detail">
 
           <CardContent className={`tittle-bar ${genderCol}`}>
-            <div className='user-name flex items-center gap-2 text-base font-medium text-gray-800'>
+            <div className='user-name flex items-center gap-2 text-base font-medium text-gray-800 topbarDetail'>
               <UserIcon className='w-5 h-5 text-gray-200' />
               <span>{candidateData?.name} </span>
 
               <Mail className='w-5 h-5 text-gray-200 ml-4' />
-              <span>{candidateData?.companyEmail?.toLowerCase()} </span>
+              <span> <Link className="!text-gray-200 no-underline hover:underline "
+                href={`mailto:${candidateData?.companyEmail?.toLowerCase()}`}> {candidateData?.companyEmail?.toLowerCase()}</Link> </span>
 
               <Phone className='w-5 h-5 text-gray-200 ml-4' />
-              <span>{candidateData?.phone}</span>
+              <span> <Link className=" !text-gray-200 no-underline hover:underline "
+                href={`tel:${candidateData?.phone}`} >{candidateData?.phone}</Link></span>
+
+              {candidateData?.anniversaryCelebration && candidateData?.anniversaryCelebration !== null && <>
+                <PartyPopper className='w-5 h-5 text-gray-200 ml-4' />
+                <span>{candidateData?.anniversaryCelebration}</span></>}
+
             </div>
 
           </CardContent>
@@ -146,8 +153,10 @@ function Page({ params }) {
 
                 <img src='/images/pages/company.png' alt='trophy image' height={60} className='' />
                 <div>
-                  <span className='tittle'>Bank Name</span> <br />
-                  <span className='subtittle' variant='h4'>{candidateData?.meta?._bankName}</span>
+                  <span className='subtittle' variant='h4'>{candidateData?.meta?._bankName}</span><br />
+                  <span className='text-sm text-gray-700' variant='h4'>{candidateData?.meta?._bankAccountNumber}</span><br />
+                  <span className='text-sm text-gray-700' variant='h4'>{candidateData?.meta?._bankIfscCode}</span>
+
                 </div>
               </CardContent>
             </Card>

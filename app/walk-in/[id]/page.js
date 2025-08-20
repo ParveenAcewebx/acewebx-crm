@@ -184,7 +184,7 @@ function EditJobApplicationForm() {
           name: data?.name,
           email: data?.email,
           dob: joiningDate,
-          gender: meta?._gender,
+          gender: meta?._gender?.toLowerCase(),
           phone: data?.phone,
           currentLocation: meta?._currentLocation,
           designationApplyingFor: meta?._designationApplyingFor,

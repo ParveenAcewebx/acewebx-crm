@@ -4,14 +4,14 @@ import LayoutHeader from '@/components/layoutHeader'
 import { DataTable } from '@/components/Table'
 import { errorMessage, successMessage } from '@/components/ToasterMessage'
 import { Button } from '@/components/ui/button'
-import { Import, Search } from 'lucide-react'
+import { Search } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import SkillForm from '@/components/skills/SkillForm'
 import SkillSettingModal from '@/components/modal/SkillSettingModal'
 import { useRouter } from 'next/navigation'
 import EmployeesApi from '@/services/employees/EmployeesApi'
-import { EmployeeColumn } from './employee-column'
+import { InactiveEmployeeColumn } from './inactive-employees-column'
 import FormInputField from '@/components/share/form/FormInputField'
 import FormSelectField from '@/components/share/form/FormSelect'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -200,7 +200,7 @@ const EventList = () => {
     return (
         <>
             <div>
-                <LayoutHeader pageTitle='Employees' />
+                <LayoutHeader pageTitle='Inactive Employees' />
 
 
                 <div className='flex justify-between items-center mb-5 mt-2'>
@@ -238,40 +238,41 @@ const EventList = () => {
 
 
                             {/* Import CSV for Employee Button */}
-                            <Tooltip>
+                            {/* <Tooltip>
                                 <TooltipTrigger asChild>
                                     <Button
                                         onClick={AddvanceOpenModal}
                                         className="cursor-pointer text-[#231f20] hover:text-[#fff] hover:bg-[#231f20] bg-transparent border border-[#231f20] flex gap-2 text-[11px]"
                                     >
-                                        <Import /> Employee
+                                        Import
                                     </Button>
                                 </TooltipTrigger>
                                 <TooltipContent className="w-auto rounded-sm bg-[#b82025] text-sm">
                                     Import Employee CSV
                                 </TooltipContent>
-                            </Tooltip>
+                            </Tooltip> */}
 
                             {/* Import CSV for Increment Button */}
-                            <Tooltip>
+                            {/* <Tooltip>
                                 <TooltipTrigger asChild>
                                     <Button
                                         onClick={InrementCSVOpenModal}
                                         className="cursor-pointer text-[#231f20] hover:text-[#fff] hover:bg-[#231f20] bg-transparent border border-[#231f20] flex gap-2 text-[11px]"
-                                    > <Import /> Increment
+                                    >
+                                        Import
                                     </Button>
                                 </TooltipTrigger>
                                 <TooltipContent className="w-auto rounded-sm bg-[#b82025] text-sm">
                                     Import Increment CSV
                                 </TooltipContent>
-                            </Tooltip>
+                            </Tooltip> */}
                         </div>
                     </FormProvider>
                 </div>
                 <div className='overflowX-auto pt-1'>
 
                     <DataTable
-                        columns={EmployeeColumn(handleDeleteEmployee, handleEditEmployee)}
+                        columns={InactiveEmployeeColumn(handleDeleteEmployee, handleEditEmployee)}
                         data={getList}
                         totalRecord={totalRecord}
                         page={page}
