@@ -11,37 +11,10 @@ import { startOfWeek, endOfWeek, subDays } from 'date-fns'
 import Link from 'next/link'
 import FormInputFileUploaderSingleCSV from '../share/form/FormInputFileUploaderSingleCSV'
 
-const EmployeeCSVDownload = ({ isOpen, onClose, handleDownloadCSV, skillsData }) => {
-    const today = new Date()
-    const startOfLastWeek = subDays(startOfWeek(today), 7)
-    const endOfLastWeek = subDays(endOfWeek(today), 7)
-    const form = useForm({
-        defaultValues: {
-            dob: {
-                startDate: startOfLastWeek,
-                endDate: endOfLastWeek,
-                key: 'selection'
-            },
-
-            preferredShift: [],
-            skill: [],
-            totalExperience: "",
-
-        }
-    })
-    const handleDateChnage = (date) => {
-        console.log("valuedate", date)
-    }
-
-    const clearFilter = (e) => {
-        e.preventDefault()
-        form.setValue("preferredShift", "")
-        form.setValue("lastContected", "")
-        form.setValue("totalExperience", "")
-        form.setValue("skill", "")
-
-    }
-
+const IncrementCSVDownload = ({ isOpen, onClose, handleDownloadCSV, skillsData }) => {
+    
+    const form = useForm()
+ 
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
@@ -50,7 +23,7 @@ const EmployeeCSVDownload = ({ isOpen, onClose, handleDownloadCSV, skillsData })
                 onInteractOutside={(e) => e.preventDefault()}
                 onPointerDownOutside={(e) => e.preventDefault()}
             >
-                <DialogTitle>Import Employees</DialogTitle>
+                <DialogTitle>Import Increment CSV</DialogTitle>
                 <div>
                     <FormProvider {...form}>
                         <form
@@ -84,7 +57,7 @@ const EmployeeCSVDownload = ({ isOpen, onClose, handleDownloadCSV, skillsData })
                                     Import CSV
                                 </Button>
                                 {/* <span> */}
-                                    <Link href="../sample-emplyee-import.csv" target="_blank" >  Download Sample File</Link>
+                                    <Link href="../sample-emplyee-increment-import.csv" target="_blank" >  Download Sample File</Link>
                                 {/* </span> */}
                             </div>
 
@@ -96,4 +69,4 @@ const EmployeeCSVDownload = ({ isOpen, onClose, handleDownloadCSV, skillsData })
     )
 }
 
-export default EmployeeCSVDownload
+export default IncrementCSVDownload

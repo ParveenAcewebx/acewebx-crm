@@ -40,6 +40,10 @@ const EmployeesApi = {
  
     return api.post(`employee/importEmployees`, formData)
   },
+   // csv 
+   incrementCSVList: (formData) => {
+    return api.post(`employee/importEmployeesincrements`, formData)
+  },
 
 
 
