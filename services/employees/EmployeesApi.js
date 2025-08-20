@@ -10,8 +10,8 @@ const EmployeesApi = {
   getByIdEmployees: id => {
     return api.get(`employee/getEmployeeById/${id}`)
   },
-  getAllEmployees: (page, length) => {
-    return api.get(`employee/getAllEmployee?page=${page}&limit=${length}`)
+  getAllEmployees: (page, length,status) => {
+    return api.get(`employee/getAllEmployee?page=${page}&limit=${length}&status=${status}`)
   },
   deleteEmployees: id => {
     return api.delete(`employee/deleteEmployee/${id}`)
@@ -31,7 +31,7 @@ const EmployeesApi = {
   employeesListFilters: data => {
     const search = data?.search ?? ''
     return api.get(
-      `employee/getAllEmployee?search=${search}`
+      `employee/getAllEmployee?search=${search}&status=${data?.status}`
     )
   },
 
