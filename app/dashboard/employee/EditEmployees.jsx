@@ -147,7 +147,7 @@ function EditEmployees({ editId }) {
           bloodGroup: meta?._bloodGroup || '',
           emergencyContactName: meta?._emergencyContactName || '',
           emergencyContactNumber: meta?._emergencyContactNumber || '',
-          emergencyContactRelationship: meta?._emergencyContactRelationship || '',
+          emergencyContactRelationship: meta?._emergencyContactRelationship?.toLowerCase()  || '',
           emergencyContactRelationshipOther: meta?._emergencyContactRelationshipOther || '',
 
           // Additional Fields
