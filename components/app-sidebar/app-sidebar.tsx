@@ -53,6 +53,10 @@ const data = {
           title: 'All Employees',
           url: '/dashboard/employees'
         }
+        , {
+          title: 'Inactive Employees',
+          url: '/dashboard/inactive-employees'
+        }
       ]
     },
     {
@@ -72,7 +76,7 @@ const data = {
         }
       ]
     },
-  
+
     {
       title: 'Settings',
       url: '/dashboard/settings/skills',

@@ -264,7 +264,7 @@ function AddEmployees() {
                     name='referenceNumber'
                     label='Reference Number'
                     form={form}
-                    inputType='number'
+                    inputType='text'
                     className='colum-box-bg-change'
                   /> <FormInputField
                     name='employeeCode'

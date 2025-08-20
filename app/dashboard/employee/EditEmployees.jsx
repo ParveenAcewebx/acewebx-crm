@@ -151,7 +151,7 @@ function EditEmployees({ editId }) {
           emergencyContactRelationshipOther: meta?._emergencyContactRelationshipOther || '',
 
           // Additional Fields
-          gender: meta?._gender || '',
+          gender: meta?._gender?.toLowerCase() || '',
           currentSalary: meta?._currentSalary || '',
           currentShift: meta?._currentShift || '',
           lastIncrementAmount: meta?._lastIncrementAmount || '',
@@ -348,7 +348,7 @@ function EditEmployees({ editId }) {
                     name='referenceNumber'
                     label='Reference Number'
                     form={form}
-                    inputType='number'
+                    inputType='text'
                     className='colum-box-bg-change'
                   /> <FormInputField
                     name='employeeCode'
