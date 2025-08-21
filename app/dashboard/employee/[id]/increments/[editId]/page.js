@@ -13,6 +13,7 @@ import FormTextArea from '@/components/share/form/TextArea'
 import IncrementChatCompo from '../chat/Chat'
 import CurrentAndNextYearDatepicker from '@/components/share/form/CurrentAndNextYearDatepicker'
 import IncrementPreview from '@/components/modal/IncrementPreview'
+import FormInputField from '@/components/share/form/FormInputField'
 
 function EditIncrement() {
   const { id, editId } = useParams()
@@ -55,7 +56,7 @@ function EditIncrement() {
       const response = await IncrementsTabApi.getByIdIncrements(Number(eventId));
       if (response?.data?.data) {
         const eventData = response?.data?.data?.increment;
-        const newData = { ...eventData, eventDate:eventData?.eventDate }
+        const newData = { ...eventData, eventDate: eventData?.eventDate }
         setIncrementData(response?.data?.data?.incrementApplication)
         setcheckIsIncrementFromYes(eventData?.employeeSubmittedIncrementForm)
         form.reset(newData);
@@ -254,6 +255,14 @@ function EditIncrement() {
                 label='HR Meeting'
                 form={form}
                 options={isHoliday}
+                className='colum-box-bg-change'
+              />
+
+              <FormInputField
+                name='incrementAmount'
+                label='Increment Amount'
+                form={form}
+                inputType='number'
                 className='colum-box-bg-change'
               />
 
