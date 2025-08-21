@@ -163,8 +163,8 @@ export const GenderData = [
 ]
 
 export const StatutsOptions = [
-  { label: 'Active', value: '1' },
-  { label: 'Inactive', value: '0' },
+  { label: 'Active Employee', value: '1' },
+  { label: 'Ex Employee', value: '0' },
 ]
 
 export const RelationData = [

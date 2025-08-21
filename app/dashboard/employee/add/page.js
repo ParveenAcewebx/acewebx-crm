@@ -39,6 +39,7 @@ function AddEmployees() {
     resolver: yupResolver(EmployeeValidation)
   })
 
+  const isStatus = form.watch("status")
 
   const onSubmit = async (data) => {
     setLoader(true);
@@ -79,7 +80,12 @@ function AddEmployees() {
         form.reset();
         setLoader(false);
         successMessage({ description: 'Added Successfully!' });
-        router.push('/dashboard/employees');
+        if(isStatus == 1){
+          router.push('/dashboard/employees');
+        }else{
+          router.push('/dashboard/inactive-employees');
+        }
+        
       }
     } catch (error) {
       setLoader(false);
@@ -88,12 +94,6 @@ function AddEmployees() {
       );
     }
   };
-
-
-
-
-
-
 
 
 
@@ -322,7 +322,7 @@ function AddEmployees() {
               {/* Banking Details */}
               <fieldset className='custom-raduis bg-white font-semibold mb-9'>
                 <legend className="text-lg font-bold  ml-[25px]">Banking Details</legend>
-                <div className="multipart-field-two">
+                <div className="multipart-field-one">
                   <FormInputField
                     name='bankName'
                     label='Bank Name*'

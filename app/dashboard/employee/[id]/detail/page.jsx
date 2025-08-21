@@ -84,6 +84,31 @@ function Page({ params }) {
 
 
 
+  const getLastIncrement = (events) => {
+    if (!events || events.length === 0) return null;
+
+    // filter increment events only
+    const increments = events.filter((e) => e.type === "increment");
+
+    if (increments.length === 0) return null;
+
+    // sort by eventDate descending
+    const sorted = [...increments].sort(
+      (a, b) => new Date(b.eventDate) - new Date(a.eventDate)
+    );
+
+    const latest = sorted[0];
+
+    // find increment amount in meta
+    const amountMeta = latest.meta?.find((m) => m.metaKey === "_incrementAmount");
+
+    return {
+      amount: amountMeta?.metaValue || null,
+      date: latest.eventDate || null,
+    };
+  };
+
+  const lastIncrement = getLastIncrement(candidateData?.events);
   return (
     <>
       <CommonLayout pageTitle='Employee Detail' />
@@ -227,9 +252,8 @@ function Page({ params }) {
                   <span className="subtittle">
                     {hikeHide ? (
                       <>
-                        {candidateData?.meta?._lastIncrementAmount}{" "}
-                        {candidateData?.meta?._lastIncrementDate
-                          ? `(${moment(candidateData?.meta?._lastIncrementDate).format("YYYY-MM-DD")})`
+                        {lastIncrement?.date
+                          ? `(${moment(lastIncrement.date).format("YYYY-MM-DD")})`
                           : ""}
                       </>
                     ) : (
