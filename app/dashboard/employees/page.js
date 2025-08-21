@@ -41,7 +41,7 @@ const EventList = () => {
     // fetch group list
     const fetchList = async () => {
         try {
-            const response = await EmployeesApi.getAllEmployees(page, length , status)
+            const response = await EmployeesApi.getAllEmployees(page, length, status)
             if (response.status === 200) {
                 setList(response?.data?.data?.employees)
                 setTotalRecord(response?.data?.data?.pagination?.total)
@@ -199,6 +199,35 @@ const EventList = () => {
 
 
 
+    const handleEdit = (row) => {
+        if (row?.original?.id) {
+            router.push(`/dashboard/employee/${row?.original?.id}/edit`)
+
+        }
+    };
+
+    const handleBirthdays = (row) => {
+        if (row?.original?.id) {
+            router.push(`/dashboard/employee/${row?.original?.id}/birthdays`)
+
+        }
+    };
+
+    const handleAnniversary = (row) => {
+        if (row?.original?.id) {
+            router.push(`/dashboard/employee/${row?.original?.id}/anniversaries`)
+
+        }
+    };
+
+    const handleIncrement = (row) => {
+        if (row?.original?.id) {
+            router.push(`/dashboard/employee/${row?.original?.id}/increments`)
+
+        }
+    };
+
+
     return (
         <>
             <div>
@@ -273,7 +302,7 @@ const EventList = () => {
                 <div className='overflowX-auto pt-1'>
 
                     <DataTable
-                        columns={EmployeeColumn(handleDeleteEmployee, handleEditEmployee)}
+                        columns={EmployeeColumn(handleDeleteEmployee, handleEditEmployee, handleEdit, handleBirthdays, handleAnniversary, handleIncrement)}
                         data={getList}
                         totalRecord={totalRecord}
                         page={page}

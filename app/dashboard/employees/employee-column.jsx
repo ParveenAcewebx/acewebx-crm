@@ -7,9 +7,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import { EllipsisVertical, Eye,  Trash2 } from 'lucide-react'
+import { Cake, ChartSpline, Edit, EllipsisVertical, Eye, PartyPopper, Trash2 } from 'lucide-react'
 
-export const EmployeeColumn = (handleDeleteEmployee, handleEditEmployee) => [
+export const EmployeeColumn = (handleDeleteEmployee, handleEditEmployee, handleEdit, handleBirthdays, handleAnniversary, handleIncrement) => [
   {
     accessorKey: 'action',
     header: '',
@@ -28,16 +28,50 @@ export const EmployeeColumn = (handleDeleteEmployee, handleEditEmployee) => [
                 className='cursor-pointer text-blue-400'
               >
                 <Eye className='mr-2 h-4 w-4' />
-                View
+                Details
+              </DropdownMenuItem>
+              {/* Edit */}
+              <DropdownMenuItem
+                onClick={() => handleEdit(row)}
+                className='cursor-pointer text-green-400'
+              >
+                <Edit className='mr-2 h-4 w-4' />
+                Edit
+              </DropdownMenuItem>
+              {/* Birthday */}
+              <DropdownMenuItem
+                onClick={() => handleBirthdays(row)}
+                className='cursor-pointer text-orange-400'
+              >
+                <Cake className='mr-2 h-4 w-4' />
+                Birthdays
+              </DropdownMenuItem>
+              {/* anniversary */}
+              <DropdownMenuItem
+                onClick={() => handleAnniversary(row)}
+                className='cursor-pointer text-pink-400'
+              >
+                <PartyPopper className='mr-2 h-4 w-4' />
+                Anniversaries
+              </DropdownMenuItem>
+              {/* Increment */}
+              <DropdownMenuItem
+                onClick={() => handleIncrement(row)}
+                className='cursor-pointer text-yellow-500'
+              >
+                <ChartSpline className='mr-2 h-4 w-4' />
+                Increments
               </DropdownMenuItem>
 
-              <DropdownMenuItem
+
+
+              {/* <DropdownMenuItem
                 onClick={() => handleDeleteEmployee(row)}
                 className='cursor-pointer text-red-600'
               >
                 <Trash2 className='mr-2 h-4 w-4' />
                 Delete
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
 
             </DropdownMenuContent>
           </DropdownMenu>
@@ -65,31 +99,14 @@ export const EmployeeColumn = (handleDeleteEmployee, handleEditEmployee) => [
       </div>
     ),
   },
-  // {
-  //   accessorKey: 'employeeCode',
-  //   header: 'Employee Code',
-  //   cell: ({ row }) => row.original.employeeCode,
-  // },
+
 
   {
     accessorKey: 'designation',
     header: 'Designation',
     cell: ({ row }) => row.original.designation,
   },
-  // {
-  //   accessorKey: 'dateOfJoining',
-  //   header: 'Joining Date',
-  //   cell: ({ row }) =>
-  //     new Date(row.original.dateOfJoining).toLocaleDateString(),
-  // },
-  // {
-  //   accessorKey: 'meta',
-  //   header: 'PAN Card',
-  //   cell: ({ row }) => {
-  //     const pan = row.original.meta.find((m) => m.metaKey === '_panCard');
-  //     return pan?.metaValue || '-';
-  //   },
-  // },
+
   {
     accessorKey: 'meta_bloodGroup',
     header: 'Blood Group',
