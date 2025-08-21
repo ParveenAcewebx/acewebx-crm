@@ -200,6 +200,36 @@ const EventList = () => {
 
 
 
+    const handleEdit = (row) => {
+        if (row?.original?.id) {
+            router.push(`/dashboard/employee/${row?.original?.id}/edit`)
+
+        }
+    };
+
+    const handleBirthdays = (row) => {
+        if (row?.original?.id) {
+            router.push(`/dashboard/employee/${row?.original?.id}/birthdays`)
+
+        }
+    };
+
+    const handleAnniversary = (row) => {
+        if (row?.original?.id) {
+            router.push(`/dashboard/employee/${row?.original?.id}/anniversaries`)
+
+        }
+    };
+
+    const handleIncrement = (row) => {
+        if (row?.original?.id) {
+            router.push(`/dashboard/employee/${row?.original?.id}/increments`)
+
+        }
+    };
+
+
+
     return (
         <>
             <div>
@@ -275,7 +305,7 @@ const EventList = () => {
                 <div className='overflowX-auto pt-1'>
 
                     <DataTable
-                        columns={InactiveEmployeeColumn(handleDeleteEmployee, handleEditEmployee)}
+                        columns={InactiveEmployeeColumn(handleDeleteEmployee, handleEditEmployee, handleEdit, handleBirthdays, handleAnniversary, handleIncrement)}
                         data={getList}
                         totalRecord={totalRecord}
                         page={page}
