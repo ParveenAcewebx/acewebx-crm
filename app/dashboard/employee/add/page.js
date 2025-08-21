@@ -9,6 +9,7 @@ import {
   preferredShiftOptions,
   RelationData,
   sourceOption,
+  StatutsOptions,
   totalExperienceOptions
 } from '@/components/constants/StaticData'
 import { useRouter } from 'next/navigation'
@@ -45,7 +46,7 @@ function AddEmployees() {
       const formData = new FormData();
 
       const reportingManagerValue = JSON.stringify(data?.reportingManager);
-  
+
 
       Object.entries(data).forEach(([key, value]) => {
         const isDateField =
@@ -206,7 +207,7 @@ function AddEmployees() {
               {/* Professional Info */}
               <fieldset className='custom-raduis bg-white font-semibold mb-9'>
                 <legend className="text-lg font-bold  ml-[25px]">Professional Information</legend>
-                <div className="multipart-field-two">
+                <div className="multipart-field-one">
                   <FormInputField
                     name='companyEmail'
                     label='Company Email ID*'
@@ -278,6 +279,13 @@ function AddEmployees() {
                     label='Reporting Manager'
                     form={form}
                     options={reportingManagerOptions}
+                    className='colum-box-bg-change'
+                  />
+                  <FormSelectField
+                    name='status'
+                    label='Status'
+                    form={form}
+                    options={StatutsOptions}
                     className='colum-box-bg-change'
                   />
                 </div>
