@@ -120,6 +120,10 @@ const AllCandidates = () => {
   const handlePreviewCand = row => {
     router.push(`/dashboard/candidate/${row?.original?.id}/detail`)
   }
+
+  const handleEdit = row => {
+    router.push(`/dashboard/candidate/${row?.original?.id}/edit`)
+  }
   const AddvanceOpenModal = row => {
     setSelectedDcsValue(row)
     setDcsModalOpen(true)
@@ -138,7 +142,7 @@ const AllCandidates = () => {
 
   // filter :--
   const form = useForm({
-    resolver: yupResolver(SearchValidation),
+    // resolver: yupResolver(SearchValidation),
     mode: 'onChange', // or 'onBlur' or 'onChange'
   });
   const search = form.watch('search')
@@ -365,7 +369,8 @@ const AllCandidates = () => {
           columns={CandidColumns(
             handleDeleteCand,
             handlePreviewCand,
-            handleSendWalkInForm
+            handleSendWalkInForm,
+            handleEdit
           )}
           totalRecord={totalRecord}
           page={page}

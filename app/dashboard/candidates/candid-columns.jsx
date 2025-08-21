@@ -8,12 +8,13 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import { EllipsisVertical, Eye, Send, Trash2 } from 'lucide-react'
+import { Edit, EllipsisVertical, Eye, Send, Trash2 } from 'lucide-react'
 
 export const CandidColumns = (
   handleDeleteCand,
   handlePreviewCand,
-  handleSendWalkInForm
+  handleSendWalkInForm,
+  handleEdit
 ) => [
     {
       accessorKey: 'action',
@@ -35,14 +36,29 @@ export const CandidColumns = (
                   <Eye className='mr-2 h-4 w-4' />
                   View
                 </DropdownMenuItem>
-               
+                {/* Edit */}
                 <DropdownMenuItem
+                  onClick={() => handleEdit(row)}
+                  className='cursor-pointer text-green-400'
+                >
+                  <Edit className='mr-2 h-4 w-4' />
+                  Edit
+                </DropdownMenuItem>
+                {/* <DropdownMenuItem
+                  onClick={() => handlePreviewCand(row)}
+                  className='cursor-pointer text-blue-400'
+                >
+                  <Eye className='mr-2 h-4 w-4' />
+                  View
+                </DropdownMenuItem> */}
+
+                {/* <DropdownMenuItem
                   onClick={() => handleDeleteCand(row)}
                   className='cursor-pointer text-red-600'
                 >
                   <Trash2 className='mr-2 h-4 w-4' />
                   Delete
-                </DropdownMenuItem>
+                </DropdownMenuItem> */}
                 <DropdownMenuItem
                   onClick={() => handleSendWalkInForm(row)}
                   className='cursor-pointer text-yellow-600'

@@ -10,7 +10,7 @@ const EmployeesApi = {
   getByIdEmployees: id => {
     return api.get(`employee/getEmployeeById/${id}`)
   },
-  getAllEmployees: (page, length,status) => {
+  getAllEmployees: (page, length, status) => {
     return api.get(`employee/getAllEmployee?page=${page}&limit=${length}&status=${status}`)
   },
   deleteEmployees: id => {
@@ -31,17 +31,17 @@ const EmployeesApi = {
   employeesListFilters: data => {
     const search = data?.search ?? ''
     return api.get(
-      `employee/getAllEmployee?search=${search}&status=${data?.status}`
+      `employee/getAllEmployee?search=${search}&status=${data?.status}&currentShift=${data?.currentShiftValue}`
     )
   },
 
   // csv 
   employeeCSVList: (formData) => {
- 
+
     return api.post(`employee/importEmployees`, formData)
   },
-   // csv 
-   incrementCSVList: (formData) => {
+  // csv 
+  incrementCSVList: (formData) => {
     return api.post(`employee/importEmployeesincrements`, formData)
   },
 

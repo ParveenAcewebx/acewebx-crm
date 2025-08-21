@@ -28,7 +28,7 @@ export const InactiveEmployeeColumn = (handleDeleteEmployee, handleEditEmployee,
                 className='cursor-pointer text-blue-400'
               >
                 <Eye className='mr-2 h-4 w-4' />
-                Details
+                View
               </DropdownMenuItem>
               {/* Edit */}
               <DropdownMenuItem

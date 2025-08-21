@@ -123,6 +123,10 @@ const AllSalesCandidates = () => {
   const handlePreviewCand = row => {
     router.push(`/dashboard/sales-candidate/${row?.original?.id}/detail`)
   }
+
+  const handleEdit = row => {
+    router.push(`/dashboard/sales-candidate/${row?.original?.id}/edit`)
+  }
   const AddvanceOpenModal = row => {
     setSelectedDcsValue(row)
     setDcsModalOpen(true)
@@ -141,7 +145,7 @@ const AllSalesCandidates = () => {
 
   // filter :--
   const form = useForm({
-    resolver: yupResolver(SearchValidation),
+    // resolver: yupResolver(SearchValidation),
     mode: 'onChange',
   });
   const search = form.watch('search')
@@ -314,7 +318,7 @@ const AllSalesCandidates = () => {
           <div className="flex items-center gap-4">
             {/* Search Bar */}
             <div className="relative">
-              <FormInputField                                                                                                                                                                               
+              <FormInputField
                 name="search"
                 placeholder="Email/Name/Phone"
                 form={form}
@@ -325,14 +329,14 @@ const AllSalesCandidates = () => {
               <Search
                 type="submit"
                 className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
-                onClick={handleSimpleFilter}                                                                                                                                                                                                                                                                                                                      
+                onClick={handleSimpleFilter}
               />
             </div>
 
             {/* Advance Search */}
             <Button
               onClick={() => AddvanceOpenModal()}
-          className="cursor-pointer text-[#b82025] hover:text-[#fff] hover:bg-[#b82025] bg-transparent border border-[#b82025] text-[11px]"
+              className="cursor-pointer text-[#b82025] hover:text-[#fff] hover:bg-[#b82025] bg-transparent border border-[#b82025] text-[11px]"
 
             >
               Advance Search
@@ -343,7 +347,7 @@ const AllSalesCandidates = () => {
               <TooltipTrigger asChild>
                 <Button
                   onClick={handleDownloadCSV}
-                 className="cursor-pointer text-[#231f20] hover:text-[#fff] hover:bg-[#231f20] bg-transparent border border-[#231f20] flex gap-2 text-[11px]"
+                  className="cursor-pointer text-[#231f20] hover:text-[#fff] hover:bg-[#231f20] bg-transparent border border-[#231f20] flex gap-2 text-[11px]"
                 >
                   {/* <Import /> */} Export
                 </Button>
@@ -365,7 +369,8 @@ const AllSalesCandidates = () => {
             handleDeleteCand,
             handleEditCand,
             handlePreviewCand,
-            handleSendWalkInForm
+            handleSendWalkInForm,
+            handleEdit
           )}
           totalRecord={totalRecord}
           page={page}

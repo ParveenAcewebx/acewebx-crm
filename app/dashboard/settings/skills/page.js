@@ -119,7 +119,7 @@ const Skills = () => {
 
     // filter :--
     const form = useForm({
-        resolver: yupResolver(SearchSkill),
+        // resolver: yupResolver(SearchSkill),
         mode: 'onChange', // or 'onBlur' or 'onChange'
     });
     const search = form.watch('search')
