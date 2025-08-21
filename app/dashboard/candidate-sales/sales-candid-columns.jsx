@@ -14,7 +14,8 @@ export const SalesCandidColumns = (
   handleDeleteCand,
   handleEditCand,
   handlePreviewCand,
-  handleSendWalkInForm
+  handleSendWalkInForm,
+  handleEdit
 ) => [
     {
       accessorKey: 'action',
@@ -29,13 +30,28 @@ export const SalesCandidColumns = (
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align='end'>
-                <DropdownMenuItem
+              <DropdownMenuItem
+                onClick={() => handlePreviewCand(row)}
+                className='cursor-pointer text-blue-400'
+              >
+                <Eye className='mr-2 h-4 w-4' />
+                View
+              </DropdownMenuItem>
+              {/* Edit */}
+              <DropdownMenuItem
+                onClick={() => handleEdit(row)}
+                className='cursor-pointer text-green-400'
+              >
+                <Edit className='mr-2 h-4 w-4' />
+                Edit
+              </DropdownMenuItem>
+                {/* <DropdownMenuItem
                   onClick={() => handlePreviewCand(row)}
                   className='cursor-pointer text-blue-400'
                 >
                   <Eye className='mr-2 h-4 w-4' />
                   View
-                </DropdownMenuItem>
+                </DropdownMenuItem> */}
                 {/* <DropdownMenuItem
                 onClick={() => handleEditCand(row)}
                 className='cursor-pointer text-green-600'
@@ -43,13 +59,13 @@ export const SalesCandidColumns = (
                 <Edit className='mr-2 h-4 w-4' />
                 Edit
               </DropdownMenuItem> */}
-                <DropdownMenuItem
+                {/* <DropdownMenuItem
                   onClick={() => handleDeleteCand(row)}
                   className='cursor-pointer text-red-600'
                 >
                   <Trash2 className='mr-2 h-4 w-4' />
                   Delete
-                </DropdownMenuItem>
+                </DropdownMenuItem> */}
                 <DropdownMenuItem
                   onClick={() => handleSendWalkInForm(row)}
                   className='cursor-pointer text-yellow-600'

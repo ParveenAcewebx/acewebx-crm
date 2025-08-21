@@ -16,7 +16,7 @@ import FormInputField from '@/components/share/form/FormInputField'
 import FormSelectField from '@/components/share/form/FormSelect'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { SearchEmployee } from '@/components/form-validations/SearchValidation'
-import { LengthData } from '@/components/constants/StaticData'
+import { currentShiftOptions, currentShiftOptionsForSearch, LengthData } from '@/components/constants/StaticData'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import EmployeeCSVDownload from '@/components/modal/EmployeeCSVDownload'
 import IncrementCSVDownload from '@/components/modal/IncrementCSVDownload'
@@ -112,7 +112,7 @@ const EventList = () => {
 
     // filter :--
     const form = useForm({
-        resolver: yupResolver(SearchEmployee),
+        // resolver: yupResolver(SearchEmployee),
         mode: 'onChange', // or 'onBlur' or 'onChange'
     });
     const search = form.watch('search')
@@ -122,6 +122,7 @@ const EventList = () => {
 
         getListCadidate()
     }
+    const currentShiftValue = form.watch("currentShift")
 
     const handleSimpleFilter = async data => {
 
@@ -132,7 +133,8 @@ const EventList = () => {
             const apiData = await EmployeesApi.employeesListFilters({
                 ...data,
                 search,
-                status
+                status,
+                currentShiftValue: currentShiftValue == "all" ? " " : currentShiftValue
             })
 
             const candidates = apiData?.data?.data?.employees || []
@@ -250,11 +252,20 @@ const EventList = () => {
                     {/* Right: Search + Advance Search + Export */}
                     <FormProvider {...form}>
                         <div className="flex items-center gap-4">
+                            <FormSelectField
+                                name='currentShift'
+                                label=''
+                                form={form}
+                                placeholder="Select Shift"
+                                options={currentShiftOptionsForSearch}
+                                className='colum-box-bg-change'
+                            />
                             {/* Search Bar */}
                             <div className="relative">
+
                                 <FormInputField
                                     name="search"
-                                    placeholder="Email/Name/Phone/Shift"
+                                    placeholder="Email/Name/Phone"
                                     form={form}
                                     inputType="text"
                                     searchError="searchError !mt-41"
