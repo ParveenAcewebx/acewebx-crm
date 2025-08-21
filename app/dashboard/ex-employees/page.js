@@ -81,7 +81,7 @@ const EventList = () => {
     }
     const handleEditEmployee = async (row) => {
         if (row?.original?.id) {
-            router.push(`/dashboard/employee/${row?.original?.id}/detail`)
+            router.push(`/dashboard/ex-employee/${row?.original?.id}/detail`)
 
         }
     }
@@ -100,11 +100,7 @@ const EventList = () => {
         return () => subscription.unsubscribe()
     }, [methods, totalRecord])
 
-    const handleOpenTagModal = () => {
-        router.push('/dashboard/employee/add')
-        // setSubmitOpenModal(true)
-        // setEditData(null)
-    }
+
     const submitHandleModalClose = () => {
         setSubmitOpenModal(false)
     }
@@ -202,28 +198,28 @@ const EventList = () => {
 
     const handleEdit = (row) => {
         if (row?.original?.id) {
-            router.push(`/dashboard/employee/${row?.original?.id}/edit`)
+            router.push(`/dashboard/ex-employee/${row?.original?.id}/edit`)
 
         }
     };
 
     const handleBirthdays = (row) => {
         if (row?.original?.id) {
-            router.push(`/dashboard/employee/${row?.original?.id}/birthdays`)
+            router.push(`/dashboard/ex-employee/${row?.original?.id}/birthdays`)
 
         }
     };
 
     const handleAnniversary = (row) => {
         if (row?.original?.id) {
-            router.push(`/dashboard/employee/${row?.original?.id}/anniversaries`)
+            router.push(`/dashboard/ex-employee/${row?.original?.id}/anniversaries`)
 
         }
     };
 
     const handleIncrement = (row) => {
         if (row?.original?.id) {
-            router.push(`/dashboard/employee/${row?.original?.id}/increments`)
+            router.push(`/dashboard/ex-employee/${row?.original?.id}/increments`)
 
         }
     };

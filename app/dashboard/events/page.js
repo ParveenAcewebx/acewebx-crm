@@ -106,7 +106,7 @@ const EventList = () => {
 
     // filter :--
     const form = useForm({
-        resolver: yupResolver(SearchEvent),
+        // resolver: yupResolver(SearchEvent),
         mode: 'onChange', // or 'onBlur' or 'onChange'
     });
     const search = form.watch('search')

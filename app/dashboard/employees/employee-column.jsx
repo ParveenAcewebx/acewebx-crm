@@ -8,6 +8,7 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { Cake, ChartSpline, Edit, EllipsisVertical, Eye, PartyPopper, Trash2 } from 'lucide-react'
+import moment from 'moment'
 
 export const EmployeeColumn = (handleDeleteEmployee, handleEditEmployee, handleEdit, handleBirthdays, handleAnniversary, handleIncrement) => [
   {
@@ -28,7 +29,7 @@ export const EmployeeColumn = (handleDeleteEmployee, handleEditEmployee, handleE
                 className='cursor-pointer text-blue-400'
               >
                 <Eye className='mr-2 h-4 w-4' />
-                Details
+                View
               </DropdownMenuItem>
               {/* Edit */}
               <DropdownMenuItem
@@ -123,6 +124,52 @@ export const EmployeeColumn = (handleDeleteEmployee, handleEditEmployee, handleE
       return blood?.metaValue || '-';
     },
   },
+  {
+    accessorKey: 'dateOfJoining',
+    header: 'Associated From',
+    cell: ({ row }) => {
+
+      const dateOfJoin = row?.original?.dateOfJoining
+
+      const start = moment(dateOfJoin, "YYYY-MM-DD");
+      const end = moment(); // current date
+
+      // Get years, months, days separately
+      const years = end.diff(start, "years");
+      start.add(years, "years");
+
+      const months = end.diff(start, "months");
+      start.add(months, "months");
+
+      const days = end.diff(start, "days");
+
+      let formatted = "";
+
+      if (years > 0 && months > 0) {
+        formatted = `${years}y, ${months}m`;
+      } else if (years > 0) {
+        formatted = `${years}y`;
+      } else if (months > 0) {
+        formatted = `${months}m`;
+      } else {
+        formatted = `${days}d`;
+      }
+
+      console.log(formatted);
+
+
+
+      return (
+        <>
+          {formatted}
+        </>
+      )
+
+
+
+    }
+  },
+
   {
     accessorKey: 'meta_emergencyContact',
     header: 'Emergency Contact',
