@@ -157,7 +157,7 @@ const FormDatePicker = ({
                 align="start"
               >
                 <Calendar
-                  className="rounded-md bg-white p-3"
+                  className="rounded-sm bg-white p-3"
                   mode="single"
                   selected={selectedDate}
                   onSelect={(date) => {

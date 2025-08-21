@@ -39,6 +39,11 @@ const ActivitiesList = ({ activitiesData }) => {
     return formatted ?? "";
   };
 
+  const capitalizeFirst = (value) => {
+    if (!value || typeof value !== "string") return value;
+    return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+  };
+
   return (
     <Card className="w-full border rounded-lg shadow-sm">
       <CardHeader className="theme-bg-white-rgba border-color-grey min-h-14 border-b p-3">
@@ -47,7 +52,7 @@ const ActivitiesList = ({ activitiesData }) => {
         </CardTitle>
       </CardHeader>
 
-      <div className="h-96 overflow-auto p-4">
+      <div className="h-[29rem] overflow-auto p-4">
         {activitiesData?.length ? (
           activitiesData.map((item) => (
             <Card
@@ -76,10 +81,11 @@ const ActivitiesList = ({ activitiesData }) => {
                 </CardDescription>
 
                 <p className="text-black">
-                  {renderValue(item?.oldValue)}
+                  {item?.oldValue && capitalizeFirst(renderValue(item?.oldValue))}
                   {item?.oldValue != null && item?.newValue != null && " > "}
-                  {renderValue(item?.newValue)}
+                  {item?.newValue && capitalizeFirst(renderValue(item?.newValue))}
                 </p>
+
 
                 <p className="text-sm text-gray-500">
                   at{' '}

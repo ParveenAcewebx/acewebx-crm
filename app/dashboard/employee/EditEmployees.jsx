@@ -67,7 +67,7 @@ function EditEmployees({ editId }) {
 
 
         if (isDateField) {
-          if (key === 'dobCelebration') {
+          if (key === 'dobCelebration' || key === 'lastIncrementDate') {
             // Only format if the date is valid
             if (moment(value, moment.ISO_8601, true).isValid()) {
               formData.append(key, moment(value).format('YYYY-MM-DD'));
@@ -110,6 +110,7 @@ function EditEmployees({ editId }) {
     return isNaN(parsed) ? '' : parsed;
   };
 
+
   const candidateDataGetById = async (editId) => {
     try {
       const response = await EmployeesApi.getByIdEmployees(editId);
@@ -117,6 +118,7 @@ function EditEmployees({ editId }) {
       if (response?.data?.status === true) {
         const data = response?.data?.data;
         const meta = data?.meta || {};
+        console.log("VVVV", new Date(meta?._lastIncrementDate + 'T00:00:00'))
         // const joiningDate = new Date(data.dob + 'T00:00:00')
         const dataForSet = {
           // Personal Info
@@ -158,7 +160,7 @@ function EditEmployees({ editId }) {
           currentShift: meta?._currentShift || '',
           lastIncrementAmount: meta?._lastIncrementAmount || '',
           // lastIncrementDate: parseDateOrEmpty(meta?._lastIncrementDate),
-          lastIncrementDate: meta?._lastIncrementDate ? new Date(meta?._lastIncrementDate + 'T00:00:00') : "",
+          lastIncrementDate: meta?._lastIncrementDate && new Date(meta?._lastIncrementDate + 'T00:00:00'),
 
         };
 
@@ -407,7 +409,7 @@ function EditEmployees({ editId }) {
               {/* Banking Details */}
               <fieldset className='custom-raduis bg-white font-semibold mb-9'>
                 <legend className="text-lg font-bold  ml-[25px]">Banking Details</legend>
-                <div className="multipart-field-two">
+                <div className="multipart-field-one">
                   <FormInputField
                     name='bankName'
                     label='Bank Name*'

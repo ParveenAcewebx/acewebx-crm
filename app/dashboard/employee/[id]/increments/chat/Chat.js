@@ -97,7 +97,7 @@ function IncrementChatCompo({ id }) {
 
         </CardTitle>
       </CardHeader>
-      <CardContent className='flex !p-4 flex-col gap-2 h-[360px] overflow-y-auto'>
+      <CardContent className='flex !p-4 flex-col gap-2 h-[470px] overflow-y-auto'>
         {allChat.length > 0 ? (
           allChat.map(item => {
             const createdTime = new Date(item?.createdAt)
@@ -150,8 +150,9 @@ function IncrementChatCompo({ id }) {
         <div ref={bottomRef} />
 
       </CardContent>
+
       <CardContent>
-        <div className='mt-4 flex items-start gap-2 absolute w-[100%] bottom-0 left-0'>
+        <div className='mt-4 flex items-start gap-2 absolute w-[100%] bottom-0 left-0 p-5'>
           {isEditMsg && (
             <Button
               variant='destructive'
