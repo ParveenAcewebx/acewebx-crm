@@ -188,7 +188,7 @@ function IncrementsDetail() {
 
         // meta---------------------------------------end
 
-
+     
         {
             accessorKey: 'eventDate',
             header: 'Action',
@@ -353,8 +353,13 @@ function IncrementsDetail() {
             id: 'meta',
             cell: ({ row }) => row?.original?.meta?.finalDiscussion == undefined ? "NA" : row?.original?.meta?.finalDiscussion
         },
+        {
+            accessorKey: 'meta',
+            header: 'Increment Amount',
+            id: 'meta',
+            cell: ({ row }) => row?.original?.meta?.incrementAmount == undefined ? "NA" : row?.original?.meta?.incrementAmount
+        },
         // meta---------------------------------------end
-
 
         {
             accessorKey: 'action',
