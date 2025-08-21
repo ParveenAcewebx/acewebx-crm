@@ -83,32 +83,10 @@ function Page({ params }) {
   const genderCol = genderColor(candidateData?.meta?._gender)
 
 
+  const incrementAmount =
+    candidateData?.events?.[0]?.meta?.find((m) => m.metaKey === "_incrementAmount")
+      ?.metaValue || "";
 
-  const getLastIncrement = (events) => {
-    if (!events || events.length === 0) return null;
-
-    // filter increment events only
-    const increments = events.filter((e) => e.type === "increment");
-
-    if (increments.length === 0) return null;
-
-    // sort by eventDate descending
-    const sorted = [...increments].sort(
-      (a, b) => new Date(b.eventDate) - new Date(a.eventDate)
-    );
-
-    const latest = sorted[0];
-
-    // find increment amount in meta
-    const amountMeta = latest.meta?.find((m) => m.metaKey === "_incrementAmount");
-
-    return {
-      amount: amountMeta?.metaValue || null,
-      date: latest.eventDate || null,
-    };
-  };
-
-  const lastIncrement = getLastIncrement(candidateData?.events);
   return (
     <>
       <CommonLayout pageTitle='Employee Detail' />
@@ -252,9 +230,7 @@ function Page({ params }) {
                   <span className="subtittle">
                     {hikeHide ? (
                       <>
-                        {lastIncrement?.date
-                          ? `(${moment(lastIncrement.date).format("YYYY-MM-DD")})`
-                          : ""}
+                        {incrementAmount}
                       </>
                     ) : (
                       "*****"

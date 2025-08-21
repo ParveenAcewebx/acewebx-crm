@@ -32,7 +32,7 @@ function EditEmployees({ editId }) {
   const form = useForm({
     mode: 'onChange',
     defaultValues: formDefaultValues,
-    resolver: yupResolver(EmployeeValidation)
+    // resolver: yupResolver(EmployeeValidation)
   })
 
 
@@ -159,8 +159,7 @@ function EditEmployees({ editId }) {
           currentSalary: meta?._currentSalary || '',
           currentShift: meta?._currentShift || '',
           lastIncrementAmount: meta?._lastIncrementAmount || '',
-          // lastIncrementDate: parseDateOrEmpty(meta?._lastIncrementDate),
-          lastIncrementDate: meta?._lastIncrementDate && new Date(meta?._lastIncrementDate + 'T00:00:00'),
+          lastIncrementDate: meta?._lastIncrementDate && moment(meta?._lastIncrementDate).format("YYYY-MM-DD") + "T00:00:00",
 
         };
 
@@ -449,7 +448,6 @@ function EditEmployees({ editId }) {
                     name='bloodGroup'
                     label='Blood Group*'
                     form={form}
-                    // inputType='text'
                     options={bloodGrupeType}
                     className='colum-box-bg-change'
                   />

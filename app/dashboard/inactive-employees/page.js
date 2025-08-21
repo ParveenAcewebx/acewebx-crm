@@ -203,7 +203,7 @@ const EventList = () => {
     return (
         <>
             <div>
-                <LayoutHeader pageTitle='Inactive Employees' />
+                <LayoutHeader pageTitle='Ex Employees' />
 
 
                 <div className='flex justify-between items-center mb-5 mt-2'>
