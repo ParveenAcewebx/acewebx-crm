@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import CommonLayout from '@/components/CommonLayouyt'
 import { useParams, useRouter } from 'next/navigation'
 import { DataTable } from '@/components/Table'
-import { Edit } from 'lucide-react'
+import { Edit, Eye, EyeOff } from 'lucide-react'
 import AnniversariesApi from '@/services/employees/AnniversariesApi'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { Button } from '@/components/ui/button'
@@ -17,7 +17,7 @@ function IncrementsDetail() {
 
     const [upcomingIncrement, setUpcomingIncrement] = useState([])
     const [pastIncrement, setPastIncrement] = useState([]);
-
+    const [hikeHide, setHikeHide] = useState(false)
 
     const router = useRouter()
 
@@ -188,7 +188,7 @@ function IncrementsDetail() {
 
         // meta---------------------------------------end
 
-     
+
         {
             accessorKey: 'eventDate',
             header: 'Action',
@@ -353,11 +353,28 @@ function IncrementsDetail() {
             id: 'meta',
             cell: ({ row }) => row?.original?.meta?.finalDiscussion == undefined ? "NA" : row?.original?.meta?.finalDiscussion
         },
+
+
         {
             accessorKey: 'meta',
             header: 'Increment Amount',
             id: 'meta',
-            cell: ({ row }) => row?.original?.meta?.incrementAmount == undefined ? "NA" : row?.original?.meta?.incrementAmount
+            cell: ({ row }) => row?.original?.meta?.incrementAmount == undefined ? "NA" : (<>
+
+                {hikeHide ? (<div className='flex gap-2 cursor-pointer align-middle'>
+                    {row?.original?.meta?.incrementAmount}
+                    <Eye size={16} onClick={() => setHikeHide(false)} />
+                </div>
+                ) : (
+                    <div className='flex gap-2 cursor-pointer align-middle'>
+                        *****
+                        <EyeOff size={16} onClick={() => setHikeHide(true)} />
+                    </div>
+                )}
+
+
+
+            </>)
         },
         // meta---------------------------------------end
 

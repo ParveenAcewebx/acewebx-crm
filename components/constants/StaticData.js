@@ -103,7 +103,7 @@ export const formDefaultValues = {
   bankIfscCode: '',
   reportingManager: [],
   // Emergency Details
-  bloodGroup: '',
+  bloodGroup: 'unknown',
   emergencyContactName: '',
   emergencyContactNumber: '',
   emergencyContactRelationship: ''
@@ -188,6 +188,7 @@ export const bloodGrupeType = [
   { label: 'AB-', value: 'ab-' },
   { label: 'O+', value: 'o+' },
   { label: 'O-', value: 'o-' },
+  { label: 'Unknown', value: 'unknown' },
 ];
 
 export const TypeData = [

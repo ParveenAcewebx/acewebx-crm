@@ -203,7 +203,7 @@ const EventList = () => {
     return (
         <>
             <div>
-                <LayoutHeader pageTitle='Inactive Employees' />
+                <LayoutHeader pageTitle='Ex Employees' />
 
 
                 <div className='flex justify-between items-center mb-5 mt-2'>
@@ -226,7 +226,7 @@ const EventList = () => {
                             <div className="relative">
                                 <FormInputField
                                     name="search"
-                                    placeholder="Email/Name/Phone"
+                                    placeholder="Email/Name/Phone/Shift"
                                     form={form}
                                     inputType="text"
                                     searchError="searchError !mt-41"

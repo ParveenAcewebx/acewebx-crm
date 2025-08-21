@@ -36,7 +36,7 @@ function AddEmployees() {
   const form = useForm({
     mode: 'onChange',
     defaultValues: formDefaultValues,
-    resolver: yupResolver(EmployeeValidation)
+    // resolver: yupResolver(EmployeeValidation)
   })
 
   const isStatus = form.watch("status")
@@ -362,7 +362,6 @@ function AddEmployees() {
                     name='bloodGroup'
                     label='Blood Group*'
                     form={form}
-                    // inputType='text'
                     options={bloodGrupeType}
                     className='colum-box-bg-change'
                   />

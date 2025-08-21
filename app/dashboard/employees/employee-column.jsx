@@ -99,6 +99,14 @@ export const EmployeeColumn = (handleDeleteEmployee, handleEditEmployee) => [
     },
   },
   {
+    accessorKey: '_currentShiftp',
+    header: 'Current Shift',
+    cell: ({ row }) => {
+      const blood = row.original.meta.find((m) => m.metaKey === '_currentShift');
+      return blood?.metaValue || '-';
+    },
+  },
+  {
     accessorKey: 'meta_emergencyContact',
     header: 'Emergency Contact',
     cell: ({ row }) => {
