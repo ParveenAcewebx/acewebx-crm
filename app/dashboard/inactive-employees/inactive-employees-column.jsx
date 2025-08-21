@@ -7,7 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import { EllipsisVertical, Eye,  Trash2 } from 'lucide-react'
+import { EllipsisVertical, Eye, Trash2 } from 'lucide-react'
 
 export const InactiveEmployeeColumn = (handleDeleteEmployee, handleEditEmployee) => [
   {
@@ -90,6 +90,14 @@ export const InactiveEmployeeColumn = (handleDeleteEmployee, handleEditEmployee)
   //     return pan?.metaValue || '-';
   //   },
   // },
+  {
+    accessorKey: '_currentShiftp',
+    header: 'Current Shift',
+    cell: ({ row }) => {
+      const blood = row.original.meta.find((m) => m.metaKey === '_currentShift');
+      return blood?.metaValue || '-';
+    },
+  },
   {
     accessorKey: 'meta_bloodGroup',
     header: 'Blood Group',
