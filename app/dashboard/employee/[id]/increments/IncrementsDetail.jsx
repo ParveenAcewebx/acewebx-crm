@@ -353,61 +353,95 @@ function IncrementsDetail() {
             id: 'meta',
             cell: ({ row }) => row?.original?.meta?.finalDiscussion == undefined ? "NA" : row?.original?.meta?.finalDiscussion
         },
-        {
-            accessorKey: 'meta',
-            header: 'New Salary',
-            id: 'meta',
-            cell: ({ row }) => row?.original?.meta?.newSalary == undefined ? "NA" : row?.original?.meta?.newSalary
-        },
 
+          // New Salary Column
+    {
+      header: "New Salary",
+      id: "newSalary",
+      cell: ({ row }) => {
+        const isHidden = hiddenRows[row.id]?.salary ?? true;
 
-        {
-            accessorKey: 'meta',
-            header: 'Increment Amount',
-            id: 'meta',
-            cell: ({ row }) => {
+        return row?.original?.meta?.newSalary == undefined ? (
+          "NA"
+        ) : isHidden ? (
+          <div className="flex gap-2 cursor-pointer items-center">
+            *****
+            <EyeOff
+              size={16}
+              onClick={() =>
+                setHiddenRows((prev) => ({
+                  ...prev,
+                  [row.id]: { ...prev[row.id], salary: false },
+                }))
+              }
+            />
+          </div>
+        ) : (
+          <div className="flex gap-2 cursor-pointer items-center">
+            {row?.original?.meta?.newSalary}
 
-                const nreSalary = row?.original?.meta?.newSalary || 0
-                const lastIncrement = row?.original?.meta?.incrementAmount || 0
+            <Eye
+              size={16}
+              onClick={() =>
+                setHiddenRows((prev) => ({
+                  ...prev,
+                  [row.id]: { ...prev[row.id], salary: true },
+                }))
+              }
+            />
+          </div>
+        );
+      },
+    },
+       {
+      header: "Increment Amount",
+      id: "incrementAmount",
+      cell: ({ row }) => {
+        const nreSalary = row?.original?.meta?.newSalary || 0;
+        const lastIncrement = row?.original?.meta?.incrementAmount || 0;
 
-                const oldSalery = nreSalary - lastIncrement
-                const ToataHikePer = (lastIncrement / oldSalery) * 100
-                // Default hidden if not yet clicked
-                const isHidden = hiddenRows[row.id] ?? true;
+        const oldSalary = nreSalary - lastIncrement;
+        const hikePercent = oldSalary ? (lastIncrement / oldSalary) * 100 : 0;
 
-                return row?.original?.meta?.incrementAmount == undefined ? (
-                    "NA"
-                ) : (
-                    <>
-                        {isHidden ? (
-                            <div className="flex gap-2 cursor-pointer items-center">
-                                *****
-                                <Eye
-                                    size={16}
-                                    onClick={() =>
-                                        setHiddenRows((prev) => ({ ...prev, [row.id]: false }))
-                                    }
-                                />
-                            </div>
-                        ) : (
-                            <div className="flex gap-2 cursor-pointer items-center">
-                                {row?.original?.meta?.incrementAmount} (
-                                {row?.original?.meta?.newSalary == undefined
-                                    ? "NA"
-                                    : `${parseFloat(ToataHikePer).toFixed(3)}%`}
-                                )
-                                <EyeOff
-                                    size={16}
-                                    onClick={() =>
-                                        setHiddenRows((prev) => ({ ...prev, [row.id]: true }))
-                                    }
-                                />
-                            </div>
-                        )}
-                    </>
-                );
-            },
-        },
+        const isHidden = hiddenRows[row.id]?.increment ?? true;
+
+        return row?.original?.meta?.incrementAmount == undefined ? (
+          "NA"
+        ) : isHidden ? (
+          <div className="flex gap-2 cursor-pointer items-center">
+            *****
+            <EyeOff
+              size={16}
+              onClick={() =>
+                setHiddenRows((prev) => ({
+                  ...prev,
+                  [row.id]: { ...prev[row.id], increment: false },
+                }))
+              }
+            />
+          </div>
+        ) : (
+          <div className="flex gap-2 cursor-pointer items-center">
+            {row?.original?.meta?.incrementAmount} (
+            {row?.original?.meta?.newSalary == undefined
+              ? "NA"
+              : `${parseFloat(hikePercent).toFixed(0)}%`}
+            )
+            <Eye
+              size={16}
+              onClick={() =>
+                setHiddenRows((prev) => ({
+                  ...prev,
+                  [row.id]: { ...prev[row.id], increment: true },
+                }))
+              }
+            />
+          </div>
+        );
+      },
+    },
+
+  
         // meta---------------------------------------end
 
         {
