@@ -265,6 +265,13 @@ function EditIncrement() {
                 inputType='number'
                 className='colum-box-bg-change'
               />
+                <FormInputField
+                name='newSalary'
+                label='New Salary'
+                form={form}
+                inputType='number'
+                className='colum-box-bg-change'
+              />
 
               <CurrentAndNextYearDatepicker
                 name='eventDate'
