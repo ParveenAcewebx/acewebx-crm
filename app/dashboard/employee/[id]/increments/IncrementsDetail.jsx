@@ -360,9 +360,10 @@ function IncrementsDetail() {
             cell: ({ row }) => row?.original?.meta?.newSalary == undefined ? "NA" : row?.original?.meta?.newSalary
         },
 
+
         {
             accessorKey: 'meta',
-            header: 'Hike(%)',
+            header: 'Increment Amount',
             id: 'meta',
             cell: ({ row }) => {
 
@@ -371,21 +372,6 @@ function IncrementsDetail() {
 
                 const oldSalery = nreSalary - lastIncrement
                 const ToataHikePer = (lastIncrement / oldSalery) * 100
-
-                return (
-                    <>
-                        {row?.original?.meta?.newSalary == undefined ? "NA " : ToataHikePer}
-                    </>
-                )
-            }
-
-
-        },
-        {
-            accessorKey: 'meta',
-            header: 'Increment Amount',
-            id: 'meta',
-            cell: ({ row }) => {
                 // Default hidden if not yet clicked
                 const isHidden = hiddenRows[row.id] ?? true;
 
@@ -405,7 +391,7 @@ function IncrementsDetail() {
                             </div>
                         ) : (
                             <div className="flex gap-2 cursor-pointer items-center">
-                                {row?.original?.meta?.incrementAmount}
+                                {row?.original?.meta?.incrementAmount} ({row?.original?.meta?.newSalary == undefined ? "NA " : `${ToataHikePer}%`})
                                 <EyeOff
                                     size={16}
                                     onClick={() =>
