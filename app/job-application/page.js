@@ -7,7 +7,7 @@ import {
   walkInFormDefaultValues
 } from '@/components/constants/StaticData'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { FormProvider, useForm } from 'react-hook-form'
 import moment from 'moment';
@@ -83,11 +83,11 @@ function JobApplicationForm() {
     setLoader(false)
     form.unregister('recaptcha', { keepError: false })
   }
-  
+
   const reValue = form.watch('recaptcha')
 
 
-// add candidate handler:---
+  // add candidate handler:---
   const onSubmit = async data => {
     setSubmitAddValidation(true)
     if (data?.currentSalary == '' || reValue == undefined) {
@@ -104,7 +104,7 @@ function JobApplicationForm() {
       }
 
       const preferred = JSON.stringify(data?.preferredShift)
-      
+
       Object.entries(data).forEach(([key, value]) => {
         if (key === 'preferredShift') return;
         if (key === 'dob' || key === 'lastIncrementDate') {
@@ -113,7 +113,7 @@ function JobApplicationForm() {
           formData.append(key, value);
         }
       });
-      formData.append('preferredShift',preferred)
+      formData.append('preferredShift', preferred)
 
       const response = await Candidate.addCandidate(formData)
       if (response?.data?.status == true) {
@@ -132,13 +132,15 @@ function JobApplicationForm() {
     }
   }
 
- 
 
 
-
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [step]);
   return (
     <div
       className='mobile-view relative flex min-h-screen w-full flex-col items-center justify-start bg-white'
+
       style={{
         backgroundImage: "url('/images/backgroud-ace.png')",
         backgroundSize: 'cover',
@@ -151,8 +153,9 @@ function JobApplicationForm() {
         <img src='./acewebxlogo.png' alt='Acewebx Logo' className='h-25 w-40' />
       </div>
 
-      <div className='z-10 w-full max-w-3xl rounded-xl border border-red-100 bg-gradient-to-br from-red-100 via-white to-red-100 p-10 shadow-md '>
-        <h2 className='walking mb-6 text-2xl font-semibold text-gray-800'>
+      <div className='z-10 w-full max-w-3xl rounded-xl border border-red-100 bg-gradient-to-br from-red-100 via-white to-red-100 p-10 shadow-md ace-dashboard '>
+        <h2 className='walking mb-6 text-2xl font-semibold text-gray-800'
+        >
           Job Application
         </h2>
         <h4 className='mb-8'>
@@ -164,6 +167,7 @@ function JobApplicationForm() {
           <form
             encType='multipart/form-data'
             onSubmit={form.handleSubmit(onSubmit)}
+            id='alwayStayTop' 
           >
             {/* Step 0: Personal Info */}
             {step === 0 && (
@@ -315,6 +319,7 @@ function JobApplicationForm() {
 
             {/* Navigation */}
             <div
+
               className={`mt-10 flex ${step === 0 ? 'justify-end' : 'justify-between'}`}
             >
               {step > 0 && (

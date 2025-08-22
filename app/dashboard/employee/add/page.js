@@ -80,12 +80,12 @@ function AddEmployees() {
         form.reset();
         setLoader(false);
         successMessage({ description: 'Added Successfully!' });
-        if(isStatus == 1){
+        if (isStatus == 1) {
           router.push('/dashboard/employees');
-        }else{
+        } else {
           router.push('/dashboard/inactive-employees');
         }
-        
+
       }
     } catch (error) {
       setLoader(false);
@@ -239,7 +239,7 @@ function AddEmployees() {
                     disabled={{ before: new Date('2016-12-31') }}
 
                   />
-                  <FormDatePicker
+                  {/* <FormDatePicker
                     name='lastIncrementDate'
                     label='Last Increment Date'
                     form={form}
@@ -253,7 +253,7 @@ function AddEmployees() {
                     form={form}
                     inputType='number'
                     className='colum-box-bg-change'
-                  />
+                  /> */}
                   <FormSelectField
                     name='currentShift'
                     label='Current Shift'

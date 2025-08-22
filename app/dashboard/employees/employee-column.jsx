@@ -155,10 +155,6 @@ export const EmployeeColumn = (handleDeleteEmployee, handleEditEmployee, handleE
         formatted = `${days}d`;
       }
 
-      console.log(formatted);
-
-
-
       return (
         <>
           {formatted}

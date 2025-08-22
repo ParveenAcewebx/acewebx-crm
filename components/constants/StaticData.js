@@ -68,8 +68,8 @@ export const editWalkInForm = {
   source: '',
   currentAddress: '',
   permanentAddress: '',
-  lastIncrementDate: '',
-  lastIncrementAmount: ''
+  // lastIncrementDate: '',
+  // lastIncrementAmount: ''
 }
 
 

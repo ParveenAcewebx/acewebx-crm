@@ -391,7 +391,11 @@ function IncrementsDetail() {
                             </div>
                         ) : (
                             <div className="flex gap-2 cursor-pointer items-center">
-                                {row?.original?.meta?.incrementAmount} ({row?.original?.meta?.newSalary == undefined ? "NA " : `${ToataHikePer}%`})
+                                {row?.original?.meta?.incrementAmount} (
+                                {row?.original?.meta?.newSalary == undefined
+                                    ? "NA"
+                                    : `${parseFloat(ToataHikePer).toFixed(3)}%`}
+                                )
                                 <EyeOff
                                     size={16}
                                     onClick={() =>
