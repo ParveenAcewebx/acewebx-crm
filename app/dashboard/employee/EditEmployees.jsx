@@ -425,7 +425,7 @@ function EditEmployees({ editId }) {
                   />
 
                   {/* ADD NOTE HERE SMALL */}
-                  <div className='bankIfc'>
+                  <div className='bankIfc space-y-2  '>
                     <FormInputField
                       name='bankIfscCode'
                       label='Bank IFSC Code*'
@@ -433,7 +433,7 @@ function EditEmployees({ editId }) {
                       inputType='text'
                       className='colum-box-bg-change'
                     />
-                    <div className='text-slate-400 text-xs w-full text-start mt-2'>
+                    <div style={{ lineHeight: "0px" }} className='text-slate-400 text-xs w-full text-start'>
                       Ex: PUNB0073800
                     </div>
                   </div>
