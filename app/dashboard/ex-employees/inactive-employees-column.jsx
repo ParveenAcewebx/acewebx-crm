@@ -8,6 +8,7 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { Cake, ChartSpline, Edit, EllipsisVertical, Eye, PartyPopper, Trash2 } from 'lucide-react'
+import moment from 'moment'
 
 export const InactiveEmployeeColumn = (handleDeleteEmployee, handleEditEmployee, handleEdit, handleBirthdays, handleAnniversary, handleIncrement) => [
   {
@@ -114,6 +115,50 @@ export const InactiveEmployeeColumn = (handleDeleteEmployee, handleEditEmployee,
       const blood = row.original.meta.find((m) => m.metaKey === '_bloodGroup');
       return blood?.metaValue || '-';
     },
+  },
+  {
+    accessorKey: 'meta_bloodGroup',
+    header: 'Associated From',
+    cell: ({ row }) => {
+
+      const dateOfJoin = row?.original?.dateOfJoining
+
+      const dateOfExit = row.original.meta.find((m) => m.metaKey === '_exitDate');
+
+      const start = moment(dateOfJoin, "YYYY-MM-DD");
+      const end = moment(dateOfExit?.metaValue || ""); // current date
+
+      // Get years, months, days separately
+      const years = end.diff(start, "years");
+      start.add(years, "years");
+
+      const months = end.diff(start, "months");
+      start.add(months, "months");
+
+      const days = end.diff(start, "days");
+
+      let formatted = "";
+
+      if (years > 0 && months > 0) {
+        formatted = `${years}y, ${months}m`;
+      } else if (years > 0) {
+        formatted = `${years}y`;
+      } else if (months > 0) {
+        formatted = `${months}m`;
+      } else {
+        formatted = `${days}d`;
+      }
+
+
+      return (
+        <>
+          {formatted == "NaNd" ? "-" : formatted}
+        </>
+      )
+
+
+
+    }
   },
   {
     accessorKey: '_currentShiftp',

@@ -8,7 +8,7 @@ import {
     YesNoOptions,
 } from '@/components/constants/StaticData'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Loader } from 'lucide-react'
@@ -90,7 +90,9 @@ function IncrementApplicationForm() {
     }
 
 
-
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }, [step]);
 
     return (
         <div

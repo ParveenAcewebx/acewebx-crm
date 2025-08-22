@@ -2242,13 +2242,21 @@ gap: 30px;
   border-color: rgb(184 32 37);
 }
 
-.rc-anchor-normal {
+/* .rc-anchor-normal {
   transform: scale(0.85) !important;
   transform-origin: 0 0 !important;
   -webkit-transform: scale(0.85) !important;
   -webkit-transform-origin: 0 0 !important;
   width: 304px !important;
   height: 78px !important;
+} */
+.ace-dashboard iframe {
+  width: 100% !important;
+  transform: scale(0.85);
+  transform-origin: 0 0;
+  -webkit-transform: scale(0.85);
+  -webkit-transform-origin: 0 0;
+  height: 78px;
 }
 
 .bankIfc .space-y-2 {
@@ -2334,4 +2342,9 @@ button#\:rb\:-form-item {
   background-color: #fff !important;
   width: 500px;
   font-size: 11px;
+}
+@media (max-width: 767px) {
+.ace-dashboard {
+  padding: 30px 14px;
+}
 }

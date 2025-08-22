@@ -45,10 +45,10 @@ function EditEmployees({ editId }) {
       const dirtyFields = form.formState.dirtyFields;
       const updateFieldsValue = Object.keys(dirtyFields);
 
-      if (data?.lastIncrementDate == "Invalid date") {
-        formData.append('lastIncrementDate', "")
+      // if (data?.lastIncrementDate == "Invalid date") {
+      //   formData.append('lastIncrementDate', "")
 
-      }
+      // }
 
       if (updateFieldsValue) {
         formData.append('updateField', JSON.stringify(updateFieldsValue))
@@ -158,8 +158,8 @@ function EditEmployees({ editId }) {
           gender: meta?._gender?.toLowerCase() || '',
           currentSalary: meta?._currentSalary || '',
           currentShift: meta?._currentShift || '',
-          lastIncrementAmount: meta?._lastIncrementAmount || '',
-          lastIncrementDate: meta?._lastIncrementDate && moment(meta?._lastIncrementDate).format("YYYY-MM-DD") + "T00:00:00",
+          // lastIncrementAmount: meta?._lastIncrementAmount || '',
+          // lastIncrementDate: meta?._lastIncrementDate && moment(meta?._lastIncrementDate).format("YYYY-MM-DD") + "T00:00:00",
 
         };
 
@@ -325,7 +325,7 @@ function EditEmployees({ editId }) {
                     disabled={{ before: new Date('2016-12-31') }}
 
                   />
-                  <FormDatePicker
+                  {/* <FormDatePicker
                     name='lastIncrementDate'
                     label='Last Increment Date'
                     form={form}
@@ -339,7 +339,7 @@ function EditEmployees({ editId }) {
                     form={form}
                     inputType='number'
                     className='colum-box-bg-change'
-                  />
+                  /> */}
                   <FormSelectField
                     name='currentShift'
                     label='Current Shift'

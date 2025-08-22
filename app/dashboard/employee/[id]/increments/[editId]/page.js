@@ -14,6 +14,7 @@ import IncrementChatCompo from '../chat/Chat'
 import CurrentAndNextYearDatepicker from '@/components/share/form/CurrentAndNextYearDatepicker'
 import IncrementPreview from '@/components/modal/IncrementPreview'
 import FormInputField from '@/components/share/form/FormInputField'
+import IncrementEventDate from '@/components/share/form/IncrementEventDate'
 
 function EditIncrement() {
   const { id, editId } = useParams()
@@ -273,14 +274,14 @@ function EditIncrement() {
                 className='colum-box-bg-change'
               />
 
-              <CurrentAndNextYearDatepicker
+              <IncrementEventDate
                 name='eventDate'
                 label='Event Date'
                 form={form}
                 inputFormat='YYYY-MM-DD'
                 className='Date'
-                disabled={{ before: new Date('2024-12-31') }}
-                defaultMonth={new Date()}
+                fromYear={2020}
+                toYear={new Date().getFullYear() + 1}
               />
             </div>
 
