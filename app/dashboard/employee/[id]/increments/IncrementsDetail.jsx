@@ -359,6 +359,28 @@ function IncrementsDetail() {
             id: 'meta',
             cell: ({ row }) => row?.original?.meta?.newSalary == undefined ? "NA" : row?.original?.meta?.newSalary
         },
+
+        {
+            accessorKey: 'meta',
+            header: 'Hike(%)',
+            id: 'meta',
+            cell: ({ row }) => {
+
+                const nreSalary = row?.original?.meta?.newSalary || 0
+                const lastIncrement = row?.original?.meta?.incrementAmount || 0
+
+                const oldSalery = nreSalary - lastIncrement
+                const ToataHikePer = (lastIncrement / oldSalery) * 100
+
+                return (
+                    <>
+                        {row?.original?.meta?.newSalary == undefined ? "NA " : ToataHikePer}
+                    </>
+                )
+            }
+
+
+        },
         {
             accessorKey: 'meta',
             header: 'Increment Amount',
