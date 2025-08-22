@@ -246,6 +246,9 @@ function EditJobApplicationForm() {
     candidateDataGetById(id, form)
   }, [id])
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [step]);
  
 
   useEffect(() => {

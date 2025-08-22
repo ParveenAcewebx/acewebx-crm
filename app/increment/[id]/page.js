@@ -118,7 +118,9 @@ function EditIncrementApplicationForm() {
     candidateDataGetById(editId)
   }, [editId])
 
-
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [step]);
 
   return (
     <>

@@ -353,23 +353,36 @@ function IncrementsDetail() {
             id: 'meta',
             cell: ({ row }) => row?.original?.meta?.finalDiscussion == undefined ? "NA" : row?.original?.meta?.finalDiscussion
         },
+        {
+            accessorKey: 'meta',
+            header: 'New Salary',
+            id: 'meta',
+            cell: ({ row }) => row?.original?.meta?.newSalary == undefined ? "NA" : row?.original?.meta?.newSalary
+        },
+
 
         {
-            accessorKey: "meta",
-            header: "Increment Amount",
-            id: "meta",
+            accessorKey: 'meta',
+            header: 'Increment Amount',
+            id: 'meta',
             cell: ({ row }) => {
-                const incrementAmount = row?.original?.meta?.incrementAmount;
-                if (incrementAmount === undefined) return "NA";
 
-                const isHidden = hiddenRows[row.id]; // check if this row is hidden
+                const nreSalary = row?.original?.meta?.newSalary || 0
+                const lastIncrement = row?.original?.meta?.incrementAmount || 0
 
-                return (
+                const oldSalery = nreSalary - lastIncrement
+                const ToataHikePer = (lastIncrement / oldSalery) * 100
+                // Default hidden if not yet clicked
+                const isHidden = hiddenRows[row.id] ?? true;
+
+                return row?.original?.meta?.incrementAmount == undefined ? (
+                    "NA"
+                ) : (
                     <>
                         {isHidden ? (
                             <div className="flex gap-2 cursor-pointer items-center">
                                 *****
-                                <EyeOff
+                                <Eye
                                     size={16}
                                     onClick={() =>
                                         setHiddenRows((prev) => ({ ...prev, [row.id]: false }))
@@ -378,8 +391,12 @@ function IncrementsDetail() {
                             </div>
                         ) : (
                             <div className="flex gap-2 cursor-pointer items-center">
-                                {incrementAmount}
-                                <Eye
+                                {row?.original?.meta?.incrementAmount} (
+                                {row?.original?.meta?.newSalary == undefined
+                                    ? "NA"
+                                    : `${parseFloat(ToataHikePer).toFixed(3)}%`}
+                                )
+                                <EyeOff
                                     size={16}
                                     onClick={() =>
                                         setHiddenRows((prev) => ({ ...prev, [row.id]: true }))
