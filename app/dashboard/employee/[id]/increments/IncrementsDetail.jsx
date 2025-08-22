@@ -17,7 +17,7 @@ function IncrementsDetail() {
 
     const [upcomingIncrement, setUpcomingIncrement] = useState([])
     const [pastIncrement, setPastIncrement] = useState([]);
-    const [hikeHide, setHikeHide] = useState(false)
+    const [hiddenRows, setHiddenRows] = useState({}); // store row-wise hidden state
 
     const router = useRouter()
 
@@ -354,27 +354,42 @@ function IncrementsDetail() {
             cell: ({ row }) => row?.original?.meta?.finalDiscussion == undefined ? "NA" : row?.original?.meta?.finalDiscussion
         },
 
-
         {
-            accessorKey: 'meta',
-            header: 'Increment Amount',
-            id: 'meta',
-            cell: ({ row }) => row?.original?.meta?.incrementAmount == undefined ? "NA" : (<>
+            accessorKey: "meta",
+            header: "Increment Amount",
+            id: "meta",
+            cell: ({ row }) => {
+                const incrementAmount = row?.original?.meta?.incrementAmount;
+                if (incrementAmount === undefined) return "NA";
 
-                {hikeHide ? (<div className='flex gap-2 cursor-pointer align-middle'>
-                    {row?.original?.meta?.incrementAmount}
-                    <Eye size={16} onClick={() => setHikeHide(false)} />
-                </div>
-                ) : (
-                    <div className='flex gap-2 cursor-pointer align-middle'>
-                        *****
-                        <EyeOff size={16} onClick={() => setHikeHide(true)} />
-                    </div>
-                )}
+                const isHidden = hiddenRows[row.id]; // check if this row is hidden
 
-
-
-            </>)
+                return (
+                    <>
+                        {isHidden ? (
+                            <div className="flex gap-2 cursor-pointer items-center">
+                                *****
+                                <EyeOff
+                                    size={16}
+                                    onClick={() =>
+                                        setHiddenRows((prev) => ({ ...prev, [row.id]: false }))
+                                    }
+                                />
+                            </div>
+                        ) : (
+                            <div className="flex gap-2 cursor-pointer items-center">
+                                {incrementAmount}
+                                <Eye
+                                    size={16}
+                                    onClick={() =>
+                                        setHiddenRows((prev) => ({ ...prev, [row.id]: true }))
+                                    }
+                                />
+                            </div>
+                        )}
+                    </>
+                );
+            },
         },
         // meta---------------------------------------end
 
