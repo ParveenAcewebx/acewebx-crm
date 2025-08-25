@@ -46,20 +46,11 @@ export const expenseCategoryColumn = (handleDeleteTaskTag, handleEditTaskTag) =>
       )
     }
   },
-  // {
-  //   accessorKey: 'id',
-  //   header: '#ID',
-  //   size: 80,
-  //   cell: ({ row }) => (
-  //     <div className="max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
-  //       {`#SKILL-${row.original.id}`}
-  //     </div>
-  //   ),
-  // },
+
   {
     accessorKey: 'name',
     header: 'Name',
-    cell: ({ row }) => row.original.name
+    cell: ({ row }) => `${row.original.parentId == null ? "" : "-"} ${row.original.name}`
   },
 
   {

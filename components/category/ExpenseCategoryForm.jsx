@@ -8,6 +8,7 @@ import { Button } from '../ui/button'
 import FormSelectField from '../share/form/FormSelect'
 import { StatusData } from '../constants/StaticData'
 import ExpenseCategoryApi from '@/services/expenses/ExpenseCategoryApi'
+import UnSelectFilter from '../share/form/UnSelectFilter'
 
 const ExpenseCategoryForm = ({ setSubmitOpenModal, fetchList, editData }) => {
     const form = useForm({
@@ -98,7 +99,7 @@ const ExpenseCategoryForm = ({ setSubmitOpenModal, fetchList, editData }) => {
                         placeholder='Enter Name'
                     />
                     {/* <FormInputField */}
-                    <FormSelectField
+                    <UnSelectFilter
                         name='parentId'
                         label='Parent'
                         form={form}
