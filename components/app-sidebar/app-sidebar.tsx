@@ -8,7 +8,7 @@ import {
   useSidebar
 } from '@/components/ui/sidebar'
 import { DocumentTextIcon } from '@heroicons/react/24/outline'
-import { CalendarDays, HomeIcon, LayoutDashboard, SettingsIcon, SquareUser } from 'lucide-react'
+import { CalendarDays, Fence, IndianRupee, LayoutDashboard, SettingsIcon, SquareUser } from 'lucide-react'
 import Link from 'next/link'
 import NavMain from './nav-main'
 import { NavUser } from './nav-user'
@@ -78,6 +78,41 @@ const data = {
     },
 
     {
+      title: 'Expenses',
+      url: '/dashboard/expense',
+      icon: IndianRupee,
+      isActive: true,
+      items: [
+
+        {
+          title: 'Add Expense',
+          url: '/dashboard/expense/add'
+        },
+        {
+          title: 'All Expenses',
+          url: '/dashboard/expenses'
+        },
+        ,
+        {
+          title: 'Expense Category',
+          url: '/dashboard/settings/expense-category'
+        }
+      ]
+    },
+    // {
+    //   title: 'Expense Category',
+    //   url: '/dashboard/settings/expense-category',
+    //   icon: Fence,
+    //   isActive: true,
+    //   items: [
+
+    //     {
+    //       title: 'Add',
+    //       url: '/dashboard/settings/expense-category'
+    //     }
+    //   ]
+    // },
+    {
       title: 'Settings',
       url: '/dashboard/settings/skills',
       icon: SettingsIcon,
@@ -88,6 +123,8 @@ const data = {
           title: 'Skills',
           url: '/dashboard/settings/skills'
         }
+
+
       ]
     },
   ]

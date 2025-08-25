@@ -89,7 +89,7 @@ function AddEvent() {
         <div className='mobile-view items-right relative flex min-h-screen w-full flex-col justify-start'>
 
             <div className='flex justify-between'>
-                <CommonLayout pageTitle={`Events`} />
+                <CommonLayout pageTitle={`Add Event`} />
             </div>
 
             <div className='mt-2'>{/* <Separator /> */}</div>
