@@ -215,8 +215,8 @@ function EditEvent() {
 
                         <div className='mb-4 grid grid-cols-3 gap-6 md:grid-cols-3 mt-7'>
                             <FormInputField
-                                name='invoice'
-                                label='Invoice'
+                                name='receiptUrl'
+                                label='Receipt Url'
                                 form={form}
                                 inputType='text'
                                 className='colum-box-bg-change'
