@@ -252,7 +252,7 @@ const EventList = () => {
                             <div className="relative">
                                 <FormInputField
                                     name="search"
-                                    placeholder="Email/Name/Phone/Shift"
+                                    placeholder="Email/Name/Phone"
                                     form={form}
                                     inputType="text"
                                     searchError="searchError !mt-41"

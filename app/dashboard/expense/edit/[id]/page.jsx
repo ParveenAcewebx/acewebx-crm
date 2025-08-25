@@ -1,6 +1,8 @@
 'use client'
 import {
-    isHoliday
+    isHoliday,
+    paymentMode,
+    StatusData
 } from '@/components/constants/StaticData'
 import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -18,71 +20,36 @@ import EventApi from '@/services/events/EventApi'
 import FormSelectField from '@/components/share/form/FormSelect'
 import { EventValidation } from '@/components/form-validations/EventValidation'
 import CurrentAndNextYearDatepicker from '@/components/share/form/CurrentAndNextYearDatepicker'
+import ExpenseApi from '@/services/expenses/ExpenseApi'
+import ExpenseCategoryApi from '@/services/expenses/ExpenseCategoryApi'
 
 function EditEvent() {
     const { id } = useParams()
     const [loader, setLoader] = useState(false)
-
-    // image :
-    const [imageUpload, setImageUpload] = useState(null)
-    const [updateImage, setUpdateImage] = useState([])
-    const [deletedOldImages, setDeletedOldImages] = useState([])
-    const [files, setFiles] = useState([])
-
+    const [categories, setCategories] = useState([])
+    const [subcategories, setsubCategories] = useState([])
 
     const router = useRouter()
     const form = useForm({
         mode: 'onChange',
         defaultValues: {
             title: "",
-            isHoliday: "",
-            isExpired: "",
             description: "",
-            from: new Date(),
-            to: new Date()
+            paymentMode: "",
+            categoryId: "",
+            subCategoryId: "",
+            receiptNumber: "",
+            receiptUrl: "",
+            status: ""
 
         },
-        resolver: yupResolver(EventValidation)
     })
 
 
 
     const onSubmit = async data => {
         try {
-            const formData = new FormData()
-
-            const existingImageFiles = await Promise.all(
-                updateImage.map(async (img, index) => {
-                    const response = await fetch(img.url)
-                    const blob = await response.blob()
-                    const fileName = img.url.split('/').pop() || `image_${index}.jpg`
-                    return new File([blob], fileName, { type: blob.type })
-                })
-            )
-
-            // Combine old and new image files
-            const allImageFiles = [
-                ...existingImageFiles,
-                ...(Array.isArray(imageUpload)
-                    ? imageUpload.filter(file => file instanceof File)
-                    : [])
-            ]
-
-            // Append them to formData
-            allImageFiles.forEach((file, index) => {
-                formData.append(`banners${index}`, file)
-            })
-
-            // Append the rest of the form fields
-            Object.entries(data).forEach(([key, value]) => {
-                if (key === 'fromDate' || key === 'toDate') {
-                    formData.append(key, moment(value).format('YYYY-MM-DD'))
-                } else {
-                    formData.append(key, value)
-                }
-            })
-
-            const response = await EventApi.editEvent(id, formData)
+            const response = await ExpenseApi.editExpense(id, data)
             if (response?.data?.status === true) {
                 setLoader(false)
                 router.back()
@@ -101,31 +68,15 @@ function EditEvent() {
 
     const candidateDataGetById = async (id, form) => {
         try {
-            const response = await EventApi.getByIdEvent(id)
+            const response = await ExpenseApi.getByIdExpense(id)
             if (response?.data?.status === true) {
                 const data = response?.data?.data
-                const fromDate = new Date(data?.fromDate + 'T00:00:00')
-                const toDate = new Date(data?.toDate + 'T00:00:00')
-
-                const dataForSet = {
-                    title: data?.title,
-                    isHoliday: data?.isHoliday,
-                    // isExpired: data?.isExpired,
-                    description: data?.description,
-                    phone: data?.phone,
-                    banners: data?.banners,
-                    fromDate: fromDate,
-                    toDate: toDate
-
+                const allData = {
+                    ...data, categoryId: response?.data?.data?.category?.id, subCategoryId: response?.data?.data?.subCategory?.id
                 }
-
-                const mappedImages = data.banners?.map(file => ({
-                    url: `${process.env.NEXT_PUBLIC_API_URL}${file.filePath}`
-                }))
-
-                // Set form fields first
-                setUpdateImage(mappedImages)
-                form.reset(dataForSet)
+                setTimeout(() => {
+                    form.reset(allData)
+                }, 2000)
 
 
             }
@@ -142,12 +93,61 @@ function EditEvent() {
         candidateDataGetById(id, form)
     }, [id])
 
+    // fetch options for category:-
+    const fetchAllCategorysList = async () => {
+        try {
+            const response = await ExpenseCategoryApi.getAllCategoryforOption()
+            if (response.status === 200) {
+                const optionsforParent = response?.data?.data?.data?.map((item) => ({
+                    label: item?.name,
+                    value: String(item?.id),
+                }));
+                setCategories(optionsforParent)
+            }
+        } catch (error) {
+            console.log('error', error)
+        }
+    }
+    useEffect(() => {
+        fetchAllCategorysList()
+    }, [])
+
+
+
+
+    const categoryIdForSub = form.watch("categoryId")
+
+    // fetch options for sub-category 
+
+    const subcategoryOptions = async (checkValue) => {
+        try {
+            const response = await ExpenseCategoryApi.getAllCategoryforOption()
+            if (response.status === 200) {
+                const optionsforParent = response?.data?.data?.data
+                    ?.filter((item) => item.parentId == checkValue) // ✅ filter items first
+                    ?.map((item) => ({
+                        label: item?.name,
+                        value: String(item?.id),
+                    }));
+                setsubCategories(optionsforParent)
+            }
+        } catch (error) {
+            console.log('error', error)
+        }
+    }
+
+    useEffect(() => {
+        if (categoryIdForSub) {
+            subcategoryOptions(categoryIdForSub)
+        }
+    }, [categoryIdForSub])
+
 
     return (
         <div className='mobile-view items-right relative flex min-h-screen w-full flex-col justify-start'>
 
             <div className='flex justify-between'>
-                <CommonLayout pageTitle={`Edit Event`} />
+                <CommonLayout pageTitle={`Edit Expense`} />
             </div>
 
             <div className='mt-2'>{/* <Separator /> */}</div>
@@ -160,7 +160,7 @@ function EditEvent() {
                         <div className='mb-4 mt-2 grid grid-cols-1 gap-6 md:grid-cols-1'>
                             <FormInputField
                                 name='title'
-                                label='Title*'
+                                label='Title'
                                 form={form}
                                 inputType='text'
                                 className='colum-box-bg-change'
@@ -180,44 +180,54 @@ function EditEvent() {
 
 
                         <div className='mb-4 mt-6 grid grid-cols-2 gap-6 md:grid-cols-3'>
-                            <CurrentAndNextYearDatepicker
-                                name='fromDate'
-                                label='From Date'
-                                form={form}
-                                inputFormat='YYYY-MM-DD'
-                                className='Date'
-                                disabled={{ before: new Date('2024-12-31') }}
-                                defaultM
-                                onth={new Date()}
-                            />
-                            <CurrentAndNextYearDatepicker
-                                name='toDate'
-                                label='To Date'
-                                form={form}
-                                inputFormat='YYYY-MM-DD'
-                                className='Date'
-                                disabled={{ before: new Date('2024-12-31') }}
-                                defaultM
-                                onth={new Date()}
-                            />
                             <FormSelectField
-                                name='isHoliday'
-                                label='Is Holiday?*'
+                                inputType='text'
+                                name='paymentMode'
+                                label='Payment Mode (Cash/Card/UPI)'
                                 form={form}
-                                options={isHoliday}
+                                options={paymentMode}
                                 className='colum-box-bg-change'
                             />
+                            <FormSelectField
+                                name='categoryId'
+                                label='Category'
+                                form={form}
+                                options={categories}
+                                className='colum-box-bg-change'
+                            />
+                            <FormSelectField
+                                name='subCategoryId'
+                                label='Sub Category'
+                                form={form}
+                                options={subcategories}
+                                className='colum-box-bg-change'
+                            />
+
                         </div>
 
 
+                        <div className='mb-4 grid grid-cols-3 gap-6 md:grid-cols-3 mt-7'>
+                            <FormInputField
+                                name='receiptUrl'
+                                label='Receipt Url'
+                                form={form}
+                                inputType='text'
+                                className='colum-box-bg-change'
+                            />
 
-                        <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1 mt-7'>
-                            <MultiImageUploader
-                                setImageUpload={setImageUpload}
-                                updateImage={updateImage}
-                                setDeletedOldImages={setDeletedOldImages}
-                                setFiles={setFiles}
-                                files={files}
+                            <FormInputField
+                                name='receiptNumber'
+                                label='Receipt Number'
+                                form={form}
+                                inputType='text'
+                                className='colum-box-bg-change'
+                            />
+                            <FormSelectField
+                                name='status'
+                                label='Status'
+                                form={form}
+                                options={StatusData}
+                                className='colum-box-bg-change'
                             />
                         </div>
 

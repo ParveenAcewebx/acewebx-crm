@@ -315,6 +315,12 @@ export const isHoliday = [
   { label: 'No', value: 'no' },
 ]
 
+export const paymentMode = [
+  { label: 'UPI', value: 'upi' },
+  { label: 'Cash', value: 'cash' },
+  { label: 'Card', value: 'card' },
+]
+
 export const YesNoOptions = [
   { label: 'Yes', value: 'yes' },
   { label: 'No', value: 'no' },
