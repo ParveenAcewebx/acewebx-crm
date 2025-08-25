@@ -91,6 +91,11 @@ const data = {
         {
           title: 'All Expenses',
           url: '/dashboard/expenses'
+        },
+        ,
+        {
+          title: 'Expense Category',
+          url: '/dashboard/settings/expense-category'
         }
       ]
     },
@@ -118,11 +123,7 @@ const data = {
           title: 'Skills',
           url: '/dashboard/settings/skills'
         }
-        ,
-        {
-          title: 'Expense Category',
-          url: '/dashboard/settings/expense-category'
-        }
+
 
       ]
     },

@@ -39,7 +39,7 @@ function EditEvent() {
             categoryId: "",
             subCategoryId: "",
             receiptNumber: "",
-            receiptUrl: "",
+            invoice: "",
             status: ""
 
         },
@@ -69,17 +69,22 @@ function EditEvent() {
     const candidateDataGetById = async (id, form) => {
         try {
             const response = await ExpenseApi.getByIdExpense(id)
+            console.log("responseresponse", response)
             if (response?.data?.status === true) {
                 const data = response?.data?.data
-                const allData = {
-                    ...data, categoryId: response?.data?.data?.category?.id, subCategoryId: response?.data?.data?.subCategory?.id
-                }
-                setTimeout(() => {
-                    form.reset(allData)
-                }, 2000)
+              
+                form.reset(data)
 
 
             }
+            setTimeout(() => {
+                form.setValue("categoryId", response?.data?.data?.category?.id)
+
+            }, 1000)
+            setTimeout(() => {
+
+                form.setValue("subCategoryId", response?.data?.data?.subCategory?.id)
+            }, 2000)
         } catch (error) {
             console.error('Submission Error:', error)
             errorMessage(
@@ -98,10 +103,12 @@ function EditEvent() {
         try {
             const response = await ExpenseCategoryApi.getAllCategoryforOption()
             if (response.status === 200) {
-                const optionsforParent = response?.data?.data?.data?.map((item) => ({
-                    label: item?.name,
-                    value: String(item?.id),
-                }));
+                const optionsforParent = response?.data?.data?.data
+                    ?.filter((item) => item.parentId == null) // ✅ filter items first
+                    ?.map((item) => ({
+                        label: item?.name,
+                        value: String(item?.id),
+                    }));
                 setCategories(optionsforParent)
             }
         } catch (error) {
@@ -208,8 +215,8 @@ function EditEvent() {
 
                         <div className='mb-4 grid grid-cols-3 gap-6 md:grid-cols-3 mt-7'>
                             <FormInputField
-                                name='receiptUrl'
-                                label='Receipt Url'
+                                name='invoice'
+                                label='Invoice'
                                 form={form}
                                 inputType='text'
                                 className='colum-box-bg-change'
