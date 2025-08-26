@@ -199,6 +199,10 @@ export const StatusData = [
   { label: 'Active', value: '1' },
   { label: 'Inactive', value: '0' },
 ]
+export const ExpenseStatusData = [
+  { label: 'Approved', value: '1' },
+  { label: 'Pending', value: '0' },
+]
 export const totalExperienceOptions = [
   { label: 'Fresher', value: '0' },
   { label: '6 Months', value: '0.6' },

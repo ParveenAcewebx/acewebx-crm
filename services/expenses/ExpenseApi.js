@@ -17,6 +17,9 @@ const ExpenseApi = {
         return api.delete(`expense/deleteExpense/${id}`)
     },
 
+    expenseCSVList: (formData) => {
+        return api.post(`expense/importExpenses`, formData)
+      },
 
     expenseListFilters: data => {
         const search = data?.search ?? ''
