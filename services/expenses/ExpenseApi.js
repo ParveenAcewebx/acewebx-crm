@@ -19,12 +19,12 @@ const ExpenseApi = {
 
     expenseCSVList: (formData) => {
         return api.post(`expense/importExpenses`, formData)
-      },
+    },
 
     expenseListFilters: data => {
         const search = data?.search ?? ''
         return api.get(
-            `expense/getAllExpenses?search=${search}`
+            `expense/getAllExpenses?search=${search}&limit=${data.length}&page=${data?.page}&startDate=${data?.startDate}&endDate=${data?.endDate}`
         )
     },
 

@@ -94,7 +94,7 @@ const data = {
         },
         ,
         {
-          title: 'Expense Category',
+          title: 'All Categories',
           url: '/dashboard/settings/expense-category'
         }
       ]

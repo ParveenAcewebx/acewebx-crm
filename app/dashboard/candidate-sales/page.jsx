@@ -163,6 +163,8 @@ const AllSalesCandidates = () => {
       if (!isValid) return;
       const apiData = await SalesCandidate.candidateListFilters({
         ...data,
+        page, 
+        length,
         search
 
       })

@@ -24,6 +24,7 @@ import CurrentAndNextYearDatepicker from '@/components/share/form/CurrentAndNext
 import ExpenseApi from '@/services/expenses/ExpenseApi'
 import ExpenseCategoryApi from '@/services/expenses/ExpenseCategoryApi'
 import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
+import FormDatePicker from '@/components/share/form/datePicker'
 
 function EditEvent() {
     const { id } = useParams()
@@ -269,6 +270,15 @@ function EditEvent() {
                                 form={form}
                                 options={paidByOptions}
                                 className='colum-box-bg-change'
+                            />
+                            <FormDatePicker
+                                name='date'
+                                label='Date'
+                                form={form}
+                                inputFormat='YYYY-MM-DD'
+                                className='datepickerouter'
+                                disabled={{ after: new Date('2005-12-31') }}
+                                defaultMonth={new Date('')}
                             />
                             <FormSelectField
                                 name='status'
