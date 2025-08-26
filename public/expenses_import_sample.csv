@@ -1,3 +1,5 @@
 Title,Description,Payment Mode,Category ID,SubCategory ID,Receipt Number,Receipt URL,Status,Amount,Paid By,Date
-Flight test,Flight to Mumbai test,cradit,1,2,RCPT212,https://example.com/receipt.jpg,1,999,"testimp@gmail.com, clientimp@gmail.com
-",2025-08-26
+Electricity Bill,Monthly Electricity Bill,card,1,2,ACE-1,https://example.com/receipt.jpg,1,999,"
+management@acewebx.com",2025-08-26
+Office Rent,Monthly Office Rent,card,1,2,"
+ACE-2",https://example.com/receipt.jpg,1,999,management@acewebx.com,2025-08-01

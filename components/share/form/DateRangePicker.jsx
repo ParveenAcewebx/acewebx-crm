@@ -47,7 +47,7 @@ export function FormDateRangePicker({
                   <CalendarIcon className="mr-2 h-3.5 w-4" />
                   {value?.startDate
                     ? `${value.startDate.toDateString()} - ${value.endDate.toDateString()}`
-                    : 'Select Date'}
+                    : 'Filter By Date'}
                 </Button>
               </PopoverTrigger>
 
