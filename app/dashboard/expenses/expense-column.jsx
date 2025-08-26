@@ -77,7 +77,10 @@ export const ExpenseColumn = (handleDeleteExpense, handleEditExpense) => [
     accessorKey: 'paidBy',
     header: 'Paid By',
     cell: ({ row }) =>
-      row?.original?.paidBy?.replace(/[\[\]"]/g, '')
+      (row?.original?.paidBy ?? '')
+        .replace(/[\[\]"']/g, '')
+        .replace(/\s*,\s*/g, ', ')
+        .trim()
   },
   {
     accessorKey: 'amount',
@@ -91,7 +94,14 @@ export const ExpenseColumn = (handleDeleteExpense, handleEditExpense) => [
     header: 'Receipt Number',
     cell: ({ row }) =>
       row?.original?.receiptNumber
-  }, {
+  },
+  {
+    accessorKey: 'date',
+    header: 'Date',
+    cell: ({ row }) => row?.original?.date || "-"
+
+  },
+  {
     accessorKey: 'status',
     header: 'Status',
     cell: ({ row }) =>
