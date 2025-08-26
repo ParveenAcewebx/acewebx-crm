@@ -7,9 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Plus, Search } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import SkillForm from '@/components/skills/SkillForm'
-import SkillSettingModal from '@/components/modal/SkillSettingModal'
-import SkillApi from '@/services/settings/SkillApi'
+
 import FormInputField from '@/components/share/form/FormInputField'
 import FormSelectField from '@/components/share/form/FormSelect'
 import { LengthData } from '@/components/constants/StaticData'
@@ -23,14 +21,14 @@ const ExpenseCategory = () => {
     const [loading, setLoading] = useState(true)
     const [page, setPage] = useState(1)
     const [totalRecord, setTotalRecord] = useState()
-    const [length, setLength] = useState(10)
+    const [length, setLength] = useState(50)
     const [deleteOpenModal, setDeleteOpenModal] = useState(false)
     const [deleteIndex, setDeleteIndex] = useState(null)
     const [submitOpenModal, setSubmitOpenModal] = useState(false)
     const [editData, setEditData] = useState(null)
     const methods = useForm({
         defaultValues: {
-            length: '10'
+            length: '50'
         }
     })
 

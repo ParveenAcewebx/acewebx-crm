@@ -3,7 +3,7 @@ import DialogBox from '@/components/modal/DialogBox'
 import LayoutHeader from '@/components/layoutHeader'
 import { DataTable } from '@/components/Table'
 import { errorMessage, successMessage } from '@/components/ToasterMessage'
-import { Search } from 'lucide-react'
+import { Import, Search } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import SkillForm from '@/components/skills/SkillForm'
@@ -15,20 +15,24 @@ import FormInputField from '@/components/share/form/FormInputField'
 import FormSelectField from '@/components/share/form/FormSelect'
 import { LengthData } from '@/components/constants/StaticData'
 import ExpenseApi from '@/services/expenses/ExpenseApi'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { Button } from '@/components/ui/button'
+import IncrementCSVDownload from '@/components/modal/IncrementCSVDownload'
+import ExpenseCSVDownload from '@/components/modal/ExpenseCSVDownload'
 
 const ExpenseList = () => {
     const [getList, setList] = useState([])
     const [loading, setLoading] = useState(true)
     const [page, setPage] = useState(1)
     const [totalRecord, setTotalRecord] = useState()
-    const [length, setLength] = useState(10)
+    const [length, setLength] = useState(50)
     const [deleteOpenModal, setDeleteOpenModal] = useState(false)
     const [deleteIndex, setDeleteIndex] = useState(null)
     const [submitOpenModal, setSubmitOpenModal] = useState(false)
     const [editData, setEditData] = useState(null)
     const methods = useForm({
         defaultValues: {
-            length: '10'
+            length: '50'
         }
     })
 
@@ -126,7 +130,29 @@ const ExpenseList = () => {
             console.error('Fetch error:', error)
         }
     }
+    const [inrementCSVModalOpen, setInrementCSVModalOpen] = useState(false) // State for DCS modal
 
+
+    const AddvanceOpenModal = row => {
+        setInrementCSVModalOpen(true)
+    }
+
+    const handleInrementCSVDownloadCSV = async (data) => {
+        const formData = new FormData()
+
+        const file = data?.file
+        if (file) {
+            formData.append('file', file)
+        }
+
+        try {
+            const response = await ExpenseApi.expenseCSVList(formData);
+            fetchList()
+            setInrementCSVModalOpen(false)
+        } catch (error) {
+            console.error("Download failed", error);
+        }
+    };
 
     return (
         <>
@@ -148,23 +174,40 @@ const ExpenseList = () => {
                     <FormProvider {...form}>
                         <div className="flex justify-between items-center gap-4">
                             <div className='filters relative'>
-                                <div>
+                                <div className="flex items-center gap-4">
+                                <div className="relative">
                                     <FormInputField
                                         name="search"
                                         placeholder="Search by Title"
                                         form={form}
                                         inputType="text"
-                                        className="searchSizeChange"
+                                        className="searchSizeChange "
                                         searchError="searchError"
                                     />
-                                    <div className='filttersSearch'>
+                                   
                                         <Search
                                             type="submit"
-                                            className="cursor-pointer "
+                                            className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
                                             onClick={() => handleSimpleFilter()}
                                         />
                                     </div>
+
+                                    {/* Import CSV for Employee Button */}
+                                    <Tooltip>
+                                        <TooltipTrigger asChild>
+                                            <Button
+                                                onClick={AddvanceOpenModal}
+                                                className="cursor-pointer text-[#231f20] hover:text-[#fff] hover:bg-[#231f20] bg-transparent border border-[#231f20] flex gap-2 text-[11px]"
+                                            >
+                                                <Import /> Expense
+                                            </Button>
+                                        </TooltipTrigger>
+                                        <TooltipContent className="w-auto rounded-sm bg-[#b82025] text-sm">
+                                            Import Expense CSV
+                                        </TooltipContent>
+                                    </Tooltip>
                                 </div>
+
 
                             </div>
                         </div>
@@ -208,6 +251,11 @@ const ExpenseList = () => {
                     message={editData ? 'Edit Skill' : 'Add Skill'}
                 />
             </div>
+            <ExpenseCSVDownload
+                isOpen={inrementCSVModalOpen}
+                onClose={() => setInrementCSVModalOpen(false)}
+                handleDownloadCSV={handleInrementCSVDownloadCSV}
+            />
         </>
     )
 }

@@ -1,0 +1,3 @@
+Title,Description,Payment Mode,Category ID,SubCategory ID,Receipt Number,Receipt URL,Status,Amount,Paid By
+Flight test,Flight to Mumbai test,cradit,1,2,RCPT777,https://example.com/receipt.jpg,1,999,"testimp@gmail.com, clientimp@gmail.com
+"

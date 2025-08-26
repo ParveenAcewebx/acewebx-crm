@@ -1,5 +1,6 @@
 'use client'
 import {
+    ExpenseStatusData,
     isHoliday,
     paymentMode,
     StatusData,
@@ -18,6 +19,7 @@ import TextEditor from '@/components/share/form/TextEditor'
 import FormSelectField from '@/components/share/form/FormSelect'
 import ExpenseApi from '@/services/expenses/ExpenseApi'
 import ExpenseCategoryApi from '@/services/expenses/ExpenseCategoryApi'
+import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
 
 function AddExpense() {
     const [loader, setLoader] = useState(false)
@@ -101,6 +103,26 @@ function AddExpense() {
         }
     }, [categoryIdForSub])
 
+
+    //  localReportingManage :--
+    const [paidByOptions, setPaidByOptions] = useState([])
+
+    useEffect(() => {
+        // This code runs only on the client side
+        if (typeof window !== "undefined" && window.localStorage) {
+            const storedData = localStorage.getItem("globalSettings");
+            const skillDataOption = JSON.parse(storedData)
+            if (skillDataOption?.reportingManager) {
+                const candidateOptions = skillDataOption?.reportingManager?.map((item) => ({
+                    value: item.email,         // or item.id if you have IDs
+                    label: item.name,         // or item.name if you have names
+                }));
+                setPaidByOptions(candidateOptions);
+
+            }
+        }
+    }, []);
+
     return (
         <div className='mobile-view items-right relative flex min-h-screen w-full flex-col justify-start'>
 
@@ -180,11 +202,25 @@ function AddExpense() {
                                 inputType='text'
                                 className='colum-box-bg-change'
                             />
+                            <FormInputField
+                                name='amount'
+                                label='Amount'
+                                form={form}
+                                inputType='number'
+                                className='colum-box-bg-change'
+                            />
+                            <FormMultiSelectField
+                                name='paidBy'
+                                label='Paid By'
+                                form={form}
+                                options={paidByOptions}
+                                className='colum-box-bg-change'
+                            />
                             <FormSelectField
                                 name='status'
                                 label='Status'
                                 form={form}
-                                options={StatusData}
+                                options={ExpenseStatusData}
                                 className='colum-box-bg-change'
                             />
                         </div>
