@@ -50,7 +50,7 @@ export const expenseCategoryColumn = (handleDeleteTaskTag, handleEditTaskTag) =>
   {
     accessorKey: 'name',
     header: 'Name',
-    cell: ({ row }) => `${row.original.parentId == null ? "" : "-"} ${row.original.name}`
+    cell: ({ row }) => `${row.original?.parentId == null ? "" : "-"} ${row.original?.name} {${row.original?.id}}`
   },
 
   {
