@@ -53,8 +53,10 @@ function EditEvent() {
 
 
     const onSubmit = async data => {
+        const newData = { ...data, date: moment(data?.date).format('YYYY-MM-DD') }
+
         try {
-            const response = await ExpenseApi.editExpense(id, data)
+            const response = await ExpenseApi.editExpense(id, newData)
             if (response?.data?.status === true) {
                 setLoader(false)
                 router.back()
@@ -68,22 +70,17 @@ function EditEvent() {
 
 
 
-
-
-
     const candidateDataGetById = async (id, form) => {
         try {
             const response = await ExpenseApi.getByIdExpense(id)
-            console.log("responseresponse", response)
             if (response?.data?.status === true) {
                 const data = response?.data?.data
-
                 form.reset(data)
-
 
             }
             form?.setValue('paidBy', response?.data?.data?.paidBy == undefined ? [] : JSON.parse(response?.data?.data?.paidBy))
 
+            form?.setValue("date", new Date(response?.data?.data?.date + 'T00:00:00'))
             setTimeout(() => {
                 form.setValue("categoryId", response?.data?.data?.category?.id)
 
@@ -277,9 +274,9 @@ function EditEvent() {
                                 form={form}
                                 inputFormat='YYYY-MM-DD'
                                 className='datepickerouter'
-                                disabled={{ after: new Date('2005-12-31') }}
-                                defaultMonth={new Date('')}
-                            />
+                                disabled={{ before: new Date('2000-12-31') }}
+                                defaultMonth={new Date()} />
+                                
                             <FormSelectField
                                 name='status'
                                 label='Status'

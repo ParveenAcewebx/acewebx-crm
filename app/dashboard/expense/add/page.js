@@ -21,6 +21,7 @@ import ExpenseApi from '@/services/expenses/ExpenseApi'
 import ExpenseCategoryApi from '@/services/expenses/ExpenseCategoryApi'
 import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
 import FormDatePicker from '@/components/share/form/datePicker'
+import moment from 'moment'
 
 function AddExpense() {
     const [loader, setLoader] = useState(false)
@@ -38,9 +39,11 @@ function AddExpense() {
     })
 
     const onSubmit = async data => {
+        const newData = { ...data, date: moment(data?.date).format('YYYY-MM-DD') }
         try {
 
-            const response = await ExpenseApi.addExpense(data)
+
+            const response = await ExpenseApi.addExpense(newData)
             if (response?.data?.status == true) {
                 setLoader(false)
                 router.push('/dashboard/expenses')
@@ -223,9 +226,8 @@ function AddExpense() {
                                 form={form}
                                 inputFormat='YYYY-MM-DD'
                                 className='datepickerouter'
-                                disabled={{ after: new Date('2005-12-31') }}
-                                defaultMonth={new Date('2005-12-31')}
-                            />
+                                disabled={{ before: new Date('2000-12-31') }}
+                                defaultMonth={new Date()} />
                             <FormSelectField
                                 name='status'
                                 label='Status'
