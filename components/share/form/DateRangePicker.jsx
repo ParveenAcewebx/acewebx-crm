@@ -43,7 +43,7 @@ export function FormDateRangePicker({
           return (
             <Popover open={open} onOpenChange={setOpen}>
               <PopoverTrigger asChild>
-                <Button variant="outline" style={{borderRadius : "2px" , fontWeight : "300px"}} className="w-full justify-start text-left !py-6 !rounded-xs">
+                <Button variant="outline" style={{ borderRadius: "2px", fontWeight: "300px" }} className="w-full justify-start text-left !py-6 !rounded-xs">
                   <CalendarIcon className="mr-2 h-3.5 w-4" />
                   {value?.startDate
                     ? `${value.startDate.toDateString()} - ${value.endDate.toDateString()}`
@@ -52,8 +52,8 @@ export function FormDateRangePicker({
               </PopoverTrigger>
 
               <PopoverContent className="p-0 w-auto dark-calendar-popover"
-                onInteractOutside={(e) => e.preventDefault()}
-                onPointerDownOutside={(e) => e.preventDefault()}
+                // onInteractOutside={(e) => e.preventDefault()}
+                // onPointerDownOutside={(e) => e.preventDefault()}
               >
                 <div className="text-end">
                   <button
