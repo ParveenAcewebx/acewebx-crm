@@ -118,7 +118,6 @@ function EditEmployees({ editId }) {
       if (response?.data?.status === true) {
         const data = response?.data?.data;
         const meta = data?.meta || {};
-        console.log("VVVV", new Date(meta?._lastIncrementDate + 'T00:00:00'))
         // const joiningDate = new Date(data.dob + 'T00:00:00')
         const dataForSet = {
           // Personal Info
