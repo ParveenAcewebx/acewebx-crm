@@ -42,7 +42,7 @@ function EditEvent() {
             categoryId: "",
             subCategoryId: "",
             receiptNumber: "",
-            invoice: "",
+            // invoice: "",
             status: "",
             amount: "",
             paidBy: []
@@ -80,7 +80,10 @@ function EditEvent() {
             }
             form?.setValue('paidBy', response?.data?.data?.paidBy == undefined ? [] : JSON.parse(response?.data?.data?.paidBy))
 
-            form?.setValue("date", new Date(response?.data?.data?.date + 'T00:00:00'))
+            if (response?.data?.data?.date) {
+
+                form?.setValue("date", new Date(response?.data?.data?.date + 'T00:00:00'))
+            }
             setTimeout(() => {
                 form.setValue("categoryId", response?.data?.data?.category?.id)
 
@@ -276,7 +279,7 @@ function EditEvent() {
                                 className='datepickerouter'
                                 disabled={{ before: new Date('2000-12-31') }}
                                 defaultMonth={new Date()} />
-                                
+
                             <FormSelectField
                                 name='status'
                                 label='Status'

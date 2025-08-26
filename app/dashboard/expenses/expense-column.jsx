@@ -1,5 +1,6 @@
 'use client'
 
+import { paymentMode } from '@/components/constants/StaticData'
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Edit, EllipsisVertical, Eye, Trash2 } from 'lucide-react'
@@ -70,18 +71,54 @@ export const ExpenseColumn = (handleDeleteExpense, handleEditExpense) => [
   {
     accessorKey: 'paymentMode',
     header: 'Payment Mode',
-    cell: ({ row }) =>
-      row?.original?.paymentMode
+    cell: ({ row }) => {
+      const newData = paymentMode?.filter((item) => item?.value == row?.original?.paymentMode)
+
+      return (
+        newData[0]?.label
+      )
+    }
   },
   {
-    accessorKey: 'paidBy',
-    header: 'Paid By',
-    cell: ({ row }) =>
-      (row?.original?.paidBy ?? '')
-        .replace(/[\[\]"']/g, '')
-        .replace(/\s*,\s*/g, ', ')
-        .trim()
-  },
+    accessorKey: "paidBy",
+    header: "Paid By",
+    cell: ({ row }) => {
+      let candidateOptions = [];
+  
+      // 🔹 Get managers list from localStorage
+      if (typeof window !== "undefined" && window.localStorage) {
+        const storedData = localStorage.getItem("globalSettings");
+        const skillDataOption = storedData ? JSON.parse(storedData) : null;
+  
+        if (skillDataOption?.reportingManager) {
+          candidateOptions = skillDataOption.reportingManager?.map((item) => ({
+            value: item?.email,
+            label: item?.name,
+          }));
+        }
+      }
+  
+      // 🔹 Parse paidBy safely (can be null, "[]", or valid JSON string)
+      let paidByList = [];
+      try {
+        if (row?.original?.paidBy) {
+          paidByList = JSON.parse(row.original?.paidBy);
+        }
+      } catch (e) {
+        console.warn("Invalid paidBy format", row?.original?.paidBy);
+      }
+  
+      // 🔹 Map emails → names (fallback to email if no name found)
+      const matchedLabels = paidByList.map((email) => {
+        const match = candidateOptions.find((opt) => opt.value === email);
+        return match ? match.label : email; // fallback to email
+      });
+  
+      return matchedLabels?.length > 0 ? matchedLabels.join(", ") : "-";
+    },
+  }
+  
+,  
   {
     accessorKey: 'amount',
     header: 'Amount',
