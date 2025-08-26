@@ -34,6 +34,13 @@ function AddExpense() {
         defaultValues: {
             title: "",
             description: "",
+            paymentMode: "",
+            categoryId: "",
+            subCategoryId: "",
+            receiptNumber: "",
+            status: "",
+            amount: "",
+            paidBy: []
 
         },
     })
