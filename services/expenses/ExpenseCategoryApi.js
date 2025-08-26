@@ -21,7 +21,7 @@ const ExpenseCategoryApi = {
         return api.delete(`expenseCategory/deleteExpenseCategory/${id}`)
     },
     getAllExpenseCategoryByType: (type) => {
-        return api.get(`expenseCategory/getSkillByType/${type}`)
+        return api.get(`expenseCategory/getAllExpenseCategory?parentId=${type}`)
     },
 
 

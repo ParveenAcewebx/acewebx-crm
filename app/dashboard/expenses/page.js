@@ -19,6 +19,9 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 import { Button } from '@/components/ui/button'
 import IncrementCSVDownload from '@/components/modal/IncrementCSVDownload'
 import ExpenseCSVDownload from '@/components/modal/ExpenseCSVDownload'
+import { Label } from '@/components/ui/label'
+import { FormDateRangePicker } from '@/components/share/form/DateRangePicker'
+import moment from 'moment'
 
 const ExpenseList = () => {
     const [getList, setList] = useState([])
@@ -109,6 +112,9 @@ const ExpenseList = () => {
         mode: 'onChange', // or 'onBlur' or 'onChange'
     });
     const search = form.watch('search')
+    const date = form.watch('date')
+    console.log("date", date)
+
 
 
 
@@ -119,6 +125,10 @@ const ExpenseList = () => {
             const apiData = await ExpenseApi.expenseListFilters({
                 ...data,
                 search,
+                length,
+                page,
+                startDate: date?.startDate == undefined ? "" : moment(date?.startDate).format('YYYY-MM-DD'),
+                endDate: date?.endDate == undefined ? "" : moment(date?.endDate).format('YYYY-MM-DD')
             })
 
             const candidates = apiData?.data?.data?.expenses || []
@@ -154,6 +164,10 @@ const ExpenseList = () => {
         }
     };
 
+    const handleDateChnage = (date) => {
+        console.log("valuedate", date)
+    }
+
     return (
         <>
             <div>
@@ -175,16 +189,28 @@ const ExpenseList = () => {
                         <div className="flex justify-between items-center gap-4">
                             <div className='filters relative'>
                                 <div className="flex items-center gap-4">
-                                <div className="relative">
-                                    <FormInputField
-                                        name="search"
-                                        placeholder="Search by Title"
-                                        form={form}
-                                        inputType="text"
-                                        className="searchSizeChange "
-                                        searchError="searchError"
-                                    />
-                                   
+                                    <div className=' grid grid-cols-1 gap-6 md:grid-cols-1 '>
+                                        {/* <Label className=''>Application Submitted Date</Label> */}
+                                        <FormDateRangePicker
+                                            name='date'
+                                            label=' '
+                                            onChange={handleDateChnage}
+                                            form={form}
+                                            inputFormat='YYYY-MM-DD'
+                                            className='datepickerouter'
+
+                                        /></div>
+
+                                    <div className="relative">
+                                        <FormInputField
+                                            name="search"
+                                            placeholder="Search by Title"
+                                            form={form}
+                                            inputType="text"
+                                            className="searchSizeChange "
+                                            searchError="searchError"
+                                        />
+
                                         <Search
                                             type="submit"
                                             className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
@@ -199,7 +225,7 @@ const ExpenseList = () => {
                                                 onClick={AddvanceOpenModal}
                                                 className="cursor-pointer text-[#231f20] hover:text-[#fff] hover:bg-[#231f20] bg-transparent border border-[#231f20] flex gap-2 text-[11px]"
                                             >
-                                                <Import /> Expense
+                                                <Import /> Import
                                             </Button>
                                         </TooltipTrigger>
                                         <TooltipContent className="w-auto rounded-sm bg-[#b82025] text-sm">

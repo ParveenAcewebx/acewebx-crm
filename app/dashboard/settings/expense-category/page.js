@@ -26,6 +26,8 @@ const ExpenseCategory = () => {
     const [deleteIndex, setDeleteIndex] = useState(null)
     const [submitOpenModal, setSubmitOpenModal] = useState(false)
     const [editData, setEditData] = useState(null)
+    const [parentData, setParentData] = useState([])
+
     const methods = useForm({
         defaultValues: {
             length: '50'
@@ -76,7 +78,7 @@ const ExpenseCategory = () => {
         if (row?.original?.id) {
             try {
                 const response = await ExpenseCategoryApi.getByIdExpenseCategory(row?.original?.id)
-                console.log("response------>",response)
+                console.log("response------>", response)
                 if (response.status === 200) {
                     setEditData(response.data.data)
                     fetchSkillsList()
@@ -143,6 +145,34 @@ const ExpenseCategory = () => {
         }
     }
 
+
+    const getAllExpenseCategoryByType = async () => {
+
+        try {
+            const response = await ExpenseCategoryApi.getAllExpenseCategoryByType(null)
+            if (response.status === 200) {
+                const optionsforParent = response?.data?.data?.data
+                    ?.filter((item) => item.parentId == null) // ✅ filter items first
+                    ?.map((item) => ({
+                        label: item?.name,
+                        value: String(item?.id),
+                    }));
+                setParentData(optionsforParent)
+
+                // setTotalRecord(response?.data?.data?.data?.pagination?.total)
+            }
+        } catch (error) {
+            console.log('error', error)
+        } finally {
+            setLoading(false)
+        }
+
+    }
+
+    useEffect(() => {
+        getAllExpenseCategoryByType()
+
+    }, [submitOpenModal])
     return (
         <>
             <div>
@@ -223,6 +253,7 @@ const ExpenseCategory = () => {
                             setSubmitOpenModal={setSubmitOpenModal}
                             fetchList={fetchSkillsList}
                             editData={editData}
+                            parentData={parentData}
                         />
                     }
                     message={editData ? 'Edit Expense Category' : 'Add Expense Category'}

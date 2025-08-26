@@ -74,6 +74,19 @@ export const ExpenseColumn = (handleDeleteExpense, handleEditExpense) => [
       row?.original?.paymentMode
   },
   {
+    accessorKey: 'paidBy',
+    header: 'Paid By',
+    cell: ({ row }) =>
+      row?.original?.paidBy?.replace(/[\[\]"]/g, '')
+  },
+  {
+    accessorKey: 'amount',
+    header: 'Amount',
+    cell: ({ row }) =>
+      row?.original?.amount
+  },
+
+  {
     accessorKey: 'receiptNumber',
     header: 'Receipt Number',
     cell: ({ row }) =>
@@ -82,6 +95,6 @@ export const ExpenseColumn = (handleDeleteExpense, handleEditExpense) => [
     accessorKey: 'status',
     header: 'Status',
     cell: ({ row }) =>
-      row?.original?.status == "1" ? "Active" : "Inactive"
+      row?.original?.status == "0" ? "Pending" : "Approved"
   },
 ]

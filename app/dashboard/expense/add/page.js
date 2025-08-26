@@ -20,6 +20,7 @@ import FormSelectField from '@/components/share/form/FormSelect'
 import ExpenseApi from '@/services/expenses/ExpenseApi'
 import ExpenseCategoryApi from '@/services/expenses/ExpenseCategoryApi'
 import FormMultiSelectField from '@/components/share/form/FormMultiSelect'
+import FormDatePicker from '@/components/share/form/datePicker'
 
 function AddExpense() {
     const [loader, setLoader] = useState(false)
@@ -215,6 +216,15 @@ function AddExpense() {
                                 form={form}
                                 options={paidByOptions}
                                 className='colum-box-bg-change'
+                            />
+                            <FormDatePicker
+                                name='date'
+                                label='Date'
+                                form={form}
+                                inputFormat='YYYY-MM-DD'
+                                className='datepickerouter'
+                                disabled={{ after: new Date('2005-12-31') }}
+                                defaultMonth={new Date('2005-12-31')}
                             />
                             <FormSelectField
                                 name='status'

@@ -10,7 +10,7 @@ import { StatusData } from '../constants/StaticData'
 import ExpenseCategoryApi from '@/services/expenses/ExpenseCategoryApi'
 import UnSelectFilter from '../share/form/UnSelectFilter'
 
-const ExpenseCategoryForm = ({ setSubmitOpenModal, fetchList, editData }) => {
+const ExpenseCategoryForm = ({ setSubmitOpenModal, fetchList, editData, parentData }) => {
     const form = useForm({
         defaultValues: {
             name: '',
@@ -19,7 +19,6 @@ const ExpenseCategoryForm = ({ setSubmitOpenModal, fetchList, editData }) => {
         },
     })
 
-    const [parentIds, setParentIds] = useState([])
     const editId = editData?.id || ''
     useEffect(() => {
 
@@ -37,29 +36,7 @@ const ExpenseCategoryForm = ({ setSubmitOpenModal, fetchList, editData }) => {
     }, [editData])
 
 
-    // fetch group  list
-    const fetchAllCategorysList = async () => {
-        try {
-          const response = await ExpenseCategoryApi.getAllCategoryforOption();
-      
-          if (response.status === 200) {
-            const optionsforParent = response?.data?.data?.data
-              ?.filter((item) => item.parentId == null) // ✅ filter items first
-              ?.map((item) => ({
-                label: item?.name,
-                value: String(item?.id),
-              }));
-      
-            setParentIds(optionsforParent || []); // ✅ always set an array
-          }
-        } catch (error) {
-          console.log("error", error);
-        }
-      };
-      
-    useEffect(() => {
-        fetchAllCategorysList()
-    }, [])
+
 
     const onSubmit = async (data) => {
         try {
@@ -103,7 +80,7 @@ const ExpenseCategoryForm = ({ setSubmitOpenModal, fetchList, editData }) => {
                         name='parentId'
                         label='Parent'
                         form={form}
-                        options={parentIds}
+                        options={parentData}
                         placeholder='Enter Parent'
                         className='colum-box-bg-change'
                     />
