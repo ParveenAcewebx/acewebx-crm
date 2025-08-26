@@ -31,7 +31,7 @@ export function FormDateRangePicker({
     // }
   }, [])
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 ">
 
       <Controller
         name={name}
@@ -43,8 +43,8 @@ export function FormDateRangePicker({
           return (
             <Popover open={open} onOpenChange={setOpen}>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="w-full justify-start text-left !py-6">
-                  <CalendarIcon className="mr-2 h-4 w-4" />
+                <Button variant="outline" style={{borderRadius : "2px" , fontWeight : "300px"}} className="w-full justify-start text-left !py-6 !rounded-xs">
+                  <CalendarIcon className="mr-2 h-3.5 w-4" />
                   {value?.startDate
                     ? `${value.startDate.toDateString()} - ${value.endDate.toDateString()}`
                     : 'Select Date'}

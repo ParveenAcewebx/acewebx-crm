@@ -113,7 +113,6 @@ const ExpenseList = () => {
     });
     const search = form.watch('search')
     const date = form.watch('date')
-    console.log("date", date)
 
 
 
@@ -197,7 +196,7 @@ const ExpenseList = () => {
                                             onChange={handleDateChnage}
                                             form={form}
                                             inputFormat='YYYY-MM-DD'
-                                            className='datepickerouter'
+                                            className='datepickerouterExprense'
 
                                         /></div>
 
