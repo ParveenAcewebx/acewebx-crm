@@ -90,16 +90,7 @@ export const EmployeeColumn = (handleDeleteEmployee, handleEditEmployee, handleE
       </div>
     ),
   },
-  {
-    accessorKey: 'uan',
-    header: 'UAN',
-    size: 80,
-    cell: ({ row }) => (
-      <div className="max-w-[300px]">
-        {row.original.uan == null ? "-" : row.original.uan}
-      </div>
-    ),
-  },
+
   {
     accessorKey: 'name',
     header: 'Contact Information',
