@@ -125,6 +125,7 @@ function EditEmployees({ editId }) {
           status: data?.status || '',
           personalEmail: data?.personalEmail || '',
           phone: data?.phone || '',
+          uan: data?.uan || null,
           alternatePhone: data?.alternatePhone || '',
           dobDocument: parseDateOrEmpty(data?.dobDocument),
           dobCelebration: parseDateOrEmpty(data?.dobCelebration),
@@ -161,7 +162,6 @@ function EditEmployees({ editId }) {
           // lastIncrementDate: meta?._lastIncrementDate && moment(meta?._lastIncrementDate).format("YYYY-MM-DD") + "T00:00:00",
 
         };
-
 
         form.reset(dataForSet);
         form?.setValue('reportingManager', data?.reportingManager == undefined ? [] : JSON.parse(data?.reportingManager))
@@ -371,6 +371,13 @@ function EditEmployees({ editId }) {
                     label='Status'
                     form={form}
                     options={StatutsOptions}
+                    className='colum-box-bg-change'
+                  />
+                  <FormInputField
+                    name='uan'
+                    label='UAN'
+                    form={form}
+                    inputType='number'
                     className='colum-box-bg-change'
                   />
                 </div>

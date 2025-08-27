@@ -133,6 +133,8 @@ const ExpenseCategory = () => {
             const apiData = await ExpenseCategoryApi.ExpenseCategoryListFilters({
                 ...data,
                 search,
+                page,
+                length
             })
 
             const candidates = apiData?.data?.data?.data || []

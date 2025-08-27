@@ -288,6 +288,13 @@ function AddEmployees() {
                     options={StatutsOptions}
                     className='colum-box-bg-change'
                   />
+                  <FormInputField
+                    name='uan'
+                    label='UAN'
+                    form={form}
+                    inputType='number'
+                    className='colum-box-bg-change'
+                  />
                 </div>
               </fieldset>
 
