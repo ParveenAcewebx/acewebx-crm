@@ -114,6 +114,9 @@ const EventList = () => {
     const form = useForm({
         // resolver: yupResolver(SearchEmployee),
         mode: 'onChange', // or 'onBlur' or 'onChange'
+        defaultValues: {
+            currentShift: ""
+        }
     });
     const search = form.watch('search')
 

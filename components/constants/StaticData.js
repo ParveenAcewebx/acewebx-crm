@@ -92,6 +92,7 @@ export const formDefaultValues = {
   companyEmail: '',
   designation: '',
   dateOfJoining: '',
+  uan: null,
 
   // Documents
   adharCard: '',

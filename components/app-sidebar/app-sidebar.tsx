@@ -104,7 +104,7 @@ const data = {
     //   url: '/dashboard/settings/expense-category',
     //   icon: Fence,
     //   isActive: true,
-    //   items: [
+    //   items: [ 
 
     //     {
     //       title: 'Add',
@@ -138,7 +138,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent className='theme-bg'>
         <div className='main-logo flex h-20 items-center justify-center gap-3 border-b bg-white px-2'>
           <Link href='/dashboard' className='flex-shrink-0'>
-            <img src='/acewebxlogo.png' className='w-44' />{' '}
+            <img src='/acewebxlogo.png' alt="Acewebx logo" className='w-44' />{' '}
           </Link>
           {/* <p className={cn(
               'font-semibold transition-all',

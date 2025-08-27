@@ -91,6 +91,16 @@ export const InactiveEmployeeColumn = (handleDeleteEmployee, handleEditEmployee,
     ),
   },
   {
+    accessorKey: 'uan',
+    header: 'UAN',
+    size: 80,
+    cell: ({ row }) => (
+      <div className="max-w-[300px]">
+        {row.original.uan == null ? "-" : row.original.uan}
+      </div>
+    ),
+  },
+  {
     accessorKey: 'name',
     header: 'Contact Information',
     cell: ({ row }) => (
