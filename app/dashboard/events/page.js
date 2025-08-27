@@ -33,11 +33,24 @@ const EventList = () => {
         }
     })
 
+    // filter :--
+    const form = useForm({
+        // resolver: yupResolver(SearchEvent),
+        mode: 'onChange', // or 'onBlur' or 'onChange'
+    });
+    const search = form.watch('search')
+
     const router = useRouter()
     // fetch group list
     const fetchList = async () => {
+        const data = {}
         try {
-            const response = await EventApi.getAllEvent(page, length)
+            const response = await EventApi.eventListFilters({
+                ...data,
+                search,
+                page,
+                length
+            })
             if (response.status === 200) {
                 setList(response?.data?.data?.events)
                 setTotalRecord(response?.data?.data?.pagination?.total)
@@ -104,12 +117,7 @@ const EventList = () => {
 
 
 
-    // filter :--
-    const form = useForm({
-        // resolver: yupResolver(SearchEvent),
-        mode: 'onChange', // or 'onBlur' or 'onChange'
-    });
-    const search = form.watch('search')
+
 
     const handleClearSearch = () => {
         form.setValue('search', '')
@@ -117,27 +125,9 @@ const EventList = () => {
         getListCadidate()
     }
 
-    const handleSimpleFilter = async data => {
-
-        const isValid = await form.trigger('search'); // only validate 'search'
-
-        if (!isValid) return;
-        try {
-            const apiData = await EventApi.eventListFilters({
-                ...data,
-                search,
-                page,
-                length
-            })
-
-            const candidates = apiData?.data?.data?.events || []
-            const paginationInfo = apiData?.data?.data?.pagination
-
-            setList(candidates)
-            setTotalRecord(paginationInfo?.total || 0)
-        } catch (error) {
-            console.error('Fetch error:', error)
-        }
+    const handleSimpleFilter = () => {
+        setPage(1)
+        fetchList()
     }
 
 
@@ -151,7 +141,7 @@ const EventList = () => {
                         <FormProvider {...methods}>
                             <FormSelectField
                                 name='length'
-                                className='h-10 w-28   '
+                                className='h-12 w-28 btn-secondary'
                                 form={methods}
                                 options={LengthData}
                             />

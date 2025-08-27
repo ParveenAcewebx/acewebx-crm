@@ -51,6 +51,13 @@ const AllSalesCandidates = () => {
     }
   })
 
+  // filter :--
+  const form = useForm({
+    // resolver: yupResolver(SearchValidation),
+    mode: 'onChange',
+  });
+  const search = form.watch('search')
+
   //  get all sales candidates :-
   const getListSales = async () => {
     try {
@@ -67,7 +74,8 @@ const AllSalesCandidates = () => {
         preferredShift,
         connectStartDate,
         connectEndDate,
-        skill
+        skill,
+        search
       }
       setLoading(true)
       const res = await SalesCandidate.salesCandidateList(newData)
@@ -76,6 +84,7 @@ const AllSalesCandidates = () => {
         setTotalRecord(res?.data?.data?.pagination?.total)
       }
     } catch (error) {
+      console.log("error",error)
       errorMessage({
         description: error?.response?.data?.message
       })
@@ -143,12 +152,7 @@ const AllSalesCandidates = () => {
     return () => subscription.unsubscribe()
   }, [methods, totalRecord])
 
-  // filter :--
-  const form = useForm({
-    // resolver: yupResolver(SearchValidation),
-    mode: 'onChange',
-  });
-  const search = form.watch('search')
+
 
   const handleClearSearch = () => {
     form.setValue('search', '')
@@ -156,25 +160,9 @@ const AllSalesCandidates = () => {
     getListSales()
   }
 
-  const handleSimpleFilter = async data => {
-    try {
-      const isValid = await form.trigger('search'); // only validate 'search'
-
-      if (!isValid) return;
-      const apiData = await SalesCandidate.candidateListFilters({
-        ...data,
-        page, 
-        length,
-        search
-
-      })
-      const candidates = apiData?.data?.data || []
-      const paginationInfo = apiData?.data?.data?.pagination
-      setList(candidates)
-      setTotalRecord(paginationInfo?.total || 0)
-    } catch (error) {
-      console.error('Fetch error:', error)
-    }
+  const handleSimpleFilter = () => {
+    setPage(1)
+    getListSales()
   }
 
   // send form by email link :-
@@ -199,6 +187,7 @@ const AllSalesCandidates = () => {
 
   //Addvance search :-
   const handleAddvanceSearch = async data => {
+    setPage(1)
     const newData = {
       startDate: moment(data?.dob?.startDate).format('YYYY-MM-DD'),
       endDate: moment(data?.dob?.endDate).format('YYYY-MM-DD'),
@@ -310,7 +299,7 @@ const AllSalesCandidates = () => {
           <FormProvider {...methods}>
             <FormSelectField
               name="length"
-              className="h-10 w-28"
+              className="h-12 w-28 btn-secondary"
               form={methods}
               options={LengthData}
             />
@@ -340,7 +329,7 @@ const AllSalesCandidates = () => {
             {/* Advance Search */}
             <Button
               onClick={() => AddvanceOpenModal()}
-              className="cursor-pointer text-[#b82025] hover:text-[#fff] hover:bg-[#b82025] bg-transparent border border-[#b82025] text-[11px]"
+              className="cursor-pointer h-12 rounded-[4px] text-[#b82025] hover:text-[#fff] hover:bg-[#b82025] bg-transparent border border-[#b82025] text-[11px]"
 
             >
               Advance Search
@@ -351,7 +340,7 @@ const AllSalesCandidates = () => {
               <TooltipTrigger asChild>
                 <Button
                   onClick={handleDownloadCSV}
-                  className="cursor-pointer text-[#231f20] hover:text-[#fff] hover:bg-[#231f20] bg-transparent border border-[#231f20] flex gap-2 text-[11px]"
+                  className="cursor-pointer h-12 rounded-[4px] text-[#231f20] hover:text-[#fff] hover:bg-[#231f20] bg-transparent border border-[#231f20] flex gap-2 text-[11px]"
                 >
                   {/* <Import /> */} Export
                 </Button>

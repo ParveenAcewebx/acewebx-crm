@@ -25,13 +25,12 @@ const ExpenseCategoryApi = {
     },
 
 
-    ExpenseCategoryListFilters: data => {
+    expenseCategoryListFilters: data => {
         const search = data?.search ?? ''
         return api.get(
             `expenseCategory/getAllExpenseCategory?search=${search}&page=${data.page}&limit=${data.length}`
         )
     },
-
 }
 
 export default ExpenseCategoryApi

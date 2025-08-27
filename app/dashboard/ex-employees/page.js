@@ -39,10 +39,25 @@ const EventList = () => {
         }
     })
 
+    // filter :--
+    const form = useForm({
+        // resolver: yupResolver(SearchEmployee),
+        mode: 'onChange', // or 'onBlur' or 'onChange'
+    });
+    const search = form.watch('search')
+
     // fetch group list
     const fetchList = async () => {
+        const data = {}
         try {
-            const response = await EmployeesApi.getAllEmployees(page, length, status)
+            const response = await EmployeesApi.employeesListFilters({
+                ...data,
+                search,
+                status,
+                currentShiftValue: "",
+                page,
+                length
+            })
             if (response.status === 200) {
                 setList(response?.data?.data?.employees)
                 setTotalRecord(response?.data?.data?.pagination?.total)
@@ -107,12 +122,7 @@ const EventList = () => {
 
 
 
-    // filter :--
-    const form = useForm({
-        // resolver: yupResolver(SearchEmployee),
-        mode: 'onChange', // or 'onBlur' or 'onChange'
-    });
-    const search = form.watch('search')
+
 
     const handleClearSearch = () => {
         form.setValue('search', '')
@@ -120,29 +130,11 @@ const EventList = () => {
         getListCadidate()
     }
 
-    const handleSimpleFilter = async data => {
 
-        const isValid = await form.trigger('search'); // only validate 'search'
+    const handleSimpleFilter = () => {
+        setPage(1)
+        fetchList()
 
-        if (!isValid) return;
-        try {
-            const apiData = await EmployeesApi.employeesListFilters({
-                ...data,
-                search,
-                status,
-                currentShiftValue: "",
-                page,
-                length
-            })
-
-            const candidates = apiData?.data?.data?.employees || []
-            const paginationInfo = apiData?.data?.data?.pagination
-
-            setList(candidates)
-            setTotalRecord(paginationInfo?.total || 0)
-        } catch (error) {
-            console.error('Fetch error:', error)
-        }
     }
 
 
@@ -152,15 +144,7 @@ const EventList = () => {
 
 
 
-    const InrementCSVOpenModal = row => {
-        // setSelectedDcsValue(row)
-        setInrementCSVModalOpen(true)
-    }
 
-    const AddvanceOpenModal = row => {
-        setSelectedDcsValue(row)
-        setDcsModalOpen(true)
-    }
 
     const handleDownloadCSV = async (data) => {
         const formData = new FormData()
@@ -240,7 +224,7 @@ const EventList = () => {
                         <FormProvider {...methods}>
                             <FormSelectField
                                 name='length'
-                                className='h-10 w-28 ace-employ'
+                                className='h-12 w-28 btn-secondary'
                                 form={methods}
                                 options={LengthData}
                             />
@@ -268,36 +252,6 @@ const EventList = () => {
                                 />
                             </div>
 
-
-                            {/* Import CSV for Employee Button */}
-                            {/* <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <Button
-                                        onClick={AddvanceOpenModal}
-                                        className="cursor-pointer text-[#231f20] hover:text-[#fff] hover:bg-[#231f20] bg-transparent border border-[#231f20] flex gap-2 text-[11px]"
-                                    >
-                                        Import
-                                    </Button>
-                                </TooltipTrigger>
-                                <TooltipContent className="w-auto rounded-sm bg-[#b82025] text-sm">
-                                    Import Employee CSV
-                                </TooltipContent>
-                            </Tooltip> */}
-
-                            {/* Import CSV for Increment Button */}
-                            {/* <Tooltip>
-                                <TooltipTrigger asChild>
-                                    <Button
-                                        onClick={InrementCSVOpenModal}
-                                        className="cursor-pointer text-[#231f20] hover:text-[#fff] hover:bg-[#231f20] bg-transparent border border-[#231f20] flex gap-2 text-[11px]"
-                                    >
-                                        Import
-                                    </Button>
-                                </TooltipTrigger>
-                                <TooltipContent className="w-auto rounded-sm bg-[#b82025] text-sm">
-                                    Import Increment CSV
-                                </TooltipContent>
-                            </Tooltip> */}
                         </div>
                     </FormProvider>
                 </div>
