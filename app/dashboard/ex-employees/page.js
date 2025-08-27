@@ -129,7 +129,9 @@ const EventList = () => {
             const apiData = await EmployeesApi.employeesListFilters({
                 ...data,
                 search,
-                status
+                status,
+                page,
+                length
             })
 
             const candidates = apiData?.data?.data?.employees || []

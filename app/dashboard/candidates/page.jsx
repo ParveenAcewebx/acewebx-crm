@@ -163,6 +163,8 @@ const AllCandidates = () => {
       const apiData = await Candidate.candidateListFilters({
         ...data,
         search,
+        page,
+        length,
       })
 
       const candidates = apiData?.data?.data || []
@@ -211,7 +213,9 @@ const AllCandidates = () => {
         ? moment(data.lastContected.endDate).format('YYYY-MM-DD')
         : "",
       skill: data?.skill,
-      preferredShift: data?.preferredShift
+      preferredShift: data?.preferredShift,
+      page,
+      length,
     }
 
     setConnectStartDate(newData.connectStartDate)
@@ -253,7 +257,8 @@ const AllCandidates = () => {
       maxExperience,
       connectStartDate,
       connectEndDate,
-      skill
+      skill,
+      
     }
 
     try {

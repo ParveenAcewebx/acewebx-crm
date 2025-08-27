@@ -117,6 +117,8 @@ const IncrementList = () => {
       const apiData = await IncrementAPi.IncrementListFilters({
         ...data,
         search,
+        page,
+        length
       })
 
       const candidates = apiData?.data?.data?.increments || []

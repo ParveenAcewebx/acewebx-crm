@@ -215,6 +215,8 @@ const AllSalesCandidates = () => {
         ? moment(data.lastContected.endDate).format('YYYY-MM-DD')
         : "",
       skill: data?.skill,
+      page,
+      length
     }
     setConnectStartDate(newData.connectStartDate)
     setConnectEndDate(newData.connectEndDate)

@@ -47,7 +47,7 @@ const Candidate = {
   candidateListFilters: data => {
     const search = data?.search ?? ''
     return api.get(
-      `candidate/getAllCandidate?search=${search}`
+      `candidate/getAllCandidate?search=${search}&page=${data?.page}&limit=${data?.length}`
     )
   },
   candidateListAddvanceFilters: newData => {
@@ -61,7 +61,7 @@ const Candidate = {
    let connectStartDate = newData?.connectStartDate == undefined ? "" : newData?.connectStartDate
    let connectEndDate = newData?.connectEndDate == undefined ? "" : newData?.connectEndDate
        return api.get(
-      `candidate/getAllCandidate?minSalary=${newData?.minSalary}&maxSalary=${newData?.maxSalary}&startDate=${start}&endDate=${end}&search=${search}&connectStartDate=${connectStartDate}&connectEndDate=${connectEndDate}&minExperience=${minExperience}&maxExperience=${maxExperience}&preferredShift=${preferredShift}&skill=${skill}`
+      `candidate/getAllCandidate?page=${newData?.page}&limit=${newData?.length}&minSalary=${newData?.minSalary}&maxSalary=${newData?.maxSalary}&startDate=${start}&endDate=${end}&search=${search}&connectStartDate=${connectStartDate}&connectEndDate=${connectEndDate}&minExperience=${minExperience}&maxExperience=${maxExperience}&preferredShift=${preferredShift}&skill=${skill}`
     )
   },
 

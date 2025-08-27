@@ -134,7 +134,9 @@ const EventList = () => {
                 ...data,
                 search,
                 status,
-                currentShiftValue: currentShiftValue == "all" ? " " : currentShiftValue
+                currentShiftValue: currentShiftValue == "all" ? " " : currentShiftValue,
+                page,
+                length
             })
 
             const candidates = apiData?.data?.data?.employees || []
