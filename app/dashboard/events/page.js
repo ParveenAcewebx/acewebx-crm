@@ -126,6 +126,8 @@ const EventList = () => {
             const apiData = await EventApi.eventListFilters({
                 ...data,
                 search,
+                page,
+                length
             })
 
             const candidates = apiData?.data?.data?.events || []

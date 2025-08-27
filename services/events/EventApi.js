@@ -24,7 +24,7 @@ const EventApi = {
     eventListFilters: data => {
         const search = data?.search ?? ''
         return api.get(
-          `event/getAllEvent?search=${search}`
+          `event/getAllEvent?search=${search}&page=${data.page}&limit=${data.length}`
         )
       },
 
