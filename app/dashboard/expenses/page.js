@@ -124,33 +124,11 @@ const ExpenseList = () => {
 
 
     // filter :--
-
-
-
-
-
-    const handleSimpleFilter = async data => {
+    const handleSimpleFilter = () => {
+        setPage(1)
         fetchList()
-
-        // try {
-        //     const apiData = await ExpenseApi.expenseListFilters({
-        //         ...data,
-        //         search,
-        //         length,
-        //         page,
-        //         startDate: date?.startDate == undefined ? "" : moment(date?.startDate).format('YYYY-MM-DD'),
-        //         endDate: date?.endDate == undefined ? "" : moment(date?.endDate).format('YYYY-MM-DD')
-        //     })
-
-        //     const candidates = apiData?.data?.data?.expenses || []
-        //     const paginationInfo = apiData?.data?.data?.pagination
-
-        //     setList(candidates)
-        //     setTotalRecord(paginationInfo?.total || 0)
-        // } catch (error) {
-        //     console.error('Fetch error:', error)
-        // }
     }
+
     const [inrementCSVModalOpen, setInrementCSVModalOpen] = useState(false) // State for DCS modal
 
 
@@ -189,7 +167,7 @@ const ExpenseList = () => {
                         <FormProvider {...methods}>
                             <FormSelectField
                                 name='length'
-                                className='h-10 w-28   '
+                                className='h-12 w-28 btn-secondary'
                                 form={methods}
                                 options={LengthData}
                             />
@@ -234,7 +212,7 @@ const ExpenseList = () => {
                                         <TooltipTrigger asChild>
                                             <Button
                                                 onClick={AddvanceOpenModal}
-                                                className="cursor-pointer text-[#231f20] hover:text-[#fff] hover:bg-[#231f20] bg-transparent border border-[#231f20] flex gap-2 text-[11px]"
+                                                className="cursor-pointer h-12 rounded-[4px] text-[#231f20] hover:text-[#fff] hover:bg-[#231f20] bg-transparent border border-[#231f20] flex gap-2 text-[11px]"
                                             >
                                                 <Import /> Import
                                             </Button>
