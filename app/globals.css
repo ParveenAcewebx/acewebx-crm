@@ -339,10 +339,12 @@ body .main-menu-item[data-state=open] {
 .theme-bg-light {
   background-color: #605457 !important;
 }
-
-.theme-bg-light-rgba {
-  background-color: #f5f6fa !important;
+.custom-tabels th {
+    color: #fff !important;
 }
+/* .theme-bg-light-rgba {
+  background-color: #f5f6fa !important;
+} */
 
 .cancel-button {
   border: 1px solid #f00202 !important;
@@ -1313,8 +1315,8 @@ td.site-tab span {
   background: #fbfbfb;
 }
 
-.custom-tabels table tr {
-  background: #fff;
+thead th {
+    background-color: #231f20 !important;
 }
 
 button:focus,

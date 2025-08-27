@@ -3,6 +3,7 @@ import DialogBox from '@/components/modal/DialogBox'
 import LayoutHeader from '@/components/layoutHeader'
 import { DataTable } from '@/components/Table'
 import { errorMessage, successMessage } from '@/components/ToasterMessage'
+import { Button } from '@/components/ui/button'
 import { Search } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -13,7 +14,10 @@ import EmployeesApi from '@/services/employees/EmployeesApi'
 import { InactiveEmployeeColumn } from './inactive-employees-column'
 import FormInputField from '@/components/share/form/FormInputField'
 import FormSelectField from '@/components/share/form/FormSelect'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { SearchEmployee } from '@/components/form-validations/SearchValidation'
 import { LengthData } from '@/components/constants/StaticData'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import EmployeeCSVDownload from '@/components/modal/EmployeeCSVDownload'
 import IncrementCSVDownload from '@/components/modal/IncrementCSVDownload'
 
@@ -110,7 +114,11 @@ const EventList = () => {
     });
     const search = form.watch('search')
 
+    const handleClearSearch = () => {
+        form.setValue('search', '')
 
+        getListCadidate()
+    }
 
     const handleSimpleFilter = async data => {
 
@@ -122,9 +130,9 @@ const EventList = () => {
                 ...data,
                 search,
                 status,
+                currentShiftValue: "",
                 page,
-                length,
-                currentShiftValue: ""
+                length
             })
 
             const candidates = apiData?.data?.data?.employees || []
