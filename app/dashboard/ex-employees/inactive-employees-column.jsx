@@ -97,7 +97,7 @@ export const InactiveEmployeeColumn = (handleDeleteEmployee, handleEditEmployee,
     header: 'Contact Information',
     cell: ({ row }) => (
       <div className="space-y-1">
-        <span className="">{row.original.name}-{row.original.companyEmail}-{row.original.phone}</span>
+        <span className=""> <b>{row.original.name}</b> | {row.original.companyEmail} | {row.original.phone}</span>
 
       </div>
     ),
