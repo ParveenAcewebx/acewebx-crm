@@ -22,7 +22,7 @@ const IncrementAPi = {
   IncrementListFilters: data => {
     const search = data?.search ?? ''
     return api.get(
-      `increment/getAllIncrement?search=${search}`
+      `increment/getAllIncrement?search=${search}&page=${data.page}&limit=${data.length}`
     )
   },
 

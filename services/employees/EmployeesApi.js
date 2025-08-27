@@ -31,7 +31,7 @@ const EmployeesApi = {
   employeesListFilters: data => {
     const search = data?.search ?? ''
     return api.get(
-      `employee/getAllEmployee?search=${search}&status=${data?.status}&currentShift=${data?.currentShiftValue}`
+      `employee/getAllEmployee?search=${search}&page=${data.page}&limit=${data.length}&status=${data?.status}&currentShift=${data?.currentShiftValue}`
     )
   },
 
