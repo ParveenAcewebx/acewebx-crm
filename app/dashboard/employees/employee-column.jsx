@@ -90,6 +90,7 @@ export const EmployeeColumn = (handleDeleteEmployee, handleEditEmployee, handleE
       </div>
     ),
   },
+
   {
     accessorKey: 'name',
     header: 'Contact Information',
