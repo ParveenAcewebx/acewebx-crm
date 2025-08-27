@@ -84,12 +84,12 @@ export const ExpenseColumn = (handleDeleteExpense, handleEditExpense) => [
     header: "Paid By",
     cell: ({ row }) => {
       let candidateOptions = [];
-  
+
       // 🔹 Get managers list from localStorage
       if (typeof window !== "undefined" && window.localStorage) {
         const storedData = localStorage.getItem("globalSettings");
         const skillDataOption = storedData ? JSON.parse(storedData) : null;
-  
+
         if (skillDataOption?.reportingManager) {
           candidateOptions = skillDataOption.reportingManager?.map((item) => ({
             value: item?.email,
@@ -97,7 +97,7 @@ export const ExpenseColumn = (handleDeleteExpense, handleEditExpense) => [
           }));
         }
       }
-  
+
       // 🔹 Parse paidBy safely (can be null, "[]", or valid JSON string)
       let paidByList = [];
       try {
@@ -107,18 +107,18 @@ export const ExpenseColumn = (handleDeleteExpense, handleEditExpense) => [
       } catch (e) {
         console.warn("Invalid paidBy format", row?.original?.paidBy);
       }
-  
+
       // 🔹 Map emails → names (fallback to email if no name found)
       const matchedLabels = paidByList.map((email) => {
         const match = candidateOptions.find((opt) => opt.value === email);
         return match ? match.label : email; // fallback to email
       });
-  
+
       return matchedLabels?.length > 0 ? matchedLabels.join(", ") : "-";
     },
   }
-  
-,  
+
+  ,
   {
     accessorKey: 'amount',
     header: 'Amount',
@@ -130,8 +130,9 @@ export const ExpenseColumn = (handleDeleteExpense, handleEditExpense) => [
     accessorKey: 'receiptNumber',
     header: 'Receipt Number',
     cell: ({ row }) =>
-      row?.original?.receiptNumber
+      <a href={row?.original?.receiptUrl} target='_blank' >  {row?.original?.receiptNumber} </a>
   },
+
   {
     accessorKey: 'date',
     header: 'Date',

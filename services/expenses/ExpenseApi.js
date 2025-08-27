@@ -10,8 +10,8 @@ const ExpenseApi = {
     getByIdExpense: id => {
         return api.get(`expense/getExpenseById/${id}`)
     },
-    getAllExpense: (page, length) => {
-        return api.get(`expense/getAllExpenses?page=${page}&limit=${length}`)
+    getAllExpense: (page, length, search) => {
+        return api.get(`expense/getAllExpenses?search=${search == undefined ? "" : search}&page=${page}&limit=${length}`)
     },
     deleteExpense: id => {
         return api.delete(`expense/deleteExpense/${id}`)

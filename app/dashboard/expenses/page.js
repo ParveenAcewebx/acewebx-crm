@@ -39,11 +39,25 @@ const ExpenseList = () => {
         }
     })
 
+    // filter
+    const form = useForm({
+        mode: 'onChange', // or 'onBlur' or 'onChange'
+    });
+    const search = form.watch('search')
+    const date = form.watch('date')
     const router = useRouter()
     // fetch group list
     const fetchList = async () => {
+        const data = {}
         try {
-            const response = await ExpenseApi.getAllExpense(page, length)
+            const response = await ExpenseApi.expenseListFilters({
+                ...data,
+                search,
+                length,
+                page,
+                startDate: date?.startDate == undefined ? "" : moment(date?.startDate).format('YYYY-MM-DD'),
+                endDate: date?.endDate == undefined ? "" : moment(date?.endDate).format('YYYY-MM-DD')
+            })
             if (response.status === 200) {
                 setList(response?.data?.data?.expenses)
                 setTotalRecord(response?.data?.data?.pagination?.total)
@@ -54,6 +68,8 @@ const ExpenseList = () => {
             setLoading(false)
         }
     }
+
+
     useEffect(() => {
         fetchList()
     }, [page, length])
@@ -108,36 +124,32 @@ const ExpenseList = () => {
 
 
     // filter :--
-    const form = useForm({
-        mode: 'onChange', // or 'onBlur' or 'onChange'
-    });
-    const search = form.watch('search')
-    const date = form.watch('date')
+
 
 
 
 
     const handleSimpleFilter = async data => {
-        const isValid = await form.trigger('search'); // only validate 'search'
-        if (!isValid) return;
-        try {
-            const apiData = await ExpenseApi.expenseListFilters({
-                ...data,
-                search,
-                length,
-                page,
-                startDate: date?.startDate == undefined ? "" : moment(date?.startDate).format('YYYY-MM-DD'),
-                endDate: date?.endDate == undefined ? "" : moment(date?.endDate).format('YYYY-MM-DD')
-            })
+        fetchList()
 
-            const candidates = apiData?.data?.data?.expenses || []
-            const paginationInfo = apiData?.data?.data?.pagination
+        // try {
+        //     const apiData = await ExpenseApi.expenseListFilters({
+        //         ...data,
+        //         search,
+        //         length,
+        //         page,
+        //         startDate: date?.startDate == undefined ? "" : moment(date?.startDate).format('YYYY-MM-DD'),
+        //         endDate: date?.endDate == undefined ? "" : moment(date?.endDate).format('YYYY-MM-DD')
+        //     })
 
-            setList(candidates)
-            setTotalRecord(paginationInfo?.total || 0)
-        } catch (error) {
-            console.error('Fetch error:', error)
-        }
+        //     const candidates = apiData?.data?.data?.expenses || []
+        //     const paginationInfo = apiData?.data?.data?.pagination
+
+        //     setList(candidates)
+        //     setTotalRecord(paginationInfo?.total || 0)
+        // } catch (error) {
+        //     console.error('Fetch error:', error)
+        // }
     }
     const [inrementCSVModalOpen, setInrementCSVModalOpen] = useState(false) // State for DCS modal
 

@@ -28,7 +28,7 @@ const ExpenseCategoryApi = {
     ExpenseCategoryListFilters: data => {
         const search = data?.search ?? ''
         return api.get(
-            `expenseCategory/getAllExpenseCategory?name=${search}&page=${data.page}&limit=${data.length}`
+            `expenseCategory/getAllExpenseCategory?search=${search}&page=${data.page}&limit=${data.length}`
         )
     },
 
