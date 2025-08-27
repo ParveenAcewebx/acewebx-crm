@@ -85,11 +85,13 @@ export const InactiveEmployeeColumn = (handleDeleteEmployee, handleEditEmployee,
     header: '#',
     size: 80,
     cell: ({ row }) => (
-      <div className="max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
+      <div className="max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap font-medium">
         {row.original.employeeCode == null ? "-" : `#${row.original.employeeCode}`}
       </div>
     ),
   },
+
+
   {
     accessorKey: 'name',
     header: 'Contact Information',
@@ -109,13 +111,38 @@ export const InactiveEmployeeColumn = (handleDeleteEmployee, handleEditEmployee,
   },
 
   {
-    accessorKey: 'meta_bloodGroup',
-    header: 'Blood Group',
-    cell: ({ row }) => {
-      const blood = row.original.meta.find((m) => m.metaKey === '_bloodGroup');
-      return blood?.metaValue || '-';
-    },
-  },
+  accessorKey: 'meta_bloodGroup',
+  header: 'Blood Group',
+  cell: ({ row }) => {
+    const blood = row.original.meta.find((m) => m.metaKey === '_bloodGroup');
+    const value = blood?.metaValue?.toLowerCase() || '-';
+
+    const bgColors = {
+      'o+': 'bg-green-100 text-green-800',
+      'o-': 'bg-green-200 text-green-900',
+      'a+': 'bg-blue-100 text-blue-800',
+      'a-': 'bg-blue-200 text-blue-900',
+      'b+': 'bg-yellow-100 text-yellow-800',
+      'b-': 'bg-yellow-200 text-yellow-900',
+      'ab+': 'bg-pink-100 text-pink-800',
+      'ab-': 'bg-pink-200 text-pink-900',
+      "unknown" : 'bg-white-200 text-black-900'
+    };
+
+    const colorClass = bgColors[value] || 'bg-gray-100 text-gray-800';
+
+    // Uppercase display
+    const displayValue = value !== '-' ? value.toUpperCase() : '-';
+
+    return (
+      <div
+        className={`inline-flex items-center justify-center w-10 h-6 rounded-full font-normaltext-sm ${colorClass}`}
+      >
+        {displayValue}
+      </div>
+    );
+  }
+},
   {
     accessorKey: 'meta_bloodGroup',
     header: 'Associated From',
@@ -160,14 +187,33 @@ export const InactiveEmployeeColumn = (handleDeleteEmployee, handleEditEmployee,
 
     }
   },
-  {
-    accessorKey: '_currentShiftp',
-    header: 'Current Shift',
-    cell: ({ row }) => {
-      const blood = row.original.meta.find((m) => m.metaKey === '_currentShift');
-      return blood?.metaValue || '-';
-    },
-  },
+   {
+  accessorKey: '_currentShift',
+  header: 'Current Shift',
+  cell: ({ row }) => {
+    let shift = row.original.meta.find((m) => m.metaKey === '_currentShift')?.metaValue || '-';
+
+    // Capitalize first letter
+    shift = shift.charAt(0).toUpperCase() + shift.slice(1).toLowerCase();
+
+    let color = '';
+    switch (shift.toLowerCase()) {
+      case 'day':
+        color = '#008080'; // Teal
+        break;
+      case 'night':
+        color = '#4B0082'; // Indigo
+        break;
+      case 'staggered':
+        color = '#FF8C00'; // Dark Orange
+        break;
+      default:
+        color = '#000000'; // Black for unknown
+    }
+
+    return <span style={{ color }}>{shift}</span>;
+  }
+},
   {
     accessorKey: 'meta_emergencyContact',
     header: 'Emergency Contact',
@@ -175,7 +221,7 @@ export const InactiveEmployeeColumn = (handleDeleteEmployee, handleEditEmployee,
       const phone = row.original.meta.find((m) => m.metaKey === '_emergencyContactNumber');
       return (
         <div className="space-y-1">
-          <div className="">{phone?.metaValue || '-'}</div>
+          <div className="font-medium">{phone?.metaValue || '-'}</div>
         </div>
       );
     },

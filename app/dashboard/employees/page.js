@@ -114,6 +114,7 @@ const EventList = () => {
     const form = useForm({
         // resolver: yupResolver(SearchEmployee),
         mode: 'onChange', // or 'onBlur' or 'onChange'
+
         defaultValues: {
             currentShift: ""
         }
@@ -246,7 +247,7 @@ const EventList = () => {
                         <FormProvider {...methods}>
                             <FormSelectField
                                 name='length'
-                                className='h-10 w-28 ace-employ'
+                                className='h-12 w-28 ace-employ'
                                 form={methods}
                                 options={LengthData}
                             />
@@ -289,7 +290,7 @@ const EventList = () => {
                                 <TooltipTrigger asChild>
                                     <Button
                                         onClick={AddvanceOpenModal}
-                                        className="cursor-pointer text-[#231f20] hover:text-[#fff] hover:bg-[#231f20] bg-transparent border border-[#231f20] flex gap-2 text-[11px]"
+                                        className="cursor-pointer text-[#231f20] hover:text-[#fff] hover:bg-[#231f20] bg-transparent border border-[#231f20] flex gap-2 text-[11px] h-12 rounded-[4px]"
                                     >
                                         <Import /> Employee
                                     </Button>
@@ -304,7 +305,7 @@ const EventList = () => {
                                 <TooltipTrigger asChild>
                                     <Button
                                         onClick={InrementCSVOpenModal}
-                                        className="cursor-pointer text-[#231f20] hover:text-[#fff] hover:bg-[#231f20] bg-transparent border border-[#231f20] flex gap-2 text-[11px]"
+                                        className="cursor-pointer text-[#231f20] hover:text-[#fff] hover:bg-[#231f20] bg-transparent border border-[#231f20] flex gap-2 text-[11px] h-12 rounded-[4px]"
                                     > <Import /> Increment
                                     </Button>
                                 </TooltipTrigger>

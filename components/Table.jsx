@@ -35,7 +35,7 @@ export function DataTable({
       <div className="w-full overflow-x-auto">
         <div className="rounded-6 border-color-grey custom-tabels border bg-white">
           <Table>
-            <TableHeader className='theme-bg-light-rgba'>
+            <TableHeader className='theme-bg-black-rgba'>
               {table?.getHeaderGroups()?.length > 0 &&
                 table.getHeaderGroups().map(headerGroup => (
                   <TableRow key={headerGroup.id}>
