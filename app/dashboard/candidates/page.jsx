@@ -124,40 +124,45 @@ const AllCandidates = () => {
   const handleEdit = row => {
     router.push(`/dashboard/candidate/${row?.original?.id}/edit`)
   }
+
   const AddvanceOpenModal = row => {
     setSelectedDcsValue(row)
     setDcsModalOpen(true)
   }
+
 
   useEffect(() => {
     const subscription = methods.watch((value, { name }) => {
       if (name === 'length') {
         const val = value.length
         setLength(val === 'all' ? totalRecord || 9999 : Number(val))
-        setPage(1)
       }
     })
     return () => subscription.unsubscribe()
   }, [methods, totalRecord])
+
+  // useEffect(() => {
+  //   if (length) {
+  //     localStorage.setItem("length", length)
+  //   }
+  // }, [length])
 
   // filter :--
   const form = useForm({
     // resolver: yupResolver(SearchValidation),
     mode: 'onChange', // or 'onBlur' or 'onChange'
   });
+
   const search = form.watch('search')
 
   const handleClearSearch = () => {
     form.setValue('search', '')
-
     getListCadidate()
   }
 
   // Filter handler:)
   const handleSimpleFilter = async data => {
-
     const isValid = await form.trigger('search'); // only validate 'search'
-
     if (!isValid) return;
     try {
       const apiData = await Candidate.candidateListFilters({
@@ -258,7 +263,7 @@ const AllCandidates = () => {
       connectStartDate,
       connectEndDate,
       skill,
-      
+
     }
 
     try {
@@ -298,7 +303,12 @@ const AllCandidates = () => {
         setSkillsData(candidateOptions);
 
       }
+
+      // const savedLength = localStorage.getItem("length");
+      // console.log("savedLength", savedLength)
     }
+
+
   }, []);
 
 
