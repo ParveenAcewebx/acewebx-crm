@@ -38,10 +38,29 @@ const EventList = () => {
         }
     })
 
+    // filter :--
+    const form = useForm({
+        // resolver: yupResolver(SearchEmployee),
+        mode: 'onChange', // or 'onBlur' or 'onChange'
+
+        defaultValues: {
+            currentShift: ""
+        }
+    });
+    const search = form.watch('search')
+
     // fetch group list
     const fetchList = async () => {
+        const data = {}
         try {
-            const response = await EmployeesApi.getAllEmployees(page, length, status)
+            const response = await EmployeesApi.employeesListFilters({
+                ...data,
+                search,
+                status,
+                currentShiftValue: currentShiftValue == "all" ? " " : currentShiftValue,
+                page,
+                length
+            })
             if (response.status === 200) {
                 setList(response?.data?.data?.employees)
                 setTotalRecord(response?.data?.data?.pagination?.total)
@@ -110,16 +129,7 @@ const EventList = () => {
 
 
 
-    // filter :--
-    const form = useForm({
-        // resolver: yupResolver(SearchEmployee),
-        mode: 'onChange', // or 'onBlur' or 'onChange'
 
-        defaultValues: {
-            currentShift: ""
-        }
-    });
-    const search = form.watch('search')
 
     const handleClearSearch = () => {
         form.setValue('search', '')
@@ -128,29 +138,9 @@ const EventList = () => {
     }
     const currentShiftValue = form.watch("currentShift")
 
-    const handleSimpleFilter = async data => {
-
-        const isValid = await form.trigger('search'); // only validate 'search'
-
-        if (!isValid) return;
-        try {
-            const apiData = await EmployeesApi.employeesListFilters({
-                ...data,
-                search,
-                status,
-                currentShiftValue: currentShiftValue == "all" ? " " : currentShiftValue,
-                page,
-                length
-            })
-
-            const candidates = apiData?.data?.data?.employees || []
-            const paginationInfo = apiData?.data?.data?.pagination
-
-            setList(candidates)
-            setTotalRecord(paginationInfo?.total || 0)
-        } catch (error) {
-            console.error('Fetch error:', error)
-        }
+    const handleSimpleFilter = () => {
+        setPage(1)
+        fetchList()
     }
 
 

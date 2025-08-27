@@ -5,6 +5,7 @@ const SalesCandidate = {
     return api.post(`candidateSale/save`, data)
   },
   salesCandidateList: (newData) => {
+    let search = newData?.search ?? ''
     let start = newData?.startDate == undefined ? "" : newData?.startDate
     let end = newData?.endDate == undefined ? "" : newData?.endDate
     let preferredShift = newData?.preferredShift == undefined ? "" : newData?.preferredShift
@@ -13,9 +14,11 @@ const SalesCandidate = {
     let maxExperience = newData?.maxExperience == undefined ? "" : newData?.maxExperience
     let connectStartDate = newData?.connectStartDate == undefined ? "" : newData?.connectStartDate
     let connectEndDate = newData?.connectEndDate == undefined ? "" : newData?.connectEndDate
-    return api.get(`candidateSale/getAllCandidateSale?page=${newData?.page}&limit=${newData?.length}&minSalary=${newData?.minSalary}&maxSalary=${newData?.maxSalary}&connectStartDate=${connectStartDate}&connectEndDate=${connectEndDate}&startDate=${start}&endDate=${end}&minExperience=${minExperience}&maxExperience=${maxExperience}&preferredShift=${preferredShift}&preferredShift=${preferredShift}&skill=${skill}`)
+    return api.get(`candidateSale/getAllCandidateSale?search=${search}&page=${newData?.page}&limit=${newData?.length}&minSalary=${newData?.minSalary}&maxSalary=${newData?.maxSalary}&connectStartDate=${connectStartDate}&connectEndDate=${connectEndDate}&startDate=${start}&endDate=${end}&minExperience=${minExperience}&maxExperience=${maxExperience}&preferredShift=${preferredShift}&preferredShift=${preferredShift}&skill=${skill}`)
   },
   salesCandidateCSVList: (newData) => {
+    let search = newData?.search ?? ''
+
     let start = newData?.startDate == undefined ? "" : newData?.startDate
     let end = newData?.endDate == undefined ? "" : newData?.endDate
     let preferredShift = newData?.preferredShift == undefined ? "" : newData?.preferredShift
@@ -25,7 +28,7 @@ const SalesCandidate = {
     let connectStartDate = newData?.connectStartDate == undefined ? "" : newData?.connectStartDate
     let connectEndDate = newData?.connectEndDate == undefined ? "" : newData?.connectEndDate
 
-    return api.get(`candidateSale/export-candidates?minSalary=${newData?.minSalary}&maxSalary=${newData?.maxSalary}&startDate=${start}&endDate=${end}&connectStartDate=${connectStartDate}&connectEndDate=${connectEndDate}&minExperience=${minExperience}&maxExperience=${maxExperience}&preferredShift=${preferredShift}&skill=${skill}`)
+    return api.get(`candidateSale/export-candidates?search=${search}&minSalary=${newData?.minSalary}&maxSalary=${newData?.maxSalary}&startDate=${start}&endDate=${end}&connectStartDate=${connectStartDate}&connectEndDate=${connectEndDate}&minExperience=${minExperience}&maxExperience=${maxExperience}&preferredShift=${preferredShift}&skill=${skill}`)
   },
   salesCandidateGetById: id => {
     return api.get(`candidateSale/getCandidateSaleById/${id}`)

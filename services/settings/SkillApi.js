@@ -26,9 +26,9 @@ const SkillApi = {
     skillListFilters: data => {
         const search = data?.search ?? ''
         return api.get(
-          `skill/getAllSkill?search=${search}`
+            `skill/getAllSkill?search=${search}&page=${data.page}&limit=${data.length}`
         )
-      },
+    },
 
 }
 
