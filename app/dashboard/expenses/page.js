@@ -17,11 +17,11 @@ import { LengthData } from '@/components/constants/StaticData'
 import ExpenseApi from '@/services/expenses/ExpenseApi'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { Button } from '@/components/ui/button'
-import IncrementCSVDownload from '@/components/modal/IncrementCSVDownload'
 import ExpenseCSVDownload from '@/components/modal/ExpenseCSVDownload'
 import { Label } from '@/components/ui/label'
 import { FormDateRangePicker } from '@/components/share/form/DateRangePicker'
 import moment from 'moment'
+import useLocalStorage from 'use-local-storage'
 
 const ExpenseList = () => {
     const [getList, setList] = useState([])
@@ -33,6 +33,9 @@ const ExpenseList = () => {
     const [deleteIndex, setDeleteIndex] = useState(null)
     const [submitOpenModal, setSubmitOpenModal] = useState(false)
     const [editData, setEditData] = useState(null)
+    const [expenseSearchParam, setExpenseSearchParam] = useLocalStorage("expenseSearchParam", {
+        length: '50'
+    });
     const methods = useForm({
         defaultValues: {
             length: '50'
@@ -47,17 +50,9 @@ const ExpenseList = () => {
     const date = form.watch('date')
     const router = useRouter()
     // fetch group list
-    const fetchList = async () => {
-        const data = {}
+    const fetchList = async (data) => {
         try {
-            const response = await ExpenseApi.expenseListFilters({
-                ...data,
-                search,
-                length,
-                page,
-                startDate: date?.startDate == undefined ? "" : moment(date?.startDate).format('YYYY-MM-DD'),
-                endDate: date?.endDate == undefined ? "" : moment(date?.endDate).format('YYYY-MM-DD')
-            })
+            const response = await ExpenseApi.expenseListFilters(data)
             if (response.status === 200) {
                 setList(response?.data?.data?.expenses)
                 setTotalRecord(response?.data?.data?.pagination?.total)
@@ -124,10 +119,10 @@ const ExpenseList = () => {
 
 
     // filter :--
-    const handleSimpleFilter = () => {
-        setPage(1)
-        fetchList()
-    }
+    // const handleSimpleFilter = () => {
+    //     setPage(1)
+    //     fetchList()
+    // }
 
     const [inrementCSVModalOpen, setInrementCSVModalOpen] = useState(false) // State for DCS modal
 
@@ -156,6 +151,91 @@ const ExpenseList = () => {
     const handleDateChnage = (date) => {
         console.log("valuedate", date)
     }
+
+
+
+    const romoveOldParams = () => {
+        const newData = {
+            search: "",
+            length: 50,
+        }
+        methods.setValue("length", "50")
+        form.setValue("search", "")
+        setExpenseSearchParam(newData)
+    }
+
+
+    const handleSimpleFilter = () => {
+        const newData = {
+            search,
+            page,
+            length,
+            startDate: date?.startDate == undefined ? "" : moment(date?.startDate).format('YYYY-MM-DD'),
+            endDate: date?.endDate == undefined ? "" : moment(date?.endDate).format('YYYY-MM-DD')
+        }
+        setPage(1)
+        setExpenseSearchParam(newData)
+    }
+
+    // old fileter code :--------
+    useEffect(() => {
+        const newData = {
+            search: expenseSearchParam?.search,
+            startDate: expenseSearchParam?.startDate
+                ? new Date(expenseSearchParam.startDate)
+                : null,
+            endDate: expenseSearchParam?.endDate
+                ? new Date(expenseSearchParam.endDate)
+                : null,
+            // currentShift :"",
+            length,
+        }
+        setExpenseSearchParam(newData)
+    }, [length])
+
+    useEffect(() => {
+        // for filters :-
+        form.setValue("search", expenseSearchParam?.search)
+        form.setValue("date", {
+            startDate: expenseSearchParam?.startDate
+                ? new Date(expenseSearchParam.startDate)
+                : null,
+            endDate: expenseSearchParam?.endDate
+                ? new Date(expenseSearchParam.endDate)
+                : null,
+        },)
+        // for length :-
+        let { length } = expenseSearchParam
+        if (length) {
+            setLength(length)
+        }
+        methods.setValue("length", String(length))
+
+    }, [])
+
+
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            const newData = {
+                search,
+                length,
+                page,
+                startDate: date?.startDate == undefined ? "" : moment(date?.startDate).format('YYYY-MM-DD'),
+                endDate: date?.endDate == undefined ? "" : moment(date?.endDate).format('YYYY-MM-DD')
+            }
+
+            fetchList(newData)
+        }, 500)
+
+        // cleanup to avoid multiple triggers
+        return () => clearTimeout(handler)
+    }, [expenseSearchParam, page, length])
+
+
+
+
+
+
 
     return (
         <>
@@ -231,7 +311,7 @@ const ExpenseList = () => {
                 <div className='overflowX-auto pt-1'>
 
                     <DataTable
-                        columns={ExpenseColumn(handleDeleteExpense, handleEditExpense)}
+                        columns={ExpenseColumn(handleDeleteExpense, handleEditExpense, getList)}
                         data={getList}
                         totalRecord={totalRecord}
                         page={page}

@@ -20,6 +20,7 @@ import { LengthData } from '@/components/constants/StaticData'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import EmployeeCSVDownload from '@/components/modal/EmployeeCSVDownload'
 import IncrementCSVDownload from '@/components/modal/IncrementCSVDownload'
+import useLocalStorage from 'use-local-storage'
 
 const EventList = () => {
     const [getList, setList] = useState([])
@@ -33,6 +34,9 @@ const EventList = () => {
     const [status, setStatus] = useState(0)
 
     const [editData, setEditData] = useState(null)
+    const [exEmployeeSearchParam, setExEmployeeSearchParam] = useLocalStorage("exEmployeeSearchParam", {
+        length: '50'
+    });
     const methods = useForm({
         defaultValues: {
             length: '50'
@@ -47,17 +51,9 @@ const EventList = () => {
     const search = form.watch('search')
 
     // fetch group list
-    const fetchList = async () => {
-        const data = {}
+    const fetchList = async (data) => {
         try {
-            const response = await EmployeesApi.employeesListFilters({
-                ...data,
-                search,
-                status,
-                currentShiftValue: "",
-                page,
-                length
-            })
+            const response = await EmployeesApi.employeesListFilters(data)
             if (response.status === 200) {
                 setList(response?.data?.data?.employees)
                 setTotalRecord(response?.data?.data?.pagination?.total)
@@ -121,27 +117,9 @@ const EventList = () => {
     }
 
 
-
-
-
-    const handleClearSearch = () => {
-        form.setValue('search', '')
-
-        getListCadidate()
-    }
-
-
-    const handleSimpleFilter = () => {
-        setPage(1)
-        fetchList()
-
-    }
-
-
     const [selectedDcsValue, setSelectedDcsValue] = useState(null) // Store DCS value for modal
     const [dcsModalOpen, setDcsModalOpen] = useState(false) // State for CSV modal
     const [inrementCSVModalOpen, setInrementCSVModalOpen] = useState(false) // State for DCS modal
-
 
 
 
@@ -212,6 +190,72 @@ const EventList = () => {
     };
 
 
+    // filter :-----------------
+    
+
+
+    const romoveOldParams = () => {
+        const newData = {
+            search: "",
+            length: 50,
+        }
+        methods.setValue("length", "50")
+        form.setValue("search", "")
+        setExEmployeeSearchParam(newData)
+    }
+
+
+    const handleSimpleFilter = () => {
+        const newData = {
+            search,
+            page,
+            currentShift :"",
+            length,
+        }
+        setPage(1)
+        setExEmployeeSearchParam(newData)
+    }
+
+    // old fileter code :--------
+    useEffect(() => {
+        const newData = {
+            search: exEmployeeSearchParam?.search,
+            currentShift :"",
+            length,
+        }
+        setExEmployeeSearchParam(newData)
+    }, [length])
+
+    useEffect(() => {
+        // for filters :-
+        form.setValue("search", exEmployeeSearchParam?.search)
+
+        // for length :-
+        let { length } = exEmployeeSearchParam
+        if (length) {
+            setLength(length)
+        }
+        methods.setValue("length", String(length))
+
+    }, [])
+
+
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            const newData = {
+                search,
+                status,
+                page,
+                currentShift :"",
+                length
+            }
+
+            fetchList(newData)
+        }, 500)
+
+        // cleanup to avoid multiple triggers
+        return () => clearTimeout(handler)
+    }, [exEmployeeSearchParam, page, length])
 
     return (
         <>
@@ -251,6 +295,8 @@ const EventList = () => {
                                     onClick={handleSimpleFilter}
                                 />
                             </div>
+                            <Button className="cursor-pointer h-12 rounded-[4px] text-[#b82025] hover:text-[#fff] hover:bg-[#b82025] bg-transparent border border-[#b82025] text-[11px]"
+                                onClick={romoveOldParams} >Clear serach</Button>
 
                         </div>
                     </FormProvider>

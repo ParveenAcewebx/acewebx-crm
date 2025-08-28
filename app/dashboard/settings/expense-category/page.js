@@ -15,6 +15,7 @@ import { expenseCategoryColumn } from './expense-category-column'
 import ExpenseCategorySettingModa from '@/components/modal/ExpenseCategorySettingModal'
 import ExpenseCategoryForm from '@/components/category/ExpenseCategoryForm'
 import ExpenseCategoryApi from '@/services/expenses/ExpenseCategoryApi'
+import useLocalStorage from 'use-local-storage'
 
 const ExpenseCategory = () => {
     const [getList, setList] = useState([])
@@ -27,6 +28,9 @@ const ExpenseCategory = () => {
     const [submitOpenModal, setSubmitOpenModal] = useState(false)
     const [editData, setEditData] = useState(null)
     const [parentData, setParentData] = useState([])
+    const [categorySearchParam, setCategorySearchParam] = useLocalStorage("categorySearchParam", {
+        length: '50'
+    });
 
     const methods = useForm({
         defaultValues: {
@@ -42,15 +46,9 @@ const ExpenseCategory = () => {
     const search = form.watch('search')
 
     // fetch group  list
-    const fetchSkillsList = async () => {
-        const data = {}
+    const fetchSkillsList = async (data) => {
         try {
-            const response = await ExpenseCategoryApi.expenseCategoryListFilters({
-                ...data,
-                search,
-                page,
-                length
-            })
+            const response = await ExpenseCategoryApi.expenseCategoryListFilters(data)
             if (response.status === 200) {
                 setList(response?.data?.data?.data)
                 setTotalRecord(response?.data?.data?.pagination?.total)
@@ -61,9 +59,7 @@ const ExpenseCategory = () => {
             setLoading(false)
         }
     }
-    useEffect(() => {
-        fetchSkillsList()
-    }, [page, length])
+
 
     // delete row
     const onDelete = async () => {
@@ -131,10 +127,10 @@ const ExpenseCategory = () => {
 
 
 
-    const handleSimpleFilter = () => {
-        setPage(1)
-        fetchSkillsList()
-    }
+    // const handleSimpleFilter = () => {
+    //     setPage(1)
+    //     fetchSkillsList()
+    // }
 
 
     const getAllExpenseCategoryByType = async () => {
@@ -164,6 +160,80 @@ const ExpenseCategory = () => {
         getAllExpenseCategoryByType()
 
     }, [submitOpenModal])
+
+
+
+
+
+
+
+
+
+    const romoveOldParams = () => {
+        const newData = {
+            search: "",
+            length: 50,
+        }
+        methods.setValue("length", "50")
+        form.setValue("search", "")
+        setCategorySearchParam(newData)
+    }
+
+
+    const handleSimpleFilter = () => {
+        const newData = {
+            search,
+            page,
+            length,
+        }
+        setPage(1)
+        setCategorySearchParam(newData)
+    }
+
+    // old fileter code :--------
+    useEffect(() => {
+        const newData = {
+            search: categorySearchParam?.search,
+            length,
+        }
+        setCategorySearchParam(newData)
+    }, [length])
+
+    useEffect(() => {
+        // for filters :-
+        form.setValue("search", categorySearchParam?.search)
+
+        // for length :-
+        let { length } = categorySearchParam
+        if (length) {
+            setLength(length)
+        }
+        methods.setValue("length", String(length))
+
+    }, [])
+
+
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            const newData = {
+                search,
+                page,
+                length
+            }
+
+            fetchSkillsList(newData)
+        }, 500)
+
+        // cleanup to avoid multiple triggers
+        return () => clearTimeout(handler)
+    }, [categorySearchParam, page, length])
+
+
+
+
+
+
+
     return (
         <>
             <div>
@@ -205,7 +275,8 @@ const ExpenseCategory = () => {
                                 </div>
                             </div>
                         </FormProvider>
-
+                        <Button className="cursor-pointer h-12 rounded-[4px] text-[#b82025] hover:text-[#fff] hover:bg-[#b82025] bg-transparent border border-[#b82025] text-[11px]"
+                            onClick={romoveOldParams} >Clear serach</Button>
                         <Button className="cursor-pointer h-12 rounded-[4px] text-[#b82025] hover:text-[#fff] hover:bg-[#b82025] bg-transparent border border-[#b82025] text-[11px]" onClick={handleOpenTagModal}>
                             <Plus />
                             Add Category

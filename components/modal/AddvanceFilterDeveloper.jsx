@@ -14,8 +14,9 @@ import { preferredShiftOptions } from '../constants/StaticData'
 import { Label } from '../ui/label'
 import { startOfWeek, endOfWeek, subDays } from 'date-fns'
 import { YearRangInput } from '../share/form/YearRangInput'
+import { useEffect } from 'react'
 
-const AddvanceFilterDeveloper = ({ isOpen, onClose, handleAddvanceSearch, skillsData }) => {
+const AddvanceFilterDeveloper = ({ isOpen, onClose, handleAddvanceSearch, skillsData, oldSerachParams = {} }) => {
   const today = new Date()
   const startOfLastWeek = subDays(startOfWeek(today), 7)
   const endOfLastWeek = subDays(endOfWeek(today), 7)
@@ -26,12 +27,68 @@ const AddvanceFilterDeveloper = ({ isOpen, onClose, handleAddvanceSearch, skills
         endDate: endOfLastWeek,
         key: 'selection'
       },
+      lastContected: {
+        startDate: "",
+        endDate: "",
+        key: 'selection'
+      },
 
       preferredShift: [],
       skill: [],
       totalExperience: "",
     }
   })
+
+
+  // useEffect(() => {
+  //   if (!oldSerachParams) return;
+
+  //   const safeParse = (value) => {
+  //     try {
+  //       return typeof value === "string" ? JSON.parse(value) : value;
+  //     } catch {
+  //       return [];
+  //     }
+  //   };
+
+  //   const oldData = {
+  //     dob: {
+  //       startDate: oldSerachParams?.startDate
+  //         ? new Date(oldSerachParams.startDate)
+  //         : null,
+  //       endDate: oldSerachParams?.endDate
+  //         ? new Date(oldSerachParams.endDate)
+  //         : null,
+  //     },
+  //     lastContected: {
+  //       startDate: oldSerachParams?.connectStartDate
+  //         ? new Date(oldSerachParams.connectStartDate)
+  //         : null,
+  //       endDate: oldSerachParams?.connectEndDate
+  //         ? new Date(oldSerachParams.connectEndDate)
+  //         : null,
+  //     },
+  //     salary: [
+  //       oldSerachParams?.minSalary ? Number(oldSerachParams.minSalary) : null,
+  //       oldSerachParams?.maxSalary ? Number(oldSerachParams.maxSalary) : null,
+  //     ],
+  //     totalExperience: [
+  //       oldSerachParams?.minExperience
+  //         ? Number(oldSerachParams.minExperience)
+  //         : null,
+  //       oldSerachParams?.maxExperience
+  //         ? Number(oldSerachParams.maxExperience)
+  //         : null,
+  //     ],
+  //     skill: safeParse(oldSerachParams?.skill) || [],
+  //     preferredShift: safeParse(oldSerachParams?.preferredShift) || [],
+  //   };
+
+  //   form.reset(oldData);
+  // }, []);
+
+
+
   const handleDateChnage = (date) => {
     console.log("valuedate", date)
   }
@@ -45,7 +102,7 @@ const AddvanceFilterDeveloper = ({ isOpen, onClose, handleAddvanceSearch, skills
 
   }
 
- 
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogTrigger />

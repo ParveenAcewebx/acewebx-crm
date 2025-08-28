@@ -19,6 +19,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 import moment from 'moment'
 import { Button } from '@/components/ui/button'
 import SalesCandidate from '@/services/salesCandidates/SalesCandidateApi'
+import useLocalStorage from 'use-local-storage'
 
 const AllSalesCandidates = () => {
   useDocumentTitle('Sales Candidate')
@@ -31,7 +32,7 @@ const AllSalesCandidates = () => {
   const [deleteOpenModal, setDeleteOpenModal] = useState(false)
   const [loading, setLoading] = useState(true)
   const [deleteIndex, setDeleteIndex] = useState(null)
-  const [length, setLength] = useState(10)
+  const [length, setLength] = useState(50)
   const [searchFormData, setSearchFormData] = useState(null)
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -44,10 +45,12 @@ const AllSalesCandidates = () => {
   const [connectStartDate, setConnectStartDate] = useState('');
   const [connectEndDate, setConnectEndDate] = useState('');
   const [skillsData, setSkillsData] = useState([])
-
+  const [saleSearchParam, setSaleSearchParam] = useLocalStorage("saleSearchParam", {
+    length: '50'
+  });
   const methods = useForm({
     defaultValues: {
-      length: '10'
+      length: '50'
     }
   })
 
@@ -59,32 +62,18 @@ const AllSalesCandidates = () => {
   const search = form.watch('search')
 
   //  get all sales candidates :-
-  const getListSales = async () => {
+  const getListSales = async (newData) => {
     try {
 
-      const newData = {
-        page,
-        length,
-        startDate,
-        endDate,
-        minSalary,
-        maxSalary,
-        minExperience,
-        maxExperience,
-        preferredShift,
-        connectStartDate,
-        connectEndDate,
-        skill,
-        search
-      }
+
       setLoading(true)
-      const res = await SalesCandidate.salesCandidateList(newData)
+      const res = await SalesCandidate.candidateSaleListAddvanceFilters(newData)
       if (res.data?.status == true) {
         setList(res?.data?.data)
         setTotalRecord(res?.data?.data?.pagination?.total)
       }
     } catch (error) {
-      console.log("error",error)
+      console.log("error", error)
       errorMessage({
         description: error?.response?.data?.message
       })
@@ -93,13 +82,6 @@ const AllSalesCandidates = () => {
     }
   }
 
-  useEffect(() => {
-    if (searchFormData) {
-      handleClearSearch()
-    } else {
-      getListSales()
-    }
-  }, [page, length])
 
   // delete table row
   const onDelete = async () => {
@@ -154,17 +136,28 @@ const AllSalesCandidates = () => {
 
 
 
-  const handleClearSearch = () => {
-    form.setValue('search', '')
 
-    getListSales()
-  }
 
   const handleSimpleFilter = () => {
+    const newData = {
+      search,
+      page,
+      length,
+    }
     setPage(1)
-    getListSales()
+    setSaleSearchParam(newData)
   }
 
+
+  const romoveOldParams = () => {
+    const newData = {
+      search: "",
+      length: 50,
+    }
+    methods.setValue("length", "50")
+    form.setValue("search", "")
+    setSaleSearchParam(newData)
+  }
   // send form by email link :-
   const handleSendWalkInForm = async row => {
     try {
@@ -207,6 +200,8 @@ const AllSalesCandidates = () => {
       page,
       length
     }
+    setSaleSearchParam(newData)
+
     setConnectStartDate(newData.connectStartDate)
     setConnectEndDate(newData.connectEndDate)
     setMinExperience(newData.minExperience)
@@ -285,6 +280,56 @@ const AllSalesCandidates = () => {
     }
   }, []);
 
+
+
+  // old fileter code :--------
+  useEffect(() => {
+    const newData = {
+      search: saleSearchParam?.search,
+      length,
+    }
+    setSaleSearchParam(newData)
+  }, [length])
+
+  useEffect(() => {
+    // for filters :-
+    form.setValue("search", saleSearchParam?.search)
+    // for length :-
+    let { length } = saleSearchParam
+    if (length) {
+      setLength(length)
+    }
+    methods.setValue("length", String(length))
+
+  }, [])
+
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      const newData = {
+        startDate,
+        endDate,
+        minSalary,
+        maxSalary,
+        search,
+        minExperience,
+        maxExperience,
+        connectStartDate,
+        connectEndDate,
+        skill,
+        preferredShift,
+        page,
+        length,
+      }
+
+      console.log("newDatanewDatanewData", newData)
+      getListSales(newData)
+    }, 500)
+
+    // cleanup to avoid multiple triggers
+    return () => clearTimeout(handler)
+  }, [saleSearchParam, page, length])
+
   return (
     <>
       <div className=''>
@@ -325,7 +370,8 @@ const AllSalesCandidates = () => {
                 onClick={handleSimpleFilter}
               />
             </div>
-
+            <Button className="cursor-pointer h-12 rounded-[4px] text-[#b82025] hover:text-[#fff] hover:bg-[#b82025] bg-transparent border border-[#b82025] text-[11px]"
+              onClick={romoveOldParams} >Clear serach</Button>
             {/* Advance Search */}
             <Button
               onClick={() => AddvanceOpenModal()}
