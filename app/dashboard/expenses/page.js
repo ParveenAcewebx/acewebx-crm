@@ -8,7 +8,6 @@ import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import SkillForm from '@/components/skills/SkillForm'
 import SkillSettingModal from '@/components/modal/SkillSettingModal'
-import EventApi from '@/services/events/EventApi'
 import { ExpenseColumn } from './expense-column'
 import { useRouter } from 'next/navigation'
 import FormInputField from '@/components/share/form/FormInputField'
@@ -18,11 +17,10 @@ import ExpenseApi from '@/services/expenses/ExpenseApi'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { Button } from '@/components/ui/button'
 import ExpenseCSVDownload from '@/components/modal/ExpenseCSVDownload'
-import { Label } from '@/components/ui/label'
 import { FormDateRangePicker } from '@/components/share/form/DateRangePicker'
 import moment from 'moment'
 import useLocalStorage from 'use-local-storage'
-import { endOfMonth, startOfMonth, subDays, subMonths } from 'date-fns'
+import {subDays } from 'date-fns'
 
 const ExpenseList = () => {
     const [getList, setList] = useState([])
@@ -46,8 +44,9 @@ const ExpenseList = () => {
     // filter
 
     const today = new Date()
-    const startOfLastMonth = startOfMonth(subMonths(today, 1))
-    const endOfLastMonth = endOfMonth(subMonths(today, 1))
+    const startOfLastMonth = subDays(today, 30)
+
+    const endOfLastMonth = today
 
     const form = useForm({
         mode: 'onChange', // or 'onBlur' or 'onChange'
