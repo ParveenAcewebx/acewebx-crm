@@ -10,11 +10,15 @@ import { Button } from '../ui/button'
 import { startOfWeek, endOfWeek, subDays } from 'date-fns'
 import Link from 'next/link'
 import FormInputFileUploaderSingleCSV from '../share/form/FormInputFileUploaderSingleCSV'
+import { useEffect } from 'react'
 
 const ExpenseCSVDownload = ({ isOpen, onClose, handleDownloadCSV }) => {
     
     const form = useForm()
- 
+    useEffect(() => {
+        form.setValue("file", "")
+
+    }, [isOpen])
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>

@@ -20,7 +20,7 @@ import ExpenseCSVDownload from '@/components/modal/ExpenseCSVDownload'
 import { FormDateRangePicker } from '@/components/share/form/DateRangePicker'
 import moment from 'moment'
 import useLocalStorage from 'use-local-storage'
-import {subDays } from 'date-fns'
+import { subDays } from 'date-fns'
 
 const ExpenseList = () => {
     const [getList, setList] = useState([])
@@ -155,8 +155,13 @@ const ExpenseList = () => {
             const response = await ExpenseApi.expenseCSVList(formData);
             fetchList()
             setInrementCSVModalOpen(false)
+            successMessage({ description: "CSV file import successfully." })
+
         } catch (error) {
             console.error("Download failed", error);
+            errorMessage({
+                description: error?.response?.data?.message
+            })
         }
     };
 

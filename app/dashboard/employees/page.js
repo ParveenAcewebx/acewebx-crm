@@ -164,8 +164,13 @@ const EventList = () => {
             }
             fetchList(newData)
             setDcsModalOpen(false)
+            successMessage({ description: "CSV file import successfully." })
+
         } catch (error) {
-            console.error("Download failed", error);
+          console.error("Download failed", error);
+          errorMessage({
+            description: error?.response?.data?.message
+          })
         }
     };
 
@@ -181,8 +186,13 @@ const EventList = () => {
             const response = await EmployeesApi.incrementCSVList(formData);
             fetchList()
             setInrementCSVModalOpen(false)
+            successMessage({ description: "CSV file import successfully." })
+
         } catch (error) {
-            console.error("Download failed", error);
+          console.error("Download failed", error);
+          errorMessage({
+            description: error?.response?.data?.message
+          })
         }
     };
 
