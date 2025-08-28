@@ -3,7 +3,7 @@
 import { paymentMode } from '@/components/constants/StaticData'
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { Edit, EllipsisVertical, Eye, Link, Trash2 } from 'lucide-react'
+import { Edit, EllipsisVertical, Eye, IndianRupee, Link, Trash2 } from 'lucide-react'
 
 export const ExpenseColumn = (handleDeleteExpense, handleEditExpense, getList) => {
 
@@ -96,9 +96,22 @@ export const ExpenseColumn = (handleDeleteExpense, handleEditExpense, getList) =
 
     {
       accessorKey: 'amount',
-      header: `Amount (${totalAmount})`, // ✅ Show total here
-      cell: ({ row }) => row?.original?.amount || 0, // show per-row value
-      footer: () => `Total: ${totalAmount}`, // ✅ (optional) show total in footer too
+      header: `Amount (₹${totalAmount})`,
+      cell: ({ row }) => {
+
+        return (
+
+          <div className="flex items-center"
+          >
+            <IndianRupee size={10} />
+            <span>
+              {row?.original?.amount || 0}
+            </span>
+          </div >
+
+        )
+
+      },
     },
 
     {
