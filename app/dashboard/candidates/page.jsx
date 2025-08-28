@@ -19,6 +19,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 import moment from 'moment'
 import { Button } from '@/components/ui/button'
 import Candidate from '@/services/candidates/CandidateApi'
+import useLocalStorage from "use-local-storage";
 
 const AllCandidates = () => {
   useDocumentTitle('Dev Candidate')
@@ -43,6 +44,12 @@ const AllCandidates = () => {
   const [selectedDcsValue, setSelectedDcsValue] = useState(null) // Store DCS value for modal
   const [connectStartDate, setConnectStartDate] = useState('');
   const [connectEndDate, setConnectEndDate] = useState('');
+  const [developerSearchParam, setDeveloperSearchParam] = useLocalStorage("developerSearchParam", {
+
+  });
+
+
+
 
   const methods = useForm({
     defaultValues: {
@@ -57,7 +64,7 @@ const AllCandidates = () => {
 
   const search = form.watch('search')
 
-  
+
 
   // get all candidate list :-
   const getListCadidate = async () => {
@@ -78,6 +85,7 @@ const AllCandidates = () => {
         search
       }
       setLoading(true)
+      setDeveloperSearchParam(newData)
       const res = await Candidate.candidateList(newData)
       if (res.data?.status == true) {
         setList(res?.data?.data)
@@ -213,6 +221,7 @@ const AllCandidates = () => {
       length,
     }
 
+    setDeveloperSearchParam(newData)
     setConnectStartDate(newData.connectStartDate)
     setConnectEndDate(newData.connectEndDate)
     setMinExperience(newData.minExperience)
