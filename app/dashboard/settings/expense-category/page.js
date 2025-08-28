@@ -53,7 +53,7 @@ const ExpenseCategory = () => {
             })
             if (response.status === 200) {
                 setList(response?.data?.data?.data)
-                setTotalRecord(response?.data?.data?.data?.pagination?.total)
+                setTotalRecord(response?.data?.data?.pagination?.total)
             }
         } catch (error) {
             console.log('error', error)
