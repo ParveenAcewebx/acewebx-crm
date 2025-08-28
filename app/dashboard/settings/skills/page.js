@@ -16,17 +16,21 @@ import FormSelectField from '@/components/share/form/FormSelect'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { SearchSkill } from '@/components/form-validations/SearchValidation'
 import { LengthData } from '@/components/constants/StaticData'
+import useLocalStorage from 'use-local-storage'
 
 const Skills = () => {
     const [getList, setList] = useState([])
     const [loading, setLoading] = useState(true)
     const [page, setPage] = useState(1)
     const [totalRecord, setTotalRecord] = useState()
-    const [length, setLength] = useState(10)
+    const [length, setLength] = useState(50)
     const [deleteOpenModal, setDeleteOpenModal] = useState(false)
     const [deleteIndex, setDeleteIndex] = useState(null)
     const [submitOpenModal, setSubmitOpenModal] = useState(false)
     const [editData, setEditData] = useState(null)
+    const [skillSearchParam, setSkillSearchParam] = useLocalStorage("skillSearchParam", {
+        length: '50'
+    });
     const methods = useForm({
         defaultValues: {
             length: '10'
@@ -41,15 +45,9 @@ const Skills = () => {
     const search = form.watch('search')
 
     // fetch group  list
-    const fetchSkillsList = async () => {
-        const data = {}
+    const fetchSkillsList = async (data) => {
         try {
-            const response = await SkillApi.skillListFilters({
-                ...data,
-                search,
-                page,
-                length
-            })
+            const response = await SkillApi.skillListFilters(data)
             if (response.status === 200) {
                 setList(response?.data?.data?.skills)
                 setTotalRecord(response?.data?.data?.pagination?.total)
@@ -60,9 +58,7 @@ const Skills = () => {
             setLoading(false)
         }
     }
-    useEffect(() => {
-        fetchSkillsList()
-    }, [page, length])
+
 
     // delete row
     const onDelete = async () => {
@@ -131,14 +127,66 @@ const Skills = () => {
 
 
 
-
+    const romoveOldParams = () => {
+        const newData = {
+            search: "",
+            length: 50,
+        }
+        methods.setValue("length", "50")
+        form.setValue("search", "")
+        setSkillSearchParam(newData)
+    }
 
 
     const handleSimpleFilter = () => {
+        const newData = {
+            search,
+            page,
+            length,
+        }
         setPage(1)
-        fetchSkillsList()
-
+        setSkillSearchParam(newData)
     }
+
+    // old fileter code :--------
+    useEffect(() => {
+        const newData = {
+            search: skillSearchParam?.search,
+            length,
+        }
+        setSkillSearchParam(newData)
+    }, [length])
+
+    useEffect(() => {
+        // for filters :-
+        form.setValue("search", skillSearchParam?.search)
+
+        // for length :-
+        let { length } = skillSearchParam
+        if (length) {
+            setLength(length)
+        }
+        methods.setValue("length", String(length))
+
+    }, [])
+
+
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            const newData = {
+                search,
+                page,
+                length
+            }
+
+            fetchSkillsList(newData)
+        }, 500)
+
+        // cleanup to avoid multiple triggers
+        return () => clearTimeout(handler)
+    }, [skillSearchParam, page, length])
+
+
 
     return (
         <>
@@ -181,7 +229,8 @@ const Skills = () => {
                                 </div>
                             </div>
                         </FormProvider>
-
+                        <Button className="cursor-pointer h-12 rounded-[4px] text-[#b82025] hover:text-[#fff] hover:bg-[#b82025] bg-transparent border border-[#b82025] text-[11px]"
+                            onClick={romoveOldParams} >Clear serach</Button>
                         <Button className="cursor-pointer h-12 rounded-[4px] text-[#b82025] hover:text-[#fff] hover:bg-[#b82025] bg-transparent border border-[#b82025] text-[11px]" onClick={handleOpenTagModal}>
                             <Plus />
                             Add Skills

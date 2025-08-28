@@ -20,6 +20,7 @@ import { currentShiftOptions, currentShiftOptionsForSearch, LengthData } from '@
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import EmployeeCSVDownload from '@/components/modal/EmployeeCSVDownload'
 import IncrementCSVDownload from '@/components/modal/IncrementCSVDownload'
+import useLocalStorage from 'use-local-storage'
 
 const EventList = () => {
     const [getList, setList] = useState([])
@@ -32,6 +33,9 @@ const EventList = () => {
     const [submitOpenModal, setSubmitOpenModal] = useState(false)
     const [status, setStatus] = useState(1)
     const [editData, setEditData] = useState(null)
+    const [employeeSearchParam, setEmployeeSearchParam] = useLocalStorage("employeeSearchParam", {
+        length: '50'
+    });
     const methods = useForm({
         defaultValues: {
             length: '50'
@@ -44,23 +48,18 @@ const EventList = () => {
         mode: 'onChange', // or 'onBlur' or 'onChange'
 
         defaultValues: {
-            currentShift: ""
+            currentShift: "",
+            search: ""
         }
     });
     const search = form.watch('search')
+    const currentShiftValue = form.watch("currentShift")
 
     // fetch group list
-    const fetchList = async () => {
-        const data = {}
+    const fetchList = async (data) => {
+        console.log("datadata", data)
         try {
-            const response = await EmployeesApi.employeesListFilters({
-                ...data,
-                search,
-                status,
-                currentShiftValue: currentShiftValue == "all" ? " " : currentShiftValue,
-                page,
-                length
-            })
+            const response = await EmployeesApi.employeesListFilters(data)
             if (response.status === 200) {
                 setList(response?.data?.data?.employees)
                 setTotalRecord(response?.data?.data?.pagination?.total)
@@ -71,9 +70,7 @@ const EventList = () => {
             setLoading(false)
         }
     }
-    useEffect(() => {
-        fetchList()
-    }, [page, length])
+
 
     // delete row
     const onDelete = async () => {
@@ -82,7 +79,14 @@ const EventList = () => {
                 const res = await EmployeesApi.deleteEmployees(deleteIndex)
                 setDeleteOpenModal(false)
                 if (res?.status === 200) {
-                    fetchList()
+                    const newData = {
+                        search,
+                        status,
+                        currentShift: currentShiftValue == "all" ? " " : currentShiftValue,
+                        page,
+                        length
+                    }
+                    fetchList(newData)
                     successMessage({ description: res?.data?.message })
                 }
             } catch (error) {
@@ -118,30 +122,11 @@ const EventList = () => {
         return () => subscription.unsubscribe()
     }, [methods, totalRecord])
 
-    const handleOpenTagModal = () => {
-        router.push('/dashboard/employee/add')
-        // setSubmitOpenModal(true)
-        // setEditData(null)
-    }
+
     const submitHandleModalClose = () => {
         setSubmitOpenModal(false)
     }
 
-
-
-
-
-    const handleClearSearch = () => {
-        form.setValue('search', '')
-
-        getListCadidate()
-    }
-    const currentShiftValue = form.watch("currentShift")
-
-    const handleSimpleFilter = () => {
-        setPage(1)
-        fetchList()
-    }
 
 
     const [selectedDcsValue, setSelectedDcsValue] = useState(null) // Store DCS value for modal
@@ -170,7 +155,14 @@ const EventList = () => {
 
         try {
             const response = await EmployeesApi.employeeCSVList(formData);
-            fetchList()
+            const newData = {
+                search,
+                status,
+                currentShift: currentShiftValue == "all" ? " " : currentShiftValue,
+                page: 1,
+                length
+            }
+            fetchList(newData)
             setDcsModalOpen(false)
         } catch (error) {
             console.error("Download failed", error);
@@ -193,9 +185,6 @@ const EventList = () => {
             console.error("Download failed", error);
         }
     };
-
-
-
 
     const handleEdit = (row) => {
         if (row?.original?.id) {
@@ -225,6 +214,88 @@ const EventList = () => {
         }
     };
 
+
+
+
+
+    // filter :-----------------
+
+    const romoveOldParams = () => {
+        const newData = {
+            search: "",
+            currentShift: "",
+            length: 50,
+        }
+        methods.setValue("length", "50")
+        form.setValue("search", "")
+        form.setValue("currentShift", "")
+
+        setEmployeeSearchParam(newData)
+    }
+    const handleSimpleFilter = () => {
+        const newData = {
+            search,
+            page,
+            length,
+            currentShift: currentShiftValue,
+        }
+        console.log("currentShiftValue", currentShiftValue)
+        setPage(1)
+        setEmployeeSearchParam(newData)
+    }
+
+    // old fileter code :--------
+    useEffect(() => {
+        const newData = {
+            search: employeeSearchParam?.search,
+            currentShift: employeeSearchParam?.currentShift,
+            length,
+        }
+        setEmployeeSearchParam(newData)
+    }, [length])
+
+    useEffect(() => {
+        // for filters :-
+        form.setValue("search", employeeSearchParam?.search)
+        form.setValue("currentShift", employeeSearchParam?.currentShift)
+
+        // for length :-
+        let { length } = employeeSearchParam
+        if (length) {
+            setLength(length)
+        }
+        methods.setValue("length", String(length))
+
+    }, [])
+
+
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            const newData = {
+                search,
+                status,
+                currentShift: currentShiftValue == "all" ? " " : currentShiftValue,
+                page,
+                length
+            }
+
+            console.log("newDatanewDatanewData", newData)
+            fetchList(newData)
+        }, 500)
+
+        // cleanup to avoid multiple triggers
+        return () => clearTimeout(handler)
+    }, [employeeSearchParam, page, length])
+
+
+
+    const newData = {
+        search,
+        status,
+        currentShift: currentShiftValue == "all" ? " " : currentShiftValue,
+        page,
+        length
+    }
 
     return (
         <>
@@ -273,6 +344,8 @@ const EventList = () => {
                                     onClick={handleSimpleFilter}
                                 />
                             </div>
+                            <Button className="cursor-pointer h-12 rounded-[4px] text-[#b82025] hover:text-[#fff] hover:bg-[#b82025] bg-transparent border border-[#b82025] text-[11px]"
+                                onClick={romoveOldParams} >Clear serach</Button>
 
 
                             {/* Import CSV for Employee Button */}
@@ -339,6 +412,7 @@ const EventList = () => {
                         <SkillForm
                             setSubmitOpenModal={setSubmitOpenModal}
                             fetchList={fetchList}
+                            newData={newData}
                             editData={editData}
                         />
                     }

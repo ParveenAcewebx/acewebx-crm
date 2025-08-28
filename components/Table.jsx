@@ -118,7 +118,7 @@ export function DataTable({
       {totalRecord > 0 ? (
         <>
           <div className='flex paginationouter '>
-            <div className='mt-3 w-full ' style={{ fontSize: "13px" }}>Showing {page} to {length} of {totalRecord} entries</div>
+            <div className='mt-3 w-full ' style={{ fontSize: "12px" }}>Showing {page} to {length} of {totalRecord} entries</div>
             <TablePagination
               totalRecord={totalRecord}
               page={page}
