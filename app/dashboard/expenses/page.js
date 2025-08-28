@@ -22,6 +22,7 @@ import { Label } from '@/components/ui/label'
 import { FormDateRangePicker } from '@/components/share/form/DateRangePicker'
 import moment from 'moment'
 import useLocalStorage from 'use-local-storage'
+import { endOfMonth, startOfMonth, subDays, subMonths } from 'date-fns'
 
 const ExpenseList = () => {
     const [getList, setList] = useState([])
@@ -43,8 +44,20 @@ const ExpenseList = () => {
     })
 
     // filter
+
+    const today = new Date()
+    const startOfLastMonth = startOfMonth(subMonths(today, 1))
+    const endOfLastMonth = endOfMonth(subMonths(today, 1))
+
     const form = useForm({
         mode: 'onChange', // or 'onBlur' or 'onChange'
+        defaultValues: {
+            date: {
+                startDate: startOfLastMonth,
+                endDate: endOfLastMonth,
+                key: 'selection'
+            },
+        }
     });
     const search = form.watch('search')
     const date = form.watch('date')
@@ -183,10 +196,10 @@ const ExpenseList = () => {
             search: expenseSearchParam?.search,
             startDate: expenseSearchParam?.startDate
                 ? new Date(expenseSearchParam.startDate)
-                : null,
+                : startOfLastMonth,
             endDate: expenseSearchParam?.endDate
                 ? new Date(expenseSearchParam.endDate)
-                : null,
+                : endOfLastMonth,
             // currentShift :"",
             length,
         }
@@ -199,10 +212,10 @@ const ExpenseList = () => {
         form.setValue("date", {
             startDate: expenseSearchParam?.startDate
                 ? new Date(expenseSearchParam.startDate)
-                : null,
+                : startOfLastMonth,
             endDate: expenseSearchParam?.endDate
                 ? new Date(expenseSearchParam.endDate)
-                : null,
+                : endOfLastMonth,
         },)
         // for length :-
         let { length } = expenseSearchParam
@@ -286,6 +299,8 @@ const ExpenseList = () => {
                                             onClick={() => handleSimpleFilter()}
                                         />
                                     </div>
+                                    <Button className="cursor-pointer h-12 rounded-[4px] text-[#b82025] hover:text-[#fff] hover:bg-[#b82025] bg-transparent border border-[#b82025] text-[11px]"
+                                        onClick={romoveOldParams} >Clear serach</Button>
 
                                     {/* Import CSV for Employee Button */}
                                     <Tooltip>
