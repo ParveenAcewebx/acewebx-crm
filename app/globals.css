@@ -2348,6 +2348,10 @@ button#\:rb\:-form-item {
   width: 500px;
   font-size: 11px;
 }
+
+.paginationouter ul li a {
+  font-size: 12px;
+}
 @media (max-width: 767px) {
 .ace-dashboard {
   padding: 30px 14px;

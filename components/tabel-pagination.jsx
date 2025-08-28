@@ -62,7 +62,7 @@ export const TablePagination = ({
 
   return (
     <Pagination className="mt-5 main-pagination">
-      <PaginationContent className="gap-2 cursor-pointer">
+      <PaginationContent  className="gap-2 cursor-pointer">
         {/* Previous */}
         <PaginationItem>
           <PaginationPrevious

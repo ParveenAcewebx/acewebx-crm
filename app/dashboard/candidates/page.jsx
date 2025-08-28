@@ -27,7 +27,7 @@ const AllCandidates = () => {
   const [page, setPage] = useState(1)
   const [skill, setSkill] = useState("");
   const [getList, setList] = useState([])
-  const [length, setLength] = useState(10)
+  const [length, setLength] = useState(50)
   const [endDate, setEndDate] = useState('');
   const [loading, setLoading] = useState(true)
   const [maxSalary, setMaxSalary] = useState('');
@@ -45,15 +45,13 @@ const AllCandidates = () => {
   const [connectStartDate, setConnectStartDate] = useState('');
   const [connectEndDate, setConnectEndDate] = useState('');
   const [developerSearchParam, setDeveloperSearchParam] = useLocalStorage("developerSearchParam", {
-
+    length: '50'
   });
-
-
 
 
   const methods = useForm({
     defaultValues: {
-      length: '10'
+      length: '50'
     }
   })
   // filter :--
@@ -67,26 +65,13 @@ const AllCandidates = () => {
 
 
   // get all candidate list :-
-  const getListCadidate = async () => {
+  const getListCadidate = async (newData) => {
+
     try {
-      const newData = {
-        page,
-        length,
-        startDate,
-        endDate,
-        minSalary,
-        maxSalary,
-        preferredShift,
-        minExperience,
-        maxExperience,
-        connectStartDate,
-        connectEndDate,
-        skill,
-        search
-      }
+
       setLoading(true)
-      setDeveloperSearchParam(newData)
-      const res = await Candidate.candidateList(newData)
+
+      const res = await Candidate.candidateListAddvanceFilters(newData)
       if (res.data?.status == true) {
         setList(res?.data?.data)
         setTotalRecord(res?.data?.data?.pagination?.total)
@@ -100,13 +85,7 @@ const AllCandidates = () => {
     }
   }
 
-  useEffect(() => {
-    if (searchFormData) {
-      handleClearSearch()
-    } else {
-      getListCadidate()
-    }
-  }, [page, length])
+
 
   // delete table row
   const onDelete = async () => {
@@ -148,38 +127,6 @@ const AllCandidates = () => {
     setDcsModalOpen(true)
   }
 
-
-  useEffect(() => {
-    const subscription = methods.watch((value, { name }) => {
-      if (name === 'length') {
-        const val = value.length
-        setLength(val === 'all' ? totalRecord || 9999 : Number(val))
-      }
-    })
-    return () => subscription.unsubscribe()
-  }, [methods, totalRecord])
-
-  // useEffect(() => {
-  //   if (length) {
-  //     localStorage.setItem("length", length)
-  //   }
-  // }, [length])
-
-
-
-  const handleClearSearch = () => {
-    form.setValue('search', '')
-    getListCadidate()
-  }
-
-  // Filter handler:)
-  const handleSimpleFilter = () => {
-    setPage(1)
-    getListCadidate()
-
-  }
-
-
   // send walk-in form:)
   const handleSendWalkInForm = async row => {
     try {
@@ -196,6 +143,76 @@ const AllCandidates = () => {
         description: 'Something Went Wrong!'
       })
     }
+  }
+
+
+  // Handler for CSV file Download:)
+  const handleDownloadCSV = async () => {
+    const newData = {
+      startDate,
+      endDate,
+      minSalary,
+      maxSalary,
+      preferredShift,
+      minExperience,
+      maxExperience,
+      connectStartDate,
+      connectEndDate,
+      skill,
+
+    }
+
+    try {
+      const response = await Candidate.candidateCSVList(newData, {
+        responseType: 'blob', // ✅ Correct response type for CSV
+      });
+
+      const blob = new Blob([response.data], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'filtered_users.csv';
+      a.click();
+
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Download failed", error);
+    }
+  }
+
+
+  useEffect(() => {
+    const subscription = methods.watch((value, { name }) => {
+      if (name === 'length') {
+        const val = value.length
+        setLength(val === 'all' ? totalRecord || 9999 : Number(val))
+      }
+    })
+    return () => subscription.unsubscribe()
+  }, [methods, totalRecord])
+
+
+
+  // Filter handler:)
+  const handleSimpleFilter = () => {
+    const newData = {
+      search,
+      page,
+      length,
+    }
+    setPage(1)
+    setDeveloperSearchParam(newData)
+  }
+
+  const romoveOldParams = () => {
+    const newData = {
+      search: "",
+      length: 50,
+    }
+    methods.setValue("length", "50")
+    form.setValue("search", "")
+    setDeveloperSearchParam(newData)
   }
 
   //Addvance search :-
@@ -249,46 +266,9 @@ const AllCandidates = () => {
     }
   }
 
-  // Handler for CSV file Download:)
-  const handleDownloadCSV = async () => {
-    const newData = {
-      startDate,
-      endDate,
-      minSalary,
-      maxSalary,
-      preferredShift,
-      minExperience,
-      maxExperience,
-      connectStartDate,
-      connectEndDate,
-      skill,
-
-    }
-
-    try {
-      const response = await Candidate.candidateCSVList(newData, {
-        responseType: 'blob', // ✅ Correct response type for CSV
-      });
-
-      const blob = new Blob([response.data], { type: 'text/csv;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'filtered_users.csv';
-      a.click();
-
-      URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error("Download failed", error);
-    }
-  }
 
 
   const [skillsData, setSkillsData] = useState([])
-
-
-
   useEffect(() => {
     // This code runs only on the client side
     if (typeof window !== "undefined" && window.localStorage) {
@@ -302,15 +282,56 @@ const AllCandidates = () => {
         setSkillsData(candidateOptions);
 
       }
-
-      // const savedLength = localStorage.getItem("length");
-      // console.log("savedLength", savedLength)
     }
-
-
   }, []);
 
 
+  useEffect(() => {
+    const newData = {
+      search: developerSearchParam?.search,
+      length,
+    }
+    setDeveloperSearchParam(newData)
+  }, [length])
+
+
+  useEffect(() => {
+    // for filters :-
+    form.setValue("search", developerSearchParam?.search)
+    // for length :-
+    let { length } = developerSearchParam
+    if (length) {
+      setLength(length)
+    }
+    methods.setValue("length", String(length))
+
+  }, [])
+
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      const newData = {
+        startDate,
+        endDate,
+        minSalary,
+        maxSalary,
+        search,
+        minExperience,
+        maxExperience,
+        connectStartDate,
+        connectEndDate,
+        skill,
+        preferredShift,
+        page,
+        length,
+      }
+
+      getListCadidate(newData)
+    }, 500)
+
+    // cleanup to avoid multiple triggers
+    return () => clearTimeout(handler)
+  }, [developerSearchParam, page, length])
   return (
     <>
       <div className=''>
@@ -331,6 +352,7 @@ const AllCandidates = () => {
         {/* Right: Search + Buttons */}
         <FormProvider {...form}>
           <div className="flex items-center gap-4">
+
             {/* Search Bar */}
             <div className="relative">
               <FormInputField
@@ -347,7 +369,8 @@ const AllCandidates = () => {
                 onClick={handleSimpleFilter}
               />
             </div>
-
+            <Button className="cursor-pointer h-12 rounded-[4px] text-[#b82025] hover:text-[#fff] hover:bg-[#b82025] bg-transparent border border-[#b82025] text-[11px]"
+              onClick={romoveOldParams} >Clear serach</Button>
             {/* Advance Search */}
             <Button
               onClick={AddvanceOpenModal}
@@ -393,10 +416,6 @@ const AllCandidates = () => {
         />
       </div>
 
-      {/* <div className="w-full overflow-x-auto"> */}
-
-      {/* </div> */}
-
       <DialogBox
         onDelete={onDelete}
         description='Are you certain you want to proceed with this deletion?'
@@ -404,6 +423,7 @@ const AllCandidates = () => {
         deleteHandleModalClose={deleteHandleModalClose}
       />
       <AddvanceFilterDeveloper
+        oldSerachParams={developerSearchParam}
         isOpen={dcsModalOpen}
         CandidateType="candidate"
         skillsData={skillsData}
