@@ -257,8 +257,13 @@ const AllSalesCandidates = () => {
       a.click();
 
       URL.revokeObjectURL(url);
+      successMessage({ description: "CSV file exported successfully." })
+
     } catch (error) {
       console.error("Download failed", error);
+      errorMessage({
+        description: error?.response?.data?.message
+      })
     }
   };
 

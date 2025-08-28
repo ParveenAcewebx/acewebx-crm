@@ -7,42 +7,18 @@ import {
 } from '@/components/ui/dialog'
 import { FormProvider, useForm } from 'react-hook-form'
 import { Button } from '../ui/button'
-import { startOfWeek, endOfWeek, subDays } from 'date-fns'
 import Link from 'next/link'
 import FormInputFileUploaderSingleCSV from '../share/form/FormInputFileUploaderSingleCSV'
+import { useEffect } from 'react'
 
 const EmployeeCSVDownload = ({ isOpen, onClose, handleDownloadCSV, skillsData }) => {
-    const today = new Date()
-    const startOfLastWeek = subDays(startOfWeek(today), 7)
-    const endOfLastWeek = subDays(endOfWeek(today), 7)
-    const form = useForm({
-        defaultValues: {
-            dob: {
-                startDate: startOfLastWeek,
-                endDate: endOfLastWeek,
-                key: 'selection'
-            },
 
-            preferredShift: [],
-            skill: [],
-            totalExperience: "",
+    const form = useForm()
 
-        }
-    })
-    const handleDateChnage = (date) => {
-        console.log("valuedate", date)
-    }
+    useEffect(() => {
+        form.setValue("file", "")
 
-    const clearFilter = (e) => {
-        e.preventDefault()
-        form.setValue("preferredShift", "")
-        form.setValue("lastContected", "")
-        form.setValue("totalExperience", "")
-        form.setValue("skill", "")
-
-    }
-
-
+    }, [isOpen])
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogTrigger />
@@ -69,7 +45,7 @@ const EmployeeCSVDownload = ({ isOpen, onClose, handleDownloadCSV, skillsData })
                                     control={form.control}
                                     form={form}
                                     label='Drop CSV here or click to upload*'
-                                />            </div>
+                                /></div>
 
                             <div className='mb-4 grid grid-cols-1 gap-6 md:grid-cols-1'>
                             </div>
@@ -84,7 +60,7 @@ const EmployeeCSVDownload = ({ isOpen, onClose, handleDownloadCSV, skillsData })
                                     Import CSV
                                 </Button>
                                 {/* <span> */}
-                                    <Link href="../sample-emplyee-import.csv" target="_blank" >  Download Sample File</Link>
+                                <Link href="../sample-emplyee-import.csv" target="_blank" >  Download Sample File</Link>
                                 {/* </span> */}
                             </div>
 

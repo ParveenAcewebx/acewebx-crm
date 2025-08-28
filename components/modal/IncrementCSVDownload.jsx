@@ -10,11 +10,15 @@ import { Button } from '../ui/button'
 import { startOfWeek, endOfWeek, subDays } from 'date-fns'
 import Link from 'next/link'
 import FormInputFileUploaderSingleCSV from '../share/form/FormInputFileUploaderSingleCSV'
+import { useEffect } from 'react'
 
 const IncrementCSVDownload = ({ isOpen, onClose, handleDownloadCSV, skillsData }) => {
-    
+
     const form = useForm()
- 
+    useEffect(() => {
+        form.setValue("file", "")
+
+    }, [isOpen])
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
@@ -57,7 +61,7 @@ const IncrementCSVDownload = ({ isOpen, onClose, handleDownloadCSV, skillsData }
                                     Import CSV
                                 </Button>
                                 {/* <span> */}
-                                    <Link href="../sample-emplyee-increment-import.csv" target="_blank" >  Download Sample File</Link>
+                                <Link href="../sample-emplyee-increment-import.csv" target="_blank" >  Download Sample File</Link>
                                 {/* </span> */}
                             </div>
 
