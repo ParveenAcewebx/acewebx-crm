@@ -167,19 +167,19 @@ export const InactiveEmployeeColumn = (handleDeleteEmployee, handleEditEmployee,
       let formatted = "";
 
       if (years > 0 && months > 0) {
-        formatted = `${years}y, ${months}m`;
+        formatted = `${years}Y, ${months}M`;
       } else if (years > 0) {
-        formatted = `${years}y`;
+        formatted = `${years}Y`;
       } else if (months > 0) {
-        formatted = `${months}m`;
+        formatted = `${months}M`;
       } else {
-        formatted = `${days}d`;
+        formatted = `${days}D`;
       }
 
 
       return (
         <>
-          {formatted == "NaNd" ? "-" : formatted}
+          {formatted == "NaND" ? "-" : formatted}
         </>
       )
 

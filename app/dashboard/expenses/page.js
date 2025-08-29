@@ -6,8 +6,6 @@ import { errorMessage, successMessage } from '@/components/ToasterMessage'
 import { Import, Search } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import SkillForm from '@/components/skills/SkillForm'
-import SkillSettingModal from '@/components/modal/SkillSettingModal'
 import { ExpenseColumn } from './expense-column'
 import { useRouter } from 'next/navigation'
 import FormInputField from '@/components/share/form/FormInputField'
@@ -346,24 +344,7 @@ const ExpenseList = () => {
                     deleteHandleModalClose={deleteHandleModalClose}
                 />
 
-                <SkillSettingModal
-                    submitOpenModal={submitOpenModal}
-                    onOpenChange={isOpen => {
-                        setSubmitOpenModal(isOpen)
-                        if (!isOpen) {
-                            setEditData(null) // clear form when modal closes
-                        }
-                    }}
-                    submitHandleModalClose={submitHandleModalClose}
-                    description={
-                        <SkillForm
-                            setSubmitOpenModal={setSubmitOpenModal}
-                            fetchList={fetchList}
-                            editData={editData}
-                        />
-                    }
-                    message={editData ? 'Edit Skill' : 'Add Skill'}
-                />
+             
             </div>
             <ExpenseCSVDownload
                 isOpen={inrementCSVModalOpen}

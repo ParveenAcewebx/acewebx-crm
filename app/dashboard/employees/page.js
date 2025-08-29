@@ -7,16 +7,13 @@ import { Button } from '@/components/ui/button'
 import { Import, Search } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import SkillForm from '@/components/skills/SkillForm'
-import SkillSettingModal from '@/components/modal/SkillSettingModal'
 import { useRouter } from 'next/navigation'
 import EmployeesApi from '@/services/employees/EmployeesApi'
 import { EmployeeColumn } from './employee-column'
 import FormInputField from '@/components/share/form/FormInputField'
 import FormSelectField from '@/components/share/form/FormSelect'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { SearchEmployee } from '@/components/form-validations/SearchValidation'
-import { currentShiftOptions, currentShiftOptionsForSearch, LengthData } from '@/components/constants/StaticData'
+import { currentShiftOptionsForSearch, LengthData } from '@/components/constants/StaticData'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import EmployeeCSVDownload from '@/components/modal/EmployeeCSVDownload'
 import IncrementCSVDownload from '@/components/modal/IncrementCSVDownload'
@@ -409,25 +406,6 @@ const EventList = () => {
                     deleteHandleModalClose={deleteHandleModalClose}
                 />
 
-                <SkillSettingModal
-                    submitOpenModal={submitOpenModal}
-                    onOpenChange={isOpen => {
-                        setSubmitOpenModal(isOpen)
-                        if (!isOpen) {
-                            setEditData(null) // clear form when modal closes
-                        }
-                    }}
-                    submitHandleModalClose={submitHandleModalClose}
-                    description={
-                        <SkillForm
-                            setSubmitOpenModal={setSubmitOpenModal}
-                            fetchList={fetchList}
-                            newData={newData}
-                            editData={editData}
-                        />
-                    }
-                    message={editData ? 'Edit Skill' : 'Add Skill'}
-                />
             </div>
             <EmployeeCSVDownload
                 isOpen={dcsModalOpen}

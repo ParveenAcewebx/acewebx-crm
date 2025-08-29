@@ -6,8 +6,6 @@ import { errorMessage, successMessage } from '@/components/ToasterMessage'
 import { Search } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import SkillForm from '@/components/skills/SkillForm'
-import SkillSettingModal from '@/components/modal/SkillSettingModal'
 import EventApi from '@/services/events/EventApi'
 import { EventColumn } from './event-column'
 import { useRouter } from 'next/navigation'
@@ -190,26 +188,7 @@ const EventList = () => {
                     description='Are you certain you want to proceed with this deletion?'
                     deleteOpenModal={deleteOpenModal}
                     deleteHandleModalClose={deleteHandleModalClose}
-                />
-
-                <SkillSettingModal
-                    submitOpenModal={submitOpenModal}
-                    onOpenChange={isOpen => {
-                        setSubmitOpenModal(isOpen)
-                        if (!isOpen) {
-                            setEditData(null) // clear form when modal closes
-                        }
-                    }}
-                    submitHandleModalClose={submitHandleModalClose}
-                    description={
-                        <SkillForm
-                            setSubmitOpenModal={setSubmitOpenModal}
-                            fetchList={fetchList}
-                            editData={editData}
-                        />
-                    }
-                    message={editData ? 'Edit Skill' : 'Add Skill'}
-                />
+                />            
             </div>
         </>
     )

@@ -47,7 +47,6 @@ function EditCandidate({ editId }) {
         formData.append('updateField', JSON.stringify(updateFieldsValue))
       }
 
-
       const file = data.resume?.[0]
       if (file) {
         formData.append('resume', file)
